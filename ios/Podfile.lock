@@ -1,0 +1,83 @@
+PODS:
+  - Flutter (1.0.0)
+  - flutter_money_formatter (0.0.1):
+    - Flutter
+  - FMDB (2.7.5):
+    - FMDB/standard (= 2.7.5)
+  - FMDB/standard (2.7.5)
+  - image_cropper (0.0.1):
+    - Flutter
+    - TOCropViewController (~> 2.3.8)
+  - image_picker (0.0.1):
+    - Flutter
+  - intro_slider (0.0.1):
+    - Flutter
+  - path_provider (0.0.1):
+    - Flutter
+  - screen (0.0.1):
+    - Flutter
+  - shared_preferences (0.0.1):
+    - Flutter
+  - sqflite (0.0.1):
+    - Flutter
+    - FMDB (~> 2.7.2)
+  - TOCropViewController (2.3.8)
+  - video_player (0.0.1):
+    - Flutter
+
+DEPENDENCIES:
+  - Flutter (from `.symlinks/flutter/ios`)
+  - flutter_money_formatter (from `.symlinks/plugins/flutter_money_formatter/ios`)
+  - image_cropper (from `.symlinks/plugins/image_cropper/ios`)
+  - image_picker (from `.symlinks/plugins/image_picker/ios`)
+  - intro_slider (from `.symlinks/plugins/intro_slider/ios`)
+  - path_provider (from `.symlinks/plugins/path_provider/ios`)
+  - screen (from `.symlinks/plugins/screen/ios`)
+  - shared_preferences (from `.symlinks/plugins/shared_preferences/ios`)
+  - sqflite (from `.symlinks/plugins/sqflite/ios`)
+  - video_player (from `.symlinks/plugins/video_player/ios`)
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - FMDB
+    - TOCropViewController
+
+EXTERNAL SOURCES:
+  Flutter:
+    :path: ".symlinks/flutter/ios"
+  flutter_money_formatter:
+    :path: ".symlinks/plugins/flutter_money_formatter/ios"
+  image_cropper:
+    :path: ".symlinks/plugins/image_cropper/ios"
+  image_picker:
+    :path: ".symlinks/plugins/image_picker/ios"
+  intro_slider:
+    :path: ".symlinks/plugins/intro_slider/ios"
+  path_provider:
+    :path: ".symlinks/plugins/path_provider/ios"
+  screen:
+    :path: ".symlinks/plugins/screen/ios"
+  shared_preferences:
+    :path: ".symlinks/plugins/shared_preferences/ios"
+  sqflite:
+    :path: ".symlinks/plugins/sqflite/ios"
+  video_player:
+    :path: ".symlinks/plugins/video_player/ios"
+
+SPEC CHECKSUMS:
+  Flutter: 9d0fac939486c9aba2809b7982dfdbb47a7b0296
+  flutter_money_formatter: 814c6a1ca84a090dff32d24c55db39a5adfd9b73
+  FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
+  image_cropper: 046482c5501fc775e17f792d5af4b46c19bb774e
+  image_picker: ee00aab0487cedc80a304085219503cc6d0f2e22
+  intro_slider: 961a06956afdbaeaafb8488269b52eae4f866dbb
+  path_provider: 09407919825bfe3c2deae39453b7a5b44f467873
+  screen: 22ab9c4a784112d4b21ad7d80e81729e0afdaa65
+  shared_preferences: 5a1d487c427ee18fcd3ea1f2a131569481834b53
+  sqflite: d1612813fa7db7c667bed9f1d1b508deffc56999
+  TOCropViewController: 0a075f02c253e88095143bbac7b013fc6fba5090
+  video_player: 906796a841943c8d370ac7c13b18039aa9b56498
+
+PODFILE CHECKSUM: aff02bfeed411c636180d6812254b2daeea14d09
+
+COCOAPODS: 1.5.3

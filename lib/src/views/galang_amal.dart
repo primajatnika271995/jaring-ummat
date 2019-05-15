@@ -1,0 +1,91 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_jaring_ummat/src/views/components/galang_amal_container.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
+class GalangAmalView extends StatefulWidget {
+  @override
+  _GalangAmalState createState() => _GalangAmalState();
+}
+
+class _GalangAmalState extends State<GalangAmalView> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: new AppBar(
+        titleSpacing: 0.0,
+        leading: InkWell(
+          onTap: () {
+            Navigator.pop(context);
+          },
+          child: Icon(FontAwesomeIcons.arrowAltCircleLeft),
+        ),
+        title: new Text('Galang Amal', style: TextStyle(fontSize: 15.0),),
+        centerTitle: false,
+        backgroundColor: Colors.blueAccent,
+      ),
+      body: ListView(
+        children: <Widget>[GalangAmalContainer()],
+      ),
+      bottomNavigationBar: BottomAppBar(
+        child: new Container(
+          height: 75.0,
+          child: new Column(
+            children: <Widget>[
+              Container(
+                padding: EdgeInsets.only(top: 10.0, left: 10.0, bottom: 10.0, right: 10.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        // SizedBox(height: 3.0),
+                        Text(
+                          'Donasi terkumpul',
+                          style: TextStyle(
+                              fontSize: 11.0,
+                              fontWeight: FontWeight.bold,
+                              color: Color.fromRGBO(122, 122, 122, 1.0)),
+                        ),
+                        SizedBox(height: 3.0),
+                        Text(
+                          'Rp. ' + '4.069.830' + '/' + '25.000.000',
+                          style: TextStyle(
+                            fontSize: 16.0,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                        ),
+                        SizedBox(height: 3.0),
+                        Text(
+                          'Batas waktu ' + '30 Juni 2019',
+                          style: TextStyle(
+                              fontSize: 11.0,
+                              fontWeight: FontWeight.bold,
+                              color: Color.fromRGBO(122, 122, 122, 1.0)),
+                        )
+                      ],
+                    ),
+                    RaisedButton(
+                      onPressed: () {},
+                      textColor: Colors.white,
+                      padding: EdgeInsets.all(0.0),
+                      color: Color.fromRGBO(21, 101, 192, 1.0),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                      child: Container(
+                        padding: EdgeInsets.fromLTRB(15.0, 5.0, 15.0, 5.0),
+                        child: Text('Kirim Donasi'),
+                      ),
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
