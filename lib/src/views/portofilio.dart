@@ -107,7 +107,7 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
           true),
       new FabMiniMenuItem.withText(new Icon(IconBaru.donation_small),
           Colors.deepPurpleAccent, 10.0, "Donasi Menu", () {
-        Navigator.of(context).pushNamed("/create/news");
+//        Navigator.of(context).pushNamed("/create/news");
       }, "Donasi", Colors.black, Colors.white, true),
     ];
 

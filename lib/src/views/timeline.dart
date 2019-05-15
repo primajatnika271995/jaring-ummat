@@ -2,9 +2,6 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_jaring_ummat/src/models/UserDetails.dart';
 import 'package:flutter_jaring_ummat/src/models/program_amal.dart';
-import 'package:flutter_jaring_ummat/src/services/program_amal_service.dart';
-import 'package:toast/toast.dart';
-import 'dart:convert';
 import 'package:shimmer/shimmer.dart';
 
 // Component
@@ -98,35 +95,6 @@ class _TimelineState extends State<TimelineView>
       _programAmalList =
           list.map((model) => ProgramAmalModel.fromJson(model)).toList();
     }
-  }
-
-  Widget generateActivityPosts(BuildContext context, AsyncSnapshot snapshot) {
-    // List<Map<String, String>> values = snapshot.data;
-    ListView myList = ListView.builder(
-        shrinkWrap: true, // todo comment this out and check the result
-        physics: ClampingScrollPhysics(),
-        // padding: EdgeInsets.only(top: 10.0), x
-        itemCount: _programAmalList.length,
-        itemBuilder: (BuildContext context, int index) {
-          // var item = values[index];
-          var programAmalItem = _programAmalList[index];
-          print("ini panjang List");
-          print(_programAmalList.length);
-          print(programAmalItem.descriptionProgram);
-          return ActivityPostContainer(
-            activityPostId: programAmalItem.idUser,
-            title: programAmalItem.titleProgram,
-            profileName: programAmalItem.createdBy,
-            postedAt: programAmalItem.createdDate,
-            description: programAmalItem.descriptionProgram,
-            totalDonation: programAmalItem.totalDonasi,
-            targetDonation: programAmalItem.targetDonasi,
-            dueDate: programAmalItem.endDonasi,
-            totalLike: programAmalItem.totalDonasi.toString(),
-            totalComment: programAmalItem.totalDonasi.toString(),
-          );
-        });
-    return myList;
   }
 
   @override
@@ -336,12 +304,14 @@ class _TimelineState extends State<TimelineView>
                                   itemCount: _programAmalList.length,
                                   itemBuilder:
                                       (BuildContext context, int index) {
-                                    var programAmalItem = _programAmalList[index];
+                                    var programAmalItem =
+                                        _programAmalList[index];
                                     return ActivityPostContainer(
                                       activityPostId: programAmalItem.idUser,
                                       title: programAmalItem.titleProgram,
                                       profileName: programAmalItem.createdBy,
                                       postedAt: programAmalItem.createdDate,
+                                      imgContent: programAmalItem.imageContent,
                                       description:
                                           programAmalItem.descriptionProgram,
                                       totalDonation:

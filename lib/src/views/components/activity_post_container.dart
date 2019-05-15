@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_jaring_ummat/src/services/time_ago_service.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'custom_fonts.dart';
+import 'dart:convert';
 import 'show_alert_dialog.dart';
 import 'package:intl/intl.dart';
 import '../../services/currency_format_service.dart';
@@ -16,23 +17,25 @@ class ActivityPostContainer extends StatefulWidget {
   final String description;
   final double totalDonation;
   final double targetDonation;
+  final List<dynamic> imgContent;
   final String dueDate;
   final String totalLike;
   final String totalComment;
 
   ActivityPostContainer({
     Key key,
-    this.activityPostId = '',
-    this.profilePictureUrl = '',
-    this.title = '',
-    this.description = '',
-    this.profileName = '',
+    this.activityPostId,
+    this.profilePictureUrl,
+    this.title,
+    this.description,
+    this.profileName,
+    this.imgContent,
     this.postedAt = 0,
     this.totalDonation = 0.0,
     this.targetDonation = 0.0,
-    this.dueDate = '',
-    this.totalLike = '',
-    this.totalComment = '',
+    this.dueDate,
+    this.totalLike,
+    this.totalComment,
   });
 
   @override
@@ -105,15 +108,14 @@ class ActivityPostState extends State<ActivityPostContainer> {
 
   Widget getProfilePicture() {
     return Container(
-      width: 50.0,
-      height: 50.0,
+      width: 53.0,
+      height: 53.0,
       decoration: BoxDecoration(
-          image: DecorationImage(
-        image: (widget.profilePictureUrl != '')
-            ? NetworkImage(widget.profilePictureUrl)
-            : AssetImage("assets/users/bamuis_min.png"),
-        fit: BoxFit.contain,
-      )),
+        borderRadius: BorderRadius.circular(30.0),
+        image: DecorationImage(
+          image: MemoryImage(base64Decode(widget.imgContent[0])),
+        ),
+      ),
     );
   }
 
@@ -144,7 +146,7 @@ class ActivityPostState extends State<ActivityPostContainer> {
             ),
           ),
           Text(
-            'Oleh ' + widget.profileName + ' - ' + TimeAgoService().timeAgoFormatting(widget.postedAt),
+            'Oleh ' + widget.profileName + ' • ' + TimeAgoService().timeAgoFormatting(widget.postedAt),
             style: TextStyle(
               fontSize: 11.0,
             ),
@@ -174,34 +176,29 @@ class ActivityPostState extends State<ActivityPostContainer> {
   }
 
   Widget setMainImage() {
-//    return Container(
-//      height: 200.0,
-//      decoration: BoxDecoration(
-//          image: DecorationImage(
-//        image: NetworkImage(widget.profilePictureUrl),
-//        fit: BoxFit.cover,
-//      )),
-//    );
-  return CarouselSlider(
-    height: 200.0,
-    autoPlay: true,
-    viewportFraction: 1.0,
-    aspectRatio: MediaQuery.of(context).size.aspectRatio,
-    items: imgList.map(
-          (url) {
-        return Container(
-          child: ClipRRect(
-            borderRadius: BorderRadius.all(Radius.circular(0.0)),
-            child: Image.network(
-              url,
-              fit: BoxFit.cover,
-              width: double.infinity,
+    return CarouselSlider(
+      height: 300.0,
+      autoPlay: true,
+      viewportFraction: 1.0,
+      aspectRatio: MediaQuery.of(context).size.aspectRatio,
+      items: widget.imgContent.map(
+            (url) {
+          return Container(
+            child: ClipRRect(
+              borderRadius: BorderRadius.all(Radius.circular(0.0)),
+              child: Container(
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: MemoryImage(base64Decode(url)),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
             ),
-          ),
-        );
-      },
-    ).toList(),
-  );
+          );
+        },
+      ).toList(),
+    );
   }
 
   Widget modalSheetComent() {
@@ -607,31 +604,35 @@ class ActivityPostState extends State<ActivityPostContainer> {
     return new Container(
       padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
       child: moreDesc.isEmpty
-          ? new Text(lessDesc)
+          ? new Text(
+        lessDesc,
+        style: TextStyle(color: Colors.black45),
+      )
           : new Column(
+        children: <Widget>[
+          new Text(
+            flag ? (lessDesc + "...") : (lessDesc + moreDesc),
+            textAlign: TextAlign.center,
+            style: TextStyle(color: Colors.black45),
+          ),
+          new InkWell(
+            onTap: () {
+              setState(() {
+                flag = !flag;
+              });
+            },
+            child: new Row(
+              mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
                 new Text(
-                  flag ? (lessDesc + "...") : (lessDesc + moreDesc),
-                  textAlign: TextAlign.justify,
-                ),
-                new InkWell(
-                  onTap: () {
-                    setState(() {
-                      flag = !flag;
-                    });
-                  },
-                  child: new Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: <Widget>[
-                      new Text(
-                        flag ? "show more" : "show less",
-                        style: new TextStyle(color: Colors.blue),
-                      )
-                    ],
-                  ),
+                  flag ? "show more" : "show less",
+                  style: new TextStyle(color: Colors.blue),
                 )
               ],
             ),
+          )
+        ],
+      ),
     );
   }
 
