@@ -11,7 +11,6 @@ import '../views/create_data_preview.dart';
 // Component
 import '../config/preferences.dart';
 
-
 class CreateNews extends StatefulWidget {
   @override
   _CreateNewsState createState() => _CreateNewsState();
@@ -92,10 +91,7 @@ class _CreateNewsState extends State<CreateNews> {
     super.initState();
   }
 
-
-
   Future onCreateBerita() async {
-
     _preferences = await SharedPreferences.getInstance();
 
     var title = judulBeritaController.text;
@@ -110,17 +106,16 @@ class _CreateNewsState extends State<CreateNews> {
       context,
       MaterialPageRoute(
         builder: (context) => PreviewData(
-          title: title,
-          newsId: user_id,
-          postedBy: createdBy,
-          newsImg1: selected_berita2,
-          category: _selectedKategori,
-          excerpt: description,
-          newsImg: selected_berita1,
-        ),
+              title: title,
+              newsId: user_id,
+              postedBy: createdBy,
+              newsImg1: selected_berita2,
+              category: _selectedKategori,
+              excerpt: description,
+              newsImg: selected_berita1,
+            ),
       ),
     );
-
 
 //
 //    _scaffoldKey.currentState.showSnackBar(
@@ -151,7 +146,6 @@ class _CreateNewsState extends State<CreateNews> {
 //    });
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -160,7 +154,10 @@ class _CreateNewsState extends State<CreateNews> {
         preferredSize: Size.fromHeight(47.0),
         child: AppBar(
           backgroundColor: Colors.blueAccent,
-          title: Text('Unggah Berita'),
+          title: Text(
+            'Unggah Berita',
+            style: TextStyle(fontSize: 15.0),
+          ),
           centerTitle: false,
         ),
       ),
@@ -324,9 +321,9 @@ class _CreateNewsState extends State<CreateNews> {
   Widget _addNewsImageMenu() {
     return new SizedBox(
       width: double.infinity,
-      height: 270.0,
+      height: 260.0,
       child: new Container(
-        margin: EdgeInsets.only(top: 8.0, bottom: 8.0),
+        margin: EdgeInsets.only(top: 8.0, bottom: 0.0),
         child: GridView(
           gridDelegate:
               SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
@@ -347,8 +344,9 @@ class _CreateNewsState extends State<CreateNews> {
       children: <Widget>[
         Positioned(
           top: 15.0,
-          left: 5.0,
+          left: 8.0,
           child: CircleAvatar(
+            backgroundColor: Colors.white,
             radius: 10.0,
             child: new Text(
               '1',
@@ -387,7 +385,10 @@ class _CreateNewsState extends State<CreateNews> {
                                 )
                               : FileImage(selected_berita1),
                           fit: BoxFit.fill),
-                      border: Border.all(color: Colors.grey, width: 1.0),
+                      border: Border.all(
+                          color: Colors.white,
+                          width: 3.0,
+                          style: BorderStyle.solid),
                       borderRadius:
                           new BorderRadius.all(new Radius.circular(10.0))),
                   padding: EdgeInsets.all(12.0),
@@ -408,8 +409,9 @@ class _CreateNewsState extends State<CreateNews> {
       children: <Widget>[
         Positioned(
           top: 15.0,
-          left: 5.0,
+          left: 8.0,
           child: CircleAvatar(
+            backgroundColor: Colors.white,
             radius: 10.0,
             child: new Text(
               '2',
@@ -448,7 +450,7 @@ class _CreateNewsState extends State<CreateNews> {
                                 )
                               : FileImage(selected_berita2),
                           fit: BoxFit.fill),
-                      border: Border.all(color: Colors.grey, width: 1.0),
+                      border: Border.all(color: Colors.white, width: 3.0),
                       borderRadius:
                           new BorderRadius.all(new Radius.circular(10.0))),
                   padding: EdgeInsets.all(12.0),
@@ -469,8 +471,9 @@ class _CreateNewsState extends State<CreateNews> {
       children: <Widget>[
         Positioned(
           top: 15.0,
-          left: 5.0,
+          left: 8.0,
           child: CircleAvatar(
+            backgroundColor: Colors.white,
             radius: 10.0,
             child: new Text(
               '3',
@@ -488,7 +491,7 @@ class _CreateNewsState extends State<CreateNews> {
                   height: 100.0,
                   width: 100.0,
                   decoration: new BoxDecoration(
-                      border: Border.all(color: Colors.grey, width: 1.0),
+                      border: Border.all(color: Colors.white, width: 3.0),
                       borderRadius:
                           new BorderRadius.all(new Radius.circular(10.0))),
                   padding: EdgeInsets.all(12.0),
@@ -509,8 +512,9 @@ class _CreateNewsState extends State<CreateNews> {
       children: <Widget>[
         Positioned(
           top: 15.0,
-          left: 5.0,
+          left: 8.0,
           child: CircleAvatar(
+            backgroundColor: Colors.white,
             radius: 10.0,
             child: new Text(
               '4',
@@ -528,7 +532,7 @@ class _CreateNewsState extends State<CreateNews> {
                   height: 100.0,
                   width: 100.0,
                   decoration: new BoxDecoration(
-                      border: Border.all(color: Colors.grey, width: 1.0),
+                      border: Border.all(color: Colors.white, width: 3.0),
                       borderRadius:
                           new BorderRadius.all(new Radius.circular(10.0))),
                   padding: EdgeInsets.all(12.0),
@@ -549,8 +553,9 @@ class _CreateNewsState extends State<CreateNews> {
       children: <Widget>[
         Positioned(
           top: 15.0,
-          left: 5.0,
+          left: 8.0,
           child: CircleAvatar(
+            backgroundColor: Colors.white,
             radius: 10.0,
             child: new Text(
               '5',
@@ -568,7 +573,7 @@ class _CreateNewsState extends State<CreateNews> {
                   height: 100.0,
                   width: 100.0,
                   decoration: new BoxDecoration(
-                      border: Border.all(color: Colors.grey, width: 1.0),
+                      border: Border.all(color: Colors.white, width: 3.0),
                       borderRadius:
                           new BorderRadius.all(new Radius.circular(10.0))),
                   padding: EdgeInsets.all(12.0),
