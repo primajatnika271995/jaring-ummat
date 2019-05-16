@@ -46,6 +46,7 @@ dependencies:
   circular_profile_avatar: ^0.2.0
   intro_slider:
   intro_views_flutter: ^2.6.0
+  flutter_image_compress: ^0.4.0
 
 
   # The following adds the Cupertino Icons font to your application.

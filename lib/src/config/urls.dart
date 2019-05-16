@@ -1,8 +1,8 @@
-//const BASE_API_URL = 'http://192.168.1.50:9091';
+const BASE_API_URL = 'http://192.168.1.35:9091';
 
-const BASE_API_URL = 'http://139.162.15.91/jaring-ummat';
+//const BASE_API_URL = 'http://139.162.15.91/jaring-ummat';
 
-// BASE REGISTER AND LOGIN
+// BASE REGISTER AND LOGIN_URL
 const REGISTRATION_URL = BASE_API_URL + '/api/user/';
 const LOGIN_URL = BASE_API_URL + '/oauth/token';
 

@@ -5,8 +5,12 @@ import 'package:flutter_jaring_ummat/src/services/news_service.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
+import '../views/create_data_preview.dart';
+
+// Component
 import '../config/preferences.dart';
-import '../views/components/show_alert_dialog.dart';
+
 
 class CreateNews extends StatefulWidget {
   @override
@@ -29,6 +33,7 @@ class _CreateNewsState extends State<CreateNews> {
     'Sosial',
     'Amal'
   ]; // Option 2
+
   String _selectedKategori; // Option 2
 
 // Variable Selected image
@@ -87,47 +92,65 @@ class _CreateNewsState extends State<CreateNews> {
     super.initState();
   }
 
-  void onCreateBerita() async {
+
+
+  Future onCreateBerita() async {
+
     _preferences = await SharedPreferences.getInstance();
 
     var title = judulBeritaController.text;
     var description = deskripsiBeritaController.text;
-    var kategori = kategoriBeritaController.text;
 
     var user_id = _preferences.getString(USER_ID_KEY);
     var createdBy = _preferences.getString(FULLNAME_KEY);
 
     var userProfile = _preferences.getString(PROFILE_PICTURE_KEY);
 
-    print(userProfile);
-    print(user_id);
-    print(createdBy);
-
-    _scaffoldKey.currentState.showSnackBar(
-      new SnackBar(
-        duration: new Duration(seconds: 2),
-        content: new Row(
-          children: <Widget>[
-            new CircularProgressIndicator(),
-            new Text(" Please Wait ... ")
-          ],
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => PreviewData(
+          title: title,
+          newsId: user_id,
+          postedBy: createdBy,
+          newsImg1: selected_berita2,
+          category: _selectedKategori,
+          excerpt: description,
+          newsImg: selected_berita1,
         ),
       ),
     );
 
-    NewsService newsService = new NewsService();
-    newsService
-        .saveNews(title, user_id, _selectedKategori, description, createdBy,
-            selected_berita1.path, selected_berita2.path, userProfile)
-        .then((response) async {
-      print(response.statusCode);
-      await showLoadingIndicator();
-      if (response.statusCode == 201) {
-        print("Data Berita Berhasil Disimpan");
-        Navigator.of(context).pushReplacementNamed("/home");
-      }
-    });
+
+//
+//    _scaffoldKey.currentState.showSnackBar(
+//      new SnackBar(
+//        duration: new Duration(seconds: 2),
+//        content: new Row(
+//          children: <Widget>[
+//            new CircularProgressIndicator(),
+//            new Text(" Please Wait ... ")
+//          ],
+//        ),
+//      ),
+//    );
+//
+//    setState(() {
+//      _isSubmit = true;
+//    });
+//
+//    NewsService newsService = NewsService();
+//    await newsService.saveNews(title, user_id, kategori, description, createdBy, selected_berita1.path, selected_berita1.path, selected_berita1.path).then((response) {
+//      if (response.statusCode == 201) {
+//        setState(() {
+//          _isSubmit = false;
+//        });
+//        print("Data Berita Berhasil Disimpan");
+//        Navigator.of(context).pushReplacementNamed("/home");
+//      }
+//    });
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -137,15 +160,7 @@ class _CreateNewsState extends State<CreateNews> {
         preferredSize: Size.fromHeight(47.0),
         child: AppBar(
           backgroundColor: Colors.blueAccent,
-          title: _isSubmit
-              ? new Text(
-                  'Loading ...',
-                  style: TextStyle(fontSize: 14.0),
-                )
-              : new Text(
-                  'Unggah Berita',
-                  style: TextStyle(fontSize: 14.0),
-                ),
+          title: Text('Unggah Berita'),
           centerTitle: false,
         ),
       ),
@@ -286,7 +301,7 @@ class _CreateNewsState extends State<CreateNews> {
                 ),
                 child: Container(
                   padding: EdgeInsets.fromLTRB(20.0, 2.0, 20.0, 2.0),
-                  child: Text('Unggah Berita',
+                  child: Text(_isSubmit ? 'Loading ...' : 'Selanjutnya',
                       style: TextStyle(
                           fontWeight: FontWeight.bold, fontSize: 12.0)),
                 ),
@@ -368,7 +383,7 @@ class _CreateNewsState extends State<CreateNews> {
                       image: DecorationImage(
                           image: selected_berita1 == null
                               ? AssetImage(
-                                  "assets/icon/saved_donation.svg",
+                                  "",
                                 )
                               : FileImage(selected_berita1),
                           fit: BoxFit.fill),
@@ -429,7 +444,7 @@ class _CreateNewsState extends State<CreateNews> {
                       image: DecorationImage(
                           image: selected_berita2 == null
                               ? AssetImage(
-                                  "assets/icon/saved_donation.svg",
+                                  "",
                                 )
                               : FileImage(selected_berita2),
                           fit: BoxFit.fill),
