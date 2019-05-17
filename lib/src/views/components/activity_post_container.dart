@@ -189,7 +189,7 @@ class ActivityPostState extends State<ActivityPostContainer> {
               child: Container(
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: MemoryImage(base64Decode(url)),
+                    image: url == null ? AssetImage("assets/backgrounds/no_image.png") : MemoryImage(base64Decode(url)),
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -612,7 +612,7 @@ class ActivityPostState extends State<ActivityPostContainer> {
         children: <Widget>[
           new Text(
             flag ? (lessDesc + "...") : (lessDesc + moreDesc),
-            textAlign: TextAlign.center,
+            textAlign: TextAlign.justify,
             style: TextStyle(color: Colors.black45),
           ),
           new InkWell(

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter_fab_dialer/flutter_fab_dialer.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+
+// Component
 import '../views/components/icon_baru_icons.dart';
-import '../views/components/float_icon_icons.dart';
-import 'dart:math' as math;
+import '../views/pembayaran_zakat.dart';
 
 class Portofolio extends StatefulWidget {
   @override
@@ -17,6 +17,14 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
   final List<charts.Series> seriesList = _createSampleData();
 
   AnimationController _controller;
+
+  List<String> _metodePembayaran = [
+    'BNI Syariah Virtual Account',
+  ];
+
+  bool visibilityInformation = false;
+
+  String _selectedPembayaran; // Option 2
 
   static const List<IconData> icons = const [
     IconBaru.wakaf_small,
@@ -58,6 +66,16 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
     });
   }
 
+  void _changed(bool visibility, String field) {
+    setState(() {
+      if (field == "info") {
+        visibilityInformation = visibility;
+      }
+    });
+  }
+
+  TextEditingController nominalZakat = new TextEditingController();
+
   @override
   void initState() {
     // TODO: implement initState
@@ -65,6 +83,209 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
     _controller = new AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 500),
+    );
+  }
+
+  Widget tambahZakat(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(
+              Radius.circular(15.0),
+            ),
+          ),
+          backgroundColor: Colors.grey[100],
+          title: new Center(
+            child: Icon(
+              IconBaru.zakat_small,
+              size: 45.0,
+              color: Colors.deepPurpleAccent,
+            ),
+          ),
+          content: SingleChildScrollView(
+            child: Container(
+              child: new Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  new Text(
+                    'Tambah Zakat',
+                    style:
+                        TextStyle(fontSize: 13.0, fontWeight: FontWeight.bold),
+                  ),
+                  new Text(
+                    'Masukkan langsung nominal zakat atau hitung dulu kewajiban zakatmu disini!',
+                    style: TextStyle(
+                        fontSize: 11.0,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.grey),
+                    textAlign: TextAlign.center,
+                  ),
+                  SizedBox(
+                    height: 20.0,
+                  ),
+                  Container(
+                    child: TextFormField(
+                      controller: nominalZakat,
+                      textInputAction: TextInputAction.done,
+                      keyboardType: TextInputType.numberWithOptions(),
+                      style: TextStyle(
+                        fontSize: 12.0,
+                        color: Colors.black,
+                      ),
+                      decoration: InputDecoration(
+                        border: InputBorder.none,
+                        hintText: 'Nominal *',
+                      ),
+                    ),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(30.0)),
+                      color: Colors.white,
+                    ),
+                    padding: EdgeInsets.fromLTRB(15.0, 0.5, 15.0, 0.5),
+                  ),
+                  SizedBox(
+                    height: 5.0,
+                  ),
+                  Container(
+                    height: 40.0,
+                    padding: EdgeInsets.fromLTRB(15.0, 0.5, 15.0, 0.5),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(30.0)),
+                      color: Colors.white,
+                    ),
+                    child: DropdownButtonHideUnderline(
+                      child: ButtonTheme(
+                        child: DropdownButton(
+                          elevation: 4,
+                          isDense: true,
+                          iconSize: 15.0,
+                          isExpanded: true,
+                          hint: Text(
+                            'Metode Pembayaran *',
+                            style: TextStyle(
+                                fontSize: 12.0, color: Colors.black54),
+                          ), // Not necessary for Option 1
+                          value: _selectedPembayaran,
+                          onChanged: (newValue) {
+                            setState(() {
+                              _selectedPembayaran = newValue;
+                              _changed(true, "info");
+                            });
+                          },
+                          items: _metodePembayaran.map((location) {
+                            return DropdownMenuItem(
+                              child: new Text(
+                                location,
+                                style: TextStyle(
+                                  fontSize: 12.0,
+                                  color: Colors.black,
+                                ),
+                              ),
+                              value: location,
+                            );
+                          }).toList(),
+                        ),
+                      ),
+                    ),
+                  ),
+                  visibilityInformation
+                      ? new Container(
+                          child: new Column(
+                            children: <Widget>[
+                              SizedBox(
+                                height: 10.0,
+                              ),
+                              new Divider(),
+                              SizedBox(
+                                height: 10.0,
+                              ),
+                              new Row(
+                                children: <Widget>[
+                                  Expanded(
+                                    flex: 1,
+                                    child: new Text(
+                                      '•',
+                                      style: TextStyle(color: Colors.amber),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    flex: 9,
+                                    child: new Text(
+                                      'Pembayaran dengan BNI Virtual Account sebelumya akan terganti dengan pembayaran terakhir pada zakat ini.',
+                                      style: TextStyle(
+                                          fontSize: 11.0,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.grey),
+                                      textAlign: TextAlign.justify,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              new Row(
+                                children: <Widget>[
+                                  Expanded(
+                                    flex: 1,
+                                    child: new Text(
+                                      '•',
+                                      style: TextStyle(
+                                        color: Colors.amber,
+                                      ),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    flex: 9,
+                                    child: new Text(
+                                      'Anda akan mendapatkan Kode Virtual Account setelah klik tombol "Bayar".',
+                                      style: TextStyle(
+                                          fontSize: 11.0,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.grey),
+                                      textAlign: TextAlign.justify,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 10.0,
+                              ),
+                              new Divider(),
+                              RaisedButton(
+                                onPressed: () {
+                                  print("ON TAP Pembayaran Zakat");
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => PembayaranZakat(
+                                            nominal: nominalZakat.text,
+                                          ),
+                                    ),
+                                  );
+                                },
+                                color: Color.fromRGBO(21, 101, 192, 1.0),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20.0),
+                                ),
+                                child: Container(
+                                  child: Text(
+                                    'Bayar',
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
+                      : new Container(),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 
@@ -93,18 +314,10 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
           true),
       new FabMiniMenuItem.withText(new Icon(IconBaru.infaq_small), Colors.blue,
           10.0, "Infaq Menu", () {}, "Infaq", Colors.black, Colors.white, true),
-      new FabMiniMenuItem.withText(
-          new Icon(IconBaru.zakat_small),
-          Colors.orangeAccent,
-          10.0,
-          "Zakat Menu",
-          () {
-//            Navigator.of(context).pushNamed("/create/aksi-amal");
-          },
-          "Zakat",
-          Colors.black,
-          Colors.white,
-          true),
+      new FabMiniMenuItem.withText(new Icon(IconBaru.zakat_small),
+          Colors.orangeAccent, 10.0, "Zakat Menu", () {
+        tambahZakat(context);
+      }, "Zakat", Colors.black, Colors.white, true),
       new FabMiniMenuItem.withText(new Icon(IconBaru.donation_small),
           Colors.deepPurpleAccent, 10.0, "Donasi Menu", () {
         Navigator.of(context).pushNamed("/create/news");
@@ -256,6 +469,7 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
         body: CustomScrollView(
           slivers: <Widget>[
             new SliverAppBar(
+              automaticallyImplyLeading: false,
               bottom: PreferredSize(
                 preferredSize: Size.fromHeight(60.0),
                 child: Text(''),
@@ -301,6 +515,7 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
               ),
             ),
             new SliverAppBar(
+              automaticallyImplyLeading: false,
               bottom: PreferredSize(
                 preferredSize: Size.fromHeight(150.0),
                 child: Text(''),
@@ -337,7 +552,7 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
                   child: Text(''),
                 ),
                 backgroundColor: Colors.white,
-                automaticallyImplyLeading: true,
+                automaticallyImplyLeading: false,
                 floating: false,
                 pinned: true,
                 flexibleSpace: PreferredSize(
