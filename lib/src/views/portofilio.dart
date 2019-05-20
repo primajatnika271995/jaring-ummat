@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter_fab_dialer/flutter_fab_dialer.dart';
+import 'package:pie_chart/pie_chart.dart';
 
 // Component
 import '../views/components/icon_baru_icons.dart';
@@ -60,6 +61,8 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
 
   int _selectedIndex = 0;
 
+  Map<String, double> dataMap = new Map();
+
   _onSelected(int index) {
     setState(() {
       _selectedIndex = index;
@@ -84,9 +87,13 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
       vsync: this,
       duration: const Duration(milliseconds: 500),
     );
+    dataMap.putIfAbsent("Flutter", () => 5);
+    dataMap.putIfAbsent("React", () => 3);
+    dataMap.putIfAbsent("Xamarin", () => 2);
+    dataMap.putIfAbsent("Ionic", () => 2);
   }
 
-  Widget tambahZakat(BuildContext context) {
+  Widget tambahZakat(BuildContext context, String title) {
     showDialog(
       context: context,
       builder: (context) {
@@ -110,7 +117,7 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   new Text(
-                    'Tambah Zakat',
+                    'Tambah ${title}',
                     style:
                         TextStyle(fontSize: 13.0, fontWeight: FontWeight.bold),
                   ),
@@ -258,6 +265,7 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) => PembayaranZakat(
+                                            title: title,
                                             nominal: nominalZakat.text,
                                           ),
                                     ),
@@ -293,34 +301,23 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     var _fabMiniMenuItemList = [
       new FabMiniMenuItem.withText(
-          new Icon(IconBaru.wakaf_small),
-          Colors.orange,
-          10.0,
-          "Wakaf Menu",
-          () {},
-          "Wakaf",
-          Colors.black,
-          Colors.white,
-          true),
-      new FabMiniMenuItem.withText(
-          new Icon(IconBaru.shodaqoh_small),
-          Colors.redAccent,
-          10.0,
-          "Shodaqoh Menu",
-          () {},
-          "Shodaqoh",
-          Colors.black,
-          Colors.white,
-          true),
+          new Icon(IconBaru.wakaf_small), Colors.orange, 10.0, "Wakaf Menu",
+          () {
+        tambahZakat(context, 'Wakaf');
+      }, "Wakaf", Colors.black, Colors.white, true),
+      new FabMiniMenuItem.withText(new Icon(IconBaru.shodaqoh_small),
+          Colors.redAccent, 10.0, "Shodaqoh Menu", () {
+        tambahZakat(context, 'Shodaqoh');
+      }, "Shodaqoh", Colors.black, Colors.white, true),
       new FabMiniMenuItem.withText(new Icon(IconBaru.infaq_small), Colors.blue,
           10.0, "Infaq Menu", () {}, "Infaq", Colors.black, Colors.white, true),
       new FabMiniMenuItem.withText(new Icon(IconBaru.zakat_small),
           Colors.orangeAccent, 10.0, "Zakat Menu", () {
-        tambahZakat(context);
+        tambahZakat(context, 'Zakat');
       }, "Zakat", Colors.black, Colors.white, true),
       new FabMiniMenuItem.withText(new Icon(IconBaru.donation_small),
           Colors.deepPurpleAccent, 10.0, "Donasi Menu", () {
-        Navigator.of(context).pushNamed("/create/news");
+        tambahZakat(context, 'Donasi');
       }, "Donasi", Colors.black, Colors.white, true),
     ];
 
@@ -366,9 +363,16 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
         child: new CircleAvatar(
 //      backgroundImage: new NetworkImage(url),
           backgroundColor: Colors.green,
-          child: Icon(
-            IconBaru.scan_qr,
-            color: Colors.white,
+          child: Material(
+            elevation: 4.0,
+            color: Colors.transparent,
+            child: GestureDetector(
+              onTap: () {},
+              child: Icon(
+                IconBaru.scan_qr,
+                color: Colors.white,
+              ),
+            ),
           ),
           radius: 24.0,
         ),
@@ -394,14 +398,16 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
                 children: <Widget>[
                   new Text(
                     'Saldo jaring Umat',
-                    style: new TextStyle(color: Colors.black87, fontSize: 11.0),
+                    style: new TextStyle(
+                        color: Colors.black87,
+                        fontSize: 11.0,
+                        fontWeight: FontWeight.bold),
                     overflow: TextOverflow.ellipsis,
                   ),
                   new Text(
                     'Rp 120.930',
                     style: new TextStyle(
                       color: Colors.black,
-                      fontWeight: FontWeight.w600,
                       fontSize: 14.0,
                     ),
                   ),
@@ -430,14 +436,16 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
                 children: <Widget>[
                   new Text(
                     'Point Amal',
-                    style: new TextStyle(color: Colors.black87, fontSize: 11.0),
+                    style: new TextStyle(
+                        color: Colors.black87,
+                        fontSize: 11.0,
+                        fontWeight: FontWeight.bold),
                     overflow: TextOverflow.ellipsis,
                   ),
                   new Text(
                     'Rp 59.430',
                     style: new TextStyle(
                       color: Colors.black,
-                      fontWeight: FontWeight.w600,
                       fontSize: 14.0,
                     ),
                   ),
@@ -469,179 +477,82 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
         body: CustomScrollView(
           slivers: <Widget>[
             new SliverAppBar(
-              automaticallyImplyLeading: false,
-              bottom: PreferredSize(
-                preferredSize: Size.fromHeight(60.0),
-                child: Text(''),
-              ),
-              expandedHeight: 80.0,
-              backgroundColor: Colors.white,
-              flexibleSpace: new Scaffold(
-                appBar: PreferredSize(
-                  child: AppBar(
-                    automaticallyImplyLeading: false,
-                    backgroundColor: Colors.white,
-                    flexibleSpace: new Container(
-                      padding: EdgeInsets.only(top: 20.0, bottom: 20.0),
-                      color: Colors.white,
-                      child: new Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Expanded(
-                            flex: 2,
-                            child: leftSection(),
-                          ),
-                          VerticalDivider(
-                            color: Colors.grey,
-                          ),
-                          Expanded(
-                            flex: 4,
-                            child: middleSection(),
-                          ),
-                          VerticalDivider(
-                            color: Colors.grey,
-                          ),
-                          Expanded(
-                            flex: 4,
-                            child: rightSection(),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  preferredSize: Size.fromHeight(90.0),
-                ),
-              ),
-            ),
-            new SliverAppBar(
-              automaticallyImplyLeading: false,
-              bottom: PreferredSize(
-                preferredSize: Size.fromHeight(150.0),
-                child: Text(''),
-              ),
-              backgroundColor: Colors.white,
-              flexibleSpace: new Container(
-                child: Container(
-                  padding: EdgeInsets.only(right: 50.0),
-                  margin: EdgeInsets.symmetric(vertical: 5),
-                  child: charts.PieChart(
-                    seriesList,
-                    behaviors: [
-                      new charts.SeriesLegend(
-                        position: charts.BehaviorPosition.end,
-                        outsideJustification:
-                            charts.OutsideJustification.endDrawArea,
-                        horizontalFirst: false,
-                      )
-                    ],
-                    defaultRenderer: new charts.ArcRendererConfig(
-                        arcWidth: 30,
-                        arcRendererDecorators: [
-                          new charts.ArcLabelDecorator(
-                              labelPosition: charts.ArcLabelPosition.inside)
-                        ]),
-                    animate: true,
-                  ),
-                ),
-              ),
-            ),
-            new SliverAppBar(
+                automaticallyImplyLeading: false,
                 bottom: PreferredSize(
                   preferredSize: Size.fromHeight(40.0),
                   child: Text(''),
                 ),
-                backgroundColor: Colors.white,
+                flexibleSpace: AppBar(
+                  automaticallyImplyLeading: false,
+                  flexibleSpace: new Container(
+                    padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
+                    color: Colors.white,
+                    child: new Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Expanded(
+                          flex: 2,
+                          child: leftSection(),
+                        ),
+                        VerticalDivider(
+                          color: Colors.grey,
+                        ),
+                        Expanded(
+                          flex: 4,
+                          child: middleSection(),
+                        ),
+                        VerticalDivider(
+                          color: Colors.grey,
+                        ),
+                        Expanded(
+                          flex: 4,
+                          child: rightSection(),
+                        ),
+                      ],
+                    ),
+                  ),
+                )),
+            new SliverAppBar(
                 automaticallyImplyLeading: false,
-                floating: false,
-                pinned: true,
-                flexibleSpace: PreferredSize(
-                    child: AppBar(
-                      automaticallyImplyLeading: false,
-                      backgroundColor: Colors.white,
-                      flexibleSpace: Container(
-                        padding: EdgeInsets.only(top: 5.0, bottom: 5.0),
-                        child: ListView.builder(
-                          padding: EdgeInsets.symmetric(horizontal: 10.0),
-                          shrinkWrap: true,
-                          scrollDirection: Axis.horizontal,
-                          itemCount: _listTitleCategories.length,
-                          itemBuilder: (context, index) => new Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  GestureDetector(
-                                    onTap: () {
-                                      _onSelected(index);
-                                    },
-                                    child: Card(
-                                      color: _selectedIndex != null &&
-                                              _selectedIndex == index
-                                          ? Colors.lightBlueAccent
-                                          : Colors.grey[200],
-                                      child: Container(
-                                        width: 125.0,
-                                        padding:
-                                            EdgeInsets.fromLTRB(10, 0.0, 10, 0),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: <Widget>[
-                                            Container(
-                                              margin: EdgeInsets.only(left: 5),
-                                              child: Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
-                                                children: <Widget>[
-                                                  Text(
-                                                    _listTitleCategories[index],
-                                                    style: TextStyle(
-                                                        fontSize: 10,
-                                                        color: _selectedIndex !=
-                                                                    null &&
-                                                                _selectedIndex ==
-                                                                    index
-                                                            ? Colors.white
-                                                            : Colors.grey),
-                                                  ),
-                                                  Text(
-                                                    _listTotalPrice[index],
-                                                    style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        fontSize: 15.0,
-                                                        color: _selectedIndex !=
-                                                                    null &&
-                                                                _selectedIndex ==
-                                                                    index
-                                                            ? Colors.white
-                                                            : Colors.black87),
-                                                  ),
-                                                ],
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
+                bottom: PreferredSize(
+                  preferredSize: Size.fromHeight(160.0),
+                  child: Text(''),
+                ),
+                flexibleSpace: AppBar(
+                  backgroundColor: Colors.white,
+                  automaticallyImplyLeading: false,
+                  flexibleSpace: new Container(
+                    child: new Container(
+                      child: Container(
+                        padding: EdgeInsets.only(right: 50.0),
+                        margin: EdgeInsets.symmetric(vertical: 5),
+                        child: charts.PieChart(
+                          seriesList,
+                          behaviors: [
+                            new charts.DatumLegend(
+                              position: charts.BehaviorPosition.end,
+                              outsideJustification:
+                                  charts.OutsideJustification.startDrawArea,
+                              horizontalFirst: false,
+                              desiredMaxRows: 1,
+                              cellPadding:
+                                  new EdgeInsets.only(right: 4.0, bottom: 4.0),
+                            ),
+                          ],
+                          defaultRenderer: new charts.ArcRendererConfig(
+                              arcWidth: 30,
+                              arcRendererDecorators: [
+                                new charts.ArcLabelDecorator(
+                                    labelPosition:
+                                        charts.ArcLabelPosition.inside)
+                              ]),
+                          animate: true,
                         ),
                       ),
                     ),
-                    preferredSize: Size.fromHeight(100.0))),
-            new SliverList(
-              delegate: SliverChildListDelegate([
-                new Column(
-                  children: <Widget>[_buildListItem()],
-                )
-              ]),
-            )
+                  ),
+                )),
           ],
         ),
         floatingActionButton: new Stack(
@@ -955,25 +866,18 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
     ];
   }
 
-  static List<charts.Series<LinearSales, int>> _createSampleData() {
+  static List<charts.Series<LinearSales, String>> _createSampleData() {
     final data = [
-      new LinearSales(66, 120),
-      new LinearSales(20, 75),
-      new LinearSales(12, 45),
-      new LinearSales(9, 70),
-    ];
-
-    final data1 = [
-      new LinearSales(30, 110),
-      new LinearSales(10, 35),
-      new LinearSales(90, 95),
-      new LinearSales(56, 170),
+      new LinearSales('Zakat', 100),
+      new LinearSales('Donasi', 75),
+      new LinearSales('Pendidikan', 25),
+      new LinearSales('Sosial', 5),
     ];
 
     return [
-      new charts.Series<LinearSales, int>(
-        id: 'Zakat',
-        domainFn: (LinearSales sales, _) => sales.year,
+      new charts.Series<LinearSales, String>(
+        id: 'Portofolio',
+        domainFn: (LinearSales sales, _) => sales.name,
         measureFn: (LinearSales sales, _) => sales.sales,
         data: data,
       ),
@@ -996,8 +900,8 @@ class HigestDonation {
 }
 
 class LinearSales {
-  final int year;
+  final String name;
   final int sales;
 
-  LinearSales(this.year, this.sales);
+  LinearSales(this.name, this.sales);
 }

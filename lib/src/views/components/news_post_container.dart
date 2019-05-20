@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_jaring_ummat/src/services/time_ago_service.dart';
 import 'package:flutter_jaring_ummat/src/views/components/custom_fonts.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:dots_indicator/dots_indicator.dart';
 import 'dart:convert';
 
 class ActivityNewsContainer extends StatefulWidget {
@@ -29,6 +30,8 @@ class ActivityNewsContainer extends StatefulWidget {
 }
 
 class _ActivityNewsContainerState extends State<ActivityNewsContainer> {
+
+  int _current = 0;
   bool isLoved = false;
   bool flag = true;
 
@@ -86,28 +89,47 @@ class _ActivityNewsContainerState extends State<ActivityNewsContainer> {
   }
 
   Widget setMainImage() {
-    return CarouselSlider(
-      height: 300.0,
-      autoPlay: true,
-      viewportFraction: 1.0,
-      aspectRatio: MediaQuery.of(context).size.aspectRatio,
-      items: widget.imgContent.map(
-        (url) {
-          return Container(
-            child: ClipRRect(
-              borderRadius: BorderRadius.all(Radius.circular(0.0)),
-              child: Container(
-                decoration: BoxDecoration(
-                  image: DecorationImage(
+    return Stack(
+      children: <Widget>[
+        CarouselSlider(
+          height: 300.0,
+          autoPlay: false,
+          reverse: false,
+          viewportFraction: 1.0,
+          aspectRatio: MediaQuery.of(context).size.aspectRatio,
+          items: widget.imgContent.map(
+                (url) {
+              return Container(
+                child: ClipRRect(
+                  borderRadius: BorderRadius.all(Radius.circular(0.0)),
+                  child: FadeInImage(
                     image: MemoryImage(base64Decode(url)),
+                    placeholder: AssetImage('assets/backgrounds/no_image.png'),
                     fit: BoxFit.cover,
+                    width: double.infinity,
                   ),
                 ),
-              ),
+              );
+            },
+          ).toList(),
+          onPageChanged: (index) {
+            setState(() {
+              _current = index;
+            });
+          },
+        ),
+        Positioned(
+          left: 10.0,
+          bottom: 15.0,
+          child: DotsIndicator(
+            dotsCount: widget.imgContent.length,
+            position: _current,
+            decorator: DotsDecorator(
+              spacing: const EdgeInsets.all(2.0),
             ),
-          );
-        },
-      ).toList(),
+          ),
+        )
+      ],
     );
   }
 
@@ -131,14 +153,18 @@ class _ActivityNewsContainerState extends State<ActivityNewsContainer> {
         GestureDetector(
           onTap: () {
             setState(() {
-              isLoved = true;
+              if (isLoved) {
+                isLoved = false;
+              } else {
+                isLoved = true;
+              }
             });
           },
           child: Row(
             children: <Widget>[
               Icon(
                 (isLoved) ? CustomFonts.heart : CustomFonts.heart_empty,
-                size: 13.0,
+                size: 18.0,
                 color: (isLoved) ? Colors.red : null,
               ),
               SizedBox(
@@ -165,7 +191,7 @@ class _ActivityNewsContainerState extends State<ActivityNewsContainer> {
             children: <Widget>[
               Icon(
                 CustomFonts.chat_bubble_outline,
-                size: 13.0,
+                size: 18.0,
               ),
               SizedBox(
                 width: 5.0,

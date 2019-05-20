@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import '../views/components/icon_baru_icons.dart';
 
 class PembayaranZakat extends StatefulWidget {
+
+  String title;
   String nominal;
 
-  PembayaranZakat({Key key, this.nominal});
+  PembayaranZakat({Key key, this.nominal, this.title});
 
   @override
   _PembayaranZakatState createState() => _PembayaranZakatState();
@@ -19,7 +21,7 @@ class _PembayaranZakatState extends State<PembayaranZakat> {
         child: AppBar(
           backgroundColor: Colors.blueAccent,
           title: Text(
-            'Pembayaran Zakat',
+            'Pembayaran ${widget.title}',
             style: TextStyle(fontSize: 15.0),
           ),
           centerTitle: false,
@@ -445,6 +447,9 @@ class _PembayaranZakatState extends State<PembayaranZakat> {
                               ),
                             ),
                           ],
+                        ),
+                        SizedBox(
+                          height: 20.0,
                         ),
                       ],
                     ),

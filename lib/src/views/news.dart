@@ -64,6 +64,7 @@ class NewsState extends State<NewsView> with SingleTickerProviderStateMixin {
     return MaterialApp(
       home: Scaffold(
           resizeToAvoidBottomPadding: false,
+          backgroundColor: Colors.grey[100],
           appBar: PreferredSize(
               child: AppBar(
                 titleSpacing: 10.0,

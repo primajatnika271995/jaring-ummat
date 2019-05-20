@@ -2,10 +2,12 @@ import 'package:bottom_sheet_stateful/bottom_sheet_stateful.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_jaring_ummat/src/services/time_ago_service.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter_jaring_ummat/src/views/galang_amal.dart';
 import 'custom_fonts.dart';
 import 'dart:convert';
 import 'show_alert_dialog.dart';
 import 'package:intl/intl.dart';
+import 'package:dots_indicator/dots_indicator.dart';
 import '../../services/currency_format_service.dart';
 
 class ActivityPostContainer extends StatefulWidget {
@@ -31,8 +33,8 @@ class ActivityPostContainer extends StatefulWidget {
     this.profileName,
     this.imgContent,
     this.postedAt = 0,
-    this.totalDonation = 0.0,
-    this.targetDonation = 0.0,
+    this.totalDonation = 0,
+    this.targetDonation = 0,
     this.dueDate,
     this.totalLike,
     this.totalComment,
@@ -46,11 +48,7 @@ class ActivityPostContainer extends StatefulWidget {
 
 class ActivityPostState extends State<ActivityPostContainer> {
 
-  final List<String> imgList = [
-    'https://kitabisa-userupload-01.s3-ap-southeast-1.amazonaws.com/_production/campaign/25635/31_25635_1492972987_931779_f.png',
-    'http://images1.prokal.co/websampit/files/berita/2015/12/11/pembangunan-masjid-raya-seranau-lewati-target.jpg',
-  ];
-
+  int _current = 0;
   bool isLoved = false;
   bool flag = true;
 
@@ -77,7 +75,6 @@ class ActivityPostState extends State<ActivityPostContainer> {
       lessDesc = widget.description;
       moreDesc = "";
     }
-
   }
 
   void _bsCallback(double width, double height) {
@@ -146,7 +143,10 @@ class ActivityPostState extends State<ActivityPostContainer> {
             ),
           ),
           Text(
-            'Oleh ' + widget.profileName + ' • ' + TimeAgoService().timeAgoFormatting(widget.postedAt),
+            'Oleh ' +
+                widget.profileName +
+                ' • ' +
+                TimeAgoService().timeAgoFormatting(widget.postedAt),
             style: TextStyle(
               fontSize: 11.0,
             ),
@@ -176,28 +176,47 @@ class ActivityPostState extends State<ActivityPostContainer> {
   }
 
   Widget setMainImage() {
-    return CarouselSlider(
-      height: 300.0,
-      autoPlay: true,
-      viewportFraction: 1.0,
-      aspectRatio: MediaQuery.of(context).size.aspectRatio,
-      items: widget.imgContent.map(
+    return Stack(
+      children: <Widget>[
+        CarouselSlider(
+          height: 300.0,
+          autoPlay: false,
+          reverse: false,
+          viewportFraction: 1.0,
+          aspectRatio: MediaQuery.of(context).size.aspectRatio,
+          items: widget.imgContent.map(
             (url) {
-          return Container(
-            child: ClipRRect(
-              borderRadius: BorderRadius.all(Radius.circular(0.0)),
-              child: Container(
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: url == null ? AssetImage("assets/backgrounds/no_image.png") : MemoryImage(base64Decode(url)),
+              return Container(
+                child: ClipRRect(
+                  borderRadius: BorderRadius.all(Radius.circular(0.0)),
+                  child: FadeInImage(
+                    image: MemoryImage(base64Decode(url)),
+                    placeholder: AssetImage('assets/backgrounds/no_image.png'),
                     fit: BoxFit.cover,
+                    width: double.infinity,
                   ),
                 ),
-              ),
+              );
+            },
+          ).toList(),
+          onPageChanged: (index) {
+            setState(() {
+              _current = index;
+            });
+          },
+        ),
+        Positioned(
+          left: 10.0,
+          bottom: 15.0,
+          child: DotsIndicator(
+            dotsCount: widget.imgContent.length,
+            position: _current,
+            decorator: DotsDecorator(
+              spacing: const EdgeInsets.all(2.0),
             ),
-          );
-        },
-      ).toList(),
+          ),
+        )
+      ],
     );
   }
 
@@ -297,7 +316,7 @@ class ActivityPostState extends State<ActivityPostContainer> {
                       child: new Text(
                         'tampilkan semua',
                         style:
-                        TextStyle(color: Colors.blueAccent, fontSize: 12.0),
+                            TextStyle(color: Colors.blueAccent, fontSize: 12.0),
                       ),
                     )
                   ],
@@ -373,7 +392,8 @@ class ActivityPostState extends State<ActivityPostContainer> {
                 titleSpacing: 0.0,
                 title: Container(
                   child: Padding(
-                    padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+                    padding: EdgeInsets.only(
+                        bottom: MediaQuery.of(context).viewInsets.bottom),
                     child: TextFormField(
 //                      autofocus: true,
                       textInputAction: TextInputAction.next,
@@ -383,7 +403,7 @@ class ActivityPostState extends State<ActivityPostContainer> {
                       ),
                       decoration: InputDecoration(
                         contentPadding:
-                        EdgeInsets.only(top: 7.0, bottom: 7.0, left: -15.0),
+                            EdgeInsets.only(top: 7.0, bottom: 7.0, left: -15.0),
                         icon: Icon(Icons.search, size: 18.0),
                         border: InputBorder.none,
                         hintText: 'Tulis komentar anda disini...',
@@ -403,7 +423,6 @@ class ActivityPostState extends State<ActivityPostContainer> {
       },
     );
   }
-
 
   Widget modalSheet() {
     showModalBottomSheet(
@@ -448,7 +467,8 @@ class ActivityPostState extends State<ActivityPostContainer> {
                             'Oleh ' +
                                 widget.profileName +
                                 ' - ' +
-                                TimeAgoService().timeAgoFormatting(widget.postedAt),
+                                TimeAgoService()
+                                    .timeAgoFormatting(widget.postedAt),
                             style:
                                 TextStyle(fontSize: 11.0, color: Colors.white),
                           ),
@@ -570,8 +590,8 @@ class ActivityPostState extends State<ActivityPostContainer> {
                           width: 270.0,
                           child: Text(
                             'Beramal dibidang pendidikan berarti kita ikut '
-                                'mencerdaskan kehidupan bangsa. Semoga '
-                                'semakin banyak aksi amal semacam ini.',
+                            'mencerdaskan kehidupan bangsa. Semoga '
+                            'semakin banyak aksi amal semacam ini.',
                             style: TextStyle(
                                 fontSize: 11.0,
                                 fontWeight: FontWeight.bold,
@@ -605,34 +625,34 @@ class ActivityPostState extends State<ActivityPostContainer> {
       padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
       child: moreDesc.isEmpty
           ? new Text(
-        lessDesc,
-        style: TextStyle(color: Colors.black45),
-      )
+              lessDesc,
+              style: TextStyle(color: Colors.black45),
+            )
           : new Column(
-        children: <Widget>[
-          new Text(
-            flag ? (lessDesc + "...") : (lessDesc + moreDesc),
-            textAlign: TextAlign.justify,
-            style: TextStyle(color: Colors.black45),
-          ),
-          new InkWell(
-            onTap: () {
-              setState(() {
-                flag = !flag;
-              });
-            },
-            child: new Row(
-              mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
                 new Text(
-                  flag ? "show more" : "show less",
-                  style: new TextStyle(color: Colors.blue),
+                  flag ? (lessDesc + "...") : (lessDesc + moreDesc),
+                  textAlign: TextAlign.justify,
+                  style: TextStyle(color: Colors.black45),
+                ),
+                new InkWell(
+                  onTap: () {
+                    setState(() {
+                      flag = !flag;
+                    });
+                  },
+                  child: new Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      new Text(
+                        flag ? "show more" : "show less",
+                        style: new TextStyle(color: Colors.blue),
+                      )
+                    ],
+                  ),
                 )
               ],
             ),
-          )
-        ],
-      ),
     );
   }
 
@@ -655,7 +675,10 @@ class ActivityPostState extends State<ActivityPostContainer> {
               ),
               SizedBox(height: 3.0),
               Text(
-                'Rp. ' + '${CurrencyFormat().currency(widget.totalDonation)}' + ' / ' + '${CurrencyFormat().currency(widget.targetDonation)}',
+                'Rp. ' +
+                    '${CurrencyFormat().currency(widget.totalDonation)}' +
+                    ' / ' +
+                    '${CurrencyFormat().currency(widget.targetDonation)}',
                 style: TextStyle(
                   fontSize: 16.0,
                   fontWeight: FontWeight.bold,
@@ -675,7 +698,27 @@ class ActivityPostState extends State<ActivityPostContainer> {
           RaisedButton(
             onPressed: () {
               print(widget.activityPostId);
-              Navigator.pushNamed(context, '/galang-amal');
+              print(widget.title);
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => GalangAmalView(
+                    title: widget.title,
+                    imgContent: widget.imgContent,
+                    profileName: widget.profileName,
+                    dueDate: widget.dueDate,
+                    activityPostId: widget.activityPostId,
+                    description: widget.description,
+                    postedAt: widget.postedAt,
+                    profilePictureUrl: widget.profilePictureUrl,
+                    targetDonation: widget.targetDonation,
+                    totalComment: widget.totalComment,
+                    totalDonation: widget.totalDonation,
+                    totalLike: widget.totalLike,
+                  ),
+                ),
+              );
+//              Navigator.pushNamed(context, '/galang-amal');
             },
             textColor: Colors.white,
             padding: EdgeInsets.all(0.0),
@@ -713,14 +756,18 @@ class ActivityPostState extends State<ActivityPostContainer> {
         GestureDetector(
           onTap: () {
             setState(() {
-              isLoved = true;
+              if (isLoved) {
+                isLoved = false;
+              } else {
+                isLoved = true;
+              }
             });
           },
           child: Row(
             children: <Widget>[
               Icon(
                 (isLoved) ? CustomFonts.heart : CustomFonts.heart_empty,
-                size: 13.0,
+                size: 18.0,
                 color: (isLoved) ? Colors.red : null,
               ),
               SizedBox(
@@ -741,13 +788,13 @@ class ActivityPostState extends State<ActivityPostContainer> {
         ),
         GestureDetector(
           onTap: () {
-            modalSheetComent();
+//            modalSheetComent();
           },
           child: Row(
             children: <Widget>[
               Icon(
                 CustomFonts.chat_bubble_outline,
-                size: 13.0,
+                size: 18.0,
               ),
               SizedBox(
                 width: 5.0,

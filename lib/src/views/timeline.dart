@@ -1,8 +1,11 @@
+import 'dart:async';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_jaring_ummat/src/models/UserDetails.dart';
 import 'package:flutter_jaring_ummat/src/models/program_amal.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:scoped_model/scoped_model.dart';
 
 // Component
 import 'package:flutter_jaring_ummat/src/views/components/activity_post_container.dart';
@@ -22,59 +25,59 @@ class TimelineView extends StatefulWidget {
 
 class _TimelineState extends State<TimelineView>
     with SingleTickerProviderStateMixin, TickerProviderStateMixin {
-//
+  // Dio Variable
   Response response;
   Dio dio = new Dio();
 
-//  Variable Preferences
+  // Variable Preferences
   SharedPreferences _preferences;
   String _email;
 
-// Variable Animation Control
+  // Variable Animation Control
   AnimationController _controller;
 
-//  Variable Tab Controller
+  // Variable Tab Controller
   TabController _tabController;
 
   var _programAmalList = new List<ProgramAmalModel>();
 
-  bool isSelected;
+  bool _isSelected;
+  CircularProgressIndicator progressIndicator = new CircularProgressIndicator();
 
   @override
   void initState() {
     super.initState();
-
     this._tabController = new TabController(vsync: this, length: 8);
     this._controller = new AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 500),
     );
-    getUserDetail();
+//    getUserDetail();
   }
 
-  getUserDetail() async {
-    UserDetails userDetails;
-    _preferences = await SharedPreferences.getInstance();
-    _email = _preferences.getString(EMAIL_KEY);
-
-    UserDetailsService userDetailsService = new UserDetailsService();
-    _email != null
-        ? userDetailsService.userDetails(_email).then((response) {
-            print(response.statusCode);
-            print(response);
-            if (response.statusCode == 200) {
-              userDetails = UserDetails.fromJson(response.data[0]);
-              print(userDetails.path_file);
-              _preferences.setString(FULLNAME_KEY, userDetails.fullname);
-              _preferences.setString(CONTACT_KEY, userDetails.contact);
-              _preferences.setString(
-                  USER_ID_KEY, userDetails.id_user.toString());
-              _preferences.setString(
-                  PROFILE_PICTURE_KEY, userDetails.path_file);
-            }
-          })
-        : null;
-  }
+//  getUserDetail() async {
+//    UserDetails userDetails;
+//    _preferences = await SharedPreferences.getInstance();
+//    _email = _preferences.getString(EMAIL_KEY);
+//
+//    UserDetailsService userDetailsService = new UserDetailsService();
+//    _email != null
+//        ? userDetailsService.userDetails(_email).then((response) {
+//            print(response.statusCode);
+//            print(response);
+//            if (response.statusCode == 200) {
+//              userDetails = UserDetails.fromJson(response.data[0]);
+//              print(userDetails.path_file);
+//              _preferences.setString(FULLNAME_KEY, userDetails.fullname);
+//              _preferences.setString(CONTACT_KEY, userDetails.contact);
+//              _preferences.setString(
+//                  USER_ID_KEY, userDetails.id_user.toString());
+//              _preferences.setString(
+//                  PROFILE_PICTURE_KEY, userDetails.path_file);
+//            }
+//          })
+//        : null;
+//  }
 
   @override
   void dispose() {
@@ -82,7 +85,7 @@ class _TimelineState extends State<TimelineView>
     _tabController.dispose();
   }
 
-  Future<ProgramAmalModel> fetchProgramAmal() async {
+  Future<List<ProgramAmalModel>> fetchProgramAmal() async {
     final response = await dio.get(PROGRAM_AMAL_LIST_ALL_URL);
     print("INI RESPONSE CODE NYA ==>");
     print(response.statusCode);
@@ -102,7 +105,7 @@ class _TimelineState extends State<TimelineView>
     Color backgroundColor = Theme.of(context).cardColor;
     Color foregroundColor = Theme.of(context).accentColor;
     return Scaffold(
-        backgroundColor: Colors.transparent,
+        backgroundColor: Colors.grey[100],
         appBar: PreferredSize(
           child: AppBar(
             backgroundColor: Colors.blueAccent,
@@ -335,6 +338,6 @@ class _TimelineState extends State<TimelineView>
                 ),
               ],
             ),
-            onRefresh: () => Future.value(fetchProgramAmal())));
+            onRefresh: () => Future.value()));
   }
 }
