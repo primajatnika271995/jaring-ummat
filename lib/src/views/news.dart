@@ -30,13 +30,32 @@ class NewsState extends State<NewsView> with SingleTickerProviderStateMixin {
 
   PageController _controller = PageController(initialPage: 0, keepPage: false);
 
+  var _newsList = new List<NewsModel>();
+  var _newsListStore = new List<NewsModel>();
+
   @override
   void initState() {
     super.initState();
     _tabController = new TabController(vsync: this, length: 8);
+    setState(() {
+      fetchNewsCache();
+    });
   }
 
-  var _newsList = new List<NewsModel>();
+  Future<List<NewsModel>> fetchNewsCache() async {
+    _preferences = await SharedPreferences.getInstance();
+    var data = _preferences.getString("news_store");
+    print("INI STORE DATA");
+    print(data);
+
+    Iterable list = json.decode(data);
+    setState(() {
+      _newsListStore = list.map((model) => NewsModel.fromJson(model)).toList();
+    });
+
+    print("INI LENGTH DARTI STORE LIST ==>");
+    print(_newsListStore.length);
+  }
 
   Future<NewsModel> fetchNews() async {
     final response = await dio.get(NEWS_GET_LIST);
@@ -46,6 +65,10 @@ class NewsState extends State<NewsView> with SingleTickerProviderStateMixin {
 
     print("INI RESPONSE BODY NYA ==>");
     print(response.data);
+
+    _preferences = await SharedPreferences.getInstance();
+    var data = json.encode(response.data);
+    _preferences.setString("news_store", data);
 
     if (response.statusCode == 200) {
       Iterable list = response.data;
@@ -160,87 +183,107 @@ class NewsState extends State<NewsView> with SingleTickerProviderStateMixin {
                             switch (snapshot.connectionState) {
                               case ConnectionState.none:
                               case ConnectionState.waiting:
-                                return Container(
-                                  width: double.infinity,
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 16.0, vertical: 16.0),
-                                  child: Shimmer.fromColors(
-                                    baseColor: Colors.grey[300],
-                                    highlightColor: Colors.grey[100],
-                                    child: Column(
-                                      children: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-                                          .map(
-                                            (_) => Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          bottom: 8.0),
-                                                  child: Row(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Container(
-                                                        width: 48.0,
-                                                        height: 48.0,
-                                                        color: Colors.white,
-                                                      ),
-                                                      Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                    .symmetric(
-                                                                horizontal:
-                                                                    8.0),
-                                                      ),
-                                                      Expanded(
-                                                        child: Column(
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
-                                                          children: [
-                                                            Container(
-                                                              width: double
-                                                                  .infinity,
-                                                              height: 8.0,
-                                                              color:
-                                                                  Colors.white,
-                                                            ),
-                                                            Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                          .symmetric(
-                                                                      vertical:
-                                                                          2.0),
-                                                            ),
-                                                            Container(
-                                                              width: double
-                                                                  .infinity,
-                                                              height: 8.0,
-                                                              color:
-                                                                  Colors.white,
-                                                            ),
-                                                            Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                          .symmetric(
-                                                                      vertical:
-                                                                          2.0),
-                                                            ),
-                                                            Container(
-                                                              width: 40.0,
-                                                              height: 8.0,
-                                                              color:
-                                                                  Colors.white,
-                                                            ),
-                                                          ],
+                                if (_newsListStore.isEmpty) {
+                                  return Container(
+                                    width: double.infinity,
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 16.0, vertical: 16.0),
+                                    child: Shimmer.fromColors(
+                                      baseColor: Colors.grey[300],
+                                      highlightColor: Colors.grey[100],
+                                      child: Column(
+                                        children: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+                                            .map(
+                                              (_) => Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            bottom: 8.0),
+                                                    child: Row(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Container(
+                                                          width: 48.0,
+                                                          height: 48.0,
+                                                          color: Colors.white,
                                                         ),
-                                                      )
-                                                    ],
+                                                        Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .symmetric(
+                                                                  horizontal:
+                                                                      8.0),
+                                                        ),
+                                                        Expanded(
+                                                          child: Column(
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
+                                                            children: [
+                                                              Container(
+                                                                width: double
+                                                                    .infinity,
+                                                                height: 8.0,
+                                                                color: Colors
+                                                                    .white,
+                                                              ),
+                                                              Padding(
+                                                                padding: const EdgeInsets
+                                                                        .symmetric(
+                                                                    vertical:
+                                                                        2.0),
+                                                              ),
+                                                              Container(
+                                                                width: double
+                                                                    .infinity,
+                                                                height: 8.0,
+                                                                color: Colors
+                                                                    .white,
+                                                              ),
+                                                              Padding(
+                                                                padding: const EdgeInsets
+                                                                        .symmetric(
+                                                                    vertical:
+                                                                        2.0),
+                                                              ),
+                                                              Container(
+                                                                width: 40.0,
+                                                                height: 8.0,
+                                                                color: Colors
+                                                                    .white,
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        )
+                                                      ],
+                                                    ),
                                                   ),
-                                                ),
-                                          )
-                                          .toList(),
+                                            )
+                                            .toList(),
+                                      ),
                                     ),
-                                  ),
+                                  );
+                                }
+                                return ListView.builder(
+                                  shrinkWrap:
+                                      true, // todo comment this out and check the result
+                                  physics: ClampingScrollPhysics(),
+                                  // padding: EdgeInsets.only(top: 10.0), x
+                                  itemCount: _newsListStore.length,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    // var item = values[index];
+                                    var news = _newsListStore[index];
+                                    return ActivityNewsContainer(
+                                        newsId: news.id.toString(),
+                                        iconImg: news.imageProfile,
+                                        title: news.title,
+                                        imgContent: news.imageContent,
+                                        postedAt: news.createdDate,
+                                        profileName: news.createdBy,
+                                        excerpt: news.description);
+                                  },
                                 );
                               default:
                                 return ListView.builder(

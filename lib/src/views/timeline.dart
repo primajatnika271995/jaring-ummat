@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +7,7 @@ import 'package:flutter_jaring_ummat/src/models/UserDetails.dart';
 import 'package:flutter_jaring_ummat/src/models/program_amal.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:scoped_model/scoped_model.dart';
+import 'package:file_cache/file_cache.dart';
 
 // Component
 import 'package:flutter_jaring_ummat/src/views/components/activity_post_container.dart';
@@ -15,6 +17,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_jaring_ummat/src/services/user_details.dart';
 import '../config/preferences.dart';
 import '../config/urls.dart';
+import '../scope_model/program_amal_json_cache.dart';
 
 class TimelineView extends StatefulWidget {
   @override
@@ -40,9 +43,12 @@ class _TimelineState extends State<TimelineView>
   TabController _tabController;
 
   var _programAmalList = new List<ProgramAmalModel>();
+  var _programAmalListStore = new List<ProgramAmalModel>();
 
   bool _isSelected;
   CircularProgressIndicator progressIndicator = new CircularProgressIndicator();
+
+  ProgramAmalCache _programAmalCache = ProgramAmalCache();
 
   @override
   void initState() {
@@ -52,37 +58,32 @@ class _TimelineState extends State<TimelineView>
       vsync: this,
       duration: const Duration(milliseconds: 500),
     );
-//    getUserDetail();
+//   getUserDetail();
+    setState(() {
+      fetchProgramAmalCache();
+    });
   }
-
-//  getUserDetail() async {
-//    UserDetails userDetails;
-//    _preferences = await SharedPreferences.getInstance();
-//    _email = _preferences.getString(EMAIL_KEY);
-//
-//    UserDetailsService userDetailsService = new UserDetailsService();
-//    _email != null
-//        ? userDetailsService.userDetails(_email).then((response) {
-//            print(response.statusCode);
-//            print(response);
-//            if (response.statusCode == 200) {
-//              userDetails = UserDetails.fromJson(response.data[0]);
-//              print(userDetails.path_file);
-//              _preferences.setString(FULLNAME_KEY, userDetails.fullname);
-//              _preferences.setString(CONTACT_KEY, userDetails.contact);
-//              _preferences.setString(
-//                  USER_ID_KEY, userDetails.id_user.toString());
-//              _preferences.setString(
-//                  PROFILE_PICTURE_KEY, userDetails.path_file);
-//            }
-//          })
-//        : null;
-//  }
 
   @override
   void dispose() {
     super.dispose();
     _tabController.dispose();
+  }
+
+  Future<List<ProgramAmalModel>> fetchProgramAmalCache() async {
+    _preferences = await SharedPreferences.getInstance();
+    var data = _preferences.getString("timeline_store");
+    print("INI STORE DATA");
+    print(data);
+
+    Iterable list = json.decode(data);
+    setState(() {
+      _programAmalListStore =
+          list.map((model) => ProgramAmalModel.fromJson(model)).toList();
+    });
+
+    print("INI LENGTH DARTI STORE LIST ==>");
+    print(_programAmalList.length);
   }
 
   Future<List<ProgramAmalModel>> fetchProgramAmal() async {
@@ -94,6 +95,10 @@ class _TimelineState extends State<TimelineView>
     print(response.data);
 
     if (response.statusCode == 200) {
+      _preferences = await SharedPreferences.getInstance();
+      var data = json.encode(response.data);
+      _preferences.setString("timeline_store", data);
+
       Iterable list = response.data;
       _programAmalList =
           list.map((model) => ProgramAmalModel.fromJson(model)).toList();
@@ -217,87 +222,118 @@ class _TimelineState extends State<TimelineView>
                             switch (snapshot.connectionState) {
                               case ConnectionState.none:
                               case ConnectionState.waiting:
-                                return Container(
-                                  width: double.infinity,
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 16.0, vertical: 16.0),
-                                  child: Shimmer.fromColors(
-                                    baseColor: Colors.grey[300],
-                                    highlightColor: Colors.grey[100],
-                                    child: Column(
-                                      children: [0, 1, 2, 3, 4, 5, 6, 7, 8]
-                                          .map(
-                                            (_) => Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          bottom: 8.0),
-                                                  child: Row(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Container(
-                                                        width: 48.0,
-                                                        height: 48.0,
-                                                        color: Colors.white,
-                                                      ),
-                                                      Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                    .symmetric(
-                                                                horizontal:
-                                                                    8.0),
-                                                      ),
-                                                      Expanded(
-                                                        child: Column(
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
-                                                          children: [
-                                                            Container(
-                                                              width: double
-                                                                  .infinity,
-                                                              height: 8.0,
-                                                              color:
-                                                                  Colors.white,
-                                                            ),
-                                                            Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                          .symmetric(
-                                                                      vertical:
-                                                                          2.0),
-                                                            ),
-                                                            Container(
-                                                              width: double
-                                                                  .infinity,
-                                                              height: 8.0,
-                                                              color:
-                                                                  Colors.white,
-                                                            ),
-                                                            Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                          .symmetric(
-                                                                      vertical:
-                                                                          2.0),
-                                                            ),
-                                                            Container(
-                                                              width: 40.0,
-                                                              height: 8.0,
-                                                              color:
-                                                                  Colors.white,
-                                                            ),
-                                                          ],
+                                if (_programAmalListStore.isEmpty) {
+                                  return Container(
+                                    width: double.infinity,
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 16.0, vertical: 16.0),
+                                    child: Shimmer.fromColors(
+                                      baseColor: Colors.grey[300],
+                                      highlightColor: Colors.grey[100],
+                                      child: Column(
+                                        children: [0, 1, 2, 3, 4, 5, 6, 7, 8]
+                                            .map(
+                                              (_) => Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            bottom: 8.0),
+                                                    child: Row(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Container(
+                                                          width: 48.0,
+                                                          height: 48.0,
+                                                          color: Colors.white,
                                                         ),
-                                                      )
-                                                    ],
+                                                        Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .symmetric(
+                                                                  horizontal:
+                                                                      8.0),
+                                                        ),
+                                                        Expanded(
+                                                          child: Column(
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
+                                                            children: [
+                                                              Container(
+                                                                width: double
+                                                                    .infinity,
+                                                                height: 8.0,
+                                                                color: Colors
+                                                                    .white,
+                                                              ),
+                                                              Padding(
+                                                                padding: const EdgeInsets
+                                                                        .symmetric(
+                                                                    vertical:
+                                                                        2.0),
+                                                              ),
+                                                              Container(
+                                                                width: double
+                                                                    .infinity,
+                                                                height: 8.0,
+                                                                color: Colors
+                                                                    .white,
+                                                              ),
+                                                              Padding(
+                                                                padding: const EdgeInsets
+                                                                        .symmetric(
+                                                                    vertical:
+                                                                        2.0),
+                                                              ),
+                                                              Container(
+                                                                width: 40.0,
+                                                                height: 8.0,
+                                                                color: Colors
+                                                                    .white,
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        )
+                                                      ],
+                                                    ),
                                                   ),
-                                                ),
-                                          )
-                                          .toList(),
+                                            )
+                                            .toList(),
+                                      ),
                                     ),
-                                  ),
+                                  );
+                                }
+                                return ListView.builder(
+                                  shrinkWrap:
+                                      true, // todo comment this out and check the result
+                                  physics: ClampingScrollPhysics(),
+                                  itemCount: _programAmalListStore.length,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    var programAmalItem =
+                                        _programAmalListStore[index];
+                                    print("INI DATA DARI STORE ==>");
+                                    print(programAmalItem.titleProgram);
+                                    return ActivityPostContainer(
+                                      activityPostId: programAmalItem.idUser,
+                                      title: programAmalItem.titleProgram,
+                                      profileName: programAmalItem.createdBy,
+                                      postedAt: programAmalItem.createdDate,
+                                      imgContent: programAmalItem.imageContent,
+                                      description:
+                                          programAmalItem.descriptionProgram,
+                                      totalDonation:
+                                          programAmalItem.totalDonasi,
+                                      targetDonation:
+                                          programAmalItem.targetDonasi,
+                                      dueDate: programAmalItem.endDonasi,
+                                      totalLike: programAmalItem.totalDonasi
+                                          .toString(),
+                                      totalComment: programAmalItem.totalDonasi
+                                          .toString(),
+                                    );
+                                  },
                                 );
                               default:
                                 return ListView.builder(
