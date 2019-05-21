@@ -5,6 +5,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter_jaring_ummat/src/views/galang_amal.dart';
 import 'custom_fonts.dart';
 import 'dart:convert';
+import 'package:rubber/rubber.dart';
 import 'show_alert_dialog.dart';
 import 'package:intl/intl.dart';
 import 'package:dots_indicator/dots_indicator.dart';
@@ -46,14 +47,17 @@ class ActivityPostContainer extends StatefulWidget {
   }
 }
 
-class ActivityPostState extends State<ActivityPostContainer> {
-
+class ActivityPostState extends State<ActivityPostContainer>
+    with SingleTickerProviderStateMixin {
   int _current = 0;
   bool isLoved = false;
   bool flag = true;
 
   String lessDesc;
   String moreDesc;
+
+  RubberAnimationController _controller;
+  ScrollController _scrollController = ScrollController();
 
   final formatCurrency = new NumberFormat.simpleCurrency();
 
@@ -65,6 +69,13 @@ class ActivityPostState extends State<ActivityPostContainer> {
   @override
   void initState() {
     super.initState();
+
+    _controller = RubberAnimationController(
+        vsync: this,
+        dismissable: true,
+        lowerBoundValue: AnimationControllerValue(pixel: 550),
+        upperBoundValue: AnimationControllerValue(percentage: 4.5),
+        duration: Duration(milliseconds: 200));
 
     _bsAttribute = BSAttribute();
 
@@ -190,7 +201,7 @@ class ActivityPostState extends State<ActivityPostContainer> {
                 child: ClipRRect(
                   borderRadius: BorderRadius.all(Radius.circular(0.0)),
                   child: FadeInImage(
-                    image: MemoryImage(base64Decode(url)),
+                    image: url == null ? AssetImage('assets/backgrounds/no_image.png') : MemoryImage(base64Decode(url)),
                     placeholder: AssetImage('assets/backgrounds/no_image.png'),
                     fit: BoxFit.cover,
                     width: double.infinity,
@@ -209,7 +220,7 @@ class ActivityPostState extends State<ActivityPostContainer> {
           left: 10.0,
           bottom: 15.0,
           child: DotsIndicator(
-            dotsCount: widget.imgContent.length,
+            dotsCount: 1,
             position: _current,
             decorator: DotsDecorator(
               spacing: const EdgeInsets.all(2.0),
@@ -220,6 +231,179 @@ class ActivityPostState extends State<ActivityPostContainer> {
     );
   }
 
+  Widget _getLowerLayer() {
+    return Container(
+      decoration: BoxDecoration(color: Colors.white.withOpacity(0.1)),
+    );
+  }
+
+  Widget _getUpperLayer() {
+    return Container(
+      decoration: BoxDecoration(color: Colors.white),
+      child: SingleChildScrollView(
+        child: ListView(
+          shrinkWrap: true,
+          children: <Widget>[
+            SizedBox(
+              height: 10.0,
+            ),
+            Container(
+              padding: EdgeInsets.only(left: 10.0, bottom: 10.0, right: 10.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      SizedBox(height: 3.0),
+                      Text(
+                        '26.116 Muzakki menyukai akun ini',
+                        style: TextStyle(
+                            fontSize: 11.0,
+                            fontWeight: FontWeight.bold,
+                            color: Color.fromRGBO(122, 122, 122, 1.0)),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(
+              height: 10.0,
+            ),
+            new Container(
+              padding: EdgeInsets.only(left: 10.0, bottom: 0.0, right: 10.0),
+              child: Row(
+                children: <Widget>[
+                  getLikesMessageProfile(
+                      'https://www.iphonesavvy.com/sites/default/files/%5Bcurrent-date%3Afile_path%5D/jan-profile-circle.png'),
+                  getLikesMessageProfile(
+                      'https://37e04m2dcg7asf2fw4bk96r1-wpengine.netdna-ssl.com/wp-content/uploads/2015/07/dr-arnold-profile-in-circlePS-400.png'),
+                  getLikesMessageProfile(
+                      'https://i2.wp.com/www.coachcarson.com/wp-content/uploads/2018/09/Chad-Profile-pic-circle.png?resize=800%2C800&ssl=1'),
+                  getLikesMessageProfile(
+                      'https://joinyena.com/wp-content/uploads/2018/01/profile-circle.png'),
+                  SizedBox(
+                    width: 10.0,
+                  ),
+                  GestureDetector(
+                    onTap: () {},
+                    child: new Text(
+                      'tampilkan semua',
+                      style:
+                          TextStyle(color: Colors.blueAccent, fontSize: 12.0),
+                    ),
+                  )
+                ],
+              ),
+            ),
+            new Divider(),
+            Container(
+              padding: EdgeInsets.only(left: 10.0, bottom: 10.0, right: 10.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      SizedBox(height: 3.0),
+                      Text(
+                        '8.127 Muzakki berkomentar pada aksi ini',
+                        style: TextStyle(
+                            fontSize: 11.0,
+                            fontWeight: FontWeight.bold,
+                            color: Color.fromRGBO(122, 122, 122, 1.0)),
+                      ),
+                      SizedBox(height: 5.0),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            setParticipan('Abdul R Arraisi',
+                'https://i2.wp.com/www.coachcarson.com/wp-content/uploads/2018/09/Chad-Profile-pic-circle.png?resize=800%2C800&ssl=1'),
+            SizedBox(
+              height: 10.0,
+            ),
+            setParticipan('Rika Amalia Puteri',
+                'https://i2.wp.com/www.coachcarson.com/wp-content/uploads/2018/09/Chad-Profile-pic-circle.png?resize=800%2C800&ssl=1'),
+            SizedBox(
+              height: 10.0,
+            ),
+            setParticipan('Nanra Sukedy',
+                'https://joinyena.com/wp-content/uploads/2018/01/profile-circle.png'),
+            SizedBox(
+              height: 10.0,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _getMenuLayer() {
+    return Container(
+      height: 50,
+      child: Center(
+        child: new Container(
+          height: 50.0,
+          child: AppBar(
+            backgroundColor: Colors.white,
+            leading: Container(
+              width: 100.0,
+              height: 100.0,
+              margin: EdgeInsets.all(10.0),
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage("assets/users/orang.png"),
+//                      fit: BoxFit.contain,
+                ),
+              ),
+            ),
+            actions: <Widget>[
+              IconButton(
+                icon: Icon(
+                  Icons.send,
+                  color: Colors.black,
+                ),
+                onPressed: () => {},
+              ),
+            ],
+            centerTitle: true,
+            automaticallyImplyLeading: true,
+            titleSpacing: 0.0,
+            title: Container(
+              child: Padding(
+                padding: EdgeInsets.only(bottom: 1.0),
+                child: TextFormField(
+//                      autofocus: true,
+                  textInputAction: TextInputAction.next,
+                  style: TextStyle(
+                    fontSize: 12.0,
+                    color: Colors.black,
+                  ),
+                  decoration: InputDecoration(
+                    contentPadding:
+                        EdgeInsets.only(top: 7.0, bottom: 7.0, left: 3.0),
+                    // icon: Icon(Icons.search, size: 18.0),
+                    border: InputBorder.none,
+                    hintText: 'Tulis komentar anda disini...',
+                  ),
+                ),
+              ),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(30.0)),
+                color: Colors.grey[200],
+              ),
+              padding: EdgeInsets.fromLTRB(15.0, 0.5, 15.0, 0.5),
+            ),
+          ),
+        ),
+      ),
+      decoration: BoxDecoration(color: Colors.white),
+    );
+  }
+
   Widget modalSheetComent() {
     showModalBottomSheet(
       context: context,
@@ -227,198 +411,276 @@ class ActivityPostState extends State<ActivityPostContainer> {
         return Scaffold(
           resizeToAvoidBottomPadding: true,
           resizeToAvoidBottomInset: true,
-          appBar: new AppBar(
-            backgroundColor: Colors.blueAccent,
-            centerTitle: false,
-            title: new Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                new Text(
-                  'Bantuan Dana Pendidikan Siswa SD Tunas',
-                  style: TextStyle(fontSize: 15.0),
-                ),
-                new Text(
-                  'Oleh Bamuis BNI - 30 menit yang lalu',
-                  style: TextStyle(fontSize: 11.0),
-                )
-              ],
-            ),
-            leading: new Container(
-              color: Colors.blueAccent,
-              padding: EdgeInsets.all(1.0),
-              child: new Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Container(
-                    width: 50.0,
-                    height: 50.0,
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: (widget.profilePictureUrl != '')
-                            ? NetworkImage(widget.profilePictureUrl)
-                            : AssetImage("assets/users/bamuis_min.png"),
-                        fit: BoxFit.contain,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          body: ListView(
-            shrinkWrap: true,
-            children: <Widget>[
-              SizedBox(
-                height: 10.0,
-              ),
-              Container(
-                padding: EdgeInsets.only(left: 10.0, bottom: 10.0, right: 10.0),
+
+          // For Header Comment Section
+          // appBar: new AppBar(
+          //   backgroundColor: Colors.blueAccent,
+          //   centerTitle: false,
+          //   title: new Column(
+          //     mainAxisAlignment: MainAxisAlignment.center,
+          //     crossAxisAlignment: CrossAxisAlignment.start,
+          //     children: <Widget>[
+          //       new Text(
+          //         widget.title,
+          //         style: TextStyle(fontSize: 15.0),
+          //       ),
+          //       new Text(
+          //         'Oleh ' +
+          //             widget.profileName +
+          //             ' - ' +
+          //             TimeAgoService().timeAgoFormatting(widget.postedAt),
+          //         style: TextStyle(fontSize: 11.0),
+          //       )
+          //     ],
+          //   ),
+          //   leading: new Container(
+          //     color: Colors.blueAccent,
+          //     padding: EdgeInsets.all(1.0),
+          //     child: new Row(
+          //       crossAxisAlignment: CrossAxisAlignment.center,
+          //       children: <Widget>[
+          //         Container(
+          //           width: 50.0,
+          //           height: 50.0,
+          //           decoration: BoxDecoration(
+          //             image: DecorationImage(
+          //               image: (widget.profilePictureUrl != '')
+          //                   ? NetworkImage(widget.profilePictureUrl)
+          //                   : AssetImage("assets/users/bamuis_min.png"),
+          //               fit: BoxFit.contain,
+          //             ),
+          //           ),
+          //         ),
+          //       ],
+          //     ),
+          //   ),
+          // ),
+
+          // For Body List Komentar
+          // body: ListView(
+          //   shrinkWrap: true,
+          //   children: <Widget>[
+          //     SizedBox(
+          //       height: 10.0,
+          //     ),
+          //     Container(
+          //       padding: EdgeInsets.only(left: 10.0, bottom: 10.0, right: 10.0),
+          //       child: Row(
+          //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //         children: <Widget>[
+          //           Column(
+          //             crossAxisAlignment: CrossAxisAlignment.start,
+          //             children: <Widget>[
+          //               SizedBox(height: 3.0),
+          //               Text(
+          //                 '26.116 Muzakki menyukai akun ini',
+          //                 style: TextStyle(
+          //                     fontSize: 11.0,
+          //                     fontWeight: FontWeight.bold,
+          //                     color: Color.fromRGBO(122, 122, 122, 1.0)),
+          //               ),
+          //             ],
+          //           ),
+          //         ],
+          //       ),
+          //     ),
+          //     SizedBox(
+          //       height: 10.0,
+          //     ),
+          //     new Container(
+          //       padding: EdgeInsets.only(left: 10.0, bottom: 0.0, right: 10.0),
+          //       child: Row(
+          //         children: <Widget>[
+          //           getLikesMessageProfile(
+          //               'https://www.iphonesavvy.com/sites/default/files/%5Bcurrent-date%3Afile_path%5D/jan-profile-circle.png'),
+          //           getLikesMessageProfile(
+          //               'https://37e04m2dcg7asf2fw4bk96r1-wpengine.netdna-ssl.com/wp-content/uploads/2015/07/dr-arnold-profile-in-circlePS-400.png'),
+          //           getLikesMessageProfile(
+          //               'https://i2.wp.com/www.coachcarson.com/wp-content/uploads/2018/09/Chad-Profile-pic-circle.png?resize=800%2C800&ssl=1'),
+          //           getLikesMessageProfile(
+          //               'https://joinyena.com/wp-content/uploads/2018/01/profile-circle.png'),
+          //           SizedBox(
+          //             width: 10.0,
+          //           ),
+          //           GestureDetector(
+          //             onTap: () {},
+          //             child: new Text(
+          //               'tampilkan semua',
+          //               style:
+          //                   TextStyle(color: Colors.blueAccent, fontSize: 12.0),
+          //             ),
+          //           )
+          //         ],
+          //       ),
+          //     ),
+          //     new Divider(),
+          //     Container(
+          //       padding: EdgeInsets.only(left: 10.0, bottom: 10.0, right: 10.0),
+          //       child: Row(
+          //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //         children: <Widget>[
+          //           Column(
+          //             crossAxisAlignment: CrossAxisAlignment.start,
+          //             children: <Widget>[
+          //               SizedBox(height: 3.0),
+          //               Text(
+          //                 '8.127 Muzakki berkomentar pada aksi ini',
+          //                 style: TextStyle(
+          //                     fontSize: 11.0,
+          //                     fontWeight: FontWeight.bold,
+          //                     color: Color.fromRGBO(122, 122, 122, 1.0)),
+          //               ),
+          //               SizedBox(height: 5.0),
+          //             ],
+          //           ),
+          //         ],
+          //       ),
+          //     ),
+          //     setParticipan('Abdul R Arraisi',
+          //         'https://i2.wp.com/www.coachcarson.com/wp-content/uploads/2018/09/Chad-Profile-pic-circle.png?resize=800%2C800&ssl=1'),
+          //     SizedBox(
+          //       height: 10.0,
+          //     ),
+          //     setParticipan('Rika Amalia Puteri',
+          //         'https://i2.wp.com/www.coachcarson.com/wp-content/uploads/2018/09/Chad-Profile-pic-circle.png?resize=800%2C800&ssl=1'),
+          //     SizedBox(
+          //       height: 10.0,
+          //     ),
+          //     setParticipan('Nanra Sukedy',
+          //         'https://joinyena.com/wp-content/uploads/2018/01/profile-circle.png'),
+          //     SizedBox(
+          //       height: 10.0,
+          //     ),
+          //   ],
+          // ),
+
+          // body: Container(
+          //   child: RubberBottomSheet(
+          //     lowerLayer: _getLowerLayer(),
+          //     upperLayer: _getUpperLayer(),
+          //     menuLayer: _getMenuLayer(),
+          //     animationController: _controller,
+          //   ),
+          // ),
+
+          body: Container(
+            child: RubberBottomSheet(
+              scrollController: _scrollController,
+              lowerLayer: _getLowerLayer(),
+              header: Container(
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    new Column(
                       children: <Widget>[
-                        SizedBox(height: 3.0),
-                        Text(
-                          '26.116 Muzakki menyukai akun ini',
-                          style: TextStyle(
-                              fontSize: 11.0,
-                              fontWeight: FontWeight.bold,
-                              color: Color.fromRGBO(122, 122, 122, 1.0)),
+                        Container(
+                          width: 50.0,
+                          height: 50.0,
+                          margin: EdgeInsets.symmetric(
+                              horizontal: 5.0, vertical: 5.0),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(30.0),
+                            image: DecorationImage(
+                              image: MemoryImage(
+                                  base64Decode(widget.imgContent[0])),
+                            ),
+                          ),
                         ),
                       ],
                     ),
-                  ],
-                ),
-              ),
-              SizedBox(
-                height: 10.0,
-              ),
-              new Container(
-                padding: EdgeInsets.only(left: 10.0, bottom: 0.0, right: 10.0),
-                child: Row(
-                  children: <Widget>[
-                    getLikesMessageProfile(
-                        'https://www.iphonesavvy.com/sites/default/files/%5Bcurrent-date%3Afile_path%5D/jan-profile-circle.png'),
-                    getLikesMessageProfile(
-                        'https://37e04m2dcg7asf2fw4bk96r1-wpengine.netdna-ssl.com/wp-content/uploads/2015/07/dr-arnold-profile-in-circlePS-400.png'),
-                    getLikesMessageProfile(
-                        'https://i2.wp.com/www.coachcarson.com/wp-content/uploads/2018/09/Chad-Profile-pic-circle.png?resize=800%2C800&ssl=1'),
-                    getLikesMessageProfile(
-                        'https://joinyena.com/wp-content/uploads/2018/01/profile-circle.png'),
                     SizedBox(
-                      width: 10.0,
+                      width: 17.00,
                     ),
-                    GestureDetector(
-                      onTap: () {},
-                      child: new Text(
-                        'tampilkan semua',
-                        style:
-                            TextStyle(color: Colors.blueAccent, fontSize: 12.0),
-                      ),
+                    new Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        new Text(widget.title,
+                            style: TextStyle(
+                                fontSize: 15.0,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white)),
+                        new Text(
+                          'Oleh ' +
+                              widget.profileName +
+                              ' - ' +
+                              TimeAgoService()
+                                  .timeAgoFormatting(widget.postedAt),
+                          style: TextStyle(
+                              fontSize: 11.0,
+                              fontWeight: FontWeight.normal,
+                              color: Colors.white),
+                        )
+                      ],
                     )
                   ],
                 ),
+                color: Colors.blueAccent,
               ),
-              new Divider(),
-              Container(
-                padding: EdgeInsets.only(left: 10.0, bottom: 10.0, right: 10.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        SizedBox(height: 3.0),
-                        Text(
-                          '8.127 Muzakki berkomentar pada aksi ini',
-                          style: TextStyle(
-                              fontSize: 11.0,
-                              fontWeight: FontWeight.bold,
-                              color: Color.fromRGBO(122, 122, 122, 1.0)),
-                        ),
-                        SizedBox(height: 5.0),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              setParticipan('Abdul R Arraisi',
-                  'https://i2.wp.com/www.coachcarson.com/wp-content/uploads/2018/09/Chad-Profile-pic-circle.png?resize=800%2C800&ssl=1'),
-              SizedBox(
-                height: 10.0,
-              ),
-              setParticipan('Rika Amalia Puteri',
-                  'https://i2.wp.com/www.coachcarson.com/wp-content/uploads/2018/09/Chad-Profile-pic-circle.png?resize=800%2C800&ssl=1'),
-              SizedBox(
-                height: 10.0,
-              ),
-              setParticipan('Nanra Sukedy',
-                  'https://joinyena.com/wp-content/uploads/2018/01/profile-circle.png'),
-              SizedBox(
-                height: 10.0,
-              ),
-            ],
-          ),
-          bottomNavigationBar: BottomAppBar(
-            child: new Container(
-              height: 50.0,
-              child: AppBar(
-                backgroundColor: Colors.white,
-                leading: Container(
-                  width: 100.0,
-                  height: 100.0,
-                  margin: EdgeInsets.all(10.0),
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage("assets/users/orang.png"),
-//                      fit: BoxFit.contain,
-                    ),
-                  ),
-                ),
-                actions: <Widget>[
-                  IconButton(
-                    icon: Icon(
-                      Icons.send,
-                      color: Colors.black,
-                    ),
-                    onPressed: () => {},
-                  ),
-                ],
-                centerTitle: true,
-                automaticallyImplyLeading: true,
-                titleSpacing: 0.0,
-                title: Container(
-                  child: Padding(
-                    padding: EdgeInsets.only(
-                        bottom: MediaQuery.of(context).viewInsets.bottom),
-                    child: TextFormField(
-//                      autofocus: true,
-                      textInputAction: TextInputAction.next,
-                      style: TextStyle(
-                        fontSize: 12.0,
-                        color: Colors.black,
-                      ),
-                      decoration: InputDecoration(
-                        contentPadding:
-                            EdgeInsets.only(top: 7.0, bottom: 7.0, left: -15.0),
-                        icon: Icon(Icons.search, size: 18.0),
-                        border: InputBorder.none,
-                        hintText: 'Tulis komentar anda disini...',
-                      ),
-                    ),
-                  ),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(30.0)),
-                    color: Colors.grey[200],
-                  ),
-                  padding: EdgeInsets.fromLTRB(15.0, 0.5, 15.0, 0.5),
-                ),
-              ),
+              headerHeight: 60,
+              upperLayer: _getUpperLayer(),
+              menuLayer: _getMenuLayer(),
+              animationController: _controller,
             ),
           ),
+
+          // For Komentar Field
+//           bottomNavigationBar: BottomAppBar(
+//             child: new Container(
+//               height: 50.0,
+//               child: AppBar(
+//                 backgroundColor: Colors.white,
+//                 leading: Container(
+//                   width: 100.0,
+//                   height: 100.0,
+//                   margin: EdgeInsets.all(10.0),
+//                   decoration: BoxDecoration(
+//                     image: DecorationImage(
+//                       image: AssetImage("assets/users/orang.png"),
+// //                      fit: BoxFit.contain,
+//                     ),
+//                   ),
+//                 ),
+//                 actions: <Widget>[
+//                   IconButton(
+//                     icon: Icon(
+//                       Icons.send,
+//                       color: Colors.black,
+//                     ),
+//                     onPressed: () => {},
+//                   ),
+//                 ],
+//                 centerTitle: true,
+//                 automaticallyImplyLeading: true,
+//                 titleSpacing: 0.0,
+//                 title: Container(
+//                   child: Padding(
+//                     padding: EdgeInsets.only(
+//                         bottom: MediaQuery.of(context).viewInsets.bottom),
+//                     child: TextFormField(
+// //                      autofocus: true,
+//                       textInputAction: TextInputAction.next,
+//                       style: TextStyle(
+//                         fontSize: 12.0,
+//                         color: Colors.black,
+//                       ),
+//                       decoration: InputDecoration(
+//                         contentPadding:
+//                             EdgeInsets.only(top: 7.0, bottom: 7.0, left: -15.0),
+//                         icon: Icon(Icons.search, size: 18.0),
+//                         border: InputBorder.none,
+//                         hintText: 'Tulis komentar anda disini...',
+//                       ),
+//                     ),
+//                   ),
+//                   decoration: BoxDecoration(
+//                     borderRadius: BorderRadius.all(Radius.circular(30.0)),
+//                     color: Colors.grey[200],
+//                   ),
+//                   padding: EdgeInsets.fromLTRB(15.0, 0.5, 15.0, 0.5),
+//                 ),
+//               ),
+//             ),
+//           ),
         );
       },
     );
@@ -438,14 +700,13 @@ class ActivityPostState extends State<ActivityPostContainer> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     Container(
-                      width: 50.0,
-                      height: 50.0,
+                      width: 53.0,
+                      height: 53.0,
                       decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(30.0),
                         image: DecorationImage(
-                          image: (widget.profilePictureUrl != '')
-                              ? NetworkImage(widget.profilePictureUrl)
-                              : AssetImage("assets/users/bamuis_min.png"),
-                          fit: BoxFit.contain,
+                          image:
+                              MemoryImage(base64Decode(widget.imgContent[0])),
                         ),
                       ),
                     ),
@@ -590,8 +851,8 @@ class ActivityPostState extends State<ActivityPostContainer> {
                           width: 270.0,
                           child: Text(
                             'Beramal dibidang pendidikan berarti kita ikut '
-                            'mencerdaskan kehidupan bangsa. Semoga '
-                            'semakin banyak aksi amal semacam ini.',
+                            'mencerdaskan kehidupan bangsa.'
+                            'Semoga semakin banyak aksi amal semacam ini.',
                             style: TextStyle(
                                 fontSize: 11.0,
                                 fontWeight: FontWeight.bold,
@@ -703,19 +964,19 @@ class ActivityPostState extends State<ActivityPostContainer> {
                 context,
                 MaterialPageRoute(
                   builder: (context) => GalangAmalView(
-                    title: widget.title,
-                    imgContent: widget.imgContent,
-                    profileName: widget.profileName,
-                    dueDate: widget.dueDate,
-                    activityPostId: widget.activityPostId,
-                    description: widget.description,
-                    postedAt: widget.postedAt,
-                    profilePictureUrl: widget.profilePictureUrl,
-                    targetDonation: widget.targetDonation,
-                    totalComment: widget.totalComment,
-                    totalDonation: widget.totalDonation,
-                    totalLike: widget.totalLike,
-                  ),
+                        title: widget.title,
+                        imgContent: widget.imgContent,
+                        profileName: widget.profileName,
+                        dueDate: widget.dueDate,
+                        activityPostId: widget.activityPostId,
+                        description: widget.description,
+                        postedAt: widget.postedAt,
+                        profilePictureUrl: widget.profilePictureUrl,
+                        targetDonation: widget.targetDonation,
+                        totalComment: widget.totalComment,
+                        totalDonation: widget.totalDonation,
+                        totalLike: widget.totalLike,
+                      ),
                 ),
               );
 //              Navigator.pushNamed(context, '/galang-amal');
@@ -788,7 +1049,7 @@ class ActivityPostState extends State<ActivityPostContainer> {
         ),
         GestureDetector(
           onTap: () {
-//            modalSheetComent();
+            modalSheetComent();
           },
           child: Row(
             children: <Widget>[

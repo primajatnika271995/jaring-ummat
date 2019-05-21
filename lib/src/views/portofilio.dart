@@ -93,7 +93,7 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
     dataMap.putIfAbsent("Ionic", () => 2);
   }
 
-  Widget tambahZakat(BuildContext context, String title) {
+  Widget tambahZakat(BuildContext context, String title , IconData icon) {
     showDialog(
       context: context,
       builder: (context) {
@@ -106,7 +106,7 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
           backgroundColor: Colors.grey[100],
           title: new Center(
             child: Icon(
-              IconBaru.zakat_small,
+              icon,
               size: 45.0,
               color: Colors.deepPurpleAccent,
             ),
@@ -122,7 +122,7 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
                         TextStyle(fontSize: 13.0, fontWeight: FontWeight.bold),
                   ),
                   new Text(
-                    'Masukkan langsung nominal zakat atau hitung dulu kewajiban zakatmu disini!',
+                    'Masukkan langsung nominal ${title} atau hitung dulu kewajiban ${title} disini!',
                     style: TextStyle(
                         fontSize: 11.0,
                         fontWeight: FontWeight.bold,
@@ -303,21 +303,21 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
       new FabMiniMenuItem.withText(
           new Icon(IconBaru.wakaf_small), Colors.orange, 10.0, "Wakaf Menu",
           () {
-        tambahZakat(context, 'Wakaf');
+        tambahZakat(context, 'Wakaf', IconBaru.wakaf_small);
       }, "Wakaf", Colors.black, Colors.white, true),
       new FabMiniMenuItem.withText(new Icon(IconBaru.shodaqoh_small),
           Colors.redAccent, 10.0, "Shodaqoh Menu", () {
-        tambahZakat(context, 'Shodaqoh');
+        tambahZakat(context, 'Shodaqoh', IconBaru.shodaqoh_small);
       }, "Shodaqoh", Colors.black, Colors.white, true),
       new FabMiniMenuItem.withText(new Icon(IconBaru.infaq_small), Colors.blue,
           10.0, "Infaq Menu", () {}, "Infaq", Colors.black, Colors.white, true),
       new FabMiniMenuItem.withText(new Icon(IconBaru.zakat_small),
           Colors.orangeAccent, 10.0, "Zakat Menu", () {
-        tambahZakat(context, 'Zakat');
+        tambahZakat(context, 'Zakat', IconBaru.zakat_small);
       }, "Zakat", Colors.black, Colors.white, true),
       new FabMiniMenuItem.withText(new Icon(IconBaru.donation_small),
           Colors.deepPurpleAccent, 10.0, "Donasi Menu", () {
-        tambahZakat(context, 'Donasi');
+        tambahZakat(context, 'Donasi', IconBaru.donation_small);
       }, "Donasi", Colors.black, Colors.white, true),
     ];
 
@@ -514,45 +514,140 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
                   ),
                 )),
             new SliverAppBar(
+              automaticallyImplyLeading: false,
+              bottom: PreferredSize(
+                preferredSize: Size.fromHeight(160.0),
+                child: Text(''),
+              ),
+              flexibleSpace: AppBar(
+                backgroundColor: Colors.white,
                 automaticallyImplyLeading: false,
-                bottom: PreferredSize(
-                  preferredSize: Size.fromHeight(160.0),
-                  child: Text(''),
-                ),
-                flexibleSpace: AppBar(
-                  backgroundColor: Colors.white,
-                  automaticallyImplyLeading: false,
-                  flexibleSpace: new Container(
-                    child: new Container(
-                      child: Container(
-                        padding: EdgeInsets.only(right: 50.0),
-                        margin: EdgeInsets.symmetric(vertical: 5),
-                        child: charts.PieChart(
-                          seriesList,
-                          behaviors: [
-                            new charts.DatumLegend(
-                              position: charts.BehaviorPosition.end,
-                              outsideJustification:
-                                  charts.OutsideJustification.startDrawArea,
-                              horizontalFirst: false,
-                              desiredMaxRows: 1,
-                              cellPadding:
-                                  new EdgeInsets.only(right: 4.0, bottom: 4.0),
-                            ),
-                          ],
-                          defaultRenderer: new charts.ArcRendererConfig(
-                              arcWidth: 30,
-                              arcRendererDecorators: [
-                                new charts.ArcLabelDecorator(
-                                    labelPosition:
-                                        charts.ArcLabelPosition.inside)
-                              ]),
-                          animate: true,
-                        ),
+                flexibleSpace: new Container(
+                  child: new Container(
+                    child: Container(
+                      padding: EdgeInsets.only(right: 50.0),
+                      child: charts.PieChart(
+                        seriesList,
+                        behaviors: [
+                          new charts.DatumLegend(
+                            position: charts.BehaviorPosition.end,
+                            outsideJustification:
+                                charts.OutsideJustification.startDrawArea,
+                            horizontalFirst: false,
+                            desiredMaxRows: 5,
+                            cellPadding:
+                                new EdgeInsets.only(right: 4.0, bottom: 4.0),
+                          ),
+                        ],
+                        defaultRenderer: new charts.ArcRendererConfig(
+                            arcWidth: 30,
+                            arcRendererDecorators: [
+                              new charts.ArcLabelDecorator(
+                                  labelPosition: charts.ArcLabelPosition.inside)
+                            ]),
+                        animate: true,
                       ),
                     ),
                   ),
-                )),
+                ),
+              ),
+            ),
+            new SliverAppBar(
+                bottom: PreferredSize(
+                  preferredSize: Size.fromHeight(40.0),
+                  child: Text(''),
+                ),
+                backgroundColor: Colors.white,
+                automaticallyImplyLeading: false,
+                floating: false,
+                pinned: true,
+                flexibleSpace: PreferredSize(
+                    child: AppBar(
+                      automaticallyImplyLeading: false,
+                      backgroundColor: Colors.white,
+                      flexibleSpace: Container(
+                        padding: EdgeInsets.only(top: 5.0, bottom: 5.0),
+                        child: ListView.builder(
+                          padding: EdgeInsets.symmetric(horizontal: 10.0),
+                          shrinkWrap: true,
+                          scrollDirection: Axis.horizontal,
+                          itemCount: _listTitleCategories.length,
+                          itemBuilder: (context, index) => new Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  GestureDetector(
+                                    onTap: () {
+                                      _onSelected(index);
+                                    },
+                                    child: Card(
+                                      color: _selectedIndex != null &&
+                                              _selectedIndex == index
+                                          ? Colors.lightBlueAccent
+                                          : Colors.grey[200],
+                                      child: Container(
+                                        width: 125.0,
+                                        padding:
+                                            EdgeInsets.fromLTRB(10, 0.0, 10, 0),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: <Widget>[
+                                            Container(
+                                              margin: EdgeInsets.only(left: 5),
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: <Widget>[
+                                                  Text(
+                                                    _listTitleCategories[index],
+                                                    style: TextStyle(
+                                                        fontSize: 10,
+                                                        color: _selectedIndex !=
+                                                                    null &&
+                                                                _selectedIndex ==
+                                                                    index
+                                                            ? Colors.white
+                                                            : Colors.grey),
+                                                  ),
+                                                  Text(
+                                                    _listTotalPrice[index],
+                                                    style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontSize: 15.0,
+                                                        color: _selectedIndex !=
+                                                                    null &&
+                                                                _selectedIndex ==
+                                                                    index
+                                                            ? Colors.white
+                                                            : Colors.black87),
+                                                  ),
+                                                ],
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                        ),
+                      ),
+                    ),
+                    preferredSize: Size.fromHeight(100.0))),
+            new SliverList(
+              delegate: SliverChildListDelegate([
+                new Column(
+                  children: <Widget>[_buildListItem()],
+                )
+              ]),
+            )
           ],
         ),
         floatingActionButton: new Stack(

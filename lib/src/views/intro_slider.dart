@@ -12,15 +12,14 @@ class IntroScreen extends StatefulWidget {
 }
 
 class _IntroScreenState extends State<IntroScreen> {
-  
   SharedPreferences _preferences;
-  
+
   @override
   void initState() {
     super.initState();
     setOnlyFirstIntallation();
   }
-  
+
   void setOnlyFirstIntallation() async {
     _preferences = await SharedPreferences.getInstance();
     _preferences.setBool(INTRO_SLIDER_KEY, false);
@@ -35,10 +34,15 @@ class _IntroScreenState extends State<IntroScreen> {
           'Hi, Jarumian! Masih susah beramal? Hayuk, rasakan kemudahan dan menyenangkannya beramal di jaring Ummat!',
           style: TextStyle(fontSize: 15.0),
         ),
-        title: Text(
-          'Mudah dan Indahnya Beramal',
-          style: TextStyle(fontSize: 25.0,),
-          textAlign: TextAlign.center,
+        title: Container(
+          padding: EdgeInsets.only(top: 30.0),
+          child: Text(
+            'Mudah dan Indahnya Beramal',
+            style: TextStyle(
+              fontSize: 25.0,
+            ),
+            textAlign: TextAlign.center,
+          ),
         ),
         textStyle: TextStyle(color: Colors.white),
         mainImage: Image.asset(
@@ -54,9 +58,12 @@ class _IntroScreenState extends State<IntroScreen> {
         'Pengen tau berapa banyak amalmu? Jangan pusing, Jaring Ummat bantu catatin amalmu!',
         style: TextStyle(fontSize: 15.0),
       ),
-      title: Text(
-        'Portofolio Amal',
-        style: TextStyle(fontSize: 25.0),
+      title: Container(
+        padding: EdgeInsets.only(top: 30.0),
+        child: Text(
+          'Portofolio Amal',
+          style: TextStyle(fontSize: 25.0),
+        ),
       ),
       mainImage: Image.asset(
         'assets/icon/intro2.png',
@@ -72,9 +79,12 @@ class _IntroScreenState extends State<IntroScreen> {
         'Jangan ragu Jarumian! Semua aktifitas amalmu disalurkan oleh Amil Syar\'iy melalui Bank syariah',
         style: TextStyle(fontSize: 15.0),
       ),
-      title: Text(
-        'Syar\'iy',
-        style: TextStyle(fontSize: 25.0),
+      title: Container(
+        padding: EdgeInsets.only(top: 30.0),
+        child: Text(
+          'Syar\'iy',
+          style: TextStyle(fontSize: 25.0),
+        ),
       ),
       mainImage: Image.asset(
         'assets/icon/intro3.png',
@@ -101,7 +111,7 @@ class _IntroScreenState extends State<IntroScreen> {
         },
         pageButtonTextStyles: TextStyle(
           color: Colors.white,
-          fontSize: 18.0,
+          fontSize: 13.0,
         ),
       ), //IntroViewsFl,
     );

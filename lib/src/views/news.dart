@@ -53,12 +53,24 @@ class NewsState extends State<NewsView> with SingleTickerProviderStateMixin {
       _newsListStore = list.map((model) => NewsModel.fromJson(model)).toList();
     });
 
+    final response = await dio.get(NEWS_GET_LIST_THUMBNAIL);
+
+    if (response.statusCode == 200) {
+      var data = json.encode(response.data);
+    _preferences.setString("news_store", data);
+      Iterable list = response.data;
+      setState(() {
+        _newsListStore =
+            list.map((model) => NewsModel.fromJson(model)).toList();
+      });
+    }
+
     print("INI LENGTH DARTI STORE LIST ==>");
     print(_newsListStore.length);
   }
 
   Future<NewsModel> fetchNews() async {
-    final response = await dio.get(NEWS_GET_LIST);
+    final response = await dio.get(NEWS_GET_LIST_ORIGINAL);
 
     print("INI RESPONSE CODE NYA ==>");
     print(response.statusCode);
@@ -66,9 +78,9 @@ class NewsState extends State<NewsView> with SingleTickerProviderStateMixin {
     print("INI RESPONSE BODY NYA ==>");
     print(response.data);
 
-    _preferences = await SharedPreferences.getInstance();
-    var data = json.encode(response.data);
-    _preferences.setString("news_store", data);
+//    _preferences = await SharedPreferences.getInstance();
+//    var data = json.encode(response.data);
+//    _preferences.setString("news_store", data);
 
     if (response.statusCode == 200) {
       Iterable list = response.data;
@@ -91,6 +103,7 @@ class NewsState extends State<NewsView> with SingleTickerProviderStateMixin {
           appBar: PreferredSize(
               child: AppBar(
                 titleSpacing: 10.0,
+                automaticallyImplyLeading: false,
                 centerTitle: true,
                 backgroundColor: Colors.blueAccent,
                 title: Container(

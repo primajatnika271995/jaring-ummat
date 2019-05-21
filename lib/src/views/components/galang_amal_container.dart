@@ -43,7 +43,6 @@ class GalangAmalContainer extends StatefulWidget {
 }
 
 class _GalangAmalContainerState extends State<GalangAmalContainer> {
-
   int _current = 0;
   bool isLoved = false;
   bool flag = true;
@@ -179,7 +178,7 @@ class _GalangAmalContainerState extends State<GalangAmalContainer> {
           viewportFraction: 1.0,
           aspectRatio: MediaQuery.of(context).size.aspectRatio,
           items: widget.imgContent.map(
-                (url) {
+            (url) {
               return Container(
                 child: ClipRRect(
                   borderRadius: BorderRadius.all(Radius.circular(0.0)),
@@ -304,7 +303,16 @@ class _GalangAmalContainerState extends State<GalangAmalContainer> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          getProfilePicture(),
+          Container(
+            width: 53.0,
+            height: 53.0,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(30.0),
+              image: DecorationImage(
+                image: MemoryImage(base64Decode(widget.imgContent[1])),
+              ),
+            ),
+          ),
           SizedBox(
             width: 10.0,
           ),
@@ -440,7 +448,7 @@ class _GalangAmalContainerState extends State<GalangAmalContainer> {
                 width: 5.0,
               ),
               Text(
-                '26.112' + ' Likes',
+                '${widget.totalLike}' + ' Likes',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 13.0,
@@ -466,7 +474,7 @@ class _GalangAmalContainerState extends State<GalangAmalContainer> {
                 width: 5.0,
               ),
               Text(
-                '8.127' + ' Komentar',
+                '${widget.totalComment}' + ' Komentar',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 13.0,

@@ -6,8 +6,9 @@ class PembayaranZakat extends StatefulWidget {
 
   String title;
   String nominal;
+  IconData icon;
 
-  PembayaranZakat({Key key, this.nominal, this.title});
+  PembayaranZakat({Key key, this.nominal, this.title, this.icon});
 
   @override
   _PembayaranZakatState createState() => _PembayaranZakatState();
@@ -30,7 +31,7 @@ class _PembayaranZakatState extends State<PembayaranZakat> {
                 child: Column(
                   children: <Widget>[
                     Icon(
-                      IconBaru.zakat_small,
+                      widget.icon,
                       size: 45.0,
                       color: Colors.amber,
                     ),
@@ -38,7 +39,7 @@ class _PembayaranZakatState extends State<PembayaranZakat> {
                       height: 15.0,
                     ),
                     Text(
-                      'Nominal Pembayaran Zakat',
+                      'Nominal Pembayaran ${widget.title}',
                       style: TextStyle(
                         color: Colors.grey[300],
                         fontWeight: FontWeight.bold,

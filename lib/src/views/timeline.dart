@@ -58,7 +58,7 @@ class _TimelineState extends State<TimelineView>
       vsync: this,
       duration: const Duration(milliseconds: 500),
     );
-//   getUserDetail();
+    getUserDetail();
     setState(() {
       fetchProgramAmalCache();
     });
@@ -69,6 +69,31 @@ class _TimelineState extends State<TimelineView>
     super.dispose();
     _tabController.dispose();
   }
+
+  getUserDetail() async {
+    UserDetails userDetails;
+    _preferences = await SharedPreferences.getInstance();
+    _email = _preferences.getString(EMAIL_KEY);
+
+    UserDetailsService userDetailsService = new UserDetailsService();
+    _email != null
+        ? userDetailsService.userDetails(_email).then((response) {
+      print(response.statusCode);
+      print(response);
+      if (response.statusCode == 200) {
+        userDetails = UserDetails.fromJson(response.data[0]);
+        print(userDetails.path_file);
+        _preferences.setString(FULLNAME_KEY, userDetails.fullname);
+        _preferences.setString(CONTACT_KEY, userDetails.contact);
+        _preferences.setString(
+            USER_ID_KEY, userDetails.id_user.toString());
+        _preferences.setString(
+            PROFILE_PICTURE_KEY, userDetails.path_file);
+      }
+    })
+        : null;
+  }
+
 
   Future<List<ProgramAmalModel>> fetchProgramAmalCache() async {
     _preferences = await SharedPreferences.getInstance();
