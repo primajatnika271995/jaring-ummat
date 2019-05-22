@@ -15,6 +15,7 @@ import '../config/urls.dart';
 import '../scope_model/program_amal_json_cache.dart';
 
 class TimelineView extends StatefulWidget {
+  
   @override
   State<StatefulWidget> createState() {
     return _TimelineState();
@@ -331,8 +332,7 @@ class _TimelineState extends State<TimelineView>
                                 );
                               default:
                                 return ListView.builder(
-                                  shrinkWrap:
-                                      true, // todo comment this out and check the result
+                                  shrinkWrap: true,
                                   physics: ClampingScrollPhysics(),
                                   itemCount: _programAmalList.length,
                                   itemBuilder:

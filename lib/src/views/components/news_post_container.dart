@@ -73,7 +73,7 @@ class _ActivityNewsContainerState extends State<ActivityNewsContainer>
   RubberAnimationController _controller;
   ScrollController _scrollController = ScrollController();
 
-  Future<List<CommentList>> getListComment() async {
+  Stream<List<CommentList>> getListComment() async* {
     await commentService.listCommentBerita(widget.newsId).then((response) {
       print("INI RESPONSE CODE ListComment ==>");
       print(response.statusCode);
@@ -112,8 +112,9 @@ class _ActivityNewsContainerState extends State<ActivityNewsContainer>
         .then((response) {
       print(response.statusCode);
       if (response.statusCode == 201) {
+
         setState(() {
-          _controllerKomentar.text = '';
+          _controllerKomentar.clear();
         });
       }
     });
@@ -387,7 +388,7 @@ class _ActivityNewsContainerState extends State<ActivityNewsContainer>
           SliverAppBar(
             pinned: false,
             floating: true,
-            backgroundColor: Colors.transparent,
+            backgroundColor: Colors.white,
             automaticallyImplyLeading: false,
             expandedHeight: 50.0,
             bottom: PreferredSize(
@@ -509,85 +510,87 @@ class _ActivityNewsContainerState extends State<ActivityNewsContainer>
                       ],
                     ),
                   ),
-                  FutureBuilder(
-                    future: getListComment(),
+                  StreamBuilder(
+                    stream: getListComment(),
                     builder: (BuildContext context, AsyncSnapshot snapshot) {
                       switch (snapshot.connectionState) {
                         case ConnectionState.none:
                         case ConnectionState.waiting:
-                          return Container(
-                            width: double.infinity,
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 16.0, vertical: 16.0),
-                            child: Shimmer.fromColors(
-                              baseColor: Colors.grey[300],
-                              highlightColor: Colors.grey[100],
-                              child: Column(
-                                children: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-                                    .map(
-                                      (_) => Padding(
-                                            padding: const EdgeInsets.only(
-                                                bottom: 8.0),
-                                            child: Row(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Container(
-                                                  width: 48.0,
-                                                  height: 48.0,
-                                                  color: Colors.white,
-                                                ),
-                                                Padding(
-                                                  padding: const EdgeInsets
-                                                          .symmetric(
-                                                      horizontal: 8.0),
-                                                ),
-                                                Expanded(
-                                                  child: Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Container(
-                                                        width: double.infinity,
-                                                        height: 8.0,
-                                                        color: Colors.white,
-                                                      ),
-                                                      Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                    .symmetric(
-                                                                vertical: 2.0),
-                                                      ),
-                                                      Container(
-                                                        width: double.infinity,
-                                                        height: 8.0,
-                                                        color: Colors.white,
-                                                      ),
-                                                      Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                    .symmetric(
-                                                                vertical: 2.0),
-                                                      ),
-                                                      Container(
-                                                        width: 40.0,
-                                                        height: 8.0,
-                                                        color: Colors.white,
-                                                      ),
-                                                    ],
-                                                  ),
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                    )
-                                    .toList(),
-                              ),
-                            ),
-                          );
+//                          return Container(
+//                            width: double.infinity,
+//                            padding: const EdgeInsets.symmetric(
+//                                horizontal: 16.0, vertical: 16.0),
+//                            child: Shimmer.fromColors(
+//                              baseColor: Colors.grey[300],
+//                              highlightColor: Colors.grey[100],
+//                              child: Column(
+//                                children: [0, 1, 2, 3, 4]
+//                                    .map(
+//                                      (_) => Padding(
+//                                            padding: const EdgeInsets.only(
+//                                                bottom: 8.0),
+//                                            child: Row(
+//                                              crossAxisAlignment:
+//                                                  CrossAxisAlignment.start,
+//                                              children: [
+//                                                Container(
+//                                                  width: 48.0,
+//                                                  height: 48.0,
+//                                                  color: Colors.white,
+//                                                ),
+//                                                Padding(
+//                                                  padding: const EdgeInsets
+//                                                          .symmetric(
+//                                                      horizontal: 8.0),
+//                                                ),
+//                                                Expanded(
+//                                                  child: Column(
+//                                                    crossAxisAlignment:
+//                                                        CrossAxisAlignment
+//                                                            .start,
+//                                                    children: [
+//                                                      Container(
+//                                                        width: double.infinity,
+//                                                        height: 8.0,
+//                                                        color: Colors.white,
+//                                                      ),
+//                                                      Padding(
+//                                                        padding:
+//                                                            const EdgeInsets
+//                                                                    .symmetric(
+//                                                                vertical: 2.0),
+//                                                      ),
+//                                                      Container(
+//                                                        width: double.infinity,
+//                                                        height: 8.0,
+//                                                        color: Colors.white,
+//                                                      ),
+//                                                      Padding(
+//                                                        padding:
+//                                                            const EdgeInsets
+//                                                                    .symmetric(
+//                                                                vertical: 2.0),
+//                                                      ),
+//                                                      Container(
+//                                                        width: 40.0,
+//                                                        height: 8.0,
+//                                                        color: Colors.white,
+//                                                      ),
+//                                                    ],
+//                                                  ),
+//                                                )
+//                                              ],
+//                                            ),
+//                                          ),
+//                                    )
+//                                    .toList(),
+//                              ),
+//                            ),
+//                          );
                         default:
                           return ListView.builder(
+                            key: Key(''),
+                            cacheExtent: 2.0,
                             reverse: true,
                             itemCount: _listComment.length,
                             shrinkWrap: true,
@@ -726,21 +729,23 @@ class _ActivityNewsContainerState extends State<ActivityNewsContainer>
                 ),
                 // on Send Method
                 onPressed: () {
-                  saveKomentar();
                   setState(() {
-                    getListComment();
+                    saveKomentar();
                   });
                 },
               ),
             ],
             centerTitle: true,
-            automaticallyImplyLeading: true,
+            automaticallyImplyLeading: false,
+
             titleSpacing: 0.0,
             title: Container(
               child: Padding(
                 padding: EdgeInsets.only(bottom: 1.0),
                 child: TextFormField(
-//                      autofocus: true,
+                  onFieldSubmitted: (text) {
+                    saveKomentar();
+                  },
                   controller: _controllerKomentar,
                   textInputAction: TextInputAction.done,
                   autocorrect: false,
@@ -775,8 +780,8 @@ class _ActivityNewsContainerState extends State<ActivityNewsContainer>
       context: context,
       builder: (context) {
         return Scaffold(
-          resizeToAvoidBottomPadding: true,
-          resizeToAvoidBottomInset: true,
+          resizeToAvoidBottomPadding: false,
+          resizeToAvoidBottomInset: false,
           body: Container(
             child: RubberBottomSheet(
               scrollController: _scrollController,
@@ -846,213 +851,6 @@ class _ActivityNewsContainerState extends State<ActivityNewsContainer>
       },
     );
   }
-
-//  Widget modalSheetComent() {
-//    showModalBottomSheet(
-//      context: context,
-//      builder: (context) {
-//        return Container(
-//          height: 500.0,
-//          child: Scaffold(
-//            resizeToAvoidBottomPadding: false,
-//            resizeToAvoidBottomInset: false,
-//            appBar: new AppBar(
-//              backgroundColor: Colors.blueAccent,
-//              automaticallyImplyLeading: false,
-//              centerTitle: false,
-//              title: new Column(
-//                mainAxisAlignment: MainAxisAlignment.center,
-//                crossAxisAlignment: CrossAxisAlignment.start,
-//                children: <Widget>[
-//                  new Text(
-//                    widget.title,
-//                    style: TextStyle(fontSize: 15.0),
-//                  ),
-//                  new Text(
-//                    'Oleh ${widget.profileName} - ${TimeAgoService().timeAgoFormatting(widget.postedAt)}',
-//                    style: TextStyle(fontSize: 11.0),
-//                  )
-//                ],
-//              ),
-//              leading: new Container(
-//                color: Colors.blueAccent,
-//                padding: EdgeInsets.all(1.0),
-//                child: new Row(
-//                  crossAxisAlignment: CrossAxisAlignment.center,
-//                  children: <Widget>[
-//                    Container(
-//                      width: 40.0,
-//                      height: 40.0,
-//                      margin:
-//                          EdgeInsets.symmetric(horizontal: 5.0, vertical: 5.0),
-//                      decoration: BoxDecoration(
-//                        borderRadius: BorderRadius.circular(30.0),
-//                        image: DecorationImage(
-//                          image:
-//                              MemoryImage(base64Decode(widget.imgContent[0])),
-//                        ),
-//                      ),
-//                    ),
-//                  ],
-//                ),
-//              ),
-//            ),
-//            body: ListView(
-//              shrinkWrap: true,
-//              children: <Widget>[
-//                SizedBox(
-//                  height: 10.0,
-//                ),
-//                Container(
-//                  padding:
-//                      EdgeInsets.only(left: 10.0, bottom: 10.0, right: 10.0),
-//                  child: Row(
-//                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//                    children: <Widget>[
-//                      Column(
-//                        crossAxisAlignment: CrossAxisAlignment.start,
-//                        children: <Widget>[
-//                          SizedBox(height: 3.0),
-//                          Text(
-//                            '26.116 Muzakki menyukai akun ini',
-//                            style: TextStyle(
-//                                fontSize: 11.0,
-//                                fontWeight: FontWeight.bold,
-//                                color: Color.fromRGBO(122, 122, 122, 1.0)),
-//                          ),
-//                        ],
-//                      ),
-//                    ],
-//                  ),
-//                ),
-//                SizedBox(
-//                  height: 10.0,
-//                ),
-//                new Container(
-//                  padding:
-//                      EdgeInsets.only(left: 10.0, bottom: 0.0, right: 10.0),
-//                  child: Row(
-//                    children: <Widget>[
-//                      Container(
-//                        width: 50.0,
-//                        height: 50.0,
-//                        decoration: BoxDecoration(
-//                          image: DecorationImage(
-//                            image: NetworkImage(
-//                                'https://37e04m2dcg7asf2fw4bk96r1-wpengine.netdna-ssl.com/wp-content/uploads/2015/07/dr-arnold-profile-in-circlePS-400.png'),
-//                            fit: BoxFit.contain,
-//                          ),
-//                        ),
-//                      ),
-//                      Container(
-//                        width: 50.0,
-//                        height: 50.0,
-//                        decoration: BoxDecoration(
-//                          image: DecorationImage(
-//                            image: NetworkImage(
-//                                'https://37e04m2dcg7asf2fw4bk96r1-wpengine.netdna-ssl.com/wp-content/uploads/2015/07/dr-arnold-profile-in-circlePS-400.png'),
-//                            fit: BoxFit.contain,
-//                          ),
-//                        ),
-//                      ),
-//                      Container(
-//                        width: 50.0,
-//                        height: 50.0,
-//                        decoration: BoxDecoration(
-//                          image: DecorationImage(
-//                            image: NetworkImage(
-//                                'https://37e04m2dcg7asf2fw4bk96r1-wpengine.netdna-ssl.com/wp-content/uploads/2015/07/dr-arnold-profile-in-circlePS-400.png'),
-//                            fit: BoxFit.contain,
-//                          ),
-//                        ),
-//                      ),
-//                      SizedBox(
-//                        width: 10.0,
-//                      ),
-//                      GestureDetector(
-//                        onTap: () {},
-//                        child: new Text(
-//                          'tampilkan semua',
-//                          style: TextStyle(
-//                              color: Colors.blueAccent, fontSize: 12.0),
-//                        ),
-//                      )
-//                    ],
-//                  ),
-//                ),
-//                new Divider(),
-//              ],
-//            ),
-//            bottomNavigationBar: BottomAppBar(
-//              child: new Container(
-//                height: 50.0,
-//                child: AppBar(
-//                  backgroundColor: Colors.white,
-//                  leading: Container(
-//                    width: 100.0,
-//                    height: 100.0,
-//                    margin: EdgeInsets.all(10.0),
-//                    decoration: BoxDecoration(
-//                      image: DecorationImage(
-//                        image: AssetImage("assets/users/orang.png"),
-////                      fit: BoxFit.contain,
-//                      ),
-//                    ),
-//                  ),
-//                  actions: <Widget>[
-//                    IconButton(
-//                      icon: Icon(
-//                        Icons.send,
-//                        color: Colors.black,
-//                      ),
-//                      onPressed: () {
-//                        saveKomentar();
-//                        setState(() {
-//                          getListComment();
-//                        });
-//                      },
-//                    ),
-//                  ],
-//                  centerTitle: true,
-//                  automaticallyImplyLeading: false,
-//                  titleSpacing: 0.0,
-//                  title: Container(
-//                    child: Padding(
-//                      padding: EdgeInsets.only(
-//                          bottom: MediaQuery.of(context).viewInsets.bottom),
-//                      child: TextFormField(
-//                        controller: _controllerKomentar,
-////                      autofocus: true,
-//                        textInputAction: TextInputAction.done,
-//                        autocorrect: false,
-//                        style: TextStyle(
-//                          fontSize: 12.0,
-//                          color: Colors.black,
-//                        ),
-//                        decoration: InputDecoration(
-//                          contentPadding: EdgeInsets.only(
-//                              top: 7.0, bottom: 7.0, left: -15.0),
-//                          icon: Icon(Icons.search, size: 18.0),
-//                          border: InputBorder.none,
-//                          hintText: 'Tulis komentar anda disini...',
-//                        ),
-//                      ),
-//                    ),
-//                    decoration: BoxDecoration(
-//                      borderRadius: BorderRadius.all(Radius.circular(30.0)),
-//                      color: Colors.grey[200],
-//                    ),
-//                    padding: EdgeInsets.fromLTRB(15.0, 0.5, 15.0, 0.5),
-//                  ),
-//                ),
-//              ),
-//            ),
-//          ),
-//        );
-//      },
-//    );
-//  }
-
   Widget modalSheet() {
     showModalBottomSheet(
       context: context,
