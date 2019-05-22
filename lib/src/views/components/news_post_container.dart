@@ -4,6 +4,7 @@ import 'package:async/async.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dots_indicator/dots_indicator.dart';
+import 'package:rubber/rubber.dart';
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
@@ -42,7 +43,6 @@ class ActivityNewsContainer extends StatefulWidget {
 
 class _ActivityNewsContainerState extends State<ActivityNewsContainer>
     with SingleTickerProviderStateMixin {
-
   // Picture Carousel Index
   int _current = 0;
 
@@ -68,6 +68,10 @@ class _ActivityNewsContainerState extends State<ActivityNewsContainer>
 
   String fullname;
   UserDetailsbyID detailsUser;
+
+  // Rubber
+  RubberAnimationController _controller;
+  ScrollController _scrollController = ScrollController();
 
   Future<List<CommentList>> getListComment() async {
     await commentService.listCommentBerita(widget.newsId).then((response) {
@@ -118,6 +122,13 @@ class _ActivityNewsContainerState extends State<ActivityNewsContainer>
   @override
   void initState() {
     super.initState();
+
+    _controller = RubberAnimationController(
+        vsync: this,
+        dismissable: true,
+        lowerBoundValue: AnimationControllerValue(pixel: 650),
+        upperBoundValue: AnimationControllerValue(percentage: 4.5),
+        duration: Duration(milliseconds: 200));
 
     if (widget.excerpt.length > 150) {
       lessDesc = widget.excerpt.substring(0, 150);
@@ -334,6 +345,8 @@ class _ActivityNewsContainerState extends State<ActivityNewsContainer>
         GestureDetector(
           onTap: () {
             modalSheetComent();
+            print("INI ID BERITA ==>");
+            print(widget.newsId);
           },
           child: Row(
             children: <Widget>[
@@ -358,410 +371,687 @@ class _ActivityNewsContainerState extends State<ActivityNewsContainer>
     );
   }
 
-  Widget modalSheetComent() {
-    showModalBottomSheet(
-      context: context,
-      builder: (context) {
-        return Container(
-          height: 500.0,
-          child: Scaffold(
-            resizeToAvoidBottomPadding: false,
-            resizeToAvoidBottomInset: false,
-            appBar: new AppBar(
-              backgroundColor: Colors.blueAccent,
-              automaticallyImplyLeading: false,
-              centerTitle: false,
-              title: new Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
+  // RUBBER LAYER
+
+  Widget _getLowerLayer() {
+    return Container(
+      decoration: BoxDecoration(color: Colors.red),
+    );
+  }
+
+  Widget _getUpperLayer() {
+    return Container(
+      color: Colors.white,
+      child: CustomScrollView(
+        slivers: <Widget>[
+          SliverAppBar(
+            pinned: false,
+            floating: true,
+            backgroundColor: Colors.transparent,
+            automaticallyImplyLeading: false,
+            expandedHeight: 50.0,
+            bottom: PreferredSize(
+              preferredSize: Size.fromHeight(56.0),
+              child: Text(''),
+            ),
+            flexibleSpace: Container(
+              child: Column(
                 children: <Widget>[
-                  new Text(
-                    widget.title,
-                    style: TextStyle(fontSize: 15.0),
+                  SizedBox(
+                    height: 10.0,
                   ),
-                  new Text(
-                    'Oleh ${widget.profileName} - ${TimeAgoService().timeAgoFormatting(widget.postedAt)}',
-                    style: TextStyle(fontSize: 11.0),
-                  )
+                  Container(
+                    padding:
+                        EdgeInsets.only(left: 10.0, bottom: 10.0, right: 10.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            SizedBox(height: 3.0),
+                            Text(
+                              '26.116 Muzakki menyukai akun ini',
+                              style: TextStyle(
+                                  fontSize: 11.0,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color.fromRGBO(122, 122, 122, 1.0)),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10.0,
+                  ),
+                  new Container(
+                    padding:
+                        EdgeInsets.only(left: 10.0, bottom: 0.0, right: 10.0),
+                    child: Row(
+                      children: <Widget>[
+                        Container(
+                          width: 50.0,
+                          height: 50.0,
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: NetworkImage(
+                                  'https://i2.wp.com/www.coachcarson.com/wp-content/uploads/2018/09/Chad-Profile-pic-circle.png?resize=800%2C800&ssl=1'),
+                              fit: BoxFit.contain,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          width: 50.0,
+                          height: 50.0,
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: NetworkImage(
+                                  'https://i2.wp.com/www.coachcarson.com/wp-content/uploads/2018/09/Chad-Profile-pic-circle.png?resize=800%2C800&ssl=1'),
+                              fit: BoxFit.contain,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          width: 50.0,
+                          height: 50.0,
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: NetworkImage(
+                                  'https://i2.wp.com/www.coachcarson.com/wp-content/uploads/2018/09/Chad-Profile-pic-circle.png?resize=800%2C800&ssl=1'),
+                              fit: BoxFit.contain,
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 10.0,
+                        ),
+                        GestureDetector(
+                          onTap: () {},
+                          child: new Text(
+                            'tampilkan semua',
+                            style: TextStyle(
+                                color: Colors.blueAccent, fontSize: 12.0),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  new Divider(),
                 ],
               ),
-              leading: new Container(
-                color: Colors.blueAccent,
-                padding: EdgeInsets.all(1.0),
-                child: new Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    Container(
-                      width: 40.0,
-                      height: 40.0,
-                      margin:
-                          EdgeInsets.symmetric(horizontal: 5.0, vertical: 5.0),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(30.0),
-                        image: DecorationImage(
-                          image:
-                              MemoryImage(base64Decode(widget.imgContent[0])),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
             ),
-            body: ListView(
-              shrinkWrap: true,
-              children: <Widget>[
-                SizedBox(
-                  height: 10.0,
-                ),
-                Container(
-                  padding:
-                      EdgeInsets.only(left: 10.0, bottom: 10.0, right: 10.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          SizedBox(height: 3.0),
-                          Text(
-                            '26.116 Muzakki menyukai akun ini',
-                            style: TextStyle(
-                                fontSize: 11.0,
-                                fontWeight: FontWeight.bold,
-                                color: Color.fromRGBO(122, 122, 122, 1.0)),
-                          ),
-                        ],
-                      ),
-                    ],
+          ),
+          SliverList(
+            delegate: SliverChildListDelegate([
+              Column(
+                children: <Widget>[
+                  Container(
+                    padding:
+                        EdgeInsets.only(left: 10.0, bottom: 10.0, right: 10.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            SizedBox(height: 10.0),
+                            Text(
+                              '0 Muzakki berkomentar pada aksi ini',
+                              style: TextStyle(
+                                  fontSize: 11.0,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color.fromRGBO(122, 122, 122, 1.0)),
+                            ),
+                            SizedBox(height: 5.0),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                SizedBox(
-                  height: 10.0,
-                ),
-                new Container(
-                  padding:
-                      EdgeInsets.only(left: 10.0, bottom: 0.0, right: 10.0),
-                  child: Row(
-                    children: <Widget>[
-                      Container(
-                        width: 50.0,
-                        height: 50.0,
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: NetworkImage(
-                                'https://37e04m2dcg7asf2fw4bk96r1-wpengine.netdna-ssl.com/wp-content/uploads/2015/07/dr-arnold-profile-in-circlePS-400.png'),
-                            fit: BoxFit.contain,
-                          ),
-                        ),
-                      ),
-                      Container(
-                        width: 50.0,
-                        height: 50.0,
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: NetworkImage(
-                                'https://37e04m2dcg7asf2fw4bk96r1-wpengine.netdna-ssl.com/wp-content/uploads/2015/07/dr-arnold-profile-in-circlePS-400.png'),
-                            fit: BoxFit.contain,
-                          ),
-                        ),
-                      ),
-                      Container(
-                        width: 50.0,
-                        height: 50.0,
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: NetworkImage(
-                                'https://37e04m2dcg7asf2fw4bk96r1-wpengine.netdna-ssl.com/wp-content/uploads/2015/07/dr-arnold-profile-in-circlePS-400.png'),
-                            fit: BoxFit.contain,
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        width: 10.0,
-                      ),
-                      GestureDetector(
-                        onTap: () {},
-                        child: new Text(
-                          'tampilkan semua',
-                          style: TextStyle(
-                              color: Colors.blueAccent, fontSize: 12.0),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-                new Divider(),
-                Container(
-                  padding:
-                      EdgeInsets.only(left: 10.0, bottom: 10.0, right: 10.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          SizedBox(height: 3.0),
-                          Text(
-                            '0 Muzakki berkomentar pada aksi ini',
-                            style: TextStyle(
-                                fontSize: 11.0,
-                                fontWeight: FontWeight.bold,
-                                color: Color.fromRGBO(122, 122, 122, 1.0)),
-                          ),
-                          SizedBox(height: 5.0),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-                FutureBuilder(
-                  future: getListComment(),
-                  builder: (BuildContext context, AsyncSnapshot snapshot) {
-                    switch (snapshot.connectionState) {
-                      case ConnectionState.none:
-                      case ConnectionState.waiting:
-                        return Container(
-                          width: double.infinity,
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 16.0, vertical: 16.0),
-                          child: Shimmer.fromColors(
-                            baseColor: Colors.grey[300],
-                            highlightColor: Colors.grey[100],
-                            child: Column(
-                              children: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-                                  .map(
-                                    (_) => Padding(
-                                          padding: const EdgeInsets.only(
-                                              bottom: 8.0),
-                                          child: Row(
+                  FutureBuilder(
+                    future: getListComment(),
+                    builder: (BuildContext context, AsyncSnapshot snapshot) {
+                      switch (snapshot.connectionState) {
+                        case ConnectionState.none:
+                        case ConnectionState.waiting:
+                          return Container(
+                            width: double.infinity,
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 16.0, vertical: 16.0),
+                            child: Shimmer.fromColors(
+                              baseColor: Colors.grey[300],
+                              highlightColor: Colors.grey[100],
+                              child: Column(
+                                children: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+                                    .map(
+                                      (_) => Padding(
+                                            padding: const EdgeInsets.only(
+                                                bottom: 8.0),
+                                            child: Row(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Container(
+                                                  width: 48.0,
+                                                  height: 48.0,
+                                                  color: Colors.white,
+                                                ),
+                                                Padding(
+                                                  padding: const EdgeInsets
+                                                          .symmetric(
+                                                      horizontal: 8.0),
+                                                ),
+                                                Expanded(
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Container(
+                                                        width: double.infinity,
+                                                        height: 8.0,
+                                                        color: Colors.white,
+                                                      ),
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .symmetric(
+                                                                vertical: 2.0),
+                                                      ),
+                                                      Container(
+                                                        width: double.infinity,
+                                                        height: 8.0,
+                                                        color: Colors.white,
+                                                      ),
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .symmetric(
+                                                                vertical: 2.0),
+                                                      ),
+                                                      Container(
+                                                        width: 40.0,
+                                                        height: 8.0,
+                                                        color: Colors.white,
+                                                      ),
+                                                    ],
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                    )
+                                    .toList(),
+                              ),
+                            ),
+                          );
+                        default:
+                          return ListView.builder(
+                            reverse: true,
+                            itemCount: _listComment.length,
+                            shrinkWrap: true,
+                            physics: ClampingScrollPhysics(),
+                            itemBuilder: (BuildContext context, int index) {
+                              var comment = _listComment[index];
+                              print("INI HASIL FUTURE BUILDER =>");
+                              print(comment.idUser);
+//                            commentService.userById(comment.idUser).then((response) {
+//                              print("INI RESPONSE AMBIL DETAILS USERS BY ID");
+//                              print(response.data);
+//                              if (response.statusCode == 200) {
+//                                setState(() {
+//                                  detailsUser = UserDetailsbyID.fromJson(response.data);
+//                                  print("INI NAMA NYA =>");
+//                                  print(detailsUser.fullname);
+//                              }
+//                                );
+//                                }
+//                            }
+//                            );
+                              return Column(
+                                children: <Widget>[
+                                  Container(
+                                    decoration: BoxDecoration(
+                                        color: Colors.grey[200],
+                                        borderRadius:
+                                            BorderRadius.circular(10.0)),
+                                    padding: EdgeInsets.all(10.0),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        Expanded(
+                                          flex: 2,
+                                          child: Container(
+                                            width: 50.0,
+                                            height: 50.0,
+                                            decoration: BoxDecoration(
+                                                image: DecorationImage(
+                                                  image: NetworkImage('https://i2.wp.com/www.coachcarson.com/wp-content/uploads/2018/09/Chad-Profile-pic-circle.png?resize=800%2C800&ssl=1'),
+                                                  fit: BoxFit.contain,
+                                                ),),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: 10.0,
+                                        ),
+                                        Expanded(
+                                          flex: 8,
+                                          child: Column(
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
-                                            children: [
+                                            children: <Widget>[
+                                              // SizedBox(height: 3.0),
+                                              Text(
+                                                comment.idUser,
+                                                style: TextStyle(
+                                                    fontSize: 12.0,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.black),
+                                              ),
+                                              SizedBox(height: 3.0),
                                               Container(
-                                                width: 48.0,
-                                                height: 48.0,
-                                                color: Colors.white,
-                                              ),
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        horizontal: 8.0),
-                                              ),
-                                              Expanded(
-                                                child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Container(
-                                                      width: double.infinity,
-                                                      height: 8.0,
-                                                      color: Colors.white,
-                                                    ),
-                                                    Padding(
-                                                      padding: const EdgeInsets
-                                                              .symmetric(
-                                                          vertical: 2.0),
-                                                    ),
-                                                    Container(
-                                                      width: double.infinity,
-                                                      height: 8.0,
-                                                      color: Colors.white,
-                                                    ),
-                                                    Padding(
-                                                      padding: const EdgeInsets
-                                                              .symmetric(
-                                                          vertical: 2.0),
-                                                    ),
-                                                    Container(
-                                                      width: 40.0,
-                                                      height: 8.0,
-                                                      color: Colors.white,
-                                                    ),
-                                                  ],
+                                                width: 270.0,
+                                                child: Text(
+                                                  comment.komentar,
+                                                  style: TextStyle(
+                                                      fontSize: 11.0,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: Color.fromRGBO(
+                                                          122, 122, 122, 1.0)),
                                                 ),
+                                              ),
+                                              Text(
+                                                TimeAgoService()
+                                                    .timeAgoFormatting(
+                                                        comment.createdDate),
+                                                style: TextStyle(
+                                                    fontSize: 11.0,
+                                                    fontWeight:
+                                                        FontWeight.normal,
+                                                    color: Color.fromRGBO(
+                                                        122, 122, 122, 1.0)),
                                               )
                                             ],
                                           ),
                                         ),
-                                  )
-                                  .toList(),
-                            ),
-                          ),
-                        );
-                      default:
-                        return ListView.builder(
-                          reverse: true,
-                          itemCount: _listComment.length,
-                          shrinkWrap: true,
-                          physics: ClampingScrollPhysics(),
-                          itemBuilder: (BuildContext context, int index) {
-                            var comment = _listComment[index];
-                            print("INI HASIL FUTURE BUILDER =>");
-                            print(comment.idUser);
-                            commentService.userById(comment.idUser).then((response) {
-                              print("INI RESPONSE AMBIL DETAILS USERS BY ID");
-                              print(response.data);
-                              if (response.statusCode == 200) {
-                                setState(() {
-                                  detailsUser = UserDetailsbyID.fromJson(response.data);
-                                  print("INI NAMA NYA =>");
-                                  print(detailsUser.fullname);
-                              }
-                                );
-                                }
-                            });
-
-                            return Column(
-                              children: <Widget>[
-                                Container(
-                                  decoration: BoxDecoration(
-                                      color: Colors.grey[200],
-                                      borderRadius:
-                                          BorderRadius.circular(10.0)),
-                                  padding: EdgeInsets.all(10.0),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: <Widget>[
-                                      Expanded(
-                                        flex: 2,
-                                        child: Container(
-                                          width: 50.0,
-                                          height: 50.0,
-                                          decoration: BoxDecoration(
-                                              image: DecorationImage(
-                                            image: NetworkImage(''),
-                                            fit: BoxFit.contain,
-                                          )),
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        width: 10.0,
-                                      ),
-                                      Expanded(
-                                        flex: 8,
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: <Widget>[
-                                            // SizedBox(height: 3.0),
-                                            Text(
-                                              detailsUser.fullname,
-                                              style: TextStyle(
-                                                  fontSize: 12.0,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Colors.black),
-                                            ),
-                                            SizedBox(height: 3.0),
-                                            Container(
-                                              width: 270.0,
-                                              child: Text(
-                                                comment.komentar,
-                                                style: TextStyle(
-                                                    fontSize: 11.0,
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Color.fromRGBO(
-                                                        122, 122, 122, 1.0)),
-                                              ),
-                                            ),
-                                            Text(
-                                              TimeAgoService()
-                                                  .timeAgoFormatting(
-                                                      comment.createdDate),
-                                              style: TextStyle(
-                                                  fontSize: 11.0,
-                                                  fontWeight: FontWeight.normal,
-                                                  color: Color.fromRGBO(
-                                                      122, 122, 122, 1.0)),
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
-                                ),
-                                SizedBox(
-                                  height: 10.0,
-                                ),
-                              ],
-                            );
-                          },
-                        );
-                    }
-                  },
-                ),
-              ],
-            ),
-            bottomNavigationBar: BottomAppBar(
-              child: new Container(
-                height: 50.0,
-                child: AppBar(
-                  backgroundColor: Colors.white,
-                  leading: Container(
-                    width: 100.0,
-                    height: 100.0,
-                    margin: EdgeInsets.all(10.0),
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: AssetImage("assets/users/orang.png"),
-//                      fit: BoxFit.contain,
-                      ),
-                    ),
+                                  SizedBox(
+                                    height: 10.0,
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                      }
+                    },
                   ),
-                  actions: <Widget>[
-                    IconButton(
-                      icon: Icon(
-                        Icons.send,
-                        color: Colors.black,
-                      ),
-                      onPressed: () {
-                        saveKomentar();
-                        setState(() {
-                          getListComment();
-                        });
-                      },
-                    ),
-                  ],
-                  centerTitle: true,
-                  automaticallyImplyLeading: false,
-                  titleSpacing: 0.0,
-                  title: Container(
-                    child: Padding(
-                      padding: EdgeInsets.only(
-                          bottom: MediaQuery.of(context).viewInsets.bottom),
-                      child: TextFormField(
-                        controller: _controllerKomentar,
+                ],
+              ),
+            ]),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _getMenuLayer() {
+    return Container(
+      height: 50,
+      child: Center(
+        child: new Container(
+          height: 50.0,
+          child: AppBar(
+            backgroundColor: Colors.white,
+            leading: Container(
+              width: 100.0,
+              height: 100.0,
+              margin: EdgeInsets.all(10.0),
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage("assets/users/orang.png"),
+//                      fit: BoxFit.contain,
+                ),
+              ),
+            ),
+            actions: <Widget>[
+              IconButton(
+                icon: Icon(
+                  Icons.send,
+                  color: Colors.black,
+                ),
+                // on Send Method
+                onPressed: () {
+                  saveKomentar();
+                  setState(() {
+                    getListComment();
+                  });
+                },
+              ),
+            ],
+            centerTitle: true,
+            automaticallyImplyLeading: true,
+            titleSpacing: 0.0,
+            title: Container(
+              child: Padding(
+                padding: EdgeInsets.only(bottom: 1.0),
+                child: TextFormField(
 //                      autofocus: true,
-                        textInputAction: TextInputAction.done,
-                        autocorrect: false,
-                        style: TextStyle(
-                          fontSize: 12.0,
-                          color: Colors.black,
-                        ),
-                        decoration: InputDecoration(
-                          contentPadding: EdgeInsets.only(
-                              top: 7.0, bottom: 7.0, left: -15.0),
-                          icon: Icon(Icons.search, size: 18.0),
-                          border: InputBorder.none,
-                          hintText: 'Tulis komentar anda disini...',
-                        ),
-                      ),
-                    ),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(30.0)),
-                      color: Colors.grey[200],
-                    ),
-                    padding: EdgeInsets.fromLTRB(15.0, 0.5, 15.0, 0.5),
+                  controller: _controllerKomentar,
+                  textInputAction: TextInputAction.done,
+                  autocorrect: false,
+                  style: TextStyle(
+                    fontSize: 12.0,
+                    color: Colors.black,
+                  ),
+                  decoration: InputDecoration(
+                    contentPadding:
+                        EdgeInsets.only(top: 7.0, bottom: 7.0, left: 4.0),
+                    // icon: Icon(Icons.search, size: 18.0),
+                    border: InputBorder.none,
+                    hintText: 'Tulis komentar anda disini...',
                   ),
                 ),
               ),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(30.0)),
+                color: Colors.grey[200],
+              ),
+              padding: EdgeInsets.fromLTRB(15.0, 0.5, 15.0, 0.5),
+            ),
+          ),
+        ),
+      ),
+      decoration: BoxDecoration(color: Colors.white),
+    );
+  }
+
+  Widget modalSheetComent() {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return Scaffold(
+          resizeToAvoidBottomPadding: true,
+          resizeToAvoidBottomInset: true,
+          body: Container(
+            child: RubberBottomSheet(
+              scrollController: _scrollController,
+              lowerLayer: _getLowerLayer(),
+              header: Container(
+                child: Row(
+                  children: <Widget>[
+                    Expanded(
+                      flex: 2,
+                      child: new Column(
+                        children: <Widget>[
+                          Container(
+                            width: 40.0,
+                            height: 40.0,
+                            margin: EdgeInsets.symmetric(
+                                horizontal: 5.0, vertical: 5.0),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(30.0),
+                              image: DecorationImage(
+                                image:
+                                    MemoryImage(base64Decode(widget.iconImg)),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                      flex: 8,
+                      child: new Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          new Text(widget.title,
+                              style: TextStyle(
+                                  fontSize: 15.0,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white)),
+                          new Text(
+                            'Oleh ' +
+                                widget.profileName +
+                                ' - ' +
+                                TimeAgoService()
+                                    .timeAgoFormatting(widget.postedAt),
+                            style: TextStyle(
+                                fontSize: 11.0,
+                                fontWeight: FontWeight.normal,
+                                color: Colors.white),
+                          )
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      width: 10.0,
+                    ),
+                  ],
+                ),
+                color: Colors.blueAccent,
+              ),
+              headerHeight: 55,
+              upperLayer: _getUpperLayer(),
+              menuLayer: _getMenuLayer(),
+              animationController: _controller,
             ),
           ),
         );
       },
     );
   }
+
+//  Widget modalSheetComent() {
+//    showModalBottomSheet(
+//      context: context,
+//      builder: (context) {
+//        return Container(
+//          height: 500.0,
+//          child: Scaffold(
+//            resizeToAvoidBottomPadding: false,
+//            resizeToAvoidBottomInset: false,
+//            appBar: new AppBar(
+//              backgroundColor: Colors.blueAccent,
+//              automaticallyImplyLeading: false,
+//              centerTitle: false,
+//              title: new Column(
+//                mainAxisAlignment: MainAxisAlignment.center,
+//                crossAxisAlignment: CrossAxisAlignment.start,
+//                children: <Widget>[
+//                  new Text(
+//                    widget.title,
+//                    style: TextStyle(fontSize: 15.0),
+//                  ),
+//                  new Text(
+//                    'Oleh ${widget.profileName} - ${TimeAgoService().timeAgoFormatting(widget.postedAt)}',
+//                    style: TextStyle(fontSize: 11.0),
+//                  )
+//                ],
+//              ),
+//              leading: new Container(
+//                color: Colors.blueAccent,
+//                padding: EdgeInsets.all(1.0),
+//                child: new Row(
+//                  crossAxisAlignment: CrossAxisAlignment.center,
+//                  children: <Widget>[
+//                    Container(
+//                      width: 40.0,
+//                      height: 40.0,
+//                      margin:
+//                          EdgeInsets.symmetric(horizontal: 5.0, vertical: 5.0),
+//                      decoration: BoxDecoration(
+//                        borderRadius: BorderRadius.circular(30.0),
+//                        image: DecorationImage(
+//                          image:
+//                              MemoryImage(base64Decode(widget.imgContent[0])),
+//                        ),
+//                      ),
+//                    ),
+//                  ],
+//                ),
+//              ),
+//            ),
+//            body: ListView(
+//              shrinkWrap: true,
+//              children: <Widget>[
+//                SizedBox(
+//                  height: 10.0,
+//                ),
+//                Container(
+//                  padding:
+//                      EdgeInsets.only(left: 10.0, bottom: 10.0, right: 10.0),
+//                  child: Row(
+//                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                    children: <Widget>[
+//                      Column(
+//                        crossAxisAlignment: CrossAxisAlignment.start,
+//                        children: <Widget>[
+//                          SizedBox(height: 3.0),
+//                          Text(
+//                            '26.116 Muzakki menyukai akun ini',
+//                            style: TextStyle(
+//                                fontSize: 11.0,
+//                                fontWeight: FontWeight.bold,
+//                                color: Color.fromRGBO(122, 122, 122, 1.0)),
+//                          ),
+//                        ],
+//                      ),
+//                    ],
+//                  ),
+//                ),
+//                SizedBox(
+//                  height: 10.0,
+//                ),
+//                new Container(
+//                  padding:
+//                      EdgeInsets.only(left: 10.0, bottom: 0.0, right: 10.0),
+//                  child: Row(
+//                    children: <Widget>[
+//                      Container(
+//                        width: 50.0,
+//                        height: 50.0,
+//                        decoration: BoxDecoration(
+//                          image: DecorationImage(
+//                            image: NetworkImage(
+//                                'https://37e04m2dcg7asf2fw4bk96r1-wpengine.netdna-ssl.com/wp-content/uploads/2015/07/dr-arnold-profile-in-circlePS-400.png'),
+//                            fit: BoxFit.contain,
+//                          ),
+//                        ),
+//                      ),
+//                      Container(
+//                        width: 50.0,
+//                        height: 50.0,
+//                        decoration: BoxDecoration(
+//                          image: DecorationImage(
+//                            image: NetworkImage(
+//                                'https://37e04m2dcg7asf2fw4bk96r1-wpengine.netdna-ssl.com/wp-content/uploads/2015/07/dr-arnold-profile-in-circlePS-400.png'),
+//                            fit: BoxFit.contain,
+//                          ),
+//                        ),
+//                      ),
+//                      Container(
+//                        width: 50.0,
+//                        height: 50.0,
+//                        decoration: BoxDecoration(
+//                          image: DecorationImage(
+//                            image: NetworkImage(
+//                                'https://37e04m2dcg7asf2fw4bk96r1-wpengine.netdna-ssl.com/wp-content/uploads/2015/07/dr-arnold-profile-in-circlePS-400.png'),
+//                            fit: BoxFit.contain,
+//                          ),
+//                        ),
+//                      ),
+//                      SizedBox(
+//                        width: 10.0,
+//                      ),
+//                      GestureDetector(
+//                        onTap: () {},
+//                        child: new Text(
+//                          'tampilkan semua',
+//                          style: TextStyle(
+//                              color: Colors.blueAccent, fontSize: 12.0),
+//                        ),
+//                      )
+//                    ],
+//                  ),
+//                ),
+//                new Divider(),
+//              ],
+//            ),
+//            bottomNavigationBar: BottomAppBar(
+//              child: new Container(
+//                height: 50.0,
+//                child: AppBar(
+//                  backgroundColor: Colors.white,
+//                  leading: Container(
+//                    width: 100.0,
+//                    height: 100.0,
+//                    margin: EdgeInsets.all(10.0),
+//                    decoration: BoxDecoration(
+//                      image: DecorationImage(
+//                        image: AssetImage("assets/users/orang.png"),
+////                      fit: BoxFit.contain,
+//                      ),
+//                    ),
+//                  ),
+//                  actions: <Widget>[
+//                    IconButton(
+//                      icon: Icon(
+//                        Icons.send,
+//                        color: Colors.black,
+//                      ),
+//                      onPressed: () {
+//                        saveKomentar();
+//                        setState(() {
+//                          getListComment();
+//                        });
+//                      },
+//                    ),
+//                  ],
+//                  centerTitle: true,
+//                  automaticallyImplyLeading: false,
+//                  titleSpacing: 0.0,
+//                  title: Container(
+//                    child: Padding(
+//                      padding: EdgeInsets.only(
+//                          bottom: MediaQuery.of(context).viewInsets.bottom),
+//                      child: TextFormField(
+//                        controller: _controllerKomentar,
+////                      autofocus: true,
+//                        textInputAction: TextInputAction.done,
+//                        autocorrect: false,
+//                        style: TextStyle(
+//                          fontSize: 12.0,
+//                          color: Colors.black,
+//                        ),
+//                        decoration: InputDecoration(
+//                          contentPadding: EdgeInsets.only(
+//                              top: 7.0, bottom: 7.0, left: -15.0),
+//                          icon: Icon(Icons.search, size: 18.0),
+//                          border: InputBorder.none,
+//                          hintText: 'Tulis komentar anda disini...',
+//                        ),
+//                      ),
+//                    ),
+//                    decoration: BoxDecoration(
+//                      borderRadius: BorderRadius.all(Radius.circular(30.0)),
+//                      color: Colors.grey[200],
+//                    ),
+//                    padding: EdgeInsets.fromLTRB(15.0, 0.5, 15.0, 0.5),
+//                  ),
+//                ),
+//              ),
+//            ),
+//          ),
+//        );
+//      },
+//    );
+//  }
 
   Widget modalSheet() {
     showModalBottomSheet(

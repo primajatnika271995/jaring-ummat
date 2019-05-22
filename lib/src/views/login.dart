@@ -11,6 +11,9 @@ import '../config/preferences.dart';
 import '../services/login_service.dart';
 import 'components/form_field_container.dart';
 import '../views/components/create_account_icons.dart';
+import 'package:flutter_jaring_ummat/src/models/UserDetails.dart';
+import 'package:flutter_jaring_ummat/src/services/user_details.dart';
+import '../config/preferences.dart';
 
 class LoginView extends StatefulWidget {
   @override
@@ -44,15 +47,9 @@ class LoginState extends State<LoginView> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
 
-//  LOADING METODE
-
-  Future<bool> showLoadingIndicator() async {
-    await new Future.delayed(const Duration(seconds: 2));
-    setState(() {
-      _isSubmit = false;
-    });
-    return true;
-  }
+//  SERVICE VARIABLE
+  LoginServices service = new LoginServices();
+  UserDetailsService userDetailsService = new UserDetailsService();
 
 //  TOGGLE PASSWORD METODE
   void _togglePassword() {
@@ -63,7 +60,8 @@ class LoginState extends State<LoginView> {
 
 //  LOGIN METODE
 
-  void _login() async {
+  Future<void> login() async {
+
     _preferences = await SharedPreferences.getInstance();
     _emailTampung = _emailTextEditController.text;
     _passwordTampung = _passwordTextEditController.text;
@@ -74,7 +72,6 @@ class LoginState extends State<LoginView> {
 
     _scaffoldKey.currentState.showSnackBar(
       new SnackBar(
-        duration: new Duration(seconds: 2),
         content: new Row(
           children: <Widget>[
             new CircularProgressIndicator(),
@@ -84,17 +81,18 @@ class LoginState extends State<LoginView> {
       ),
     );
 
-    LoginServices service = new LoginServices();
-    service.login(_emailTampung, _passwordTampung).then((response) async {
+   await service.login(_emailTampung, _passwordTampung).then((response) async {
+
+      print("INI RESPONSE CODE LOGIN ==>");
       print(response.statusCode);
-      await showLoadingIndicator();
 
       if (response.statusCode == 200) {
         var value = AccessToken.fromJson(json.decode(response.body));
         var token = value.access_token;
         _preferences.setString(ACCESS_TOKEN_KEY, token);
         _preferences.setString(EMAIL_KEY, _emailTampung);
-        Navigator.of(context).pushReplacementNamed('/home');
+
+        await getUserDetail();
       }
 
       if (response.statusCode == 400) {
@@ -105,12 +103,49 @@ class LoginState extends State<LoginView> {
     });
   }
 
+  Future<void> getUserDetail() async {
+    UserDetails userDetails;
+    _preferences = await SharedPreferences.getInstance();
+    var _email = _preferences.getString(EMAIL_KEY);
+
+    _scaffoldKey.currentState.showSnackBar(
+      new SnackBar(
+        content: new Row(
+          children: <Widget>[
+            new CircularProgressIndicator(),
+            new Text(" Please Wait For Details Users ... ")
+          ],
+        ),
+      ),
+    );
+
+    _email != null
+        ? userDetailsService.userDetails(_email).then((response) async {
+      print(response.statusCode);
+      print(response);
+      if (response.statusCode == 200) {
+        print("INI RESPONSE USER DETAILS ==>");
+        print(response.data);
+        userDetails = UserDetails.fromJson(response.data[0]);
+        print(userDetails.path_file);
+        _preferences.setString(FULLNAME_KEY, userDetails.fullname);
+        _preferences.setString(CONTACT_KEY, userDetails.contact);
+        _preferences.setString(
+            USER_ID_KEY, userDetails.id_user.toString());
+        _preferences.setString(
+            PROFILE_PICTURE_KEY, userDetails.path_file);
+      await Navigator.of(context).pushReplacementNamed('/home');
+      }
+    })
+        : null;
+  }
+
 //  BATAS VARIABLE
 
   //  WIDGET SUBMIT BUTTON
   Widget submitButton() {
     return RaisedButton(
-      onPressed: _emailTextEditController.text.isNotEmpty ? this._login : null,
+      onPressed: _emailTextEditController.text.isNotEmpty ? this.login : null,
       disabledColor: Colors.grey,
       disabledTextColor: Colors.white,
       textColor: Colors.white,
