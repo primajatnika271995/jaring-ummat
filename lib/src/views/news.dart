@@ -50,8 +50,8 @@ class NewsState extends State<NewsView> with SingleTickerProviderStateMixin {
       final response = await dio.get(NEWS_GET_LIST_THUMBNAIL);
 
       if (response.statusCode == 200) {
-        var data = json.encode(response.data);
-        _preferences.setString("news_store", data);
+//        var data = json.encode(response.data);
+//        _preferences.setString("news_store", data);
         Iterable list = response.data;
         setState(() {
           _newsListStore =
@@ -81,9 +81,9 @@ class NewsState extends State<NewsView> with SingleTickerProviderStateMixin {
     print("INI RESPONSE BODY NYA ==>");
     print(response.data);
 
-//    _preferences = await SharedPreferences.getInstance();
-//    var data = json.encode(response.data);
-//    _preferences.setString("news_store", data);
+    _preferences = await SharedPreferences.getInstance();
+    var data = json.encode(response.data);
+    _preferences.setString("news_store", data);
 
     if (response.statusCode == 200) {
       Iterable list = response.data;
@@ -193,7 +193,7 @@ class NewsState extends State<NewsView> with SingleTickerProviderStateMixin {
                     Column(
                       children: <Widget>[
                         FutureBuilder(
-                          future: _newsList.isEmpty ? fetchNews() : fetchNewsCache(),
+                          future: _newsList.isEmpty ? fetchNewsCache() : fetchNews(),
                           builder:
                               (BuildContext context, AsyncSnapshot snapshot) {
                             switch (snapshot.connectionState) {
@@ -291,6 +291,8 @@ class NewsState extends State<NewsView> with SingleTickerProviderStateMixin {
                                       (BuildContext context, int index) {
                                     // var item = values[index];
                                     var news = _newsListStore[index];
+                                    print("INI TOTAL KOMENTAR");
+                                    print(news.total_komentar);
                                     return ActivityNewsContainer(
                                         newsId: news.id.toString(),
                                         iconImg: news.imageProfile,
@@ -298,7 +300,8 @@ class NewsState extends State<NewsView> with SingleTickerProviderStateMixin {
                                         imgContent: news.imageContent,
                                         postedAt: news.createdDate,
                                         profileName: news.createdBy,
-                                        excerpt: news.description);
+                                        excerpt: news.description,
+                                        totalKomentar: news.total_komentar,);
                                   },
                                 );
                               default:
@@ -319,7 +322,8 @@ class NewsState extends State<NewsView> with SingleTickerProviderStateMixin {
                                         imgContent: news.imageContent,
                                         postedAt: news.createdDate,
                                         profileName: news.createdBy,
-                                        excerpt: news.description);
+                                        excerpt: news.description,
+                                        totalKomentar: news.total_komentar,);
                                   },
                                 );
                             }

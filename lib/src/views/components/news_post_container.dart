@@ -26,6 +26,7 @@ class ActivityNewsContainer extends StatefulWidget {
   final String title;
   final int postedAt;
   final String excerpt;
+  final int totalKomentar;
 
   ActivityNewsContainer(
       {this.newsId,
@@ -35,7 +36,8 @@ class ActivityNewsContainer extends StatefulWidget {
       this.category,
       this.title,
       this.postedAt = 0,
-      this.excerpt});
+      this.excerpt,
+      this.totalKomentar});
 
   @override
   _ActivityNewsContainerState createState() => _ActivityNewsContainerState();
@@ -359,7 +361,7 @@ class _ActivityNewsContainerState extends State<ActivityNewsContainer>
                 width: 5.0,
               ),
               Text(
-                '0' + ' Komentar',
+                '${widget.totalKomentar}' + ' Komentar',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 13.0,
@@ -498,7 +500,7 @@ class _ActivityNewsContainerState extends State<ActivityNewsContainer>
                           children: <Widget>[
                             SizedBox(height: 10.0),
                             Text(
-                              '0 Muzakki berkomentar pada aksi ini',
+                              '${widget.totalKomentar} Muzakki berkomentar pada aksi ini',
                               style: TextStyle(
                                   fontSize: 11.0,
                                   fontWeight: FontWeight.bold,
@@ -647,7 +649,7 @@ class _ActivityNewsContainerState extends State<ActivityNewsContainer>
                                             children: <Widget>[
                                               // SizedBox(height: 3.0),
                                               Text(
-                                                comment.idUser,
+                                                comment.fullname,
                                                 style: TextStyle(
                                                     fontSize: 12.0,
                                                     fontWeight: FontWeight.bold,

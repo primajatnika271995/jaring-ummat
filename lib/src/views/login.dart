@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_jaring_ummat/src/models/login_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 
 // Component
 import 'components/container_bg_default.dart';
@@ -13,7 +13,6 @@ import 'components/form_field_container.dart';
 import '../views/components/create_account_icons.dart';
 import 'package:flutter_jaring_ummat/src/models/UserDetails.dart';
 import 'package:flutter_jaring_ummat/src/services/user_details.dart';
-import '../config/preferences.dart';
 
 class LoginView extends StatefulWidget {
   @override
@@ -58,6 +57,9 @@ class LoginState extends State<LoginView> {
     });
   }
 
+//  PROGRES DIALOG
+  ProgressDialog _progressDialog;
+
 //  LOGIN METODE
 
   Future<void> login() async {
@@ -70,16 +72,20 @@ class LoginState extends State<LoginView> {
       _isSubmit = true;
     });
 
-    _scaffoldKey.currentState.showSnackBar(
-      new SnackBar(
-        content: new Row(
-          children: <Widget>[
-            new CircularProgressIndicator(),
-            new Text(" Please Wait ... ")
-          ],
-        ),
-      ),
-    );
+//    _scaffoldKey.currentState.showSnackBar(
+//      new SnackBar(
+//        content: new Row(
+//          children: <Widget>[
+//            new CircularProgressIndicator(),
+//            new Text(" Please Wait ... ")
+//          ],
+//        ),
+//      ),
+//    );
+
+    _progressDialog = new ProgressDialog(context, ProgressDialogType.Normal);
+    _progressDialog.setMessage("Please Wait ...");
+    _progressDialog.show();
 
    await service.login(_emailTampung, _passwordTampung).then((response) async {
 
@@ -97,6 +103,8 @@ class LoginState extends State<LoginView> {
 
       if (response.statusCode == 400) {
         setState(() {
+          _isSubmit = false;
+          _progressDialog.hide();
           Toast.show("Username atau Password Salah", context, backgroundColor: Colors.redAccent, textColor: Colors.white, duration: 2);
         });
       }
@@ -108,16 +116,20 @@ class LoginState extends State<LoginView> {
     _preferences = await SharedPreferences.getInstance();
     var _email = _preferences.getString(EMAIL_KEY);
 
-    _scaffoldKey.currentState.showSnackBar(
-      new SnackBar(
-        content: new Row(
-          children: <Widget>[
-            new CircularProgressIndicator(),
-            new Text(" Please Wait For Details Users ... ")
-          ],
-        ),
-      ),
-    );
+//    _scaffoldKey.currentState.showSnackBar(
+//      new SnackBar(
+//        content: new Row(
+//          children: <Widget>[
+//            new CircularProgressIndicator(),
+//            new Text(" Please Wait For Details Users ... ")
+//          ],
+//        ),
+//      ),
+//    );
+
+    _progressDialog = new ProgressDialog(context, ProgressDialogType.Normal);
+    _progressDialog.setMessage("Get User Details ...");
+    _progressDialog.show();
 
     _email != null
         ? userDetailsService.userDetails(_email).then((response) async {
