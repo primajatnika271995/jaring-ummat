@@ -7,6 +7,7 @@ class NewsModel {
   String imageProfile;
   String createdBy;
   int createdDate;
+  int total_komentar;
 
   NewsModel(
       String id,
@@ -16,7 +17,8 @@ class NewsModel {
       String description,
       List<dynamic> imageContent,
       String createdBy,
-      int createdDate) {
+      int createdDate,
+      int total_komentar) {
     this.id = id;
     this.idUser = idUser;
     this.title = title;
@@ -25,6 +27,7 @@ class NewsModel {
     this.imageContent = imageContent;
     this.createdBy = createdBy;
     this.createdDate = createdDate;
+    this.total_komentar = total_komentar;
   }
 
   NewsModel.fromJson(Map json)
@@ -35,7 +38,8 @@ class NewsModel {
         description = json["description"],
         imageContent = json["imageContent"],
         createdBy = json["createdBy"],
-        createdDate = json["createdDate"];
+        createdDate = json["createdDate"],
+        total_komentar = json["total_komentar"];
 
   Map toJson() {
     return {
@@ -46,7 +50,8 @@ class NewsModel {
       'description': description,
       'imageContent': imageContent,
       'createdBy': createdBy,
-      'createdDate': createdDate
+      'createdDate': createdDate,
+      'total_komentar': total_komentar
     };
   }
 }

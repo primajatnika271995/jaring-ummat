@@ -45,6 +45,21 @@ class NewsState extends State<NewsView> with SingleTickerProviderStateMixin {
   Future<List<NewsModel>> fetchNewsCache() async {
     _preferences = await SharedPreferences.getInstance();
     var data = _preferences.getString("news_store");
+
+    if (data == null) {
+      final response = await dio.get(NEWS_GET_LIST_THUMBNAIL);
+
+      if (response.statusCode == 200) {
+        var data = json.encode(response.data);
+        _preferences.setString("news_store", data);
+        Iterable list = response.data;
+        setState(() {
+          _newsListStore =
+              list.map((model) => NewsModel.fromJson(model)).toList();
+        });
+      }
+    }
+
     print("INI STORE DATA");
     print(data);
 
@@ -52,18 +67,6 @@ class NewsState extends State<NewsView> with SingleTickerProviderStateMixin {
     setState(() {
       _newsListStore = list.map((model) => NewsModel.fromJson(model)).toList();
     });
-
-    final response = await dio.get(NEWS_GET_LIST_THUMBNAIL);
-
-    if (response.statusCode == 200) {
-      var data = json.encode(response.data);
-    _preferences.setString("news_store", data);
-      Iterable list = response.data;
-      setState(() {
-        _newsListStore =
-            list.map((model) => NewsModel.fromJson(model)).toList();
-      });
-    }
 
     print("INI LENGTH DARTI STORE LIST ==>");
     print(_newsListStore.length);
@@ -190,7 +193,7 @@ class NewsState extends State<NewsView> with SingleTickerProviderStateMixin {
                     Column(
                       children: <Widget>[
                         FutureBuilder(
-                          future: fetchNews(),
+                          future: _newsList.isEmpty ? fetchNews() : fetchNewsCache(),
                           builder:
                               (BuildContext context, AsyncSnapshot snapshot) {
                             switch (snapshot.connectionState) {

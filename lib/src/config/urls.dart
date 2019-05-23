@@ -34,3 +34,4 @@ const SAVE_COMMENT_URL = BASE_API_URL + '/api/comment/';
 const LIST_ALL_COMMENT_URL = BASE_API_URL + '/api/comment/list';
 const FINDBYID_COMMENT_URL = BASE_API_URL + '/api/comment/';
 const LIST_ALL_COMMENT_NEWS_URL = BASE_API_URL + '/api/comment/news/';
+const LIST_ALL_COMMENT_PROGRAM_AMAL_URL = BASE_API_URL + '/api/comment/program/';

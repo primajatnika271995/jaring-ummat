@@ -24,6 +24,12 @@ class CommentService {
     });
   }
 
+  Future<Response> listCommentProgram(String idProgram) async {
+    return await dio.get(LIST_ALL_COMMENT_PROGRAM_AMAL_URL, queryParameters: {
+      "idProgram": idProgram
+    });
+  }
+
   Future<Response> userById(String id) async {
     return await dio.get(USER_BY_ID_URL + '${id}');
   }

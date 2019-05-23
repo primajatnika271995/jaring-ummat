@@ -841,7 +841,7 @@ class _ActivityNewsContainerState extends State<ActivityNewsContainer>
                 ),
                 color: Colors.blueAccent,
               ),
-              headerHeight: 55,
+              headerHeight: 65,
               upperLayer: _getUpperLayer(),
               menuLayer: _getMenuLayer(),
               animationController: _controller,
@@ -851,6 +851,7 @@ class _ActivityNewsContainerState extends State<ActivityNewsContainer>
       },
     );
   }
+
   Widget modalSheet() {
     showModalBottomSheet(
       context: context,

@@ -1,15 +1,22 @@
+import 'dart:convert';
 import 'package:bottom_sheet_stateful/bottom_sheet_stateful.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_jaring_ummat/src/services/time_ago_service.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter_jaring_ummat/src/views/galang_amal.dart';
-import 'custom_fonts.dart';
-import 'dart:convert';
 import 'package:rubber/rubber.dart';
-import 'show_alert_dialog.dart';
 import 'package:intl/intl.dart';
 import 'package:dots_indicator/dots_indicator.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+// Component
 import '../../services/currency_format_service.dart';
+import '../../config/preferences.dart';
+import '../../services/comment_service.dart';
+import '../../models/comment_list_model.dart';
+import '../../models/user_id_details_model.dart';
+import 'custom_fonts.dart';
+import 'show_alert_dialog.dart';
 
 class ActivityPostContainer extends StatefulWidget {
   final String activityPostId;
@@ -49,22 +56,87 @@ class ActivityPostContainer extends StatefulWidget {
 
 class ActivityPostState extends State<ActivityPostContainer>
     with SingleTickerProviderStateMixin {
+  // Picture Carousel Index
   int _current = 0;
-  bool isLoved = false;
-  bool flag = true;
 
+  // Likes bool
+  bool isLoved = false;
+
+  // Flag for less & more bool
+  bool flag = true;
   String lessDesc;
   String moreDesc;
 
+  // SHared Preferences
+  SharedPreferences _preferences;
+
+  // Komentar Field Controller
+  TextEditingController _controllerKomentar = new TextEditingController();
+
+  // Service Callback
+  CommentService commentService = new CommentService();
+  var _listComment = List<CommentList>();
+
+  // Variable User Details
+
+  String fullname;
+  UserDetailsbyID detailsUser;
+
+  // Rubber
   RubberAnimationController _controller;
   ScrollController _scrollController = ScrollController();
 
   final formatCurrency = new NumberFormat.simpleCurrency();
 
-  BSAttribute _bsAttribute;
-
   static var tagetDonasi;
   static var totalDonasi;
+
+  Stream<List<CommentList>> getListComment() async* {
+    await commentService.listCommentProgram(widget.activityPostId).then((response) {
+      print("INI RESPONSE CODE ListProgram ==>");
+      print(response.statusCode);
+      if (response.statusCode == 200) {
+        Iterable list = response.data;
+        setState(() {
+          _listComment =
+              list.map((model) => CommentList.fromJson(model)).toList();
+        });
+
+        print("INI ISI SALAH SATU KOMENTAR ==>");
+        print(_listComment[0].komentar);
+      }
+    });
+  }
+
+  Future<void> saveKomentar() async {
+    _preferences = await SharedPreferences.getInstance();
+    var idUser = _preferences.getString(USER_ID_KEY);
+    var komentar = _controllerKomentar.text;
+    var idNews = '';
+    var idProgram = widget.activityPostId;
+    var idStory = '';
+
+    print("INI userID KEY ==>");
+    print(idUser);
+
+    print("INI programID  ==>");
+    print(idProgram);
+
+    print("INI komentar ==>");
+    print(_controllerKomentar.text);
+
+    commentService
+        .saveComment(idNews, idProgram, idStory, idUser, komentar)
+        .then((response) {
+      print(response.statusCode);
+      if (response.statusCode == 201) {
+
+        setState(() {
+          _controllerKomentar.clear();
+        });
+      }
+    });
+  }
 
   @override
   void initState() {
@@ -73,11 +145,9 @@ class ActivityPostState extends State<ActivityPostContainer>
     _controller = RubberAnimationController(
         vsync: this,
         dismissable: true,
-        lowerBoundValue: AnimationControllerValue(pixel: 550),
+        lowerBoundValue: AnimationControllerValue(pixel: 650),
         upperBoundValue: AnimationControllerValue(percentage: 4.5),
         duration: Duration(milliseconds: 200));
-
-    _bsAttribute = BSAttribute();
 
     if (widget.description.length > 150) {
       lessDesc = widget.description.substring(0, 150);
@@ -86,11 +156,6 @@ class ActivityPostState extends State<ActivityPostContainer>
       lessDesc = widget.description;
       moreDesc = "";
     }
-  }
-
-  void _bsCallback(double width, double height) {
-    print(
-        "bs1 callback-> width: ${width.toString()}, height: ${height.toString()}");
   }
 
   @override
@@ -231,112 +296,332 @@ class ActivityPostState extends State<ActivityPostContainer>
     );
   }
 
+  // RUBBER LAYER
+
   Widget _getLowerLayer() {
     return Container(
-      decoration: BoxDecoration(color: Colors.white.withOpacity(0.1)),
+      decoration: BoxDecoration(color: Colors.red),
     );
   }
 
   Widget _getUpperLayer() {
     return Container(
-      decoration: BoxDecoration(color: Colors.white),
-      child: SingleChildScrollView(
-        child: ListView(
-          shrinkWrap: true,
-          children: <Widget>[
-            SizedBox(
-              height: 10.0,
+      color: Colors.white,
+      child: CustomScrollView(
+        slivers: <Widget>[
+          SliverAppBar(
+            pinned: false,
+            floating: true,
+            backgroundColor: Colors.white,
+            automaticallyImplyLeading: false,
+            expandedHeight: 50.0,
+            bottom: PreferredSize(
+              preferredSize: Size.fromHeight(56.0),
+              child: Text(''),
             ),
-            Container(
-              padding: EdgeInsets.only(left: 10.0, bottom: 10.0, right: 10.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            flexibleSpace: Container(
+              child: Column(
                 children: <Widget>[
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      SizedBox(height: 3.0),
-                      Text(
-                        '26.116 Muzakki menyukai akun ini',
-                        style: TextStyle(
-                            fontSize: 11.0,
-                            fontWeight: FontWeight.bold,
-                            color: Color.fromRGBO(122, 122, 122, 1.0)),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(
-              height: 10.0,
-            ),
-            new Container(
-              padding: EdgeInsets.only(left: 10.0, bottom: 0.0, right: 10.0),
-              child: Row(
-                children: <Widget>[
-                  getLikesMessageProfile(
-                      'https://www.iphonesavvy.com/sites/default/files/%5Bcurrent-date%3Afile_path%5D/jan-profile-circle.png'),
-                  getLikesMessageProfile(
-                      'https://37e04m2dcg7asf2fw4bk96r1-wpengine.netdna-ssl.com/wp-content/uploads/2015/07/dr-arnold-profile-in-circlePS-400.png'),
-                  getLikesMessageProfile(
-                      'https://i2.wp.com/www.coachcarson.com/wp-content/uploads/2018/09/Chad-Profile-pic-circle.png?resize=800%2C800&ssl=1'),
-                  getLikesMessageProfile(
-                      'https://joinyena.com/wp-content/uploads/2018/01/profile-circle.png'),
                   SizedBox(
-                    width: 10.0,
+                    height: 10.0,
                   ),
-                  GestureDetector(
-                    onTap: () {},
-                    child: new Text(
-                      'tampilkan semua',
-                      style:
-                          TextStyle(color: Colors.blueAccent, fontSize: 12.0),
+                  Container(
+                    padding:
+                    EdgeInsets.only(left: 10.0, bottom: 10.0, right: 10.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            SizedBox(height: 3.0),
+                            Text(
+                              '26.116 Muzakki menyukai akun ini',
+                              style: TextStyle(
+                                  fontSize: 11.0,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color.fromRGBO(122, 122, 122, 1.0)),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
-                  )
+                  ),
+                  SizedBox(
+                    height: 10.0,
+                  ),
+                  new Container(
+                    padding:
+                    EdgeInsets.only(left: 10.0, bottom: 0.0, right: 10.0),
+                    child: Row(
+                      children: <Widget>[
+                        Container(
+                          width: 50.0,
+                          height: 50.0,
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: NetworkImage(
+                                  'https://i2.wp.com/www.coachcarson.com/wp-content/uploads/2018/09/Chad-Profile-pic-circle.png?resize=800%2C800&ssl=1'),
+                              fit: BoxFit.contain,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          width: 50.0,
+                          height: 50.0,
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: NetworkImage(
+                                  'https://i2.wp.com/www.coachcarson.com/wp-content/uploads/2018/09/Chad-Profile-pic-circle.png?resize=800%2C800&ssl=1'),
+                              fit: BoxFit.contain,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          width: 50.0,
+                          height: 50.0,
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: NetworkImage(
+                                  'https://i2.wp.com/www.coachcarson.com/wp-content/uploads/2018/09/Chad-Profile-pic-circle.png?resize=800%2C800&ssl=1'),
+                              fit: BoxFit.contain,
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 10.0,
+                        ),
+                        GestureDetector(
+                          onTap: () {},
+                          child: new Text(
+                            'tampilkan semua',
+                            style: TextStyle(
+                                color: Colors.blueAccent, fontSize: 12.0),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  new Divider(),
                 ],
               ),
             ),
-            new Divider(),
-            Container(
-              padding: EdgeInsets.only(left: 10.0, bottom: 10.0, right: 10.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          ),
+          SliverList(
+            delegate: SliverChildListDelegate([
+              Column(
                 children: <Widget>[
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      SizedBox(height: 3.0),
-                      Text(
-                        '8.127 Muzakki berkomentar pada aksi ini',
-                        style: TextStyle(
-                            fontSize: 11.0,
-                            fontWeight: FontWeight.bold,
-                            color: Color.fromRGBO(122, 122, 122, 1.0)),
-                      ),
-                      SizedBox(height: 5.0),
-                    ],
+                  Container(
+                    padding:
+                    EdgeInsets.only(left: 10.0, bottom: 10.0, right: 10.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            SizedBox(height: 10.0),
+                            Text(
+                              '0 Muzakki berkomentar pada aksi ini',
+                              style: TextStyle(
+                                  fontSize: 11.0,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color.fromRGBO(122, 122, 122, 1.0)),
+                            ),
+                            SizedBox(height: 5.0),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  StreamBuilder(
+                    stream: getListComment(),
+                    builder: (BuildContext context, AsyncSnapshot snapshot) {
+                      switch (snapshot.connectionState) {
+                        case ConnectionState.none:
+                        case ConnectionState.waiting:
+//                          return Container(
+//                            width: double.infinity,
+//                            padding: const EdgeInsets.symmetric(
+//                                horizontal: 16.0, vertical: 16.0),
+//                            child: Shimmer.fromColors(
+//                              baseColor: Colors.grey[300],
+//                              highlightColor: Colors.grey[100],
+//                              child: Column(
+//                                children: [0, 1, 2, 3, 4]
+//                                    .map(
+//                                      (_) => Padding(
+//                                            padding: const EdgeInsets.only(
+//                                                bottom: 8.0),
+//                                            child: Row(
+//                                              crossAxisAlignment:
+//                                                  CrossAxisAlignment.start,
+//                                              children: [
+//                                                Container(
+//                                                  width: 48.0,
+//                                                  height: 48.0,
+//                                                  color: Colors.white,
+//                                                ),
+//                                                Padding(
+//                                                  padding: const EdgeInsets
+//                                                          .symmetric(
+//                                                      horizontal: 8.0),
+//                                                ),
+//                                                Expanded(
+//                                                  child: Column(
+//                                                    crossAxisAlignment:
+//                                                        CrossAxisAlignment
+//                                                            .start,
+//                                                    children: [
+//                                                      Container(
+//                                                        width: double.infinity,
+//                                                        height: 8.0,
+//                                                        color: Colors.white,
+//                                                      ),
+//                                                      Padding(
+//                                                        padding:
+//                                                            const EdgeInsets
+//                                                                    .symmetric(
+//                                                                vertical: 2.0),
+//                                                      ),
+//                                                      Container(
+//                                                        width: double.infinity,
+//                                                        height: 8.0,
+//                                                        color: Colors.white,
+//                                                      ),
+//                                                      Padding(
+//                                                        padding:
+//                                                            const EdgeInsets
+//                                                                    .symmetric(
+//                                                                vertical: 2.0),
+//                                                      ),
+//                                                      Container(
+//                                                        width: 40.0,
+//                                                        height: 8.0,
+//                                                        color: Colors.white,
+//                                                      ),
+//                                                    ],
+//                                                  ),
+//                                                )
+//                                              ],
+//                                            ),
+//                                          ),
+//                                    )
+//                                    .toList(),
+//                              ),
+//                            ),
+//                          );
+                        default:
+                          return ListView.builder(
+                            key: Key(''),
+                            cacheExtent: 2.0,
+                            reverse: true,
+                            itemCount: _listComment.length,
+                            shrinkWrap: true,
+                            physics: ClampingScrollPhysics(),
+                            itemBuilder: (BuildContext context, int index) {
+                              var comment = _listComment[index];
+                              print("INI HASIL FUTURE BUILDER =>");
+                              print(comment.idUser);
+//                            commentService.userById(comment.idUser).then((response) {
+//                              print("INI RESPONSE AMBIL DETAILS USERS BY ID");
+//                              print(response.data);
+//                              if (response.statusCode == 200) {
+//                                setState(() {
+//                                  detailsUser = UserDetailsbyID.fromJson(response.data);
+//                                  print("INI NAMA NYA =>");
+//                                  print(detailsUser.fullname);
+//                              }
+//                                );
+//                                }
+//                            }
+//                            );
+                              return Column(
+                                children: <Widget>[
+                                  Container(
+                                    decoration: BoxDecoration(
+                                        color: Colors.grey[200],
+                                        borderRadius:
+                                        BorderRadius.circular(10.0)),
+                                    padding: EdgeInsets.all(10.0),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        Expanded(
+                                          flex: 2,
+                                          child: Container(
+                                            width: 50.0,
+                                            height: 50.0,
+                                            decoration: BoxDecoration(
+                                              image: DecorationImage(
+                                                image: NetworkImage('https://i2.wp.com/www.coachcarson.com/wp-content/uploads/2018/09/Chad-Profile-pic-circle.png?resize=800%2C800&ssl=1'),
+                                                fit: BoxFit.contain,
+                                              ),),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: 10.0,
+                                        ),
+                                        Expanded(
+                                          flex: 8,
+                                          child: Column(
+                                            crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                            children: <Widget>[
+                                              // SizedBox(height: 3.0),
+                                              Text(
+                                                comment.idUser,
+                                                style: TextStyle(
+                                                    fontSize: 12.0,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.black),
+                                              ),
+                                              SizedBox(height: 3.0),
+                                              Container(
+                                                width: 270.0,
+                                                child: Text(
+                                                  comment.komentar,
+                                                  style: TextStyle(
+                                                      fontSize: 11.0,
+                                                      fontWeight:
+                                                      FontWeight.bold,
+                                                      color: Color.fromRGBO(
+                                                          122, 122, 122, 1.0)),
+                                                ),
+                                              ),
+                                              Text(
+                                                TimeAgoService()
+                                                    .timeAgoFormatting(
+                                                    comment.createdDate),
+                                                style: TextStyle(
+                                                    fontSize: 11.0,
+                                                    fontWeight:
+                                                    FontWeight.normal,
+                                                    color: Color.fromRGBO(
+                                                        122, 122, 122, 1.0)),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 10.0,
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                      }
+                    },
                   ),
                 ],
               ),
-            ),
-            setParticipan('Abdul R Arraisi',
-                'https://i2.wp.com/www.coachcarson.com/wp-content/uploads/2018/09/Chad-Profile-pic-circle.png?resize=800%2C800&ssl=1'),
-            SizedBox(
-              height: 10.0,
-            ),
-            setParticipan('Rika Amalia Puteri',
-                'https://i2.wp.com/www.coachcarson.com/wp-content/uploads/2018/09/Chad-Profile-pic-circle.png?resize=800%2C800&ssl=1'),
-            SizedBox(
-              height: 10.0,
-            ),
-            setParticipan('Nanra Sukedy',
-                'https://joinyena.com/wp-content/uploads/2018/01/profile-circle.png'),
-            SizedBox(
-              height: 10.0,
-            ),
-          ],
-        ),
+            ]),
+          ),
+        ],
       ),
     );
   }
@@ -366,25 +651,35 @@ class ActivityPostState extends State<ActivityPostContainer>
                   Icons.send,
                   color: Colors.black,
                 ),
-                onPressed: () => {},
+                // on Send Method
+                onPressed: () {
+                  setState(() {
+                    saveKomentar();
+                  });
+                },
               ),
             ],
             centerTitle: true,
-            automaticallyImplyLeading: true,
+            automaticallyImplyLeading: false,
+
             titleSpacing: 0.0,
             title: Container(
               child: Padding(
                 padding: EdgeInsets.only(bottom: 1.0),
                 child: TextFormField(
-//                      autofocus: true,
-                  textInputAction: TextInputAction.next,
+                  onFieldSubmitted: (text) {
+                    saveKomentar();
+                  },
+                  controller: _controllerKomentar,
+                  textInputAction: TextInputAction.done,
+                  autocorrect: false,
                   style: TextStyle(
                     fontSize: 12.0,
                     color: Colors.black,
                   ),
                   decoration: InputDecoration(
                     contentPadding:
-                        EdgeInsets.only(top: 7.0, bottom: 7.0, left: 3.0),
+                    EdgeInsets.only(top: 7.0, bottom: 7.0, left: 4.0),
                     // icon: Icon(Icons.search, size: 18.0),
                     border: InputBorder.none,
                     hintText: 'Tulis komentar anda disini...',
@@ -411,158 +706,6 @@ class ActivityPostState extends State<ActivityPostContainer>
         return Scaffold(
           resizeToAvoidBottomPadding: true,
           resizeToAvoidBottomInset: true,
-
-          // For Header Comment Section
-          // appBar: new AppBar(
-          //   backgroundColor: Colors.blueAccent,
-          //   centerTitle: false,
-          //   title: new Column(
-          //     mainAxisAlignment: MainAxisAlignment.center,
-          //     crossAxisAlignment: CrossAxisAlignment.start,
-          //     children: <Widget>[
-          //       new Text(
-          //         widget.title,
-          //         style: TextStyle(fontSize: 15.0),
-          //       ),
-          //       new Text(
-          //         'Oleh ' +
-          //             widget.profileName +
-          //             ' - ' +
-          //             TimeAgoService().timeAgoFormatting(widget.postedAt),
-          //         style: TextStyle(fontSize: 11.0),
-          //       )
-          //     ],
-          //   ),
-          //   leading: new Container(
-          //     color: Colors.blueAccent,
-          //     padding: EdgeInsets.all(1.0),
-          //     child: new Row(
-          //       crossAxisAlignment: CrossAxisAlignment.center,
-          //       children: <Widget>[
-          //         Container(
-          //           width: 50.0,
-          //           height: 50.0,
-          //           decoration: BoxDecoration(
-          //             image: DecorationImage(
-          //               image: (widget.profilePictureUrl != '')
-          //                   ? NetworkImage(widget.profilePictureUrl)
-          //                   : AssetImage("assets/users/bamuis_min.png"),
-          //               fit: BoxFit.contain,
-          //             ),
-          //           ),
-          //         ),
-          //       ],
-          //     ),
-          //   ),
-          // ),
-
-          // For Body List Komentar
-          // body: ListView(
-          //   shrinkWrap: true,
-          //   children: <Widget>[
-          //     SizedBox(
-          //       height: 10.0,
-          //     ),
-          //     Container(
-          //       padding: EdgeInsets.only(left: 10.0, bottom: 10.0, right: 10.0),
-          //       child: Row(
-          //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //         children: <Widget>[
-          //           Column(
-          //             crossAxisAlignment: CrossAxisAlignment.start,
-          //             children: <Widget>[
-          //               SizedBox(height: 3.0),
-          //               Text(
-          //                 '26.116 Muzakki menyukai akun ini',
-          //                 style: TextStyle(
-          //                     fontSize: 11.0,
-          //                     fontWeight: FontWeight.bold,
-          //                     color: Color.fromRGBO(122, 122, 122, 1.0)),
-          //               ),
-          //             ],
-          //           ),
-          //         ],
-          //       ),
-          //     ),
-          //     SizedBox(
-          //       height: 10.0,
-          //     ),
-          //     new Container(
-          //       padding: EdgeInsets.only(left: 10.0, bottom: 0.0, right: 10.0),
-          //       child: Row(
-          //         children: <Widget>[
-          //           getLikesMessageProfile(
-          //               'https://www.iphonesavvy.com/sites/default/files/%5Bcurrent-date%3Afile_path%5D/jan-profile-circle.png'),
-          //           getLikesMessageProfile(
-          //               'https://37e04m2dcg7asf2fw4bk96r1-wpengine.netdna-ssl.com/wp-content/uploads/2015/07/dr-arnold-profile-in-circlePS-400.png'),
-          //           getLikesMessageProfile(
-          //               'https://i2.wp.com/www.coachcarson.com/wp-content/uploads/2018/09/Chad-Profile-pic-circle.png?resize=800%2C800&ssl=1'),
-          //           getLikesMessageProfile(
-          //               'https://joinyena.com/wp-content/uploads/2018/01/profile-circle.png'),
-          //           SizedBox(
-          //             width: 10.0,
-          //           ),
-          //           GestureDetector(
-          //             onTap: () {},
-          //             child: new Text(
-          //               'tampilkan semua',
-          //               style:
-          //                   TextStyle(color: Colors.blueAccent, fontSize: 12.0),
-          //             ),
-          //           )
-          //         ],
-          //       ),
-          //     ),
-          //     new Divider(),
-          //     Container(
-          //       padding: EdgeInsets.only(left: 10.0, bottom: 10.0, right: 10.0),
-          //       child: Row(
-          //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //         children: <Widget>[
-          //           Column(
-          //             crossAxisAlignment: CrossAxisAlignment.start,
-          //             children: <Widget>[
-          //               SizedBox(height: 3.0),
-          //               Text(
-          //                 '8.127 Muzakki berkomentar pada aksi ini',
-          //                 style: TextStyle(
-          //                     fontSize: 11.0,
-          //                     fontWeight: FontWeight.bold,
-          //                     color: Color.fromRGBO(122, 122, 122, 1.0)),
-          //               ),
-          //               SizedBox(height: 5.0),
-          //             ],
-          //           ),
-          //         ],
-          //       ),
-          //     ),
-          //     setParticipan('Abdul R Arraisi',
-          //         'https://i2.wp.com/www.coachcarson.com/wp-content/uploads/2018/09/Chad-Profile-pic-circle.png?resize=800%2C800&ssl=1'),
-          //     SizedBox(
-          //       height: 10.0,
-          //     ),
-          //     setParticipan('Rika Amalia Puteri',
-          //         'https://i2.wp.com/www.coachcarson.com/wp-content/uploads/2018/09/Chad-Profile-pic-circle.png?resize=800%2C800&ssl=1'),
-          //     SizedBox(
-          //       height: 10.0,
-          //     ),
-          //     setParticipan('Nanra Sukedy',
-          //         'https://joinyena.com/wp-content/uploads/2018/01/profile-circle.png'),
-          //     SizedBox(
-          //       height: 10.0,
-          //     ),
-          //   ],
-          // ),
-
-          // body: Container(
-          //   child: RubberBottomSheet(
-          //     lowerLayer: _getLowerLayer(),
-          //     upperLayer: _getUpperLayer(),
-          //     menuLayer: _getMenuLayer(),
-          //     animationController: _controller,
-          //   ),
-          // ),
-
           body: Container(
             child: RubberBottomSheet(
               scrollController: _scrollController,
@@ -570,121 +713,69 @@ class ActivityPostState extends State<ActivityPostContainer>
               header: Container(
                 child: Row(
                   children: <Widget>[
-                    new Column(
-                      children: <Widget>[
-                        Container(
-                          width: 50.0,
-                          height: 50.0,
-                          margin: EdgeInsets.symmetric(
-                              horizontal: 5.0, vertical: 5.0),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(30.0),
-                            image: DecorationImage(
-                              image: MemoryImage(
-                                  base64Decode(widget.imgContent[0])),
+                    Expanded(
+                      flex: 2,
+                      child: new Column(
+                        children: <Widget>[
+                          Container(
+                            width: 40.0,
+                            height: 40.0,
+                            margin: EdgeInsets.symmetric(
+                                horizontal: 5.0, vertical: 5.0),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(30.0),
+                              image: DecorationImage(
+                                image:
+                                MemoryImage(base64Decode(widget.imgContent[0])),
+                              ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                      flex: 8,
+                      child: new Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          new Text(widget.title,
+                              style: TextStyle(
+                                  fontSize: 15.0,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white)),
+                          new Text(
+                            'Oleh ' +
+                                widget.profileName +
+                                ' - ' +
+                                TimeAgoService()
+                                    .timeAgoFormatting(widget.postedAt),
+                            style: TextStyle(
+                                fontSize: 11.0,
+                                fontWeight: FontWeight.normal,
+                                color: Colors.white),
+                          )
+                        ],
+                      ),
                     ),
                     SizedBox(
-                      width: 17.00,
+                      width: 10.0,
                     ),
-                    new Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        new Text(widget.title,
-                            style: TextStyle(
-                                fontSize: 15.0,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white)),
-                        new Text(
-                          'Oleh ' +
-                              widget.profileName +
-                              ' - ' +
-                              TimeAgoService()
-                                  .timeAgoFormatting(widget.postedAt),
-                          style: TextStyle(
-                              fontSize: 11.0,
-                              fontWeight: FontWeight.normal,
-                              color: Colors.white),
-                        )
-                      ],
-                    )
                   ],
                 ),
                 color: Colors.blueAccent,
               ),
-              headerHeight: 60,
+              headerHeight: 55,
               upperLayer: _getUpperLayer(),
               menuLayer: _getMenuLayer(),
               animationController: _controller,
             ),
           ),
-
-          // For Komentar Field
-//           bottomNavigationBar: BottomAppBar(
-//             child: new Container(
-//               height: 50.0,
-//               child: AppBar(
-//                 backgroundColor: Colors.white,
-//                 leading: Container(
-//                   width: 100.0,
-//                   height: 100.0,
-//                   margin: EdgeInsets.all(10.0),
-//                   decoration: BoxDecoration(
-//                     image: DecorationImage(
-//                       image: AssetImage("assets/users/orang.png"),
-// //                      fit: BoxFit.contain,
-//                     ),
-//                   ),
-//                 ),
-//                 actions: <Widget>[
-//                   IconButton(
-//                     icon: Icon(
-//                       Icons.send,
-//                       color: Colors.black,
-//                     ),
-//                     onPressed: () => {},
-//                   ),
-//                 ],
-//                 centerTitle: true,
-//                 automaticallyImplyLeading: true,
-//                 titleSpacing: 0.0,
-//                 title: Container(
-//                   child: Padding(
-//                     padding: EdgeInsets.only(
-//                         bottom: MediaQuery.of(context).viewInsets.bottom),
-//                     child: TextFormField(
-// //                      autofocus: true,
-//                       textInputAction: TextInputAction.next,
-//                       style: TextStyle(
-//                         fontSize: 12.0,
-//                         color: Colors.black,
-//                       ),
-//                       decoration: InputDecoration(
-//                         contentPadding:
-//                             EdgeInsets.only(top: 7.0, bottom: 7.0, left: -15.0),
-//                         icon: Icon(Icons.search, size: 18.0),
-//                         border: InputBorder.none,
-//                         hintText: 'Tulis komentar anda disini...',
-//                       ),
-//                     ),
-//                   ),
-//                   decoration: BoxDecoration(
-//                     borderRadius: BorderRadius.all(Radius.circular(30.0)),
-//                     color: Colors.grey[200],
-//                   ),
-//                   padding: EdgeInsets.fromLTRB(15.0, 0.5, 15.0, 0.5),
-//                 ),
-//               ),
-//             ),
-//           ),
         );
       },
     );
   }
+
 
   Widget modalSheet() {
     showModalBottomSheet(
@@ -1050,6 +1141,8 @@ class ActivityPostState extends State<ActivityPostContainer>
         GestureDetector(
           onTap: () {
             modalSheetComent();
+            print("INI ID PROGRAM AMAL ==>");
+            print(widget.activityPostId);
           },
           child: Row(
             children: <Widget>[
