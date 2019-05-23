@@ -5,7 +5,6 @@ import 'package:flutter_jaring_ummat/src/services/news_service.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter_image_compress/flutter_image_compress.dart';
 import '../views/create_data_preview.dart';
 
 // Component

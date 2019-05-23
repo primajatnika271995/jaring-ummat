@@ -724,16 +724,21 @@ class _ActivityNewsContainerState extends State<ActivityNewsContainer>
               ),
             ),
             actions: <Widget>[
-              IconButton(
-                icon: Icon(
-                  Icons.send,
-                  color: Colors.black,
-                ),
-                // on Send Method
-                onPressed: () {
-                  setState(() {
-                    saveKomentar();
-                  });
+              StreamBuilder(
+                stream: getListComment(),
+                builder: (context, snapshot) {
+                  return IconButton(
+                    icon: Icon(
+                      Icons.send,
+                      color: Colors.black,
+                    ),
+                    // on Send Method
+                    onPressed: () {
+                      setState(() {
+                        saveKomentar();
+                      });
+                    },
+                  );
                 },
               ),
             ],
@@ -746,7 +751,7 @@ class _ActivityNewsContainerState extends State<ActivityNewsContainer>
                 padding: EdgeInsets.only(bottom: 1.0),
                 child: TextFormField(
                   onFieldSubmitted: (text) {
-                    saveKomentar();
+//                    saveKomentar();
                   },
                   controller: _controllerKomentar,
                   textInputAction: TextInputAction.done,
