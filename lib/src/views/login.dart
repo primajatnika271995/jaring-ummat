@@ -145,7 +145,7 @@ class LoginState extends State<LoginView> {
         _preferences.setString(
             USER_ID_KEY, userDetails.id_user.toString());
         _preferences.setString(
-            PROFILE_PICTURE_KEY, userDetails.path_file);
+            PROFILE_PICTURE_KEY, userDetails.profile_picture);
       await Navigator.of(context).pushReplacementNamed('/home');
       }
     })

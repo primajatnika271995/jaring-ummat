@@ -4,12 +4,20 @@ import 'package:flutter_jaring_ummat/src/views/onboarding/step3.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:toast/toast.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 // Component Import
 import '../components/container_bg_default.dart';
 import '../components/form_field_container.dart';
 import '../../services/register_service.dart';
 import '../components/create_account_icons.dart';
+import '../../models/UserDetails.dart';
+import '../../config/preferences.dart';
 
 class Step2View extends StatefulWidget {
   @override
@@ -19,10 +27,12 @@ class Step2View extends StatefulWidget {
 }
 
 class Step2State extends State<Step2View> {
-
 //  SCAFFOLD KEY
 
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  //  VARIABLE SHARED PREFERENCES
+
+  SharedPreferences _preferences;
 
 //  VARIABLE CONTROLLER
 
@@ -143,15 +153,103 @@ class Step2State extends State<Step2View> {
           context,
           MaterialPageRoute(
             builder: (context) => Step3View(
-              email: email,
-              fullname: fullname,
-              password: password,
-              contact: contact,
-            ),
+                  email: email,
+                  fullname: fullname,
+                  password: password,
+                  contact: contact,
+                ),
           ),
         );
       }
     });
+  }
+
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  final GoogleSignIn _googleSignIn = new GoogleSignIn();
+
+  Future<FirebaseUser> _signIn(BuildContext context) async {
+
+    _scaffoldKey.currentState.showSnackBar(
+      new SnackBar(
+        content: new Text('Sign in With Google Account'),
+      ),
+    );
+
+    final GoogleSignInAccount googleUser = await _googleSignIn.signIn();
+    final GoogleSignInAuthentication googleAuth =
+        await googleUser.authentication;
+
+    final AuthCredential credential = GoogleAuthProvider.getCredential(
+        idToken: googleAuth.idToken, accessToken: googleAuth.accessToken);
+
+    FirebaseUser userDetails =
+        await _firebaseAuth.signInWithCredential(credential);
+    ProviderDetails providerInfo = new ProviderDetails(userDetails.providerId);
+
+    List<ProviderDetails> providerData = new List<ProviderDetails>();
+    providerData.add(providerInfo);
+
+    GoogleDetails details = new GoogleDetails(
+        userDetails.providerId,
+        userDetails.displayName,
+        userDetails.photoUrl,
+        userDetails.email,
+        providerData);
+  }
+
+  static final FacebookLogin facebookSignIn = new FacebookLogin();
+
+  Future<Null> _login() async {
+    _preferences = await SharedPreferences.getInstance();
+    final FacebookLoginResult result =
+    await facebookSignIn.logInWithReadPermissions(['email']);
+
+    switch (result.status) {
+      case FacebookLoginStatus.loggedIn:
+        final FacebookAccessToken accessToken = result.accessToken;
+        print('''
+         Logged in!
+         
+         Token: ${accessToken.token}
+         User id: ${accessToken.userId}
+         Expires: ${accessToken.expires}
+         Permissions: ${accessToken.permissions}
+         Declined permissions: ${accessToken.declinedPermissions}
+         ''');
+
+        var graphResponse = await http.get(
+            'https://graph.facebook.com/v2.12/me?fields=name,first_name,last_name,email,picture&access_token=${result.accessToken.token}');
+
+        var profile = json.decode(graphResponse.body);
+        print(profile.toString());
+
+        FacebookUserDetails userDetails = FacebookUserDetails.fromJson(profile);
+
+        _preferences.setString(FULLNAME_KEY, userDetails.name);
+        _preferences.setString(CONTACT_KEY, 'Not Found');
+        _preferences.setString(EMAIL_KEY, userDetails.email);
+        _preferences.setString(
+            USER_ID_KEY, userDetails.id);
+        _preferences.setString(
+            PROFILE_FACEBOOK_KEY, profile['picture']['data']['url']);
+
+        print(_preferences.getString(PROFILE_FACEBOOK_KEY));
+
+        await Navigator.of(context).pushReplacementNamed('/home');
+        break;
+      case FacebookLoginStatus.cancelledByUser:
+        print('Login cancelled by the user.');
+        break;
+      case FacebookLoginStatus.error:
+        print('Something went wrong with the login process.\n'
+            'Here\'s the error Facebook gave us: ${result.errorMessage}');
+        break;
+    }
+  }
+
+  Future<Null> _logOut() async {
+    await facebookSignIn.logOut();
+    print('Logged out.');
   }
 
   List<Widget> _buildPage(BuildContext context) {
@@ -171,17 +269,16 @@ class Step2State extends State<Step2View> {
                       height: 80.0,
                     ),
                     Container(
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.black.withOpacity(0.5),
-                      ),
-                      padding: EdgeInsets.only(top: 5.0, bottom: 5.0),
-                      child: Icon(
-                        CreateAccount.create_account_step_1,
-                        color: Colors.white,
-                        size: 120.0,
-                      )
-                    ),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.black.withOpacity(0.5),
+                        ),
+                        padding: EdgeInsets.only(top: 5.0, bottom: 5.0),
+                        child: Icon(
+                          CreateAccount.create_account_step_1,
+                          color: Colors.white,
+                          size: 120.0,
+                        )),
                     SizedBox(
                       height: 30.0,
                     ),
@@ -308,7 +405,7 @@ class Step2State extends State<Step2View> {
                                     size: 20.0,
                                   ),
                                   label: new Text('Facebook'),
-                                  onPressed: () {},
+                                  onPressed: _login,
                                   textColor: Colors.white,
                                   color: Color.fromRGBO(59, 89, 152, 1.0),
                                   shape: RoundedRectangleBorder(
@@ -319,7 +416,9 @@ class Step2State extends State<Step2View> {
                                   width: 20,
                                 ),
                                 RaisedButton.icon(
-                                  onPressed: () {},
+                                  onPressed: () => _signIn(context)
+                                      .then((FirebaseUser user) => print(user))
+                                      .catchError((e) => print(e)),
                                   icon: SvgPicture.asset(
                                     'assets/icon/google_logo.svg',
                                     width: 20.0,

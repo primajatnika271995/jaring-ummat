@@ -34,7 +34,7 @@ class LandingPage extends StatelessWidget {
       var token = _preferences.getString(ACCESS_TOKEN_KEY);
       print(token);
       if (token == null) {
-        Navigator.of(context).pushReplacementNamed("/intro");
+        Navigator.of(context).pushReplacementNamed("/login");
         // Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
       } else {
         // Navigator.pop(context);
