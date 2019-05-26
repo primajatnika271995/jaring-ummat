@@ -17,8 +17,6 @@ const NEWS_GET_LIST_THUMBNAIL = BASE_API_URL + '/api/news/list/thumbnail';
 const NEWS_GET_LIST_ORIGINAL = BASE_API_URL + '/api/news/list/origin';
 const NEWS_CREATE = BASE_API_URL + '/api/news/';
 
-const USER_STORY_LIST = 'https://api.myjson.com/bins/1fbge0';
-
 // For Service Program Amal API
 const PROGRAM_AMAL_SAVE_URL = BASE_API_URL + '/api/program-amal/';
 const PROGRAM_AMAL_LIST_ALL_URL = BASE_API_URL + '/api/program-amal/list';

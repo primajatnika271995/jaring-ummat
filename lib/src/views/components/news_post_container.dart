@@ -1,20 +1,15 @@
-import 'dart:async';
-
-import 'package:async/async.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dots_indicator/dots_indicator.dart';
+import 'package:flutter_jaring_ummat/src/bloc/commentBloc.dart';
+import 'package:flutter_jaring_ummat/src/models/commentModel.dart';
 import 'package:rubber/rubber.dart';
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:shimmer/shimmer.dart';
 
 // Component
 import 'package:flutter_jaring_ummat/src/services/time_ago_service.dart';
 import 'package:flutter_jaring_ummat/src/views/components/custom_fonts.dart';
-import '../../config/preferences.dart';
-import '../../services/comment_service.dart';
-import '../../models/comment_list_model.dart';
 import '../../models/user_id_details_model.dart';
 
 class ActivityNewsContainer extends StatefulWidget {
@@ -30,14 +25,14 @@ class ActivityNewsContainer extends StatefulWidget {
 
   ActivityNewsContainer(
       {this.newsId,
-        this.iconImg,
-        this.profileName,
-        this.imgContent,
-        this.category,
-        this.title,
-        this.postedAt = 0,
-        this.excerpt,
-        this.totalKomentar});
+      this.iconImg,
+      this.profileName,
+      this.imgContent,
+      this.category,
+      this.title,
+      this.postedAt = 0,
+      this.excerpt,
+      this.totalKomentar});
 
   @override
   _ActivityNewsContainerState createState() => _ActivityNewsContainerState();
@@ -59,13 +54,6 @@ class _ActivityNewsContainerState extends State<ActivityNewsContainer>
   // SHared Preferences
   SharedPreferences _preferences;
 
-  // Komentar Field Controller
-  TextEditingController _controllerKomentar = new TextEditingController();
-
-  // Service Callback
-  CommentService commentService = new CommentService();
-  var _listComment = List<CommentList>();
-
   // Variable User Details
 
   String fullname;
@@ -75,56 +63,9 @@ class _ActivityNewsContainerState extends State<ActivityNewsContainer>
   RubberAnimationController _controller;
   ScrollController _scrollController = ScrollController();
 
-  Stream<List<CommentList>> getListComment() async* {
-    await commentService.listCommentBerita(widget.newsId).then((response) {
-      print("INI RESPONSE CODE ListComment ==>");
-      print(response.statusCode);
-      if (response.statusCode == 200) {
-        Iterable list = response.data;
-        setState(() {
-          _listComment =
-              list.map((model) => CommentList.fromJson(model)).toList();
-        });
-
-        print("INI ISI SALAH SATU KOMENTAR ==>");
-        print(_listComment[0].komentar);
-      }
-    });
-  }
-
-  Future<void> saveKomentar() async {
-    _preferences = await SharedPreferences.getInstance();
-    var idUser = _preferences.getString(USER_ID_KEY);
-    var komentar = _controllerKomentar.text;
-    var idNews = widget.newsId;
-    var idProgram = '';
-    var idStory = '';
-
-    print("INI userID KEY ==>");
-    print(idUser);
-
-    print("INI newsID  ==>");
-    print(idNews);
-
-    print("INI komentar ==>");
-    print(_controllerKomentar.text);
-
-    commentService
-        .saveComment(idNews, idProgram, idStory, idUser, komentar)
-        .then((response) {
-      print(response.statusCode);
-      if (response.statusCode == 201) {
-
-        setState(() {
-          _controllerKomentar.clear();
-        });
-      }
-    });
-  }
-
   @override
   void initState() {
-    super.initState();
+    // bloc.fetchNewsComment(widget.newsId);
 
     _controller = RubberAnimationController(
         vsync: this,
@@ -140,6 +81,15 @@ class _ActivityNewsContainerState extends State<ActivityNewsContainer>
       lessDesc = widget.excerpt;
       moreDesc = "";
     }
+    // TODO: implement initstate
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    bloc.dispose();
+    // TODO: implement dispose
+    super.dispose();
   }
 
   @override
@@ -159,7 +109,6 @@ class _ActivityNewsContainerState extends State<ActivityNewsContainer>
   }
 
   // TOP CONTENT BERITA
-
   Widget setTopContent() {
     return Container(
       padding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
@@ -202,7 +151,6 @@ class _ActivityNewsContainerState extends State<ActivityNewsContainer>
   }
 
   // CENTER CONTENT IMAGE
-
   Widget setMainImage() {
     return Stack(
       children: <Widget>[
@@ -213,7 +161,7 @@ class _ActivityNewsContainerState extends State<ActivityNewsContainer>
           viewportFraction: 1.0,
           aspectRatio: MediaQuery.of(context).size.aspectRatio,
           items: widget.imgContent.map(
-                (url) {
+            (url) {
               return Container(
                 child: ClipRRect(
                   borderRadius: BorderRadius.all(Radius.circular(0.0)),
@@ -249,7 +197,6 @@ class _ActivityNewsContainerState extends State<ActivityNewsContainer>
   }
 
   // WIDGET FOR SHARE BERITA
-
   Widget setTopContentShare() {
     return Container(
       color: Colors.blueAccent,
@@ -348,6 +295,7 @@ class _ActivityNewsContainerState extends State<ActivityNewsContainer>
         GestureDetector(
           onTap: () {
             modalSheetComent();
+            bloc.fetchAllComment();
             print("INI ID BERITA ==>");
             print(widget.newsId);
           },
@@ -375,7 +323,6 @@ class _ActivityNewsContainerState extends State<ActivityNewsContainer>
   }
 
   // RUBBER LAYER
-
   Widget _getLowerLayer() {
     return Container(
       decoration: BoxDecoration(color: Colors.red),
@@ -405,7 +352,7 @@ class _ActivityNewsContainerState extends State<ActivityNewsContainer>
                   ),
                   Container(
                     padding:
-                    EdgeInsets.only(left: 10.0, bottom: 10.0, right: 10.0),
+                        EdgeInsets.only(left: 10.0, bottom: 10.0, right: 10.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
@@ -430,7 +377,7 @@ class _ActivityNewsContainerState extends State<ActivityNewsContainer>
                   ),
                   new Container(
                     padding:
-                    EdgeInsets.only(left: 10.0, bottom: 0.0, right: 10.0),
+                        EdgeInsets.only(left: 10.0, bottom: 0.0, right: 10.0),
                     child: Row(
                       children: <Widget>[
                         Container(
@@ -491,7 +438,7 @@ class _ActivityNewsContainerState extends State<ActivityNewsContainer>
                 children: <Widget>[
                   Container(
                     padding:
-                    EdgeInsets.only(left: 10.0, bottom: 10.0, right: 10.0),
+                        EdgeInsets.only(left: 10.0, bottom: 10.0, right: 10.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
@@ -513,186 +460,16 @@ class _ActivityNewsContainerState extends State<ActivityNewsContainer>
                     ),
                   ),
                   StreamBuilder(
-                    stream: getListComment(),
-                    builder: (BuildContext context, AsyncSnapshot snapshot) {
-                      switch (snapshot.connectionState) {
-                        case ConnectionState.none:
-                        case ConnectionState.waiting:
-//                          return Container(
-//                            width: double.infinity,
-//                            padding: const EdgeInsets.symmetric(
-//                                horizontal: 16.0, vertical: 16.0),
-//                            child: Shimmer.fromColors(
-//                              baseColor: Colors.grey[300],
-//                              highlightColor: Colors.grey[100],
-//                              child: Column(
-//                                children: [0, 1, 2, 3, 4]
-//                                    .map(
-//                                      (_) => Padding(
-//                                            padding: const EdgeInsets.only(
-//                                                bottom: 8.0),
-//                                            child: Row(
-//                                              crossAxisAlignment:
-//                                                  CrossAxisAlignment.start,
-//                                              children: [
-//                                                Container(
-//                                                  width: 48.0,
-//                                                  height: 48.0,
-//                                                  color: Colors.white,
-//                                                ),
-//                                                Padding(
-//                                                  padding: const EdgeInsets
-//                                                          .symmetric(
-//                                                      horizontal: 8.0),
-//                                                ),
-//                                                Expanded(
-//                                                  child: Column(
-//                                                    crossAxisAlignment:
-//                                                        CrossAxisAlignment
-//                                                            .start,
-//                                                    children: [
-//                                                      Container(
-//                                                        width: double.infinity,
-//                                                        height: 8.0,
-//                                                        color: Colors.white,
-//                                                      ),
-//                                                      Padding(
-//                                                        padding:
-//                                                            const EdgeInsets
-//                                                                    .symmetric(
-//                                                                vertical: 2.0),
-//                                                      ),
-//                                                      Container(
-//                                                        width: double.infinity,
-//                                                        height: 8.0,
-//                                                        color: Colors.white,
-//                                                      ),
-//                                                      Padding(
-//                                                        padding:
-//                                                            const EdgeInsets
-//                                                                    .symmetric(
-//                                                                vertical: 2.0),
-//                                                      ),
-//                                                      Container(
-//                                                        width: 40.0,
-//                                                        height: 8.0,
-//                                                        color: Colors.white,
-//                                                      ),
-//                                                    ],
-//                                                  ),
-//                                                )
-//                                              ],
-//                                            ),
-//                                          ),
-//                                    )
-//                                    .toList(),
-//                              ),
-//                            ),
-//                          );
-                        default:
-                          return ListView.builder(
-                            key: Key(''),
-                            cacheExtent: 2.0,
-                            reverse: true,
-                            itemCount: _listComment.length,
-                            shrinkWrap: true,
-                            physics: ClampingScrollPhysics(),
-                            itemBuilder: (BuildContext context, int index) {
-                              var comment = _listComment[index];
-                              print("INI HASIL FUTURE BUILDER =>");
-                              print(comment.idUser);
-//                            commentService.userById(comment.idUser).then((response) {
-//                              print("INI RESPONSE AMBIL DETAILS USERS BY ID");
-//                              print(response.data);
-//                              if (response.statusCode == 200) {
-//                                setState(() {
-//                                  detailsUser = UserDetailsbyID.fromJson(response.data);
-//                                  print("INI NAMA NYA =>");
-//                                  print(detailsUser.fullname);
-//                              }
-//                                );
-//                                }
-//                            }
-//                            );
-                              return Column(
-                                children: <Widget>[
-                                  Container(
-                                    decoration: BoxDecoration(
-                                        color: Colors.grey[200],
-                                        borderRadius:
-                                        BorderRadius.circular(10.0)),
-                                    padding: EdgeInsets.all(10.0),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                      children: <Widget>[
-                                        Expanded(
-                                          flex: 2,
-                                          child: Container(
-                                            width: 50.0,
-                                            height: 50.0,
-                                            decoration: BoxDecoration(
-                                              image: DecorationImage(
-                                                image: NetworkImage('https://i2.wp.com/www.coachcarson.com/wp-content/uploads/2018/09/Chad-Profile-pic-circle.png?resize=800%2C800&ssl=1'),
-                                                fit: BoxFit.contain,
-                                              ),),
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: 10.0,
-                                        ),
-                                        Expanded(
-                                          flex: 8,
-                                          child: Column(
-                                            crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                            children: <Widget>[
-                                              // SizedBox(height: 3.0),
-                                              Text(
-                                                comment.fullname,
-                                                style: TextStyle(
-                                                    fontSize: 12.0,
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Colors.black),
-                                              ),
-                                              SizedBox(height: 3.0),
-                                              Container(
-                                                width: 270.0,
-                                                child: Text(
-                                                  comment.komentar,
-                                                  style: TextStyle(
-                                                      fontSize: 11.0,
-                                                      fontWeight:
-                                                      FontWeight.bold,
-                                                      color: Color.fromRGBO(
-                                                          122, 122, 122, 1.0)),
-                                                ),
-                                              ),
-                                              Text(
-                                                TimeAgoService()
-                                                    .timeAgoFormatting(
-                                                    comment.createdDate),
-                                                style: TextStyle(
-                                                    fontSize: 11.0,
-                                                    fontWeight:
-                                                    FontWeight.normal,
-                                                    color: Color.fromRGBO(
-                                                        122, 122, 122, 1.0)),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: 10.0,
-                                  ),
-                                ],
-                              );
-                            },
-                          );
+                    stream: bloc.allCommentList,
+                    builder: (context, AsyncSnapshot<List<Comment>> snapshot) {
+                      if (snapshot.hasData) {
+                        return buildListComment(snapshot);
+                      } else if (snapshot.hasError) {
+                        return Text(snapshot.error.toString());
                       }
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
                     },
                   ),
                 ],
@@ -701,6 +478,86 @@ class _ActivityNewsContainerState extends State<ActivityNewsContainer>
           ),
         ],
       ),
+    );
+  }
+
+  Widget buildListComment(AsyncSnapshot<List<Comment>> snapshot) {
+    return ListView.builder(
+      itemCount: snapshot.data.length,
+      shrinkWrap: true,
+      physics: ClampingScrollPhysics(),
+      itemBuilder: (BuildContext context, int index) {
+        return Column(
+          children: <Widget>[
+            Container(
+              decoration: BoxDecoration(
+                  color: Colors.grey[200],
+                  borderRadius: BorderRadius.circular(10.0)),
+              padding: EdgeInsets.all(10.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Expanded(
+                    flex: 2,
+                    child: Container(
+                      width: 50.0,
+                      height: 50.0,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: NetworkImage(
+                              'https://i2.wp.com/www.coachcarson.com/wp-content/uploads/2018/09/Chad-Profile-pic-circle.png?resize=800%2C800&ssl=1'),
+                          fit: BoxFit.contain,
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 10.0,
+                  ),
+                  Expanded(
+                    flex: 8,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        // SizedBox(height: 3.0),
+                        Text(
+                          snapshot.data[index].idUser,
+                          style: TextStyle(
+                              fontSize: 12.0,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black),
+                        ),
+                        SizedBox(height: 3.0),
+                        Container(
+                          width: 270.0,
+                          child: Text(
+                            snapshot.data[index].komentar,
+                            style: TextStyle(
+                                fontSize: 11.0,
+                                fontWeight: FontWeight.bold,
+                                color: Color.fromRGBO(122, 122, 122, 1.0)),
+                          ),
+                        ),
+                        Text(
+                          TimeAgoService().timeAgoFormatting(
+                              snapshot.data[index].createdDate),
+                          style: TextStyle(
+                              fontSize: 11.0,
+                              fontWeight: FontWeight.normal,
+                              color: Color.fromRGBO(122, 122, 122, 1.0)),
+                        )
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(
+              height: 10.0,
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -724,36 +581,24 @@ class _ActivityNewsContainerState extends State<ActivityNewsContainer>
               ),
             ),
             actions: <Widget>[
-              StreamBuilder(
-                stream: getListComment(),
-                builder: (context, snapshot) {
-                  return IconButton(
-                    icon: Icon(
-                      Icons.send,
-                      color: Colors.black,
-                    ),
-                    // on Send Method
-                    onPressed: () {
-                      setState(() {
-                        saveKomentar();
-                      });
-                    },
-                  );
-                },
+              IconButton(
+                icon: Icon(
+                  Icons.send,
+                  color: Colors.black,
+                ),
+                onPressed: () {},
               ),
             ],
             centerTitle: true,
             automaticallyImplyLeading: false,
-
             titleSpacing: 0.0,
             title: Container(
               child: Padding(
-                padding: EdgeInsets.only(bottom: 1.0,),
+                padding: EdgeInsets.only(
+                  bottom: 1.0,
+                ),
                 child: TextFormField(
-                  onFieldSubmitted: (text) {
-//                    saveKomentar();
-                  },
-                  controller: _controllerKomentar,
+                  onFieldSubmitted: (text) {},
                   textInputAction: TextInputAction.done,
                   autocorrect: false,
                   style: TextStyle(
@@ -762,7 +607,7 @@ class _ActivityNewsContainerState extends State<ActivityNewsContainer>
                   ),
                   decoration: InputDecoration(
                     contentPadding:
-                    EdgeInsets.only(top: 7.0, bottom: 7.0, left: 4.0),
+                        EdgeInsets.only(top: 7.0, bottom: 7.0, left: 4.0),
                     // icon: Icon(Icons.search, size: 18.0),
                     border: InputBorder.none,
                     hintText: 'Tulis komentar anda disini...',
@@ -809,7 +654,7 @@ class _ActivityNewsContainerState extends State<ActivityNewsContainer>
                               borderRadius: BorderRadius.circular(30.0),
                               image: DecorationImage(
                                 image:
-                                MemoryImage(base64Decode(widget.iconImg)),
+                                    MemoryImage(base64Decode(widget.iconImg)),
                               ),
                             ),
                           ),
@@ -962,34 +807,34 @@ class _ActivityNewsContainerState extends State<ActivityNewsContainer>
       padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
       child: moreDesc.isEmpty
           ? new Text(
-        lessDesc,
-        style: TextStyle(color: Colors.black45),
-      )
+              lessDesc,
+              style: TextStyle(color: Colors.black45),
+            )
           : new Column(
-        children: <Widget>[
-          new Text(
-            flag ? (lessDesc + "...") : (lessDesc + moreDesc),
-            textAlign: TextAlign.justify,
-            style: TextStyle(color: Colors.black45),
-          ),
-          new InkWell(
-            onTap: () {
-              setState(() {
-                flag = !flag;
-              });
-            },
-            child: new Row(
-              mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
                 new Text(
-                  flag ? "show more" : "show less",
-                  style: new TextStyle(color: Colors.blue),
+                  flag ? (lessDesc + "...") : (lessDesc + moreDesc),
+                  textAlign: TextAlign.justify,
+                  style: TextStyle(color: Colors.black45),
+                ),
+                new InkWell(
+                  onTap: () {
+                    setState(() {
+                      flag = !flag;
+                    });
+                  },
+                  child: new Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      new Text(
+                        flag ? "show more" : "show less",
+                        style: new TextStyle(color: Colors.blue),
+                      )
+                    ],
+                  ),
                 )
               ],
             ),
-          )
-        ],
-      ),
     );
   }
 }

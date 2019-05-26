@@ -4,7 +4,6 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter_jaring_ummat/src/config/urls.dart';
 import '../models/program_amal.dart';
-import '../config/logger.dart';
 
 class ProgramAmalService {
 
@@ -19,12 +18,7 @@ class ProgramAmalService {
       if (response.statusCode == 200) {
         var data = await response.data;
 
-        log("INI LOG DATA PROGRAM AMAL ==>");
-        log(data);
-
         return ProgramAmalModel.fromJson(data);
-      } else {
-        log("FAILED CALL HTTP");
       }
     } catch(exception) {
       print(exception.toString());
