@@ -12,7 +12,6 @@ import 'package:flutter_jaring_ummat/src/views/components/userstory_appbar_conta
 import 'package:flutter_jaring_ummat/src/views/components/appbar_custom_icons.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../config/urls.dart';
-import '../scope_model/program_amal_json_cache.dart';
 
 class TimelineView extends StatefulWidget {
   
@@ -43,8 +42,6 @@ class _TimelineState extends State<TimelineView>
 
   bool _isSelected;
   CircularProgressIndicator progressIndicator = new CircularProgressIndicator();
-
-  ProgramAmalCache _programAmalCache = ProgramAmalCache();
 
   @override
   void initState() {
