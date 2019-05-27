@@ -6,5 +6,7 @@ class CommentRepository {
 
   Future<List<Comment>> fetchAllComment() => repository.fetchAllComment();
   Future<List<Comment>> fetchNewspaperComment(String idNews) => repository.fetchNewspaperComment(idNews);
+
+  Future addSaveComment(String comment, String idUser, String idNews) => repository.saveComment(comment, idUser, idNews);
   
 }

@@ -5,12 +5,10 @@ import 'package:flutter_jaring_ummat/src/bloc/commentBloc.dart';
 import 'package:flutter_jaring_ummat/src/models/commentModel.dart';
 import 'package:rubber/rubber.dart';
 import 'dart:convert';
-import 'package:shared_preferences/shared_preferences.dart';
 
 // Component
 import 'package:flutter_jaring_ummat/src/services/time_ago_service.dart';
 import 'package:flutter_jaring_ummat/src/views/components/custom_fonts.dart';
-import '../../models/user_id_details_model.dart';
 
 class ActivityNewsContainer extends StatefulWidget {
   final String newsId;
@@ -51,22 +49,12 @@ class _ActivityNewsContainerState extends State<ActivityNewsContainer>
   String lessDesc;
   String moreDesc;
 
-  // SHared Preferences
-  SharedPreferences _preferences;
-
-  // Variable User Details
-
-  String fullname;
-  UserDetailsbyID detailsUser;
-
   // Rubber
   RubberAnimationController _controller;
   ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
-    // bloc.fetchNewsComment(widget.newsId);
-
     _controller = RubberAnimationController(
         vsync: this,
         dismissable: true,
@@ -295,9 +283,7 @@ class _ActivityNewsContainerState extends State<ActivityNewsContainer>
         GestureDetector(
           onTap: () {
             modalSheetComent();
-            bloc.fetchAllComment();
-            print("INI ID BERITA ==>");
-            print(widget.newsId);
+            bloc.fetchNewsComment(widget.newsId);
           },
           child: Row(
             children: <Widget>[
@@ -460,7 +446,7 @@ class _ActivityNewsContainerState extends State<ActivityNewsContainer>
                     ),
                   ),
                   StreamBuilder(
-                    stream: bloc.allCommentList,
+                    stream: bloc.allCommentNewsList,
                     builder: (context, AsyncSnapshot<List<Comment>> snapshot) {
                       if (snapshot.hasData) {
                         return buildListComment(snapshot);
@@ -586,7 +572,10 @@ class _ActivityNewsContainerState extends State<ActivityNewsContainer>
                   Icons.send,
                   color: Colors.black,
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  bloc.saveComment(widget.newsId);
+                  bloc.fetchNewsComment(widget.newsId);
+                },
               ),
             ],
             centerTitle: true,
@@ -597,8 +586,8 @@ class _ActivityNewsContainerState extends State<ActivityNewsContainer>
                 padding: EdgeInsets.only(
                   bottom: 1.0,
                 ),
-                child: TextFormField(
-                  onFieldSubmitted: (text) {},
+                child: TextField(
+                  onChanged: bloc.updateComment,
                   textInputAction: TextInputAction.done,
                   autocorrect: false,
                   style: TextStyle(
