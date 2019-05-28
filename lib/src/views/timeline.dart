@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_jaring_ummat/src/bloc/newspaperBloc.dart';
 import 'package:flutter_jaring_ummat/src/models/program_amal.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -109,15 +110,15 @@ class _TimelineState extends State<TimelineView>
             leading: new Icon(AppBarIcons.ic_leading),
             actions: <Widget>[
               SizedBox(
-                width: 15.0,
+                width: 7.0,
               ),
               Icon(Icons.chat),
               SizedBox(
-                width: 12.0,
+                width: 7.0,
               ),
               Icon(AppBarIcons.ic_action),
               SizedBox(
-                width: 5.0,
+                width: 13.0,
               ),
             ],
             centerTitle: true,

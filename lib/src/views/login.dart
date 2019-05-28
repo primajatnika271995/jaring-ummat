@@ -289,7 +289,7 @@ class LoginState extends State<LoginView> {
                         Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
-                            SizedBox(height: 20.0),
+                            SizedBox(height: 10.0),
                             Text('Belum memiliki akun?', style: TextStyle(color: Colors.white)),
                             SizedBox(height: 10.0),
                             RaisedButton(

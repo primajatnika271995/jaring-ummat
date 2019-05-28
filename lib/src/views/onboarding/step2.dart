@@ -228,6 +228,7 @@ class Step2State extends State<Step2View> {
         _preferences.setString(FULLNAME_KEY, userDetails.name);
         _preferences.setString(CONTACT_KEY, 'Not Found');
         _preferences.setString(EMAIL_KEY, userDetails.email);
+        _preferences.setString(ACCESS_TOKEN_KEY, accessToken.token);
         _preferences.setString(
             USER_ID_KEY, userDetails.id);
         _preferences.setString(

@@ -17,10 +17,20 @@ class NewsState extends State<NewsView> with SingleTickerProviderStateMixin {
 
   PageController _controller = PageController(initialPage: 0, keepPage: false);
 
+  List<Newspaper> newspaperCache = new List<Newspaper>();
+
   @override
   void initState() {
     _tabController = new TabController(vsync: this, length: 8);
-    bloc.fetchAllNewspaperThumbnail();
+      bloc.fetchAllNewspaperOriginal();
+        bloc.list.stream.forEach((value) {
+          setState(() {
+            newspaperCache = value;
+          });
+
+      });
+
+//    bloc.fetchAllNewspaperOriginal();
     // TODO: implement initState
     super.initState();
   }
@@ -28,7 +38,7 @@ class NewsState extends State<NewsView> with SingleTickerProviderStateMixin {
   @override
   void dispose() {
     bloc.dispose();
-    _tabController.dispose();
+//    _tabController.dispose();
     // TODO: implement dispose
     super.dispose();
   }
@@ -129,85 +139,22 @@ class NewsState extends State<NewsView> with SingleTickerProviderStateMixin {
                   Column(
                     children: <Widget>[
                       StreamBuilder(
-                        stream: bloc.allNewspaperThumbnail,
+                        stream: bloc.allNewspaperOriginal,
                         builder:
                             (context, AsyncSnapshot<List<Newspaper>> snapshot) {
                           if (snapshot.hasData) {
-                            return buildList(snapshot);
+                            print("masuk yang baru");
+                            return buildList(snapshot.data);
                           } else if (snapshot.hasError) {
                             return Text(snapshot.error.toString());
                           }
-                          return Container(
-                            width: double.infinity,
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 16.0, vertical: 16.0),
-                            child: Shimmer.fromColors(
-                              baseColor: Colors.grey[300],
-                              highlightColor: Colors.grey[100],
-                              child: Column(
-                                children: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-                                    .map(
-                                      (_) => Padding(
-                                            padding: const EdgeInsets.only(
-                                                bottom: 8.0),
-                                            child: Row(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Container(
-                                                  width: 48.0,
-                                                  height: 48.0,
-                                                  color: Colors.white,
-                                                ),
-                                                Padding(
-                                                  padding: const EdgeInsets
-                                                          .symmetric(
-                                                      horizontal: 8.0),
-                                                ),
-                                                Expanded(
-                                                  child: Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Container(
-                                                        width: double.infinity,
-                                                        height: 8.0,
-                                                        color: Colors.white,
-                                                      ),
-                                                      Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                    .symmetric(
-                                                                vertical: 2.0),
-                                                      ),
-                                                      Container(
-                                                        width: double.infinity,
-                                                        height: 8.0,
-                                                        color: Colors.white,
-                                                      ),
-                                                      Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                    .symmetric(
-                                                                vertical: 2.0),
-                                                      ),
-                                                      Container(
-                                                        width: 40.0,
-                                                        height: 8.0,
-                                                        color: Colors.white,
-                                                      ),
-                                                    ],
-                                                  ),
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                    )
-                                    .toList(),
-                              ),
-                            ),
-                          );
+
+                          if (newspaperCache.length > 0) {
+                            print("masuk cache");
+                            print(newspaperCache[0].idUser);
+                            return buildList(newspaperCache);
+                          }
+                          return loadingData();
                         },
                       ),
                     ],
@@ -221,23 +168,86 @@ class NewsState extends State<NewsView> with SingleTickerProviderStateMixin {
     );
   }
 
-  Widget buildList(AsyncSnapshot<List<Newspaper>> snapshot) {
+  Widget buildList(List<Newspaper> snapshot) {
     return ListView.builder(
       shrinkWrap: true,
       physics: ClampingScrollPhysics(),
-      itemCount: snapshot.data.length,
+      itemCount: snapshot.length,
       itemBuilder: (BuildContext context, int index) {
         return ActivityNewsContainer(
-          newsId: snapshot.data[index].id,
-          title: snapshot.data[index].title,
-          excerpt: snapshot.data[index].description,
-          iconImg: snapshot.data[index].imageProfile,
-          imgContent: snapshot.data[index].imageContent,
-          postedAt: snapshot.data[index].createdDate,
-          profileName: snapshot.data[index].createdBy,
-          totalKomentar: snapshot.data[index].totalKomentar
-        );
+            newsId: snapshot[index].id,
+            title: snapshot[index].title,
+            excerpt: snapshot[index].description,
+            iconImg: snapshot[index].imageProfile,
+            imgContent: snapshot[index].imageContent,
+            postedAt: snapshot[index].createdDate,
+            profileName: snapshot[index].createdBy,
+            totalKomentar: snapshot[index].totalKomentar);
       },
+    );
+  }
+
+  Widget loadingData() {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
+      child: Shimmer.fromColors(
+        baseColor: Colors.grey[300],
+        highlightColor: Colors.grey[100],
+        child: Column(
+          children: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+              .map(
+                (_) => Padding(
+                      padding: const EdgeInsets.only(bottom: 8.0),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            width: 48.0,
+                            height: 48.0,
+                            color: Colors.white,
+                          ),
+                          Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 8.0),
+                          ),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  width: double.infinity,
+                                  height: 8.0,
+                                  color: Colors.white,
+                                ),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 2.0),
+                                ),
+                                Container(
+                                  width: double.infinity,
+                                  height: 8.0,
+                                  color: Colors.white,
+                                ),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 2.0),
+                                ),
+                                Container(
+                                  width: 40.0,
+                                  height: 8.0,
+                                  color: Colors.white,
+                                ),
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+              )
+              .toList(),
+        ),
+      ),
     );
   }
 }

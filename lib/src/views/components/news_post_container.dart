@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter_jaring_ummat/src/bloc/commentBloc.dart';
+import 'package:flutter_jaring_ummat/src/bloc/newspaperBloc.dart' as prefix0;
 import 'package:flutter_jaring_ummat/src/models/commentModel.dart';
 import 'package:rubber/rubber.dart';
 import 'dart:convert';
@@ -48,6 +49,8 @@ class _ActivityNewsContainerState extends State<ActivityNewsContainer>
   bool flag = true;
   String lessDesc;
   String moreDesc;
+
+  final commentController = TextEditingController();
 
   // Rubber
   RubberAnimationController _controller;
@@ -507,7 +510,7 @@ class _ActivityNewsContainerState extends State<ActivityNewsContainer>
                       children: <Widget>[
                         // SizedBox(height: 3.0),
                         Text(
-                          snapshot.data[index].idUser,
+                          snapshot.data[index].fullname,
                           style: TextStyle(
                               fontSize: 12.0,
                               fontWeight: FontWeight.bold,
@@ -575,6 +578,8 @@ class _ActivityNewsContainerState extends State<ActivityNewsContainer>
                 onPressed: () {
                   bloc.saveComment(widget.newsId);
                   bloc.fetchNewsComment(widget.newsId);
+                  prefix0.bloc.fetchAllNewspaperThumbnail();
+                  commentController.clear();
                 },
               ),
             ],
@@ -587,6 +592,7 @@ class _ActivityNewsContainerState extends State<ActivityNewsContainer>
                   bottom: 1.0,
                 ),
                 child: TextField(
+                  controller: commentController,
                   onChanged: bloc.updateComment,
                   textInputAction: TextInputAction.done,
                   autocorrect: false,

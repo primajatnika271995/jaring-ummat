@@ -536,7 +536,7 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
                             horizontalFirst: false,
                             desiredMaxRows: 5,
                             cellPadding:
-                                new EdgeInsets.only(right: 4.0, bottom: 4.0),
+                                new EdgeInsets.only(right: 4.0, bottom: 20.0, top: 7.0),
                           ),
                         ],
                         defaultRenderer: new charts.ArcRendererConfig(

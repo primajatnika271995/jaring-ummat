@@ -160,7 +160,7 @@ class _MenuState extends State<Menu> {
                           direction: Axis.vertical,
                           children: <Widget>[
                             SizedBox(
-                              height: 40,
+                              height: 20,
                             ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.start,
@@ -336,7 +336,7 @@ class _MenuState extends State<Menu> {
                     ),
                   ),
                   SizedBox(
-                    height: 20.0,
+                    height: 40.0,
                   ),
                   Container(
                     margin: EdgeInsets.only(left: 10.0, right: 10.0),
