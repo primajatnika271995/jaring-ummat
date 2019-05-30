@@ -3,8 +3,8 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_jaring_ummat/src/bloc/newspaperBloc.dart';
-import 'package:flutter_jaring_ummat/src/models/program_amal.dart';
+import 'package:flutter_jaring_ummat/src/bloc/programAmalBloc.dart';
+import 'package:flutter_jaring_ummat/src/models/programAmalModel.dart';
 import 'package:shimmer/shimmer.dart';
 
 // Component
@@ -22,80 +22,35 @@ class TimelineView extends StatefulWidget {
   }
 }
 
-class _TimelineState extends State<TimelineView>
-    with SingleTickerProviderStateMixin, TickerProviderStateMixin {
-  // Dio Variable
-  Response response;
-  Dio dio = new Dio();
+class _TimelineState extends State<TimelineView> with SingleTickerProviderStateMixin, TickerProviderStateMixin {
 
-  // Variable Preferences
-  SharedPreferences _preferences;
-  String _email;
-
-  // Variable Animation Control
   AnimationController _controller;
-
-  // Variable Tab Controller
   TabController _tabController;
 
-  var _programAmalList = new List<ProgramAmalModel>();
-  var _programAmalListStore = new List<ProgramAmalModel>();
-
-  bool _isSelected;
-  CircularProgressIndicator progressIndicator = new CircularProgressIndicator();
+  List<ProgramAmalModel> programAmalCache = new List<ProgramAmalModel>();
 
   @override
   void initState() {
-    super.initState();
+    bloc.fetchAllProgramAmal();
+    bloc.list.stream.forEach((value) {
+      if (mounted) {
+        setState(() {
+          programAmalCache = value;
+        });
+      }
+    });
     this._tabController = new TabController(vsync: this, length: 8);
     this._controller = new AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 500),
     );
-    setState(() {
-      fetchProgramAmalCache();
-    });
+    super.initState();
   }
 
   @override
   void dispose() {
     super.dispose();
     _tabController.dispose();
-  }
-
-  Future<List<ProgramAmalModel>> fetchProgramAmalCache() async {
-    _preferences = await SharedPreferences.getInstance();
-    var data = _preferences.getString("timeline_store");
-    print("INI STORE DATA");
-    print(data);
-
-    Iterable list = json.decode(data);
-    setState(() {
-      _programAmalListStore =
-          list.map((model) => ProgramAmalModel.fromJson(model)).toList();
-    });
-
-    print("INI LENGTH DARTI STORE LIST ==>");
-    print(_programAmalList.length);
-  }
-
-  Future<List<ProgramAmalModel>> fetchProgramAmal() async {
-    final response = await dio.get(PROGRAM_AMAL_LIST_ALL_URL);
-    print("INI RESPONSE CODE NYA ==>");
-    print(response.statusCode);
-
-    print("INI RESPONSE BODY NYA ==>");
-    print(response.data);
-
-    if (response.statusCode == 200) {
-      _preferences = await SharedPreferences.getInstance();
-      var data = json.encode(response.data);
-      _preferences.setString("timeline_store", data);
-
-      Iterable list = response.data;
-      _programAmalList =
-          list.map((model) => ProgramAmalModel.fromJson(model)).toList();
-    }
   }
 
   @override
@@ -209,155 +164,21 @@ class _TimelineState extends State<TimelineView>
                   delegate: SliverChildListDelegate([
                     Column(
                       children: <Widget>[
-                        FutureBuilder(
-                          future: fetchProgramAmal(),
-                          builder: (context, snapshot) {
-                            switch (snapshot.connectionState) {
-                              case ConnectionState.none:
-                              case ConnectionState.waiting:
-                                if (_programAmalListStore.isEmpty) {
-                                  return Container(
-                                    width: double.infinity,
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 16.0, vertical: 16.0),
-                                    child: Shimmer.fromColors(
-                                      baseColor: Colors.grey[300],
-                                      highlightColor: Colors.grey[100],
-                                      child: Column(
-                                        children: [0, 1, 2, 3, 4, 5, 6, 7, 8]
-                                            .map(
-                                              (_) => Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            bottom: 8.0),
-                                                    child: Row(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        Container(
-                                                          width: 48.0,
-                                                          height: 48.0,
-                                                          color: Colors.white,
-                                                        ),
-                                                        Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                      .symmetric(
-                                                                  horizontal:
-                                                                      8.0),
-                                                        ),
-                                                        Expanded(
-                                                          child: Column(
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .start,
-                                                            children: [
-                                                              Container(
-                                                                width: double
-                                                                    .infinity,
-                                                                height: 8.0,
-                                                                color: Colors
-                                                                    .white,
-                                                              ),
-                                                              Padding(
-                                                                padding: const EdgeInsets
-                                                                        .symmetric(
-                                                                    vertical:
-                                                                        2.0),
-                                                              ),
-                                                              Container(
-                                                                width: double
-                                                                    .infinity,
-                                                                height: 8.0,
-                                                                color: Colors
-                                                                    .white,
-                                                              ),
-                                                              Padding(
-                                                                padding: const EdgeInsets
-                                                                        .symmetric(
-                                                                    vertical:
-                                                                        2.0),
-                                                              ),
-                                                              Container(
-                                                                width: 40.0,
-                                                                height: 8.0,
-                                                                color: Colors
-                                                                    .white,
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        )
-                                                      ],
-                                                    ),
-                                                  ),
-                                            )
-                                            .toList(),
-                                      ),
-                                    ),
-                                  );
-                                }
-                                return ListView.builder(
-                                  shrinkWrap:
-                                      true, // todo comment this out and check the result
-                                  physics: ClampingScrollPhysics(),
-                                  itemCount: _programAmalListStore.length,
-                                  itemBuilder:
-                                      (BuildContext context, int index) {
-                                    var programAmalItem =
-                                        _programAmalListStore[index];
-                                    print("INI DATA DARI STORE ==>");
-                                    print(programAmalItem.titleProgram);
-                                    return ActivityPostContainer(
-                                      activityPostId: programAmalItem.idUser,
-                                      title: programAmalItem.titleProgram,
-                                      profileName: programAmalItem.createdBy,
-                                      postedAt: programAmalItem.createdDate,
-                                      imgContent: programAmalItem.imageContent,
-                                      description:
-                                          programAmalItem.descriptionProgram,
-                                      totalDonation:
-                                          programAmalItem.totalDonasi,
-                                      targetDonation:
-                                          programAmalItem.targetDonasi,
-                                      dueDate: programAmalItem.endDonasi,
-                                      totalLike: programAmalItem.totalDonasi
-                                          .toString(),
-                                      totalComment: programAmalItem.totalDonasi
-                                          .toString(),
-                                    );
-                                  },
-                                );
-                              default:
-                                return ListView.builder(
-                                  shrinkWrap: true,
-                                  physics: ClampingScrollPhysics(),
-                                  itemCount: _programAmalList.length,
-                                  itemBuilder:
-                                      (BuildContext context, int index) {
-                                    var programAmalItem =
-                                        _programAmalList[index];
-                                    return ActivityPostContainer(
-                                      activityPostId: programAmalItem.idUser,
-                                      title: programAmalItem.titleProgram,
-                                      profileName: programAmalItem.createdBy,
-                                      postedAt: programAmalItem.createdDate,
-                                      imgContent: programAmalItem.imageContent,
-                                      description:
-                                          programAmalItem.descriptionProgram,
-                                      totalDonation:
-                                          programAmalItem.totalDonasi,
-                                      targetDonation:
-                                          programAmalItem.targetDonasi,
-                                      dueDate: programAmalItem.endDonasi,
-                                      totalLike: programAmalItem.totalDonasi
-                                          .toString(),
-                                      totalComment: programAmalItem.totalDonasi
-                                          .toString(),
-                                    );
-                                  },
-                                );
+                        StreamBuilder(
+                          stream: bloc.streamProgramAmal,
+                          builder: (BuildContext context, AsyncSnapshot<List<ProgramAmalModel>> snapshot) {
+                            if (snapshot.hasData) {
+                              return buildList(snapshot.data);
+                            } else if (snapshot.hasError) {
+                              return Text(snapshot.hasError.toString());
                             }
+
+                            if (programAmalCache.length > 0) {
+                              print("CACHE DATA");
+                              return buildList(programAmalCache);
+                            }
+
+                            return loadingData();
                           },
                         ),
                       ],
@@ -367,5 +188,93 @@ class _TimelineState extends State<TimelineView>
               ],
             ),
             onRefresh: () => Future.value()));
+  }
+
+  Widget buildList(List<ProgramAmalModel> snapshot) {
+    return ListView.builder(
+        shrinkWrap: true,
+        physics: ClampingScrollPhysics(),
+        itemCount: snapshot.length,
+        itemBuilder: (BuildContext context, int index) {
+          return ActivityPostContainer(
+            activityPostId: snapshot[index].id,
+            profilePictureUrl: '',
+            title: snapshot[index].titleProgram,
+            profileName: snapshot[index].createdBy,
+            postedAt: snapshot[index].createdDate,
+            description: snapshot[index].descriptionProgram,
+            totalDonation: snapshot[index].totalDonasi,
+            imgContent: snapshot[index].imageContent,
+            targetDonation: snapshot[index].targetDonasi,
+            dueDate: snapshot[index].endDonasi,
+            totalLikes: snapshot[index].totalLikes == null ? "0" : snapshot[index].totalLikes.toString(),
+            totalComment: snapshot[index].totalComment.toString(),
+            idUserLike: snapshot[index].idUserLike,
+          );
+        });
+  }
+
+  Widget loadingData() {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
+      child: Shimmer.fromColors(
+        baseColor: Colors.grey[300],
+        highlightColor: Colors.grey[100],
+        child: Column(
+          children: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+              .map(
+                (_) => Padding(
+              padding: const EdgeInsets.only(bottom: 8.0),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    width: 48.0,
+                    height: 48.0,
+                    color: Colors.white,
+                  ),
+                  Padding(
+                    padding:
+                    const EdgeInsets.symmetric(horizontal: 8.0),
+                  ),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          width: double.infinity,
+                          height: 8.0,
+                          color: Colors.white,
+                        ),
+                        Padding(
+                          padding:
+                          const EdgeInsets.symmetric(vertical: 2.0),
+                        ),
+                        Container(
+                          width: double.infinity,
+                          height: 8.0,
+                          color: Colors.white,
+                        ),
+                        Padding(
+                          padding:
+                          const EdgeInsets.symmetric(vertical: 2.0),
+                        ),
+                        Container(
+                          width: 40.0,
+                          height: 8.0,
+                          color: Colors.white,
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              ),
+            ),
+          )
+              .toList(),
+        ),
+      ),
+    );
   }
 }

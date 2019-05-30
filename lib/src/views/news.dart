@@ -13,10 +13,8 @@ class NewsView extends StatefulWidget {
 }
 
 class NewsState extends State<NewsView> with SingleTickerProviderStateMixin {
+
   TabController _tabController;
-
-  PageController _controller = PageController(initialPage: 0, keepPage: false);
-
   List<Newspaper> newspaperCache = new List<Newspaper>();
 
   @override
@@ -24,13 +22,12 @@ class NewsState extends State<NewsView> with SingleTickerProviderStateMixin {
     _tabController = new TabController(vsync: this, length: 8);
       bloc.fetchAllNewspaperOriginal();
         bloc.list.stream.forEach((value) {
-          setState(() {
-            newspaperCache = value;
-          });
-
+          if (mounted) {
+            setState(() {
+              newspaperCache = value;
+            });
+          }
       });
-
-//    bloc.fetchAllNewspaperOriginal();
     // TODO: implement initState
     super.initState();
   }
@@ -38,7 +35,7 @@ class NewsState extends State<NewsView> with SingleTickerProviderStateMixin {
   @override
   void dispose() {
     bloc.dispose();
-//    _tabController.dispose();
+    _tabController.dispose();
     // TODO: implement dispose
     super.dispose();
   }
@@ -143,15 +140,14 @@ class NewsState extends State<NewsView> with SingleTickerProviderStateMixin {
                         builder:
                             (context, AsyncSnapshot<List<Newspaper>> snapshot) {
                           if (snapshot.hasData) {
-                            print("masuk yang baru");
+                            print("GET NEWS DATA");
                             return buildList(snapshot.data);
                           } else if (snapshot.hasError) {
                             return Text(snapshot.error.toString());
                           }
 
                           if (newspaperCache.length > 0) {
-                            print("masuk cache");
-                            print(newspaperCache[0].idUser);
+                            print("CACHE DATA");
                             return buildList(newspaperCache);
                           }
                           return loadingData();
@@ -174,6 +170,7 @@ class NewsState extends State<NewsView> with SingleTickerProviderStateMixin {
       physics: ClampingScrollPhysics(),
       itemCount: snapshot.length,
       itemBuilder: (BuildContext context, int index) {
+        print(snapshot[index].totalKomentar);
         return ActivityNewsContainer(
             newsId: snapshot[index].id,
             title: snapshot[index].title,

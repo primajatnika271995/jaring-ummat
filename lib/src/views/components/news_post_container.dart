@@ -39,6 +39,7 @@ class ActivityNewsContainer extends StatefulWidget {
 
 class _ActivityNewsContainerState extends State<ActivityNewsContainer>
     with SingleTickerProviderStateMixin {
+
   // Picture Carousel Index
   int _current = 0;
 
@@ -58,10 +59,11 @@ class _ActivityNewsContainerState extends State<ActivityNewsContainer>
 
   @override
   void initState() {
+    bloc.fetchNewsComment(widget.newsId);
     _controller = RubberAnimationController(
         vsync: this,
         dismissable: true,
-        lowerBoundValue: AnimationControllerValue(pixel: 650),
+        lowerBoundValue: AnimationControllerValue(pixel: 750),
         upperBoundValue: AnimationControllerValue(percentage: 4.5),
         duration: Duration(milliseconds: 200));
 
@@ -457,9 +459,12 @@ class _ActivityNewsContainerState extends State<ActivityNewsContainer>
                         return Text(snapshot.error.toString());
                       }
                       return Center(
-                        child: CircularProgressIndicator(),
+                        child: Text('No Comment'),
                       );
                     },
+                  ),
+                  SizedBox(
+                    height: 230.0,
                   ),
                 ],
               ),
@@ -493,8 +498,7 @@ class _ActivityNewsContainerState extends State<ActivityNewsContainer>
                       height: 50.0,
                       decoration: BoxDecoration(
                         image: DecorationImage(
-                          image: NetworkImage(
-                              'https://i2.wp.com/www.coachcarson.com/wp-content/uploads/2018/09/Chad-Profile-pic-circle.png?resize=800%2C800&ssl=1'),
+                          image: AssetImage("assets/users/orang.png"),
                           fit: BoxFit.contain,
                         ),
                       ),
@@ -551,9 +555,7 @@ class _ActivityNewsContainerState extends State<ActivityNewsContainer>
   }
 
   Widget _getMenuLayer() {
-    return Container(
-      height: 50,
-      child: Center(
+    return  BottomAppBar(
         child: new Container(
           height: 50.0,
           child: AppBar(
@@ -575,35 +577,30 @@ class _ActivityNewsContainerState extends State<ActivityNewsContainer>
                   Icons.send,
                   color: Colors.black,
                 ),
-                onPressed: () {
+                onPressed: () async {
                   bloc.saveComment(widget.newsId);
+                  await Future.delayed(Duration(milliseconds: 3));
                   bloc.fetchNewsComment(widget.newsId);
-                  prefix0.bloc.fetchAllNewspaperThumbnail();
-                  commentController.clear();
+                  prefix0.bloc.fetchAllNewspaperOriginal();
                 },
               ),
             ],
             centerTitle: true,
-            automaticallyImplyLeading: false,
+            automaticallyImplyLeading: true,
             titleSpacing: 0.0,
             title: Container(
               child: Padding(
-                padding: EdgeInsets.only(
-                  bottom: 1.0,
-                ),
+                padding: EdgeInsets.only(bottom: 0.0),
                 child: TextField(
-                  controller: commentController,
                   onChanged: bloc.updateComment,
-                  textInputAction: TextInputAction.done,
                   autocorrect: false,
+                  textInputAction: TextInputAction.next,
                   style: TextStyle(
                     fontSize: 12.0,
                     color: Colors.black,
                   ),
                   decoration: InputDecoration(
-                    contentPadding:
-                        EdgeInsets.only(top: 7.0, bottom: 7.0, left: 4.0),
-                    // icon: Icon(Icons.search, size: 18.0),
+                    icon: Icon(Icons.search, size: 18.0),
                     border: InputBorder.none,
                     hintText: 'Tulis komentar anda disini...',
                   ),
@@ -617,9 +614,7 @@ class _ActivityNewsContainerState extends State<ActivityNewsContainer>
             ),
           ),
         ),
-      ),
-      decoration: BoxDecoration(color: Colors.white),
-    );
+      );
   }
 
   Widget modalSheetComent() {
@@ -688,7 +683,7 @@ class _ActivityNewsContainerState extends State<ActivityNewsContainer>
                 ),
                 color: Colors.blueAccent,
               ),
-              headerHeight: 65,
+//              headerHeight: 65,
               upperLayer: _getUpperLayer(),
               menuLayer: _getMenuLayer(),
               animationController: _controller,

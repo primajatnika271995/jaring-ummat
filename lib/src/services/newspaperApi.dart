@@ -28,6 +28,4 @@ class NewspaperApiProvider {
       throw Exception("Failed to load berita original");
     }
   }
-
-  
 }

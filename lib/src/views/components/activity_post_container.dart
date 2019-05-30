@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:bottom_sheet_stateful/bottom_sheet_stateful.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_jaring_ummat/src/services/time_ago_service.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -20,6 +19,7 @@ import 'show_alert_dialog.dart';
 
 class ActivityPostContainer extends StatefulWidget {
   final String activityPostId;
+  final String idUserLike;
   final String profilePictureUrl;
   final String title;
   final String profileName;
@@ -29,12 +29,13 @@ class ActivityPostContainer extends StatefulWidget {
   final double targetDonation;
   final List<dynamic> imgContent;
   final String dueDate;
-  final String totalLike;
+  final String totalLikes;
   final String totalComment;
 
   ActivityPostContainer({
     Key key,
     this.activityPostId,
+    this.idUserLike,
     this.profilePictureUrl,
     this.title,
     this.description,
@@ -44,7 +45,7 @@ class ActivityPostContainer extends StatefulWidget {
     this.totalDonation = 0,
     this.targetDonation = 0,
     this.dueDate,
-    this.totalLike,
+    this.totalLikes = "0",
     this.totalComment,
   });
 
@@ -285,7 +286,7 @@ class ActivityPostState extends State<ActivityPostContainer>
           left: 10.0,
           bottom: 15.0,
           child: DotsIndicator(
-            dotsCount: 1,
+            dotsCount: widget.imgContent.length,
             position: _current,
             decorator: DotsDecorator(
               spacing: const EdgeInsets.all(2.0),
@@ -1066,7 +1067,7 @@ class ActivityPostState extends State<ActivityPostContainer>
                         targetDonation: widget.targetDonation,
                         totalComment: widget.totalComment,
                         totalDonation: widget.totalDonation,
-                        totalLike: widget.totalLike,
+                        totalLike: widget.totalLikes,
                       ),
                 ),
               );
@@ -1126,7 +1127,7 @@ class ActivityPostState extends State<ActivityPostContainer>
                 width: 5.0,
               ),
               Text(
-                widget.totalLike + ' Likes',
+                widget.totalLikes + ' Likes',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 13.0,

@@ -1,10 +1,10 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_jaring_ummat/src/services/news_service.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:image/image.dart';
 import '../views/create_data_preview.dart';
 
 // Component
@@ -18,12 +18,9 @@ class CreateNews extends StatefulWidget {
 class _CreateNewsState extends State<CreateNews> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
-//  Shared Preferences
   SharedPreferences _preferences;
 
   bool _isSubmit = false;
-
-//
 
   List<String> _kategori = [
     'Pendidikan',
@@ -34,20 +31,15 @@ class _CreateNewsState extends State<CreateNews> {
 
   String _selectedKategori; // Option 2
 
-// Variable Selected image
   File selected_berita1,
       selected_berita2,
       selected_berita3,
       selected_berita4,
       selected_berita5;
 
-//  Text Controller
-
   final judulBeritaController = new TextEditingController();
   final kategoriBeritaController = new TextEditingController();
   final deskripsiBeritaController = new TextEditingController();
-
-  //  LOADING METODE
 
   Future<bool> showLoadingIndicator() async {
     await new Future.delayed(const Duration(seconds: 2));
@@ -115,34 +107,6 @@ class _CreateNewsState extends State<CreateNews> {
             ),
       ),
     );
-
-//
-//    _scaffoldKey.currentState.showSnackBar(
-//      new SnackBar(
-//        duration: new Duration(seconds: 2),
-//        content: new Row(
-//          children: <Widget>[
-//            new CircularProgressIndicator(),
-//            new Text(" Please Wait ... ")
-//          ],
-//        ),
-//      ),
-//    );
-//
-//    setState(() {
-//      _isSubmit = true;
-//    });
-//
-//    NewsService newsService = NewsService();
-//    await newsService.saveNews(title, user_id, kategori, description, createdBy, selected_berita1.path, selected_berita1.path, selected_berita1.path).then((response) {
-//      if (response.statusCode == 201) {
-//        setState(() {
-//          _isSubmit = false;
-//        });
-//        print("Data Berita Berhasil Disimpan");
-//        Navigator.of(context).pushReplacementNamed("/home");
-//      }
-//    });
   }
 
   @override

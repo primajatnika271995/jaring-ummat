@@ -86,7 +86,7 @@ class ActivityPostListViewState extends State<ActivityPostListViewContainer> {
                 title: item['title'],
                 profileName: item['profile_name'],
                 dueDate: item['due_date'],
-                totalLike: item['total_like'],
+                totalLikes: item['total_like'],
                 totalComment: item['total_comment'],
               );
             }

@@ -4,8 +4,6 @@ import 'package:flutter_jaring_ummat/src/views/onboarding/step3.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:toast/toast.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
@@ -162,39 +160,6 @@ class Step2State extends State<Step2View> {
         );
       }
     });
-  }
-
-  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-  final GoogleSignIn _googleSignIn = new GoogleSignIn();
-
-  Future<FirebaseUser> _signIn(BuildContext context) async {
-
-    _scaffoldKey.currentState.showSnackBar(
-      new SnackBar(
-        content: new Text('Sign in With Google Account'),
-      ),
-    );
-
-    final GoogleSignInAccount googleUser = await _googleSignIn.signIn();
-    final GoogleSignInAuthentication googleAuth =
-        await googleUser.authentication;
-
-    final AuthCredential credential = GoogleAuthProvider.getCredential(
-        idToken: googleAuth.idToken, accessToken: googleAuth.accessToken);
-
-    FirebaseUser userDetails =
-        await _firebaseAuth.signInWithCredential(credential);
-    ProviderDetails providerInfo = new ProviderDetails(userDetails.providerId);
-
-    List<ProviderDetails> providerData = new List<ProviderDetails>();
-    providerData.add(providerInfo);
-
-    GoogleDetails details = new GoogleDetails(
-        userDetails.providerId,
-        userDetails.displayName,
-        userDetails.photoUrl,
-        userDetails.email,
-        providerData);
   }
 
   static final FacebookLogin facebookSignIn = new FacebookLogin();
@@ -417,9 +382,7 @@ class Step2State extends State<Step2View> {
                                   width: 20,
                                 ),
                                 RaisedButton.icon(
-                                  onPressed: () => _signIn(context)
-                                      .then((FirebaseUser user) => print(user))
-                                      .catchError((e) => print(e)),
+                                  onPressed: () {},
                                   icon: SvgPicture.asset(
                                     'assets/icon/google_logo.svg',
                                     width: 20.0,

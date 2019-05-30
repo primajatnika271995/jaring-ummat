@@ -1,6 +1,16 @@
 PODS:
+  - FBSDKCoreKit (5.0.0):
+    - FBSDKCoreKit/Basics (= 5.0.0)
+    - FBSDKCoreKit/Core (= 5.0.0)
+  - FBSDKCoreKit/Basics (5.0.0)
+  - FBSDKCoreKit/Core (5.0.0):
+    - FBSDKCoreKit/Basics
+  - FBSDKLoginKit (5.0.0):
+    - FBSDKCoreKit (= 5.0.0)
   - Flutter (1.0.0)
-  - flutter_image_compress (0.0.1):
+  - flutter_facebook_login (0.0.1):
+    - FBSDKCoreKit (= 5.0.0)
+    - FBSDKLoginKit (= 5.0.0)
     - Flutter
   - flutter_money_formatter (0.0.1):
     - Flutter
@@ -9,7 +19,7 @@ PODS:
   - FMDB/standard (2.7.5)
   - image_cropper (0.0.1):
     - Flutter
-    - TOCropViewController (~> 2.3.8)
+    - TOCropViewController (~> 2.4.0)
   - image_picker (0.0.1):
     - Flutter
   - intro_slider (0.0.1):
@@ -23,13 +33,13 @@ PODS:
   - sqflite (0.0.1):
     - Flutter
     - FMDB (~> 2.7.2)
-  - TOCropViewController (2.3.8)
+  - TOCropViewController (2.4.0)
   - video_player (0.0.1):
     - Flutter
 
 DEPENDENCIES:
   - Flutter (from `.symlinks/flutter/ios`)
-  - flutter_image_compress (from `.symlinks/plugins/flutter_image_compress/ios`)
+  - flutter_facebook_login (from `.symlinks/plugins/flutter_facebook_login/ios`)
   - flutter_money_formatter (from `.symlinks/plugins/flutter_money_formatter/ios`)
   - image_cropper (from `.symlinks/plugins/image_cropper/ios`)
   - image_picker (from `.symlinks/plugins/image_picker/ios`)
@@ -42,14 +52,16 @@ DEPENDENCIES:
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
+    - FBSDKCoreKit
+    - FBSDKLoginKit
     - FMDB
     - TOCropViewController
 
 EXTERNAL SOURCES:
   Flutter:
     :path: ".symlinks/flutter/ios"
-  flutter_image_compress:
-    :path: ".symlinks/plugins/flutter_image_compress/ios"
+  flutter_facebook_login:
+    :path: ".symlinks/plugins/flutter_facebook_login/ios"
   flutter_money_formatter:
     :path: ".symlinks/plugins/flutter_money_formatter/ios"
   image_cropper:
@@ -70,20 +82,22 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/video_player/ios"
 
 SPEC CHECKSUMS:
-  Flutter: 9d0fac939486c9aba2809b7982dfdbb47a7b0296
-  flutter_image_compress: 386567f3a592e5f52bdf81be7feba627250147f1
-  flutter_money_formatter: 814c6a1ca84a090dff32d24c55db39a5adfd9b73
+  FBSDKCoreKit: ba361d4a9d4dc29ff218822b849b22d4f869c7bb
+  FBSDKLoginKit: c6d0dc187bd076e370dffa10f7fc8a3562a6892c
+  Flutter: 58dd7d1b27887414a370fcccb9e645c08ffd7a6a
+  flutter_facebook_login: 8963f768786618d674fcb41f5eb648a09cddca47
+  flutter_money_formatter: d0d18ddc5be333fad8d09964d741b59fa11a91dc
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
-  image_cropper: 046482c5501fc775e17f792d5af4b46c19bb774e
-  image_picker: ee00aab0487cedc80a304085219503cc6d0f2e22
-  intro_slider: 961a06956afdbaeaafb8488269b52eae4f866dbb
-  path_provider: 09407919825bfe3c2deae39453b7a5b44f467873
-  screen: 22ab9c4a784112d4b21ad7d80e81729e0afdaa65
-  shared_preferences: 5a1d487c427ee18fcd3ea1f2a131569481834b53
-  sqflite: d1612813fa7db7c667bed9f1d1b508deffc56999
-  TOCropViewController: 0a075f02c253e88095143bbac7b013fc6fba5090
-  video_player: 906796a841943c8d370ac7c13b18039aa9b56498
+  image_cropper: 88160bea3665a5fab6989ff3a6825811b8f19a3d
+  image_picker: 16e5fec1fbc87fd3b297c53e4048521eaf17cd06
+  intro_slider: 85847639533bfd8e898d76844e0aa2cf412ee190
+  path_provider: f96fff6166a8867510d2c25fdcc346327cc4b259
+  screen: abd91ca7bf3426e1cc3646d27e9b2358d6bf07b0
+  shared_preferences: 1feebfa37bb57264736e16865e7ffae7fc99b523
+  sqflite: ff1d9da63c06588cc8d1faf7256d741f16989d5a
+  TOCropViewController: 368d8df3ea43b62c3dc5a61f11b9048274d240bd
+  video_player: 3964090a33353060ed7f58aa6427c7b4b208ec21
 
 PODFILE CHECKSUM: aff02bfeed411c636180d6812254b2daeea14d09
 
-COCOAPODS: 1.5.3
+COCOAPODS: 1.7.0
