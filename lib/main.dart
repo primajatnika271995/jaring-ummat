@@ -33,14 +33,15 @@ class LandingPage extends StatelessWidget {
       _preferences = await SharedPreferences.getInstance();
       var token = _preferences.getString(ACCESS_TOKEN_KEY);
       print(token);
-      if (token == null) {
-        Navigator.of(context).pushReplacementNamed("/login");
-        // Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
-      } else {
-        // Navigator.pop(context);
-        Navigator.of(context).pushReplacementNamed("/home");
-        // Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
-      }
+      Navigator.of(context).pushReplacementNamed("/home");
+//      if (token == null) {
+//        Navigator.of(context).pushReplacementNamed("/login");
+//        // Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
+//      } else {
+//        // Navigator.pop(context);
+//        Navigator.of(context).pushReplacementNamed("/home");
+//        // Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
+//      }
     });
 
     return Container(

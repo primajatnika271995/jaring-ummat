@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:io';
 
-import 'package:flutter_jaring_ummat/src/services/news_service.dart';
-
 class PreviewData extends StatefulWidget {
   final String newsId;
   final String iconImg;
@@ -72,26 +70,26 @@ class _PreviewDataState extends State<PreviewData> {
       _isSubmit = true;
     });
 
-    NewsService newsService = NewsService();
-    await newsService
-        .saveNews(
-            widget.title,
-            widget.newsId,
-            widget.category,
-            widget.excerpt,
-            widget.postedBy,
-            widget.newsImg.path,
-            widget.newsImg1.path,
-            widget.newsImg.path)
-        .then((response) {
-      if (response.statusCode == 201) {
-        setState(() {
-          _isSubmit = false;
-        });
-        print("Data Berita Berhasil Disimpan");
-        Navigator.of(context).pushReplacementNamed("/home");
-      }
-    });
+//    NewsService newsService = NewsService();
+//    await newsService
+//        .saveNews(
+//            widget.title,
+//            widget.newsId,
+//            widget.category,
+//            widget.excerpt,
+//            widget.postedBy,
+//            widget.newsImg.path,
+//            widget.newsImg1.path,
+//            widget.newsImg.path)
+//        .then((response) {
+//      if (response.statusCode == 201) {
+//        setState(() {
+//          _isSubmit = false;
+//        });
+//        print("Data Berita Berhasil Disimpan");
+//        Navigator.of(context).pushReplacementNamed("/home");
+//      }
+//    });
   }
 
   Widget getProfilePicture() {

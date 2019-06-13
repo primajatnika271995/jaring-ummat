@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:flutter_jaring_ummat/src/bloc/newspaperBloc.dart';
+import 'package:flutter_jaring_ummat/src/bloc/newspaperBloc.dart' as beritaBloc;
 import 'package:flutter_jaring_ummat/src/models/newspaperModel.dart';
 import 'package:flutter_jaring_ummat/src/views/components/news_post_container.dart';
 import 'package:shimmer/shimmer.dart';
@@ -20,8 +20,8 @@ class NewsState extends State<NewsView> with SingleTickerProviderStateMixin {
   @override
   void initState() {
     _tabController = new TabController(vsync: this, length: 8);
-      bloc.fetchAllNewspaperOriginal();
-        bloc.list.stream.forEach((value) {
+      beritaBloc.bloc.fetchAllNewspaperContent();
+        beritaBloc.bloc.list.stream.forEach((value) {
           if (mounted) {
             setState(() {
               newspaperCache = value;
@@ -34,7 +34,7 @@ class NewsState extends State<NewsView> with SingleTickerProviderStateMixin {
 
   @override
   void dispose() {
-    bloc.dispose();
+    beritaBloc.bloc.dispose();
     _tabController.dispose();
     // TODO: implement dispose
     super.dispose();
@@ -136,7 +136,7 @@ class NewsState extends State<NewsView> with SingleTickerProviderStateMixin {
                   Column(
                     children: <Widget>[
                       StreamBuilder(
-                        stream: bloc.allNewspaperOriginal,
+                        stream: beritaBloc.bloc.allNewspaper,
                         builder:
                             (context, AsyncSnapshot<List<Newspaper>> snapshot) {
                           if (snapshot.hasData) {
@@ -170,16 +170,16 @@ class NewsState extends State<NewsView> with SingleTickerProviderStateMixin {
       physics: ClampingScrollPhysics(),
       itemCount: snapshot.length,
       itemBuilder: (BuildContext context, int index) {
-        print(snapshot[index].totalKomentar);
+        print(snapshot[index].totalComment);
         return ActivityNewsContainer(
             newsId: snapshot[index].id,
             title: snapshot[index].title,
             excerpt: snapshot[index].description,
-            iconImg: snapshot[index].imageProfile,
+            iconImg: snapshot[index].imageContent[0],
             imgContent: snapshot[index].imageContent,
             postedAt: snapshot[index].createdDate,
             profileName: snapshot[index].createdBy,
-            totalKomentar: snapshot[index].totalKomentar);
+            totalKomentar: snapshot[index].totalComment);
       },
     );
   }

@@ -1,6 +1,8 @@
 //const BASE_API_URL = 'http://192.168.1.35:9091';
 
-const BASE_API_URL = 'http://139.162.15.91/jaring-ummat';
+//const BASE_API_URL = 'http://139.162.15.91/jaring-ummat';
+
+const BASE_API_URL = 'http://192.168.1.7:9091';
 
 // BASE REGISTER AND LOGIN_URL
 const REGISTRATION_URL = BASE_API_URL + '/api/user/';
@@ -13,9 +15,8 @@ const USER_DETAILS_URL = BASE_API_URL + '/api/user/desc';
 const CHECK_REGISTRATION_EMAIL = BASE_API_URL + '/api/user/checkout';
 
 // BASE NEWS CONTENT
-const NEWS_GET_LIST_THUMBNAIL = BASE_API_URL + '/api/news/list/thumbnail';
-const NEWS_GET_LIST_ORIGINAL = BASE_API_URL + '/api/news/list/origin';
-const NEWS_CREATE = BASE_API_URL + '/api/news/';
+const NEWS_GET_LIST = BASE_API_URL + '/api/berita/list';
+const NEWS_CREATE = BASE_API_URL + '/api/berita/';
 
 // For Service Program Amal API
 const PROGRAM_AMAL_SAVE_URL = BASE_API_URL + '/api/program-amal/';

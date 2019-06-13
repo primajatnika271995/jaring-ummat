@@ -53,6 +53,7 @@ dependencies:
   rubber: ^0.3.2
   progress_dialog: ^1.1.0+1
 
+
   flutter_facebook_login:
     git: https://github.com/lequanghiep74/flutter_facebook_login
   rxdart: ^0.22.0

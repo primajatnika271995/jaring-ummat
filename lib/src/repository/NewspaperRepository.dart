@@ -5,8 +5,7 @@ class NewspaperRepository {
 
   final repository = NewspaperApiProvider();
 
-  Future<List<Newspaper>> fetchAllNewspaperThumbnail() => repository.fetchNewspaperThumbnails();
-  Future<List<Newspaper>> fetchAllNewspaperOriginal() => repository.fetchNewspaperOriginal();
+  Future<List<Newspaper>> fetchAllNewspaper() => repository.fetchNewspaper();
   
 
 }

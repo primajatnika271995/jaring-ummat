@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dots_indicator/dots_indicator.dart';
-import 'package:flutter_jaring_ummat/src/bloc/commentBloc.dart';
-import 'package:flutter_jaring_ummat/src/bloc/newspaperBloc.dart' as prefix0;
+import 'package:flutter_jaring_ummat/src/bloc/commentBloc.dart' as commentBloc;
+import 'package:flutter_jaring_ummat/src/bloc/newspaperBloc.dart' as beritaBloc;
 import 'package:flutter_jaring_ummat/src/models/commentModel.dart';
 import 'package:rubber/rubber.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'dart:convert';
 
 // Component
@@ -15,23 +16,23 @@ class ActivityNewsContainer extends StatefulWidget {
   final String newsId;
   final String iconImg;
   final String profileName;
-  final List<dynamic> imgContent;
+  final List<String> imgContent;
   final String category;
   final String title;
   final int postedAt;
   final String excerpt;
   final int totalKomentar;
 
-  ActivityNewsContainer(
-      {this.newsId,
-      this.iconImg,
-      this.profileName,
-      this.imgContent,
-      this.category,
-      this.title,
-      this.postedAt = 0,
-      this.excerpt,
-      this.totalKomentar});
+  ActivityNewsContainer({
+    this.newsId,
+    this.iconImg,
+    this.profileName,
+    this.imgContent,
+    this.category,
+    this.title,
+    this.postedAt = 0,
+    this.excerpt,
+    this.totalKomentar});
 
   @override
   _ActivityNewsContainerState createState() => _ActivityNewsContainerState();
@@ -59,7 +60,7 @@ class _ActivityNewsContainerState extends State<ActivityNewsContainer>
 
   @override
   void initState() {
-    bloc.fetchNewsComment(widget.newsId);
+    commentBloc.bloc.fetchNewsComment(widget.newsId);
     _controller = RubberAnimationController(
         vsync: this,
         dismissable: true,
@@ -80,7 +81,7 @@ class _ActivityNewsContainerState extends State<ActivityNewsContainer>
 
   @override
   void dispose() {
-    bloc.dispose();
+    commentBloc.bloc.dispose();
     // TODO: implement dispose
     super.dispose();
   }
@@ -114,7 +115,7 @@ class _ActivityNewsContainerState extends State<ActivityNewsContainer>
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(30.0),
               image: DecorationImage(
-                image: MemoryImage(base64Decode(widget.iconImg)),
+                image: NetworkImage(widget.imgContent[0]),
               ),
             ),
           ),
@@ -159,8 +160,7 @@ class _ActivityNewsContainerState extends State<ActivityNewsContainer>
                 child: ClipRRect(
                   borderRadius: BorderRadius.all(Radius.circular(0.0)),
                   child: FadeInImage(
-                    image: MemoryImage(base64Decode(url)),
-                    placeholder: AssetImage('assets/backgrounds/no_image.png'),
+                    image: NetworkImage(url),
                     fit: BoxFit.cover,
                     width: double.infinity,
                   ),
@@ -189,6 +189,17 @@ class _ActivityNewsContainerState extends State<ActivityNewsContainer>
     );
   }
 
+//  Widget setMainImage() {
+//    return Container(
+//      height: 300.0,
+//      child: CachedNetworkImage(
+//        imageUrl: widget.imgContent,
+//        placeholder: (context, url) => new CircularProgressIndicator(),
+//        errorWidget: (content, url, error) => new Icon(Icons.error),
+//      ),
+//    );
+//  }
+
   // WIDGET FOR SHARE BERITA
   Widget setTopContentShare() {
     return Container(
@@ -203,7 +214,7 @@ class _ActivityNewsContainerState extends State<ActivityNewsContainer>
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(30.0),
               image: DecorationImage(
-                image: MemoryImage(base64Decode(widget.imgContent[0])),
+                image: NetworkImage(widget.imgContent[0]),
               ),
             ),
           ),
@@ -288,7 +299,7 @@ class _ActivityNewsContainerState extends State<ActivityNewsContainer>
         GestureDetector(
           onTap: () {
             modalSheetComent();
-            bloc.fetchNewsComment(widget.newsId);
+            commentBloc.bloc.fetchNewsComment(widget.newsId);
           },
           child: Row(
             children: <Widget>[
@@ -451,7 +462,7 @@ class _ActivityNewsContainerState extends State<ActivityNewsContainer>
                     ),
                   ),
                   StreamBuilder(
-                    stream: bloc.allCommentNewsList,
+                    stream: commentBloc.bloc.allCommentNewsList,
                     builder: (context, AsyncSnapshot<List<Comment>> snapshot) {
                       if (snapshot.hasData) {
                         return buildListComment(snapshot);
@@ -578,10 +589,10 @@ class _ActivityNewsContainerState extends State<ActivityNewsContainer>
                   color: Colors.black,
                 ),
                 onPressed: () async {
-                  bloc.saveComment(widget.newsId);
+                  commentBloc.bloc.saveComment(widget.newsId);
                   await Future.delayed(Duration(milliseconds: 3));
-                  bloc.fetchNewsComment(widget.newsId);
-                  prefix0.bloc.fetchAllNewspaperOriginal();
+                  commentBloc.bloc.fetchNewsComment(widget.newsId);
+                  beritaBloc.bloc.fetchAllNewspaperContent();
                 },
               ),
             ],
@@ -592,7 +603,7 @@ class _ActivityNewsContainerState extends State<ActivityNewsContainer>
               child: Padding(
                 padding: EdgeInsets.only(bottom: 0.0),
                 child: TextField(
-                  onChanged: bloc.updateComment,
+                  onChanged: commentBloc.bloc.updateComment,
                   autocorrect: false,
                   textInputAction: TextInputAction.next,
                   style: TextStyle(
@@ -644,7 +655,7 @@ class _ActivityNewsContainerState extends State<ActivityNewsContainer>
                               borderRadius: BorderRadius.circular(30.0),
                               image: DecorationImage(
                                 image:
-                                    MemoryImage(base64Decode(widget.iconImg)),
+                                    NetworkImage(widget.imgContent[0]),
                               ),
                             ),
                           ),

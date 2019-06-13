@@ -7,25 +7,15 @@ class NewspaperApiProvider {
 
   Client client = Client();
 
-  Future<List<Newspaper>> fetchNewspaperThumbnails() async {
+  Future<List<Newspaper>> fetchNewspaper() async {
 
-    final response = await client.get(NEWS_GET_LIST_THUMBNAIL);
-    print("ini response code berita thumbnails ==> ${response.statusCode}");
+    final response = await client.get(NEWS_GET_LIST);
+    print("ini response code berita {} ${response.statusCode}");
+
     if (response.statusCode == 200) {
       return compute(newspaperFromJson, response.body);
     } else {
-      throw Exception("Failed to load berita thumbnails");
-    }
-  }
-
-  Future<List<Newspaper>> fetchNewspaperOriginal() async {
-
-    final response = await client.get(NEWS_GET_LIST_ORIGINAL);
-    print("ini response code berita original ==> ${response.statusCode}");
-    if (response.statusCode == 200) {
-      return compute(newspaperFromJson, response.body);
-    } else {
-      throw Exception("Failed to load berita original");
+      throw Exception("Failed to load content");
     }
   }
 }
