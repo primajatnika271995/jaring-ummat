@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_jaring_ummat/main.dart';
+import 'package:flutter_jaring_ummat/src/views/page_berita/berita.dart';
 import 'views/login.dart';
 import 'views/home.dart';
 import 'views/intro_slider.dart';

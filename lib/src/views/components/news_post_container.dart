@@ -6,7 +6,7 @@ import 'package:flutter_jaring_ummat/src/bloc/newspaperBloc.dart' as beritaBloc;
 import 'package:flutter_jaring_ummat/src/models/commentModel.dart';
 import 'package:rubber/rubber.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'dart:convert';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 // Component
 import 'package:flutter_jaring_ummat/src/services/time_ago_service.dart';
@@ -16,7 +16,7 @@ class ActivityNewsContainer extends StatefulWidget {
   final String newsId;
   final String iconImg;
   final String profileName;
-  final List<String> imgContent;
+  final List<dynamic> imgContent;
   final String category;
   final String title;
   final int postedAt;
@@ -115,6 +115,7 @@ class _ActivityNewsContainerState extends State<ActivityNewsContainer>
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(30.0),
               image: DecorationImage(
+                fit: BoxFit.cover,
                 image: NetworkImage(widget.imgContent[0]),
               ),
             ),
@@ -127,7 +128,7 @@ class _ActivityNewsContainerState extends State<ActivityNewsContainer>
               children: <Widget>[
                 new Text(
                   widget.title,
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17.0),
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15.0),
                 ),
                 Text(
                   'oleh ' +
@@ -149,7 +150,7 @@ class _ActivityNewsContainerState extends State<ActivityNewsContainer>
     return Stack(
       children: <Widget>[
         CarouselSlider(
-          height: 300.0,
+          height: 200.0,
           autoPlay: false,
           reverse: false,
           viewportFraction: 1.0,
@@ -159,10 +160,10 @@ class _ActivityNewsContainerState extends State<ActivityNewsContainer>
               return Container(
                 child: ClipRRect(
                   borderRadius: BorderRadius.all(Radius.circular(0.0)),
-                  child: FadeInImage(
-                    image: NetworkImage(url),
+                  child: CachedNetworkImage(
                     fit: BoxFit.cover,
-                    width: double.infinity,
+                    imageUrl: url,
+                    errorWidget: (content, url, error) => new Icon(Icons.error),
                   ),
                 ),
               );
@@ -189,22 +190,11 @@ class _ActivityNewsContainerState extends State<ActivityNewsContainer>
     );
   }
 
-//  Widget setMainImage() {
-//    return Container(
-//      height: 300.0,
-//      child: CachedNetworkImage(
-//        imageUrl: widget.imgContent,
-//        placeholder: (context, url) => new CircularProgressIndicator(),
-//        errorWidget: (content, url, error) => new Icon(Icons.error),
-//      ),
-//    );
-//  }
-
   // WIDGET FOR SHARE BERITA
   Widget setTopContentShare() {
     return Container(
       color: Colors.blueAccent,
-      padding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+      padding: EdgeInsets.fromLTRB(10.0, 10.0, 20.0, 10.0),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
@@ -214,6 +204,7 @@ class _ActivityNewsContainerState extends State<ActivityNewsContainer>
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(30.0),
               image: DecorationImage(
+                fit: BoxFit.cover,
                 image: NetworkImage(widget.imgContent[0]),
               ),
             ),
@@ -571,6 +562,7 @@ class _ActivityNewsContainerState extends State<ActivityNewsContainer>
           height: 50.0,
           child: AppBar(
             backgroundColor: Colors.white,
+            elevation: 0.0,
             leading: Container(
               width: 100.0,
               height: 100.0,
@@ -578,7 +570,6 @@ class _ActivityNewsContainerState extends State<ActivityNewsContainer>
               decoration: BoxDecoration(
                 image: DecorationImage(
                   image: AssetImage("assets/users/orang.png"),
-//                      fit: BoxFit.contain,
                 ),
               ),
             ),
@@ -647,13 +638,14 @@ class _ActivityNewsContainerState extends State<ActivityNewsContainer>
                       child: new Column(
                         children: <Widget>[
                           Container(
-                            width: 40.0,
-                            height: 40.0,
+                            width: 50.0,
+                            height: 50.0,
                             margin: EdgeInsets.symmetric(
                                 horizontal: 5.0, vertical: 5.0),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(30.0),
                               image: DecorationImage(
+                                fit: BoxFit.cover,
                                 image:
                                     NetworkImage(widget.imgContent[0]),
                               ),
@@ -694,7 +686,7 @@ class _ActivityNewsContainerState extends State<ActivityNewsContainer>
                 ),
                 color: Colors.blueAccent,
               ),
-//              headerHeight: 65,
+              headerHeight: 65,
               upperLayer: _getUpperLayer(),
               menuLayer: _getMenuLayer(),
               animationController: _controller,
@@ -710,67 +702,116 @@ class _ActivityNewsContainerState extends State<ActivityNewsContainer>
       context: context,
       builder: (BuildContext ctx) {
         return Container(
+          height: 370.0,
           child: new Column(
             children: <Widget>[
               setTopContentShare(),
-              SizedBox(
-                height: 30.0,
-              ),
-              new Container(
-                child: new Text(
-                  'Bagikan Melalui Facebook',
-                  style: TextStyle(
-                      fontSize: 17.0,
-                      color: Colors.blueAccent,
-                      fontWeight: FontWeight.bold),
+              InkWell(
+                onTap: () {
+
+                },
+                highlightColor: Colors.grey,
+                child: new Container(
+                  height: 70.0,
+                  child: new Row(
+                    children: <Widget>[
+                      Expanded(
+                        flex: 3,
+                        child: Icon(FontAwesomeIcons.facebookF, color: Colors.blueAccent,),
+                      ),
+                      Expanded(
+                        flex: 7,
+                        child: Text(
+                          'Bagikan Melalui Facebook',
+                          style: TextStyle(
+                              fontSize: 17.0,
+                              color: Colors.blueAccent,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      )
+                    ],
+                  ),
                 ),
               ),
-              SizedBox(
-                height: 10.0,
-              ),
-              new Divider(),
-              SizedBox(
-                height: 30.0,
-              ),
-              new Container(
-                child: new Text(
-                  'Bagikan Melalui WhatsApp',
-                  style: TextStyle(
-                      fontSize: 17.0,
-                      color: Colors.blueAccent,
-                      fontWeight: FontWeight.bold),
+              InkWell(
+                onTap: () {
+
+                },
+                highlightColor: Colors.grey,
+                child: new Container(
+                  height: 70.0,
+                  child: new Row(
+                    children: <Widget>[
+                      Expanded(
+                        flex: 3,
+                        child: Icon(FontAwesomeIcons.whatsapp, color: Colors.blueAccent,),
+                      ),
+                      Expanded(
+                        flex: 7,
+                        child: Text(
+                          'Bagikan Melalui WhatsApp',
+                          style: TextStyle(
+                              fontSize: 17.0,
+                              color: Colors.blueAccent,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      )
+                    ],
+                  ),
                 ),
               ),
-              SizedBox(
-                height: 10.0,
-              ),
-              new Divider(),
-              SizedBox(
-                height: 30.0,
-              ),
-              new Container(
-                child: new Text(
-                  'Bagikan Melalui Email',
-                  style: TextStyle(
-                      fontSize: 17.0,
-                      color: Colors.blueAccent,
-                      fontWeight: FontWeight.bold),
+              InkWell(
+                onTap: () {
+
+                },
+                highlightColor: Colors.grey,
+                child: new Container(
+                  height: 70.0,
+                  child: new Row(
+                    children: <Widget>[
+                      Expanded(
+                        flex: 3,
+                        child: Icon(FontAwesomeIcons.mailBulk, color: Colors.blueAccent,),
+                      ),
+                      Expanded(
+                        flex: 7,
+                        child: Text(
+                          'Bagikan Melalui Email',
+                          style: TextStyle(
+                              fontSize: 17.0,
+                              color: Colors.blueAccent,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      )
+                    ],
+                  ),
                 ),
               ),
-              SizedBox(
-                height: 10.0,
-              ),
-              new Divider(),
-              SizedBox(
-                height: 30.0,
-              ),
-              new Container(
-                child: new Text(
-                  'Salin Link galang amal ini',
-                  style: TextStyle(
-                      fontSize: 17.0,
-                      color: Colors.blueAccent,
-                      fontWeight: FontWeight.bold),
+              InkWell(
+                onTap: () {
+
+                },
+                highlightColor: Colors.grey,
+                child: new Container(
+                  height: 70.0,
+                  child: new Row(
+                    children: <Widget>[
+                      Expanded(
+                        flex: 3,
+                        child: Icon(FontAwesomeIcons.link, color: Colors.blueAccent,),
+                      ),
+                      Expanded(
+                        flex: 7,
+                        child: Text(
+                          'Salin Link Berita ini',
+                          style: TextStyle(
+                              fontSize: 17.0,
+                              color: Colors.blueAccent,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      )
+                    ],
+                  ),
                 ),
               ),
             ],

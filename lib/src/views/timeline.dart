@@ -3,7 +3,6 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_jaring_ummat/src/bloc/programAmalBloc.dart';
 import 'package:flutter_jaring_ummat/src/models/programAmalModel.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -27,18 +26,18 @@ class _TimelineState extends State<TimelineView> with SingleTickerProviderStateM
   AnimationController _controller;
   TabController _tabController;
 
-  List<ProgramAmalModel> programAmalCache = new List<ProgramAmalModel>();
+  // List<ProgramAmalModel> programAmalCache = new List<ProgramAmalModel>();
 
   @override
   void initState() {
-    bloc.fetchAllProgramAmal();
-    bloc.list.stream.forEach((value) {
-      if (mounted) {
-        setState(() {
-          programAmalCache = value;
-        });
-      }
-    });
+    // bloc.fetchAllProgramAmal();
+    // bloc.list.stream.forEach((value) {
+    //   if (mounted) {
+    //     setState(() {
+    //       programAmalCache = value;
+    //     });
+    //   }
+    // });
     this._tabController = new TabController(vsync: this, length: 8);
     this._controller = new AnimationController(
       vsync: this,
@@ -164,23 +163,6 @@ class _TimelineState extends State<TimelineView> with SingleTickerProviderStateM
                   delegate: SliverChildListDelegate([
                     Column(
                       children: <Widget>[
-                        StreamBuilder(
-                          stream: bloc.streamProgramAmal,
-                          builder: (BuildContext context, AsyncSnapshot<List<ProgramAmalModel>> snapshot) {
-                            if (snapshot.hasData) {
-                              return buildList(snapshot.data);
-                            } else if (snapshot.hasError) {
-                              return Text(snapshot.hasError.toString());
-                            }
-
-                            if (programAmalCache.length > 0) {
-                              print("CACHE DATA");
-                              return buildList(programAmalCache);
-                            }
-
-                            return loadingData();
-                          },
-                        ),
                       ],
                     )
                   ]),
@@ -189,31 +171,7 @@ class _TimelineState extends State<TimelineView> with SingleTickerProviderStateM
             ),
             onRefresh: () => Future.value()));
   }
-
-  Widget buildList(List<ProgramAmalModel> snapshot) {
-    return ListView.builder(
-        shrinkWrap: true,
-        physics: ClampingScrollPhysics(),
-        itemCount: snapshot.length,
-        itemBuilder: (BuildContext context, int index) {
-          return ActivityPostContainer(
-            activityPostId: snapshot[index].id,
-            profilePictureUrl: '',
-            title: snapshot[index].titleProgram,
-            profileName: snapshot[index].createdBy,
-            postedAt: snapshot[index].createdDate,
-            description: snapshot[index].descriptionProgram,
-            totalDonation: snapshot[index].totalDonasi,
-            imgContent: snapshot[index].imageContent,
-            targetDonation: snapshot[index].targetDonasi,
-            dueDate: snapshot[index].endDonasi,
-            totalLikes: snapshot[index].totalLikes == null ? "0" : snapshot[index].totalLikes.toString(),
-            totalComment: snapshot[index].totalComment.toString(),
-            idUserLike: snapshot[index].idUserLike,
-          );
-        });
-  }
-
+  
   Widget loadingData() {
     return Container(
       width: double.infinity,

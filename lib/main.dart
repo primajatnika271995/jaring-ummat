@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_jaring_ummat/src/views/page_berita/berita.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'src/app.dart';
@@ -34,14 +35,14 @@ class LandingPage extends StatelessWidget {
       var token = _preferences.getString(ACCESS_TOKEN_KEY);
       print(token);
       Navigator.of(context).pushReplacementNamed("/home");
-//      if (token == null) {
-//        Navigator.of(context).pushReplacementNamed("/login");
-//        // Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
-//      } else {
-//        // Navigator.pop(context);
-//        Navigator.of(context).pushReplacementNamed("/home");
-//        // Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
-//      }
+      // if (token == null) {
+      //   Navigator.of(context).pushReplacementNamed("/login");
+      //   // Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
+      // } else {
+      //   // Navigator.pop(context);
+      //   Navigator.of(context).pushReplacementNamed("/home");
+      //   // Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
+      // }
     });
 
     return Container(

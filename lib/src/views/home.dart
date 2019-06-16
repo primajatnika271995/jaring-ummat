@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_jaring_ummat/src/models/programAmalModel.dart';
 import 'package:flutter_jaring_ummat/src/views/components/header_custom_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/components/navbar_custom_icon.dart';
+import 'package:flutter_jaring_ummat/src/views/page_berita/berita.dart';
+import 'package:flutter_jaring_ummat/src/views/page_program-amal/program_amal.dart';
 import 'timeline.dart';
 import 'portofilio.dart';
 import 'inbox.dart';
@@ -105,7 +108,7 @@ class _HomeState extends State<HomeView> {
 
   Widget mainView() {
     final List<Widget> _children = [
-      TimelineView(),
+      ProgramAmalPage(),
       Portofolio(),
       Inbox(),
       Menu()
@@ -118,7 +121,7 @@ class _HomeState extends State<HomeView> {
   }
 
   Widget newsView() {
-    return NewsView();
+    return BeritaPage();
   }
 
   Widget popularAccountView() {

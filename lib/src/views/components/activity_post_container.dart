@@ -12,7 +12,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../services/currency_format_service.dart';
 import '../../config/preferences.dart';
 import '../../services/comment_service.dart';
-import '../../models/comment_list_model.dart';
 import '../../models/user_id_details_model.dart';
 import 'custom_fonts.dart';
 import 'show_alert_dialog.dart';
@@ -76,7 +75,7 @@ class ActivityPostState extends State<ActivityPostContainer>
 
   // Service Callback
   CommentService commentService = new CommentService();
-  var _listComment = List<CommentList>();
+//  var _listComment = List<CommentList>();
 
   // Variable User Details
 
@@ -92,22 +91,22 @@ class ActivityPostState extends State<ActivityPostContainer>
   static var tagetDonasi;
   static var totalDonasi;
 
-  Stream<List<CommentList>> getListComment() async* {
-    await commentService.listCommentProgram(widget.activityPostId).then((response) {
-      print("INI RESPONSE CODE ListProgram ==>");
-      print(response.statusCode);
-      if (response.statusCode == 200) {
-        Iterable list = response.data;
-        setState(() {
-          _listComment =
-              list.map((model) => CommentList.fromJson(model)).toList();
-        });
-
-        print("INI ISI SALAH SATU KOMENTAR ==>");
-        print(_listComment[0].komentar);
-      }
-    });
-  }
+//  Stream<List<CommentList>> getListComment() async* {
+//    await commentService.listCommentProgram(widget.activityPostId).then((response) {
+//      print("INI RESPONSE CODE ListProgram ==>");
+//      print(response.statusCode);
+//      if (response.statusCode == 200) {
+//        Iterable list = response.data;
+//        setState(() {
+//          _listComment =
+//              list.map((model) => CommentList.fromJson(model)).toList();
+//        });
+//
+//        print("INI ISI SALAH SATU KOMENTAR ==>");
+//        print(_listComment[0].komentar);
+//      }
+//    });
+//  }
 
   Future<void> saveKomentar() async {
     _preferences = await SharedPreferences.getInstance();
@@ -434,189 +433,6 @@ class ActivityPostState extends State<ActivityPostContainer>
                         ),
                       ],
                     ),
-                  ),
-                  StreamBuilder(
-                    stream: getListComment(),
-                    builder: (BuildContext context, AsyncSnapshot snapshot) {
-                      switch (snapshot.connectionState) {
-                        case ConnectionState.none:
-                        case ConnectionState.waiting:
-//                          return Container(
-//                            width: double.infinity,
-//                            padding: const EdgeInsets.symmetric(
-//                                horizontal: 16.0, vertical: 16.0),
-//                            child: Shimmer.fromColors(
-//                              baseColor: Colors.grey[300],
-//                              highlightColor: Colors.grey[100],
-//                              child: Column(
-//                                children: [0, 1, 2, 3, 4]
-//                                    .map(
-//                                      (_) => Padding(
-//                                            padding: const EdgeInsets.only(
-//                                                bottom: 8.0),
-//                                            child: Row(
-//                                              crossAxisAlignment:
-//                                                  CrossAxisAlignment.start,
-//                                              children: [
-//                                                Container(
-//                                                  width: 48.0,
-//                                                  height: 48.0,
-//                                                  color: Colors.white,
-//                                                ),
-//                                                Padding(
-//                                                  padding: const EdgeInsets
-//                                                          .symmetric(
-//                                                      horizontal: 8.0),
-//                                                ),
-//                                                Expanded(
-//                                                  child: Column(
-//                                                    crossAxisAlignment:
-//                                                        CrossAxisAlignment
-//                                                            .start,
-//                                                    children: [
-//                                                      Container(
-//                                                        width: double.infinity,
-//                                                        height: 8.0,
-//                                                        color: Colors.white,
-//                                                      ),
-//                                                      Padding(
-//                                                        padding:
-//                                                            const EdgeInsets
-//                                                                    .symmetric(
-//                                                                vertical: 2.0),
-//                                                      ),
-//                                                      Container(
-//                                                        width: double.infinity,
-//                                                        height: 8.0,
-//                                                        color: Colors.white,
-//                                                      ),
-//                                                      Padding(
-//                                                        padding:
-//                                                            const EdgeInsets
-//                                                                    .symmetric(
-//                                                                vertical: 2.0),
-//                                                      ),
-//                                                      Container(
-//                                                        width: 40.0,
-//                                                        height: 8.0,
-//                                                        color: Colors.white,
-//                                                      ),
-//                                                    ],
-//                                                  ),
-//                                                )
-//                                              ],
-//                                            ),
-//                                          ),
-//                                    )
-//                                    .toList(),
-//                              ),
-//                            ),
-//                          );
-                        default:
-                          return ListView.builder(
-                            key: Key(''),
-                            cacheExtent: 2.0,
-                            reverse: true,
-                            itemCount: _listComment.length,
-                            shrinkWrap: true,
-                            physics: ClampingScrollPhysics(),
-                            itemBuilder: (BuildContext context, int index) {
-                              var comment = _listComment[index];
-                              print("INI HASIL FUTURE BUILDER =>");
-                              print(comment.idUser);
-//                            commentService.userById(comment.idUser).then((response) {
-//                              print("INI RESPONSE AMBIL DETAILS USERS BY ID");
-//                              print(response.data);
-//                              if (response.statusCode == 200) {
-//                                setState(() {
-//                                  detailsUser = UserDetailsbyID.fromJson(response.data);
-//                                  print("INI NAMA NYA =>");
-//                                  print(detailsUser.fullname);
-//                              }
-//                                );
-//                                }
-//                            }
-//                            );
-                              return Column(
-                                children: <Widget>[
-                                  Container(
-                                    decoration: BoxDecoration(
-                                        color: Colors.grey[200],
-                                        borderRadius:
-                                        BorderRadius.circular(10.0)),
-                                    padding: EdgeInsets.all(10.0),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                      children: <Widget>[
-                                        Expanded(
-                                          flex: 2,
-                                          child: Container(
-                                            width: 50.0,
-                                            height: 50.0,
-                                            decoration: BoxDecoration(
-                                              image: DecorationImage(
-                                                image: NetworkImage('https://i2.wp.com/www.coachcarson.com/wp-content/uploads/2018/09/Chad-Profile-pic-circle.png?resize=800%2C800&ssl=1'),
-                                                fit: BoxFit.contain,
-                                              ),),
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: 10.0,
-                                        ),
-                                        Expanded(
-                                          flex: 8,
-                                          child: Column(
-                                            crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                            children: <Widget>[
-                                              // SizedBox(height: 3.0),
-                                              Text(
-                                                comment.idUser,
-                                                style: TextStyle(
-                                                    fontSize: 12.0,
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Colors.black),
-                                              ),
-                                              SizedBox(height: 3.0),
-                                              Container(
-                                                width: 270.0,
-                                                child: Text(
-                                                  comment.komentar,
-                                                  style: TextStyle(
-                                                      fontSize: 11.0,
-                                                      fontWeight:
-                                                      FontWeight.bold,
-                                                      color: Color.fromRGBO(
-                                                          122, 122, 122, 1.0)),
-                                                ),
-                                              ),
-                                              Text(
-                                                TimeAgoService()
-                                                    .timeAgoFormatting(
-                                                    comment.createdDate),
-                                                style: TextStyle(
-                                                    fontSize: 11.0,
-                                                    fontWeight:
-                                                    FontWeight.normal,
-                                                    color: Color.fromRGBO(
-                                                        122, 122, 122, 1.0)),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: 10.0,
-                                  ),
-                                ],
-                              );
-                            },
-                          );
-                      }
-                    },
                   ),
                 ],
               ),

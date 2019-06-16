@@ -1,18 +1,18 @@
+import 'dart:convert';
+import 'package:flutter_jaring_ummat/src/bloc/registerBloc.dart' as registerBloc;
+import 'package:toast/toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_jaring_ummat/src/views/onboarding/step3.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:toast/toast.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
 // Component Import
 import '../components/container_bg_default.dart';
 import '../components/form_field_container.dart';
-import '../../services/register_service.dart';
 import '../components/create_account_icons.dart';
 import '../../models/UserDetails.dart';
 import '../../config/preferences.dart';
@@ -25,146 +25,24 @@ class Step2View extends StatefulWidget {
 }
 
 class Step2State extends State<Step2View> {
-//  SCAFFOLD KEY
 
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-  //  VARIABLE SHARED PREFERENCES
-
+  final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
+  final FacebookLogin facebookSignIn = new FacebookLogin();
   SharedPreferences _preferences;
 
-//  VARIABLE CONTROLLER
-
-  TextEditingController _fullnameController = TextEditingController();
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _contactController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
-  TextEditingController _cpasswordController = TextEditingController();
-
-  final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
+  final TextEditingController _fullnameController  = TextEditingController();
+  final TextEditingController _emailController     = TextEditingController();
+  final TextEditingController _contactController   = TextEditingController();
+  final TextEditingController _passwordController  = TextEditingController();
+  final TextEditingController _cpasswordController = TextEditingController();
 
   bool _selected = false;
   bool _isSubmit = false;
-
   bool _obscureTextPassword = true;
   bool _obscureTextKonfirmPassword = true;
 
-//  BATAS WIDGET
-
-  Future<bool> showLoadingIndicator() async {
-    await new Future.delayed(const Duration(seconds: 2));
-    return true;
-  }
-
-//  WIDGET SUBMIT BUTTON
-  Widget submitButton() {
-    return RaisedButton(
-      onPressed: _emailController.text.isNotEmpty ? this.onRegister : null,
-      disabledColor: Colors.grey,
-      disabledTextColor: Colors.white,
-      textColor: Colors.white,
-      padding: EdgeInsets.all(0.0),
-      color: Colors.blue,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(30.0),
-      ),
-      child: Container(
-        padding: EdgeInsets.fromLTRB(20.0, 2.0, 20.0, 2.0),
-        child: Text(
-          _isSubmit ? 'Loading ... ' : 'Selanjutnya',
-          style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
-        ),
-      ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        key: _scaffoldKey,
-        resizeToAvoidBottomPadding: true,
-        body: Stack(
-          children: _buildPage(context),
-        ),
-      ),
-    );
-  }
-
-//  TOGGLE PASSWORD METODE
-
-  void _togglePassword() {
-    setState(() {
-      _obscureTextPassword = !_obscureTextPassword;
-    });
-  }
-
-  void _toggleKonfirmPassword() {
-    setState(() {
-      _obscureTextKonfirmPassword = !_obscureTextKonfirmPassword;
-    });
-  }
-
-//  ON REGISTER METODE
-
-  void onRegister() async {
-    var fullname = _fullnameController.text;
-    var email = _emailController.text;
-    var contact = _contactController.text;
-    var password = _passwordController.text;
-    var cpassword = _cpasswordController.text;
-
-    if (fullname.isEmpty | password.isEmpty | email.isEmpty | contact.isEmpty) {
-      Toast.show('Field can\'t be Empty', context,
-          duration: 2, backgroundColor: Colors.red);
-      return;
-    }
-
-    if (password != cpassword) {
-      Toast.show('Password and cPassword not Valid', context,
-          duration: 2, backgroundColor: Colors.red);
-      return;
-    }
-
-    _scaffoldKey.currentState.showSnackBar(
-      new SnackBar(
-        duration: new Duration(seconds: 2),
-        content: new Row(
-          children: <Widget>[
-            new CircularProgressIndicator(),
-            new Text(" Validation Data ... ")
-          ],
-        ),
-      ),
-    );
-    await showLoadingIndicator();
-    RegisterService service = new RegisterService();
-    service.checkoutEmail(email).then((response) {
-      if (response.statusCode == 200) {
-        Toast.show('Email Anda Sudah terdaftar Sebelumnya !', context,
-            duration: 2, backgroundColor: Colors.red);
-        return;
-      }
-
-      if (response.statusCode == 204) {
-        Navigator.pop(context);
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => Step3View(
-                  email: email,
-                  fullname: fullname,
-                  password: password,
-                  contact: contact,
-                ),
-          ),
-        );
-      }
-    });
-  }
-
-  static final FacebookLogin facebookSignIn = new FacebookLogin();
-
-  Future<Null> _login() async {
+  Future<Null> _loginFacebook() async {
     _preferences = await SharedPreferences.getInstance();
     final FacebookLoginResult result =
     await facebookSignIn.logInWithReadPermissions(['email']);
@@ -218,9 +96,44 @@ class Step2State extends State<Step2View> {
     print('Logged out.');
   }
 
+  Widget submitButton() {
+    return RaisedButton(
+      onPressed: _emailController.text.isNotEmpty ? this.onRegister : null,
+      disabledColor: Colors.grey,
+      disabledTextColor: Colors.white,
+      textColor: Colors.white,
+      padding: EdgeInsets.all(0.0),
+      color: Colors.blue,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(30.0),
+      ),
+      child: Container(
+        padding: EdgeInsets.fromLTRB(20.0, 2.0, 20.0, 2.0),
+        child: Text(
+          _isSubmit ? 'Loading ... ' : 'Selanjutnya',
+          style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        key: _scaffoldKey,
+        resizeToAvoidBottomPadding: true,
+        backgroundColor: Colors.grey,
+        body: Stack(
+          children: _buildPage(context),
+        ),
+      ),
+    );
+  }
+
   List<Widget> _buildPage(BuildContext context) {
     var widgets = new List<Widget>();
-    widgets.add(ContainerBackground());
+//    widgets.add(ContainerBackground());
     widgets.add(Container(
         width: double.infinity,
         height: double.infinity,
@@ -371,7 +284,7 @@ class Step2State extends State<Step2View> {
                                     size: 20.0,
                                   ),
                                   label: new Text('Facebook'),
-                                  onPressed: _login,
+                                  onPressed: _loginFacebook,
                                   textColor: Colors.white,
                                   color: Color.fromRGBO(59, 89, 152, 1.0),
                                   shape: RoundedRectangleBorder(
@@ -393,14 +306,48 @@ class Step2State extends State<Step2View> {
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(30.0),
                                   ),
-                                )
+                                ),
                               ])
                         ],
                       ),
                     ),
                   ],
-                )))));
-
+                ),
+            ),
+        ),),
+    );
     return widgets;
+  }
+
+
+  void _togglePassword() {
+    setState(() {
+      _obscureTextPassword = !_obscureTextPassword;
+    });
+  }
+
+  void _toggleKonfirmPassword() {
+    setState(() {
+      _obscureTextKonfirmPassword = !_obscureTextKonfirmPassword;
+    });
+  }
+
+  void onRegister() async {
+    String tipe_user = "Muzakki";
+    if (_emailController.text.isEmpty | _passwordController.text.isEmpty | _fullnameController.text.isEmpty | _contactController.text.isEmpty) {
+      Toast.show('Field can\'t be Empty', context,
+          duration: 2, backgroundColor: Colors.red);
+      return;
+    }
+    if (_passwordController.text != _cpasswordController.text) {
+      Toast.show('Password and cPassword not Valid', context,
+          duration: 2, backgroundColor: Colors.red);
+      return;
+    }
+
+    await registerBloc.bloc.saveUser(_emailController.text,
+       _fullnameController.text, _emailController.text, tipe_user, _passwordController.text, _contactController.text);
+
+    await registerBloc.bloc.fetchResponseBody();
   }
 }

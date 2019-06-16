@@ -14,7 +14,6 @@ class Comment {
     String title;
     String komentar;
     int createdDate;
-    dynamic content;
 
     Comment({
         this.idUser,
@@ -22,7 +21,6 @@ class Comment {
         this.title,
         this.komentar,
         this.createdDate,
-        this.content,
     });
 
     factory Comment.fromJson(Map<String, dynamic> json) => new Comment(
@@ -31,7 +29,6 @@ class Comment {
         title: json["title"],
         komentar: json["komentar"],
         createdDate: json["createdDate"],
-        content: json["content"],
     );
 
     Map<String, dynamic> toJson() => {
@@ -40,6 +37,5 @@ class Comment {
         "title": title,
         "komentar": komentar,
         "createdDate": createdDate,
-        "content": content,
     };
 }

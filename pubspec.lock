@@ -36,6 +36,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.1"
+  bloc:
+    dependency: transitive
+    description:
+      name: bloc
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.14.2"
   boolean_selector:
     dependency: transitive
     description:
@@ -162,6 +169,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.0.4"
+  equatable:
+    dependency: "direct main"
+    description:
+      name: equatable
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.2.6"
   file_cache:
     dependency: "direct main"
     description:
@@ -174,6 +188,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_bloc:
+    dependency: "direct main"
+    description:
+      name: flutter_bloc
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.17.0"
   flutter_cache_manager:
     dependency: transitive
     description:
@@ -419,6 +440,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.2"
+  rounded_modal:
+    dependency: "direct main"
+    description:
+      name: rounded_modal
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.0"
   rubber:
     dependency: "direct main"
     description:
