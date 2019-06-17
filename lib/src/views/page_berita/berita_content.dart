@@ -5,6 +5,7 @@ import 'package:flutter_jaring_ummat/src/models/beritaModel.dart';
 import 'package:flutter_jaring_ummat/src/services/time_ago_service.dart';
 import 'package:flutter_jaring_ummat/src/views/components/custom_fonts.dart';
 import 'package:flutter_jaring_ummat/src/views/page_berita/komentar_container.dart';
+import 'package:flutter_jaring_ummat/src/views/page_berita/share_berita_container.dart';
 import 'package:rounded_modal/rounded_modal.dart';
 
 class BeritaContent extends StatefulWidget {
@@ -100,8 +101,7 @@ class _BeritaContentState extends State<BeritaContent> {
                   borderRadius: BorderRadius.all(Radius.circular(0.0)),
                   child: CachedNetworkImage(
                     fit: BoxFit.cover,
-                    imageUrl:
-                        'https://cdns.klimg.com/dream.co.id/resized/244x122/news/2015/07/03/16104/di-dubai-muslim-dan-non-muslim-bersama-membangun-masjid-1507034.jpg',
+                    imageUrl: url,
                     errorWidget: (content, url, error) => new Icon(Icons.error),
                   ),
                 ),
@@ -249,7 +249,14 @@ class _BeritaContentState extends State<BeritaContent> {
     return Row(
       children: <Widget>[
         GestureDetector(
-          onTap: () {},
+          onTap: () {
+            showRoundedModalBottomSheet(
+                radius: 10.0,
+                context: context,
+                builder: (context) {
+                  return ShareBerita();
+                });
+          },
           child: Row(
             children: <Widget>[
               Icon(

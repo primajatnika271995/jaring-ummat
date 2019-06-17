@@ -53,7 +53,7 @@ class ProgramamalBlocBloc extends Bloc<ProgramamalBlocEvent, ProgramamalBlocStat
   Future<List<ProgramAmal>> _fetchProgramAmal(String userId, int startIndex, int limit) async {
     print("this start index ${startIndex}");
     print("this limit data ${limit}");
-    final response = await httpClient.get('http://192.168.0.2:9091/api/program-amal/list?idUserLogin=${userId}&start=$startIndex&limit=$limit');
+    final response = await httpClient.get('http://localhost:9091/api/program-amal/list?idUserLogin=${userId}&start=$startIndex&limit=$limit');
       print(response.statusCode);
       if (response.statusCode == 200) {
         final data = json.decode(response.body) as List;

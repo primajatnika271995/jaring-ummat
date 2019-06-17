@@ -32,7 +32,7 @@ class CommentBloc {
   saveComment(idNews) async {
     _preferences = await SharedPreferences.getInstance();
     var idUser = _preferences.getString(USER_ID_KEY);
-    _repository.addSaveComment(_comment.value, idUser, idNews);
+    _repository.addSaveComment(_comment.value, '15e0c393-d4e6-4c2d-93f8-c050b79ad1bb', idNews);
   }
   
   dispose() async {

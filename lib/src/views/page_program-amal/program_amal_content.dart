@@ -101,8 +101,7 @@ class _ProgramAmalContentState extends State<ProgramAmalContent> {
                   borderRadius: BorderRadius.all(Radius.circular(0.0)),
                   child: CachedNetworkImage(
                     fit: BoxFit.cover,
-                    imageUrl:
-                        'https://cdns.klimg.com/dream.co.id/resized/244x122/news/2015/07/03/16104/di-dubai-muslim-dan-non-muslim-bersama-membangun-masjid-1507034.jpg',
+                    imageUrl: url,
                     errorWidget: (content, url, error) => new Icon(Icons.error),
                   ),
                 ),

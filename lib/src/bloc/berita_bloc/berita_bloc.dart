@@ -30,7 +30,7 @@ class BeritaBloc extends Bloc<BeritaEvent, BeritaState> {
     if (event is Fetch && !_hasReachedMax(currentState)) {
       try {
         if (currentState is BeritaUninitialized) {
-          final berita = await _fetchBerita(1, 2);
+          final berita = await _fetchBerita(0, 2);
           yield BeritaLoaded(berita: berita, hasReachedMax: false);
         }
         if (currentState is BeritaLoaded) {
@@ -54,7 +54,7 @@ class BeritaBloc extends Bloc<BeritaEvent, BeritaState> {
   Future<List<Berita>> _fetchBerita(int startIndex, int limit) async {
     print("this start index ${startIndex}");
     print("this limit data ${limit}");
-    final response = await httpClient.get('http://192.168.0.2:9091/api/berita/list?start=$startIndex&limit=$limit');
+    final response = await httpClient.get('http://localhost:9091/api/berita/list?start=$startIndex&limit=$limit');
       print(response.statusCode);
       if (response.statusCode == 200) {
         final data = json.decode(response.body) as List;

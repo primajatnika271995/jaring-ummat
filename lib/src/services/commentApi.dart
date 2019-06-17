@@ -52,7 +52,7 @@ class CommentApiProvider {
     };
 
     final response = await client.post(SAVE_COMMENT_URL, headers: headers, body: json.encode(params));
-    print("ini respones save nya mas => ${response.statusCode}");
+    print("respones save=> ${response.statusCode}");
     if (response.statusCode == 201) {
       return response;
     } else {

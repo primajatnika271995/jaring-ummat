@@ -220,7 +220,11 @@ class _KomentarContainerState extends State<KomentarContainer>
                 Icons.send,
                 color: Colors.black,
               ),
-              onPressed: () async {},
+              onPressed: () async {
+                commentBloc.bloc.saveComment(widget.berita.id);
+                await Future.delayed(Duration(milliseconds: 3));
+                commentBloc.bloc.fetchNewsComment(widget.berita.id);
+              },
             ),
           ],
           centerTitle: true,
@@ -230,6 +234,7 @@ class _KomentarContainerState extends State<KomentarContainer>
             child: Padding(
               padding: EdgeInsets.only(bottom: 0.0),
               child: TextField(
+                onChanged: commentBloc.bloc.updateComment,
                 autocorrect: false,
                 textInputAction: TextInputAction.next,
                 style: TextStyle(
@@ -360,7 +365,7 @@ class _KomentarContainerState extends State<KomentarContainer>
                           image: DecorationImage(
                             fit: BoxFit.cover,
                             image: NetworkImage(
-                                'https://cdns.klimg.com/dream.co.id/resized/244x122/news/2015/07/03/16104/di-dubai-muslim-dan-non-muslim-bersama-membangun-masjid-1507034.jpg'),
+                                widget.berita.imageContent[0]),
                           ),
                         ),
                       ),
