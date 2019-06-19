@@ -2,6 +2,12 @@ import 'package:flutter/material.dart';
 import 'components/userstory_container.dart';
 
 class UserStoryView extends StatefulWidget {
+
+  String url;
+  String createdBy; 
+  int createdDate;
+  UserStoryView({@required this.url, this.createdBy, this.createdDate});
+
   @override
   State<StatefulWidget> createState() {
     return UserStoryState();
@@ -15,9 +21,9 @@ class UserStoryState extends State<UserStoryView> {
       home: Scaffold(
         body: GestureDetector(
           onTap: () {
-            Navigator.pushReplacementNamed(context, '/home');
+            Navigator.pop(context);
           },
-          child: UserStoryContainer(),
+          child: UserStoryContainerOld(url: widget.url, createdBy: widget.createdBy, createdDate: widget.createdDate,),
         )
       ),
     );

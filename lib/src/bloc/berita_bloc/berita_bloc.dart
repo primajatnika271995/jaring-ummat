@@ -2,16 +2,19 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_jaring_ummat/src/config/preferences.dart';
 import 'package:flutter_jaring_ummat/src/models/beritaModel.dart';
 import 'package:http/http.dart' as http;
 import 'package:rxdart/rxdart.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import './bloc.dart';
 
 class BeritaBloc extends Bloc<BeritaEvent, BeritaState> {
 
   final http.Client httpClient;
-
   BeritaBloc({@required this.httpClient});
+
+  SharedPreferences _preferences;
 
   @override
   Stream<BeritaState> transform(Stream<BeritaEvent> events, Stream<BeritaState> Function(BeritaEvent event) next) {
@@ -27,14 +30,18 @@ class BeritaBloc extends Bloc<BeritaEvent, BeritaState> {
 
   @override
   Stream<BeritaState> mapEventToState(BeritaEvent event) async* {
+    
+    _preferences = await SharedPreferences.getInstance();
+    var userId = _preferences.getString(USER_ID_KEY);
+
     if (event is Fetch && !_hasReachedMax(currentState)) {
       try {
         if (currentState is BeritaUninitialized) {
-          final berita = await _fetchBerita(0, 2);
+          final berita = await _fetchBerita(userId, 0, 2);
           yield BeritaLoaded(berita: berita, hasReachedMax: false);
         }
         if (currentState is BeritaLoaded) {
-          final berita = await _fetchBerita((currentState as BeritaLoaded).berita.length, 2);
+          final berita = await _fetchBerita(userId, (currentState as BeritaLoaded).berita.length, 2);
           yield berita.isEmpty
               ? (currentState as BeritaLoaded).copyWith(hasReachedMax: true)
               : BeritaLoaded(
@@ -51,10 +58,10 @@ class BeritaBloc extends Bloc<BeritaEvent, BeritaState> {
   bool _hasReachedMax(BeritaState state) =>
     state is BeritaLoaded && state.hasReachedMax;
 
-  Future<List<Berita>> _fetchBerita(int startIndex, int limit) async {
+  Future<List<Berita>> _fetchBerita(String userId, int startIndex, int limit) async {
     print("this start index ${startIndex}");
     print("this limit data ${limit}");
-    final response = await httpClient.get('http://192.168.1.7:9091/api/berita/list?start=$startIndex&limit=$limit');
+    final response = await httpClient.get('http://192.168.1.7:9091/api/berita/list?start=$startIndex&limit=$limit&idUserLogin=$userId');
       print(response.statusCode);
       if (response.statusCode == 200) {
         final data = json.decode(response.body) as List;

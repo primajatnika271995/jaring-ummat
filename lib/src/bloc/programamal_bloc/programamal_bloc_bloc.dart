@@ -2,8 +2,11 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_jaring_ummat/src/config/preferences.dart';
 import 'package:flutter_jaring_ummat/src/models/programAmalModel.dart';
+import 'package:flutter_jaring_ummat/src/utils/preference.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import './bloc.dart';
 import 'package:http/http.dart' as http;
 
@@ -11,6 +14,8 @@ class ProgramamalBlocBloc extends Bloc<ProgramamalBlocEvent, ProgramamalBlocStat
 
   final http.Client httpClient;
   ProgramamalBlocBloc({@required this.httpClient});
+
+  SharedPreferences _preferences;
 
   @override
   Stream<ProgramamalBlocState> transform(Stream<ProgramamalBlocEvent> events, Stream<ProgramamalBlocState> Function(ProgramamalBlocEvent event) next) {
@@ -26,14 +31,19 @@ class ProgramamalBlocBloc extends Bloc<ProgramamalBlocEvent, ProgramamalBlocStat
 
   @override
   Stream<ProgramamalBlocState> mapEventToState(ProgramamalBlocEvent event) async* {
+
+    _preferences = await SharedPreferences.getInstance();
+
+    var userId = _preferences.getString(USER_ID_KEY);
+    
     if (event is Fetch && !_hasReachedMax(currentState)) {
       try {
         if (currentState is ProgramAmalUninitialized) {
-          final programAmal = await _fetchProgramAmal('15e0c393-d4e6-4c2d-93f8-c050b79ad1bb', 1, 2);
+          final programAmal = await _fetchProgramAmal(userId, 1, 2);
           yield ProgramAmalLoaded(programAmal: programAmal, hasReachedMax: false);
         }
         if (currentState is ProgramAmalLoaded) {
-          final programAmal = await _fetchProgramAmal('15e0c393-d4e6-4c2d-93f8-c050b79ad1bb', (currentState as ProgramAmalLoaded).programAmal.length, 2);
+          final programAmal = await _fetchProgramAmal(userId, (currentState as ProgramAmalLoaded).programAmal.length, 2);
           yield programAmal.isEmpty
               ? (currentState as ProgramAmalLoaded).copyWith(hasReachedMax: true)
               : ProgramAmalLoaded(
@@ -51,8 +61,10 @@ class ProgramamalBlocBloc extends Bloc<ProgramamalBlocEvent, ProgramamalBlocStat
     state is ProgramAmalLoaded && state.hasReachedMax;
 
   Future<List<ProgramAmal>> _fetchProgramAmal(String userId, int startIndex, int limit) async {
+
     print("this start index ${startIndex}");
     print("this limit data ${limit}");
+
     final response = await httpClient.get('http://192.168.1.7:9091/api/program-amal/list?idUserLogin=${userId}&start=$startIndex&limit=$limit');
       print(response.statusCode);
       if (response.statusCode == 200) {
