@@ -138,7 +138,7 @@ class LoginState extends State<LoginView> {
       if (response.statusCode == 200) {
         print("INI RESPONSE USER DETAILS ==>");
         print(response.data);
-        userDetails = UserDetails.fromJson(response.data[0]);
+        userDetails = UserDetails.fromJson(response.data);
         print(userDetails.path_file);
         _preferences.setString(FULLNAME_KEY, userDetails.fullname);
         _preferences.setString(CONTACT_KEY, userDetails.contact);

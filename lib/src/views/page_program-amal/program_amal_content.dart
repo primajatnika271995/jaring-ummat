@@ -101,7 +101,7 @@ class _ProgramAmalContentState extends State<ProgramAmalContent> {
                   borderRadius: BorderRadius.all(Radius.circular(0.0)),
                   child: CachedNetworkImage(
                     fit: BoxFit.cover,
-                    imageUrl: url,
+                    imageUrl: url["imgUrl"],
                     errorWidget: (content, url, error) => new Icon(Icons.error),
                   ),
                 ),
@@ -180,7 +180,7 @@ class _ProgramAmalContentState extends State<ProgramAmalContent> {
               SizedBox(height: 3.0),
               Text(
                 'Rp. ' +
-                    '${CurrencyFormat().currency(widget.programAmal.totalDonasi)}' +
+                    '${CurrencyFormat().currency(widget.programAmal.targetDonasi)}' +
                     ' / ' +
                     '${CurrencyFormat().currency(widget.programAmal.targetDonasi)}',
                 style: TextStyle(

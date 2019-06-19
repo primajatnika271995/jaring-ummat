@@ -101,7 +101,7 @@ class _BeritaContentState extends State<BeritaContent> {
                   borderRadius: BorderRadius.all(Radius.circular(0.0)),
                   child: CachedNetworkImage(
                     fit: BoxFit.cover,
-                    imageUrl: url,
+                    imageUrl: url["imgUrl"],
                     errorWidget: (content, url, error) => new Icon(Icons.error),
                   ),
                 ),

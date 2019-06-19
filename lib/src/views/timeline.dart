@@ -1,17 +1,9 @@
 import 'dart:async';
-import 'dart:convert';
 
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_jaring_ummat/src/models/programAmalModel.dart';
 import 'package:shimmer/shimmer.dart';
-
-// Component
-import 'package:flutter_jaring_ummat/src/views/components/activity_post_container.dart';
 import 'package:flutter_jaring_ummat/src/views/components/userstory_appbar_container.dart';
 import 'package:flutter_jaring_ummat/src/views/components/appbar_custom_icons.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import '../config/urls.dart';
 
 class TimelineView extends StatefulWidget {
   
@@ -26,18 +18,8 @@ class _TimelineState extends State<TimelineView> with SingleTickerProviderStateM
   AnimationController _controller;
   TabController _tabController;
 
-  // List<ProgramAmalModel> programAmalCache = new List<ProgramAmalModel>();
-
   @override
   void initState() {
-    // bloc.fetchAllProgramAmal();
-    // bloc.list.stream.forEach((value) {
-    //   if (mounted) {
-    //     setState(() {
-    //       programAmalCache = value;
-    //     });
-    //   }
-    // });
     this._tabController = new TabController(vsync: this, length: 8);
     this._controller = new AnimationController(
       vsync: this,
@@ -54,8 +36,6 @@ class _TimelineState extends State<TimelineView> with SingleTickerProviderStateM
 
   @override
   Widget build(BuildContext context) {
-    Color backgroundColor = Theme.of(context).cardColor;
-    Color foregroundColor = Theme.of(context).accentColor;
     return Scaffold(
         backgroundColor: Colors.grey[100],
         appBar: PreferredSize(

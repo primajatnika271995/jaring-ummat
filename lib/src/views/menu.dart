@@ -23,7 +23,7 @@ class Menu extends StatefulWidget {
 }
 
 class _MenuState extends State<Menu> {
-  // Variable Preferences
+
   SharedPreferences _preferences;
   String _fullname = null;
   String _email = null;
@@ -31,25 +31,6 @@ class _MenuState extends State<Menu> {
   String _contact = null;
   String _profilePictureLocal = null;
   String _profilePictureLocalFB = null;
-
-  // Convert bytes
-  Uint8List base64Decode(String source) => base64.decode(source);
-
-  //
-//  Response response;
-//  Dio dio = new Dio();
-//
-//  Future<UserDetails> fetchUserDetails(String email) async {
-//    final response =
-//        await dio.get(USER_DETAILS_URL, queryParameters: {"email": email});
-//    print(response.statusCode);
-//    print(response.data);
-//    if (response.statusCode == 200) {
-//      return UserDetails.fromJson(response.data[0]);
-//    } else {
-//      throw Exception('Failed to load User Details');
-//    }
-//  }
 
   getUserDetails() async {
     UserDetails userDetails;
@@ -191,9 +172,7 @@ class _MenuState extends State<Menu> {
                                                               null
                                                           ? NetworkImage(
                                                               _profilePictureLocalFB)
-                                                          : MemoryImage(
-                                                              base64Decode(
-                                                                  _profilePictureLocal)),
+                                                          : NetworkImage(_profilePictureLocal),
                                                       fit: BoxFit.cover,
                                                     )),
                                               ),

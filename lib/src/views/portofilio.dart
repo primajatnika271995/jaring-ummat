@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter_fab_dialer/flutter_fab_dialer.dart';
-import 'package:pie_chart/pie_chart.dart';
 
 // Component
 import '../views/components/icon_baru_icons.dart';
@@ -93,7 +92,7 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
     dataMap.putIfAbsent("Ionic", () => 2);
   }
 
-  Widget tambahZakat(BuildContext context, String title , IconData icon) {
+  Widget tambahZakat(BuildContext context, String title, IconData icon) {
     showDialog(
       context: context,
       builder: (context) {
@@ -535,8 +534,8 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
                                 charts.OutsideJustification.startDrawArea,
                             horizontalFirst: false,
                             desiredMaxRows: 5,
-                            cellPadding:
-                                new EdgeInsets.only(right: 4.0, bottom: 20.0, top: 7.0),
+                            cellPadding: new EdgeInsets.only(
+                                right: 4.0, bottom: 20.0, top: 7.0),
                           ),
                         ],
                         defaultRenderer: new charts.ArcRendererConfig(

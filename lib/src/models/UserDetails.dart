@@ -16,21 +16,21 @@ class UserDetails {
   }
 
   UserDetails.fromJson(Map json)
-      : id_user = json["id_user"],
+      : id_user = json["userId"],
         email = json["email"],
         fullname = json["fullname"],
         contact = json["contact"],
-  path_file = json["file_path"],
-        profile_picture = json["content"];
+        path_file = json["file_path"],
+        profile_picture = json["imgProfile"];
 
   Map toJson() {
     return {
-      'id_user': id_user,
+      'userId': id_user,
       'email': email,
       'fullname': fullname,
       'contact': contact,
       'file_path': path_file,
-      'content': profile_picture
+      'imgContent': profile_picture
     };
   }
 }

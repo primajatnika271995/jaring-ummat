@@ -4,15 +4,12 @@ import 'package:flutter_jaring_ummat/src/views/components/header_custom_icons.da
 import 'package:flutter_jaring_ummat/src/views/components/navbar_custom_icon.dart';
 import 'package:flutter_jaring_ummat/src/views/page_berita/berita.dart';
 import 'package:flutter_jaring_ummat/src/views/page_program-amal/program_amal.dart';
-import 'timeline.dart';
 import 'portofilio.dart';
 import 'inbox.dart';
 import 'popular_account.dart';
-import 'news.dart';
 import 'menu.dart';
 import '../utils/preference.dart';
 import '../config/preferences.dart';
-import '../views/components/icon_custom_icons.dart';
 import '../views/components/navbar_custom_icon.dart';
 class HomeView extends StatefulWidget {
   @override

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_jaring_ummat/main.dart';
-import 'package:flutter_jaring_ummat/src/views/page_berita/berita.dart';
 import 'views/login.dart';
 import 'views/home.dart';
 import 'views/intro_slider.dart';
@@ -29,8 +28,7 @@ void App() {
         '/onboarding/step2': (context) => Step2View(),
         '/onboarding/step3': (context) => Step3View(),
         '/onboarding/step4': (context) => Step4View(),
-        '/onboarding/success': (context) =>
-            SuccessRegisterView(avatarImage: null),
+        '/onboarding/success': (context) => SuccessRegisterView(avatarImage: null),
         '/user/story': (context) => UserStoryView(),
         '/create/news': (context) => CreateNews(),
         '/create/aksi-amal': (content) => CreateAksiAmal(),

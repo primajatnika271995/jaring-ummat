@@ -19,13 +19,7 @@ void main() {
 }
 
 class LandingPage extends StatelessWidget {
-
-//  VARIABLE SHAREDPREFERENCES
-
   SharedPreferences _preferences;
-
-
-// BATAS WIDGET
 
   @override
   Widget build(BuildContext context) {
@@ -34,15 +28,14 @@ class LandingPage extends StatelessWidget {
       _preferences = await SharedPreferences.getInstance();
       var token = _preferences.getString(ACCESS_TOKEN_KEY);
       print(token);
-      Navigator.of(context).pushReplacementNamed("/home");
-      // if (token == null) {
-      //   Navigator.of(context).pushReplacementNamed("/login");
-      //   // Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
-      // } else {
-      //   // Navigator.pop(context);
-      //   Navigator.of(context).pushReplacementNamed("/home");
-      //   // Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
-      // }
+       if (token == null) {
+         Navigator.of(context).pushReplacementNamed("/login");
+         // Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
+       } else {
+         // Navigator.pop(context);
+         Navigator.of(context).pushReplacementNamed("/home");
+         // Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
+       }
     });
 
     return Container(

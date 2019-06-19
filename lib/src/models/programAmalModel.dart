@@ -36,3 +36,4 @@ class ProgramAmal extends Equatable {
   @override
   String toString() => 'Post { id: $id }';
 }
+

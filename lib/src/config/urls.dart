@@ -2,8 +2,8 @@
 
 //const BASE_API_URL = 'http://139.162.15.91/jaring-ummat';
 
-const BASE_API_URL = 'http://localhost:9091';
-const BASE_API_UPLOADER_URL = 'http://localhost:8080';
+const BASE_API_URL = 'http://192.168.1.7:9091';
+const BASE_API_UPLOADER_URL = 'http://192.168.1.7:8080';
 
 const UPLOADER_MEDIA_IMAGE = BASE_API_UPLOADER_URL + '/api/media/upload/image';
 
@@ -14,12 +14,15 @@ const LOGIN_URL = BASE_API_URL + '/oauth/token';
 const USER_BY_ID_URL = BASE_API_URL + '/api/user/';
 
 // BASE USER DETAILS
-const USER_DETAILS_URL = BASE_API_URL + '/api/user/desc';
+const USER_DETAILS_URL = BASE_API_URL + '/api/user/findByEmail';
 const CHECK_REGISTRATION_EMAIL = BASE_API_URL + '/api/user/checkout';
 
 // BASE NEWS CONTENT
 const NEWS_GET_LIST = BASE_API_URL + '/api/berita/list';
 const NEWS_CREATE = BASE_API_URL + '/api/berita/';
+
+// BASE STORY
+const ALL_STORY_URL = BASE_API_URL + '/api/story/list?limit=10&start=0';
 
 // For Service Program Amal API
 const PROGRAM_AMAL_SAVE_URL = BASE_API_URL + '/api/program-amal/';
