@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_jaring_ummat/src/models/login_model.dart';
 import 'package:flutter_jaring_ummat/src/services/login_service.dart';
+import 'package:flutter_jaring_ummat/src/services/registerApi.dart';
 import 'package:flutter_jaring_ummat/src/services/register_service.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image_cropper/image_cropper.dart';
@@ -67,19 +68,24 @@ class Step4State extends State<Step4View> {
       return;
     }
 
-    RegisterService service = new RegisterService();
-    service
-        .register(widget.username, widget.password, widget.email,
-            widget.contact, selected_image.path)
-        .then((response) {
-      print(response.statusCode);
-      if (response.statusCode == 201) {
-        print(response);
-        setState(() {
-          new Future.delayed(new Duration(seconds: 3));
-          _isSubmit = false;
-//          Navigator.pushReplacementNamed(context, '/login');
-          onLogin();
+    RegisterApiProvider service = new RegisterApiProvider();
+    await service.saveUser(
+      widget.email, 
+      widget.username, 
+      widget.email, 
+      "Muzakki",
+      widget.password, 
+      widget.contact).then((response) {
+        print("For Response Status Register Text ${response.statusCode}");
+        if (response.statusCode == 200) {
+          var data = json.decode(response.body);
+          service.saveContent(data["id"], selected_image.path, "image", "Users Profile").then((response) {
+            print("For Response Status Register Content ${response.statusCode}");
+            onLogin();
+          });
+          setState(() {
+            new Future.delayed(new Duration(seconds: 3));
+            _isSubmit = false;
         });
       }
     });
@@ -87,7 +93,6 @@ class Step4State extends State<Step4View> {
 
   void onLogin() async {
     _preferences = await SharedPreferences.getInstance();
-
     _scaffoldKey.currentState.showSnackBar(
       new SnackBar(
         duration: new Duration(seconds: 2),

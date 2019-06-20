@@ -4,11 +4,6 @@ import '../models/RegistrationModel.dart';
 class RegisterBloc {
   final _repository = RegisterRepository();
 
-  fetchResponseBody() {
-    Registation _responseBody = new Registation() ;
-    print(_responseBody.id);
-  }
-
   saveUser(
       String username,
       String fullname,
