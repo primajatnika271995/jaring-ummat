@@ -61,7 +61,7 @@ class BeritaBloc extends Bloc<BeritaEvent, BeritaState> {
   Future<List<Berita>> _fetchBerita(String userId, int startIndex, int limit) async {
     print("this start index ${startIndex}");
     print("this limit data ${limit}");
-    final response = await httpClient.get('http://192.168.1.7:9091/api/berita/list?start=$startIndex&limit=$limit&idUserLogin=$userId');
+    final response = await httpClient.get('http://192.168.1.50:9091/api/berita/list?start=$startIndex&limit=$limit&idUserLogin=$userId');
       print(response.statusCode);
       if (response.statusCode == 200) {
         final data = json.decode(response.body) as List;

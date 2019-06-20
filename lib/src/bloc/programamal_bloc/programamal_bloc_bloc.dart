@@ -39,18 +39,18 @@ class ProgramamalBlocBloc extends Bloc<ProgramamalBlocEvent, ProgramamalBlocStat
     if (event is Fetch && !_hasReachedMax(currentState)) {
       try {
         if (currentState is ProgramAmalUninitialized) {
-          final programAmal = await _fetchProgramAmal(userId, 1, 2);
+          final programAmal = await _fetchProgramAmal(userId, 0, 2);
           yield ProgramAmalLoaded(programAmal: programAmal, hasReachedMax: false);
         }
-        if (currentState is ProgramAmalLoaded) {
-          final programAmal = await _fetchProgramAmal(userId, (currentState as ProgramAmalLoaded).programAmal.length, 2);
-          yield programAmal.isEmpty
-              ? (currentState as ProgramAmalLoaded).copyWith(hasReachedMax: true)
-              : ProgramAmalLoaded(
-                  programAmal: (currentState as ProgramAmalLoaded).programAmal + programAmal,
-                  hasReachedMax: false,
-              );
-        }
+//        if (currentState is ProgramAmalLoaded) {
+//          final programAmal = await _fetchProgramAmal(userId, (currentState as ProgramAmalLoaded).programAmal.length, 2);
+//          yield programAmal.isEmpty
+//              ? (currentState as ProgramAmalLoaded).copyWith(hasReachedMax: true)
+//              : ProgramAmalLoaded(
+//                  programAmal: (currentState as ProgramAmalLoaded).programAmal + programAmal,
+//                  hasReachedMax: false,
+//              );
+//        }
       } catch (_) {
         yield ProgramAmalError();
       }
@@ -65,7 +65,7 @@ class ProgramamalBlocBloc extends Bloc<ProgramamalBlocEvent, ProgramamalBlocStat
     print("this start index ${startIndex}");
     print("this limit data ${limit}");
 
-    final response = await httpClient.get('http://192.168.1.7:9091/api/program-amal/list?idUserLogin=${userId}&start=$startIndex&limit=$limit');
+    final response = await httpClient.get('http://192.168.1.50:9091/api/program-amal/list?idUserLogin=${userId}&start=$startIndex&limit=$limit');
       print(response.statusCode);
       if (response.statusCode == 200) {
         final data = json.decode(response.body) as List;
