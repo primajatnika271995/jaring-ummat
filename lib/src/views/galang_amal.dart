@@ -1,39 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_jaring_ummat/src/views/components/galang_amal_container.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import '../models/programAmalModel.dart';
 
 // Component
 import '../services/currency_format_service.dart';
 
 class GalangAmalView extends StatefulWidget {
-  final String activityPostId;
-  final String profilePictureUrl;
-  final String title;
-  final String profileName;
-  final int postedAt;
-  final String description;
-  final double totalDonation;
-  final double targetDonation;
-  final List<dynamic> imgContent;
-  final String dueDate;
-  final String totalLike;
-  final String totalComment;
 
-  GalangAmalView({
-    Key key,
-    this.activityPostId,
-    this.profilePictureUrl,
-    this.title,
-    this.description,
-    this.profileName,
-    this.imgContent,
-    this.postedAt = 0,
-    this.totalDonation = 0,
-    this.targetDonation = 0,
-    this.dueDate,
-    this.totalLike,
-    this.totalComment,
-  });
+  final ProgramAmal programAmal;
+
+  GalangAmalView({Key key, this.programAmal});
 
   @override
   _GalangAmalState createState() => _GalangAmalState();
@@ -60,20 +36,7 @@ class _GalangAmalState extends State<GalangAmalView> {
       ),
       body: ListView(
         children: <Widget>[
-          GalangAmalContainer(
-            title: widget.title,
-            imgContent: widget.imgContent,
-            profileName: widget.profileName,
-            dueDate: widget.dueDate,
-            activityPostId: widget.activityPostId,
-            description: widget.description,
-            postedAt: widget.postedAt,
-            profilePictureUrl: widget.profilePictureUrl,
-            targetDonation: widget.targetDonation,
-            totalComment: widget.totalComment,
-            totalDonation: widget.totalDonation,
-            totalLike: widget.totalLike,
-          ),
+          GalangAmalContainer(programAmal: widget.programAmal,)
         ],
       ),
       bottomNavigationBar: BottomAppBar(
@@ -101,9 +64,9 @@ class _GalangAmalState extends State<GalangAmalView> {
                         SizedBox(height: 3.0),
                         Text(
                           'Rp. ' +
-                              '${CurrencyFormat().currency(widget.totalDonation)}' +
+                              '${CurrencyFormat().currency(widget.programAmal.totalDonasi)}' +
                               ' / ' +
-                              '${CurrencyFormat().currency(widget.targetDonation)}',
+                              '${CurrencyFormat().currency(widget.programAmal.targetDonasi)}',
                           style: TextStyle(
                             fontSize: 16.0,
                             fontWeight: FontWeight.bold,
@@ -112,7 +75,7 @@ class _GalangAmalState extends State<GalangAmalView> {
                         ),
                         SizedBox(height: 3.0),
                         Text(
-                          'Batas waktu ' + widget.dueDate,
+                          'Batas waktu ' + widget.programAmal.endDonasi,
                           style: TextStyle(
                               fontSize: 11.0,
                               fontWeight: FontWeight.bold,

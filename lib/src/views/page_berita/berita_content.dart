@@ -213,8 +213,7 @@ class _BeritaContentState extends State<BeritaContent> {
         GestureDetector(
           onTap: () {
             print("ID Berita ${this.widget.berita.id}");
-            showRoundedModalBottomSheet(
-                radius: 10.0,
+            showModalBottomSheet(
                 context: context,
                 builder: (context) {
                   return KomentarContainer(

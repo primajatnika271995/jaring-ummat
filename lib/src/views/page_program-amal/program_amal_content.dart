@@ -1,11 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:circular_profile_avatar/circular_profile_avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_jaring_ummat/src/models/programAmalModel.dart';
 import 'package:flutter_jaring_ummat/src/services/currency_format_service.dart';
 import 'package:flutter_jaring_ummat/src/services/time_ago_service.dart';
 import 'package:flutter_jaring_ummat/src/views/components/custom_fonts.dart';
+
+import '../../views/galang_amal.dart';
 
 class ProgramAmalContent extends StatefulWidget {
   final ProgramAmal programAmal;
@@ -200,7 +201,14 @@ class _ProgramAmalContentState extends State<ProgramAmalContent> {
             ],
           ),
           RaisedButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => GalangAmalView(programAmal: widget.programAmal,),
+                ),
+              );
+            },
             textColor: Colors.white,
             padding: EdgeInsets.all(0.0),
             color: Color.fromRGBO(21, 101, 192, 1.0),

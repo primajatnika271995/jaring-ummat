@@ -62,20 +62,26 @@ class UserStoryAppBarState extends State<UserStoryAppBar> {
         itemBuilder: (context, index) {
           List<String> thumbnail = List<String>();
           List<String> videoUrl = List<String>();
+          String video;
+          String thumbnails;
           var data = snapshot[index];
-          // data.storyList.forEach((val) {
-          //   String data = val.contents[index].thumbnailUrl;
-          //   content.add(data);
-          // });
-          data.storyList[index].contents.forEach((val) {
-            String thumbnails = val.thumbnailUrl;
-            String video = val.videoUrl;
-            thumbnail.add(thumbnails);
-            videoUrl.add(video);
+//          var list = snapshot[index];
+//           list.storyList[index].contents.forEach((val) {
+//             String data = val.videoUrl;
+//             videoUrl.add(data);
+//           });
+          data.storyList.forEach((f) {
+            f.contents.forEach((val) {
+              thumbnails = val.thumbnailUrl;
+              video = val.videoUrl;
+              thumbnail.add(thumbnails);
+              videoUrl.add(video);
+            });
           });
+
           return GestureDetector(
             onTap: () {
-              Route route = MaterialPageRoute(builder: (context) => UserStoryView(url: videoUrl[0], createdBy: data.createdBy, createdDate: data.storyList[index].createdDate,));
+              Route route = MaterialPageRoute(builder: (context) => UserStoryView(url: video, createdBy: data.createdBy, createdDate: data.storyList[0].createdDate,));
               Navigator.push(context, route);
             },
             child: Container(

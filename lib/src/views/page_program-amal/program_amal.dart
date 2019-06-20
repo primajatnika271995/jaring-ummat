@@ -10,8 +10,8 @@ import 'package:flutter_jaring_ummat/src/views/components/appbar_custom_icons.da
 class ProgramAmalPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: DefaultTabController(
+    return Scaffold(
+      body: DefaultTabController(
         length: 8,
         child: Scaffold(
           backgroundColor: Colors.grey[200],

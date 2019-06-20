@@ -34,7 +34,7 @@ class _KomentarContainerState extends State<KomentarContainer>
 
   Widget lowerLayer() {
     return Container(
-      decoration: BoxDecoration(color: Colors.red),
+      decoration: BoxDecoration(color: Colors.transparent),
     );
   }
 
@@ -365,7 +365,7 @@ class _KomentarContainerState extends State<KomentarContainer>
                           image: DecorationImage(
                             fit: BoxFit.cover,
                             image: NetworkImage(
-                                widget.berita.imageContent[0]),
+                                widget.berita.imageContent[0]["imgUrl"]),
                           ),
                         ),
                       ),

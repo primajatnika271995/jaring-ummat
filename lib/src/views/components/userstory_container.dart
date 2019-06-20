@@ -5,7 +5,6 @@ import 'package:video_player/video_player.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
 class UserStoryContainerOld extends StatefulWidget {
-
   String url;
   String createdBy;
   int createdDate;
@@ -18,7 +17,6 @@ class UserStoryContainerOld extends StatefulWidget {
 }
 
 class UserStoryContainerOldState extends State<UserStoryContainerOld> {
-
   int currentImageIdx = 0;
   String currentImageUrl;
 
@@ -29,8 +27,7 @@ class UserStoryContainerOldState extends State<UserStoryContainerOld> {
     super.initState();
     _controller = VideoPlayerController.network(widget.url)
       ..initialize().then((_) {
-        setState(() {
-        });
+        setState(() {});
       });
     _controller.play();
     _controller.setLooping(false);
@@ -53,13 +50,14 @@ class UserStoryContainerOldState extends State<UserStoryContainerOld> {
 
   @override
   Widget build(BuildContext context) {
-
-    return Stack(
-      fit: StackFit.expand,
-      children: <Widget>[
-        image(),
-        topBar(),
-      ],
+    return Scaffold(
+      body: Stack(
+        fit: StackFit.expand,
+        children: <Widget>[
+          image(),
+          topBar(),
+        ],
+      ),
     );
   }
 

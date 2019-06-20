@@ -865,30 +865,7 @@ class ActivityPostState extends State<ActivityPostContainer>
             ],
           ),
           RaisedButton(
-            onPressed: () {
-              print(widget.activityPostId);
-              print(widget.title);
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => GalangAmalView(
-                        title: widget.title,
-                        imgContent: widget.imgContent,
-                        profileName: widget.profileName,
-                        dueDate: widget.dueDate,
-                        activityPostId: widget.activityPostId,
-                        description: widget.description,
-                        postedAt: widget.postedAt,
-                        profilePictureUrl: widget.profilePictureUrl,
-                        targetDonation: widget.targetDonation,
-                        totalComment: widget.totalComment,
-                        totalDonation: widget.totalDonation,
-                        totalLike: widget.totalLikes,
-                      ),
-                ),
-              );
-//              Navigator.pushNamed(context, '/galang-amal');
-            },
+            onPressed: () {},
             textColor: Colors.white,
             padding: EdgeInsets.all(0.0),
             color: Color.fromRGBO(21, 101, 192, 1.0),

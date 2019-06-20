@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:flutter_jaring_ummat/src/views/components/custom_fonts.dart';
@@ -7,35 +8,15 @@ import 'package:dots_indicator/dots_indicator.dart';
 
 // Component
 import '../../services/time_ago_service.dart';
+import '../../models/programAmalModel.dart';
 
 class GalangAmalContainer extends StatefulWidget {
-  final String activityPostId;
-  final String profilePictureUrl;
-  final String title;
-  final String profileName;
-  final int postedAt;
-  final String description;
-  final double totalDonation;
-  final double targetDonation;
-  final List<dynamic> imgContent;
-  final String dueDate;
-  final String totalLike;
-  final String totalComment;
+
+  final ProgramAmal programAmal;
 
   GalangAmalContainer({
     Key key,
-    this.activityPostId,
-    this.profilePictureUrl,
-    this.title,
-    this.description,
-    this.profileName,
-    this.imgContent,
-    this.postedAt = 0,
-    this.totalDonation = 0,
-    this.targetDonation = 0,
-    this.dueDate,
-    this.totalLike,
-    this.totalComment,
+    this.programAmal
   });
 
   @override
@@ -115,7 +96,8 @@ class _GalangAmalContainerState extends State<GalangAmalContainer> {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(30.0),
         image: DecorationImage(
-          image: MemoryImage(base64Decode(widget.imgContent[0])),
+          image: NetworkImage(
+              'https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg-1024x683.jpg'),
         ),
       ),
     );
@@ -129,7 +111,7 @@ class _GalangAmalContainerState extends State<GalangAmalContainer> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
-            widget.title,
+            widget.programAmal.titleProgram,
             style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 17.0,
@@ -137,9 +119,9 @@ class _GalangAmalContainerState extends State<GalangAmalContainer> {
           ),
           Text(
             'Oleh ' +
-                widget.profileName +
+                widget.programAmal.createdBy +
                 ' • ' +
-                TimeAgoService().timeAgoFormatting(widget.postedAt),
+                TimeAgoService().timeAgoFormatting(widget.programAmal.createdDate),
             style: TextStyle(
               fontSize: 11.0,
             ),
@@ -172,21 +154,20 @@ class _GalangAmalContainerState extends State<GalangAmalContainer> {
     return Stack(
       children: <Widget>[
         CarouselSlider(
-          height: 300.0,
+          height: 200.0,
           autoPlay: false,
           reverse: false,
           viewportFraction: 1.0,
           aspectRatio: MediaQuery.of(context).size.aspectRatio,
-          items: widget.imgContent.map(
-            (url) {
+          items: widget.programAmal.imageContent.map(
+                (url) {
               return Container(
                 child: ClipRRect(
                   borderRadius: BorderRadius.all(Radius.circular(0.0)),
-                  child: FadeInImage(
-                    image: MemoryImage(base64Decode(url)),
-                    placeholder: AssetImage('assets/backgrounds/no_image.png'),
+                  child: CachedNetworkImage(
                     fit: BoxFit.cover,
-                    width: double.infinity,
+                    imageUrl: url["imgUrl"],
+                    errorWidget: (content, url, error) => new Icon(Icons.error),
                   ),
                 ),
               );
@@ -202,7 +183,7 @@ class _GalangAmalContainerState extends State<GalangAmalContainer> {
           left: 10.0,
           bottom: 15.0,
           child: DotsIndicator(
-            dotsCount: widget.imgContent.length,
+            dotsCount: widget.programAmal.imageContent.length,
             position: _current,
             decorator: DotsDecorator(
               spacing: const EdgeInsets.all(2.0),
@@ -309,7 +290,8 @@ class _GalangAmalContainerState extends State<GalangAmalContainer> {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(30.0),
               image: DecorationImage(
-                image: MemoryImage(base64Decode(widget.imgContent[1])),
+                image: NetworkImage(
+                    'https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg-1024x683.jpg'),
               ),
             ),
           ),
@@ -448,7 +430,7 @@ class _GalangAmalContainerState extends State<GalangAmalContainer> {
                 width: 5.0,
               ),
               Text(
-                '${widget.totalLike}' + ' Likes',
+                '${widget.programAmal.totalLikes}' + ' Likes',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 13.0,
@@ -474,7 +456,7 @@ class _GalangAmalContainerState extends State<GalangAmalContainer> {
                 width: 5.0,
               ),
               Text(
-                '${widget.totalComment}' + ' Komentar',
+                '${widget.programAmal.totalComment}' + ' Komentar',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 13.0,

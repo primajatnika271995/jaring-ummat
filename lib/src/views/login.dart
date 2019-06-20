@@ -63,7 +63,6 @@ class LoginState extends State<LoginView> {
 //  LOGIN METODE
 
   Future<void> login() async {
-
     _preferences = await SharedPreferences.getInstance();
     _emailTampung = _emailTextEditController.text;
     _passwordTampung = _passwordTextEditController.text;
@@ -87,8 +86,7 @@ class LoginState extends State<LoginView> {
     _progressDialog.setMessage("Please Wait ...");
     _progressDialog.show();
 
-   await service.login(_emailTampung, _passwordTampung).then((response) async {
-
+    await service.login(_emailTampung, _passwordTampung).then((response) async {
       print("INI RESPONSE CODE LOGIN ==>");
       print(response.statusCode);
 
@@ -105,7 +103,10 @@ class LoginState extends State<LoginView> {
         setState(() {
           _isSubmit = false;
           _progressDialog.hide();
-          Toast.show("Username atau Password Salah", context, backgroundColor: Colors.redAccent, textColor: Colors.white, duration: 2);
+          Toast.show("Username atau Password Salah", context,
+              backgroundColor: Colors.redAccent,
+              textColor: Colors.white,
+              duration: 2);
         });
       }
     });
@@ -133,22 +134,18 @@ class LoginState extends State<LoginView> {
 
     _email != null
         ? userDetailsService.userDetails(_email).then((response) async {
-      print(response.statusCode);
-      print(response);
-      if (response.statusCode == 200) {
-        print("INI RESPONSE USER DETAILS ==>");
-        print(response.data);
-        userDetails = UserDetails.fromJson(response.data);
-        print(userDetails.path_file);
-        _preferences.setString(FULLNAME_KEY, userDetails.fullname);
-        _preferences.setString(CONTACT_KEY, userDetails.contact);
-        _preferences.setString(
-            USER_ID_KEY, userDetails.id_user.toString());
-        _preferences.setString(
-            PROFILE_PICTURE_KEY, userDetails.profile_picture);
-      await Navigator.of(context).pushReplacementNamed('/home');
-      }
-    })
+            print("For Response Users Detail Code ${response.statusCode}");
+            if (response.statusCode == 200) {
+              print("For Response Users Detail by Email ${response.data} ");
+              userDetails = UserDetails.fromJson(response.data);
+              _preferences.setString(FULLNAME_KEY, userDetails.fullname);
+              _preferences.setString(CONTACT_KEY, userDetails.contact);
+              _preferences.setString(USER_ID_KEY, userDetails.userId);
+              _preferences.setString(
+                  PROFILE_PICTURE_KEY, userDetails.imgProfile[0].imgUrl);
+              await Navigator.of(context).pushReplacementNamed('/home');
+            }
+          })
         : null;
   }
 
@@ -278,7 +275,8 @@ class LoginState extends State<LoginView> {
                                     style: TextStyle(fontSize: 12)),
                                 TextSpan(
                                     text: 'disini',
-                                    style: TextStyle(color: Colors.blue, fontSize: 12))
+                                    style: TextStyle(
+                                        color: Colors.blue, fontSize: 12))
                               ],
                             ),
                           ),
@@ -290,11 +288,13 @@ class LoginState extends State<LoginView> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             SizedBox(height: 10.0),
-                            Text('Belum memiliki akun?', style: TextStyle(color: Colors.white)),
+                            Text('Belum memiliki akun?',
+                                style: TextStyle(color: Colors.white)),
                             SizedBox(height: 10.0),
                             RaisedButton(
                               onPressed: () {
-                                Navigator.pushNamed(context, '/onboarding/step2');
+                                Navigator.pushNamed(
+                                    context, '/onboarding/step2');
                               },
                               textColor: Colors.white,
                               padding: const EdgeInsets.all(0.0),
@@ -303,7 +303,8 @@ class LoginState extends State<LoginView> {
                                 borderRadius: BorderRadius.circular(30.0),
                               ),
                               child: Container(
-                                padding: const EdgeInsets.fromLTRB(20.0, 2.0, 20.0, 2.0),
+                                padding: const EdgeInsets.fromLTRB(
+                                    20.0, 2.0, 20.0, 2.0),
                                 child: Text('Buat Akun'),
                               ),
                             ),
