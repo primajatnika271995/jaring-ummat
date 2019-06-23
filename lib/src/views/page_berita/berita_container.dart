@@ -110,6 +110,7 @@ class _BeritaContainerState extends State<BeritaContainer> {
             );
           }
           return ListView.builder(
+            shrinkWrap: true,
             itemBuilder: (BuildContext context, int index) {
               return index >= state.berita.length
                   ? BottomLoader()

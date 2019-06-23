@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_jaring_ummat/src/models/programAmalModel.dart';
 import 'package:flutter_jaring_ummat/src/views/components/header_custom_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/components/navbar_custom_icon.dart';
 import 'package:flutter_jaring_ummat/src/views/page_berita/berita.dart';
@@ -8,9 +7,8 @@ import 'portofilio.dart';
 import 'inbox.dart';
 import 'popular_account.dart';
 import 'menu.dart';
-import '../utils/preference.dart';
-import '../config/preferences.dart';
 import '../views/components/navbar_custom_icon.dart';
+
 class HomeView extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -23,14 +21,8 @@ class _HomeState extends State<HomeView> {
 
   void onTabTapped(int index) async {
     setState(() {
-     _currentIndex = index;
+      _currentIndex = index;
     });
-
-    dynamic accessToken = await Preference(key: ACCESS_TOKEN_KEY).get();
-
-    print('masuk sinni ------');
-    print(accessToken);
-    print('masuk sinni ------');
   }
 
   Widget searchBoxContainer() {
@@ -44,7 +36,8 @@ class _HomeState extends State<HomeView> {
             onTap: () {
               print(1);
             },
-            child: Icon(HeaderCustom.ic_news, 
+            child: Icon(
+              HeaderCustom.ic_news,
               size: 20.0,
               color: Colors.white,
             ),
@@ -54,28 +47,20 @@ class _HomeState extends State<HomeView> {
             height: 25.0,
             padding: EdgeInsets.fromLTRB(10.0, 0.5, 10.0, 0.5),
             decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(20.0)
-            
+                color: Colors.white, borderRadius: BorderRadius.circular(20.0)),
+            child: TextField(
+              style:
+                  TextStyle(fontSize: 10.0, color: Colors.black, height: 0.4),
+              decoration: InputDecoration(
+                border: InputBorder.none,
+                hintText: 'Cari galang atau badan amil',
+              ),
             ),
-            child: TextField (
-        style: TextStyle(
-          fontSize: 10.0,
-          color: Colors.black,
-          height: 0.4
-        ),
-        decoration: InputDecoration(
-          border: InputBorder.none,
-          hintText: 'Cari galang atau badan amil',
-          
-        ),
-      ),
           ),
           GestureDetector(
-            onTap: () {
-              print(1);
-            },
-            child: Icon(HeaderCustom.ic_comment_inactive, 
+            onTap: () {},
+            child: Icon(
+              HeaderCustom.ic_comment_inactive,
               size: 20.0,
               color: Colors.white,
             ),
@@ -90,9 +75,7 @@ class _HomeState extends State<HomeView> {
     return GestureDetector(
       child: Scaffold(
         body: PageView(
-          controller: PageController(
-            initialPage: 1
-          ),
+          controller: PageController(initialPage: 1),
           children: <Widget>[
             newsView(),
             mainView(),

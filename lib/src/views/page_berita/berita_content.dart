@@ -37,49 +37,61 @@ class _BeritaContentState extends State<BeritaContent> {
 
   Widget titleContent(BuildContext context) {
     return Container(
-      padding: EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 10.0),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
+      padding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+      child: Column(
         children: <Widget>[
-          Expanded(
-            flex: 2,
-            child: Container(
-              width: 53.0,
-              height: 53.0,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(50.0),
-                image: DecorationImage(
-                  fit: BoxFit.cover,
-                  image: NetworkImage(
-                      'https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg-1024x683.jpg'),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Expanded(
+                flex: 1,
+                child: Container(
+                  width: 30.0,
+                  height: 30.0,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(50.0),
+                    image: DecorationImage(
+                      fit: BoxFit.cover,
+                      image: NetworkImage(
+                          'https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg-1024x683.jpg'),
+                    ),
+                  ),
                 ),
               ),
-            ),
-          ),
-          Expanded(
-            flex: 8,
-            child: Container(
-              padding: EdgeInsets.only(left: 10.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  new Text(
-                    widget.berita.title,
-                    style:
-                        TextStyle(fontWeight: FontWeight.bold, fontSize: 15.0),
+              Expanded(
+                flex: 9,
+                child: Container(
+                  padding: EdgeInsets.only(left: 10.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      new Text(
+                        widget.berita.title,
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 15.0),
+                      ),
+                      Text(
+                        'oleh ' +
+                            widget.berita.createdBy +
+                            ' • ' +
+                            TimeAgoService()
+                                .timeAgoFormatting(widget.berita.createdDate),
+                        style: TextStyle(fontSize: 12.0),
+                      )
+                    ],
                   ),
-                  Text(
-                    'oleh ' +
-                        widget.berita.createdBy +
-                        ' • ' +
-                        TimeAgoService()
-                            .timeAgoFormatting(widget.berita.createdDate),
-                    style: TextStyle(fontSize: 12.0),
-                  )
-                ],
+                ),
               ),
-            ),
+              IconButton(
+                icon: Icon(Icons.share),
+                onPressed: () {},
+                iconSize: 15.0,
+                splashColor: Colors.grey,
+                highlightColor: Colors.grey,
+              ),
+            ],
           ),
+          dividerContent(context),
         ],
       ),
     );
@@ -274,20 +286,23 @@ class _BeritaContentState extends State<BeritaContent> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 5.0,
-      child: Container(
-        color: Colors.white,
-        margin: EdgeInsets.only(top: 10.0),
-        child: Column(
-          children: <Widget>[
-            titleContent(context),
-            imageContent(context),
-            descriptionContent(context),
-            dividerContent(context),
-            bottomContent(context),
-          ],
-        ),
+    return Container(
+      decoration: BoxDecoration(
+        boxShadow: [
+          BoxShadow(
+            color: Colors.white
+          )
+        ]
+      ),
+      margin: EdgeInsets.only(top: 10.0),
+      child: Column(
+        children: <Widget>[
+          titleContent(context),
+          imageContent(context),
+          descriptionContent(context),
+          dividerContent(context),
+          bottomContent(context),
+        ],
       ),
     );
   }

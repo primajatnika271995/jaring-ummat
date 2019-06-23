@@ -6,15 +6,14 @@ import 'package:flutter_jaring_ummat/src/views/components/userstory_appbar_conta
 import 'package:flutter_jaring_ummat/src/views/components/appbar_custom_icons.dart';
 
 class TimelineView extends StatefulWidget {
-  
   @override
   State<StatefulWidget> createState() {
     return _TimelineState();
   }
 }
 
-class _TimelineState extends State<TimelineView> with SingleTickerProviderStateMixin, TickerProviderStateMixin {
-
+class _TimelineState extends State<TimelineView>
+    with SingleTickerProviderStateMixin, TickerProviderStateMixin {
   AnimationController _controller;
   TabController _tabController;
 
@@ -93,7 +92,20 @@ class _TimelineState extends State<TimelineView> with SingleTickerProviderStateM
                   ),
                   backgroundColor: Colors.white,
                   flexibleSpace: new Scaffold(
-                    body: new UserStoryAppBar(),
+                    body: Container(
+                      child: Column(
+                        children: <Widget>[
+                          Row(
+                            children: <Widget>[
+                              const Text(
+                                'Stories',
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
                 ),
                 new SliverAppBar(
@@ -142,8 +154,7 @@ class _TimelineState extends State<TimelineView> with SingleTickerProviderStateM
                 SliverList(
                   delegate: SliverChildListDelegate([
                     Column(
-                      children: <Widget>[
-                      ],
+                      children: <Widget>[],
                     )
                   ]),
                 ),
@@ -151,7 +162,7 @@ class _TimelineState extends State<TimelineView> with SingleTickerProviderStateM
             ),
             onRefresh: () => Future.value()));
   }
-  
+
   Widget loadingData() {
     return Container(
       width: double.infinity,
@@ -163,53 +174,53 @@ class _TimelineState extends State<TimelineView> with SingleTickerProviderStateM
           children: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
               .map(
                 (_) => Padding(
-              padding: const EdgeInsets.only(bottom: 8.0),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    width: 48.0,
-                    height: 48.0,
-                    color: Colors.white,
-                  ),
-                  Padding(
-                    padding:
-                    const EdgeInsets.symmetric(horizontal: 8.0),
-                  ),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          width: double.infinity,
-                          height: 8.0,
-                          color: Colors.white,
-                        ),
-                        Padding(
-                          padding:
-                          const EdgeInsets.symmetric(vertical: 2.0),
-                        ),
-                        Container(
-                          width: double.infinity,
-                          height: 8.0,
-                          color: Colors.white,
-                        ),
-                        Padding(
-                          padding:
-                          const EdgeInsets.symmetric(vertical: 2.0),
-                        ),
-                        Container(
-                          width: 40.0,
-                          height: 8.0,
-                          color: Colors.white,
-                        ),
-                      ],
+                      padding: const EdgeInsets.only(bottom: 8.0),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            width: 48.0,
+                            height: 48.0,
+                            color: Colors.white,
+                          ),
+                          Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 8.0),
+                          ),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  width: double.infinity,
+                                  height: 8.0,
+                                  color: Colors.white,
+                                ),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 2.0),
+                                ),
+                                Container(
+                                  width: double.infinity,
+                                  height: 8.0,
+                                  color: Colors.white,
+                                ),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 2.0),
+                                ),
+                                Container(
+                                  width: 40.0,
+                                  height: 8.0,
+                                  color: Colors.white,
+                                ),
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
                     ),
-                  )
-                ],
-              ),
-            ),
-          )
+              )
               .toList(),
         ),
       ),

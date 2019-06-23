@@ -15,13 +15,13 @@ class BeritaPage extends StatelessWidget {
       home: DefaultTabController(
         length: 8,
         child: Scaffold(
-          backgroundColor: Colors.grey[200],
+          backgroundColor: Colors.grey[300],
           appBar: PreferredSize(
               child: AppBar(
                 titleSpacing: 10.0,
                 automaticallyImplyLeading: false,
                 centerTitle: true,
-                backgroundColor: Colors.blueAccent,
+                backgroundColor: Colors.white,
                 title: Container(
                   child: TextFormField(
                     textInputAction: TextInputAction.next,
@@ -39,22 +39,34 @@ class BeritaPage extends StatelessWidget {
                   ),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(30.0)),
-                    color: Colors.white,
+                    color: Colors.grey[300],
                   ),
                   padding: EdgeInsets.fromLTRB(15.0, 0.5, 15.0, 0.5),
                 ),
                 actions: <Widget>[
                   IconButton(
-                      icon: Icon(Icons.arrow_forward, color: Colors.white),
+                      icon: Icon(Icons.arrow_forward, color: Colors.black45),
                       onPressed: () => Navigator.pop(context)),
                 ],
+              ),
+              preferredSize: Size.fromHeight(47.0)),
+          body: CustomScrollView(
+            slivers: <Widget>[
+              new SliverAppBar(
+                expandedHeight: 20.0,
+                backgroundColor: Colors.white,
+                elevation: 10.0,
+                automaticallyImplyLeading: true,
+                floating: true,
+                pinned: true,
                 bottom: TabBar(
                   isScrollable: true,
                   indicator: UnderlineTabIndicator(
-                    borderSide: BorderSide(width: 4.0, color: Colors.white),
+                    borderSide:
+                        BorderSide(width: 4.0, color: Colors.blueAccent),
                   ),
-                  labelColor: Colors.black45,
-                  unselectedLabelColor: Colors.white,
+                  labelColor: Colors.black,
+                  unselectedLabelColor: Colors.grey,
                   tabs: <Widget>[
                     new Tab(
                       text: 'Semua Kategori',
@@ -83,11 +95,16 @@ class BeritaPage extends StatelessWidget {
                   ],
                 ),
               ),
-              preferredSize: Size.fromHeight(80.0)),
-          body: BlocProvider(
-            builder: (context) =>
-                BeritaBloc(httpClient: http.Client())..dispatch(Fetch()),
-            child: BeritaContainer(),
+              SliverList(
+                delegate: SliverChildListDelegate([
+                  BlocProvider(
+                    builder: (context) => BeritaBloc(httpClient: http.Client())
+                      ..dispatch(Fetch()),
+                    child: BeritaContainer(),
+                  ),
+                ]),
+              )
+            ],
           ),
         ),
       ),

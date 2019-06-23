@@ -1,18 +1,17 @@
 import 'dart:convert';
-import 'package:flutter_jaring_ummat/src/bloc/registerBloc.dart'
-    as registerBloc;
-import 'package:flutter_jaring_ummat/src/services/registerApi.dart';
-import 'package:toast/toast.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_jaring_ummat/src/models/postModel.dart';
+import 'package:http/http.dart' as http;
+import 'package:toast/toast.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_jaring_ummat/src/views/onboarding/step3.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:http/http.dart' as http;
 
 // Component Import
+import 'package:flutter_jaring_ummat/src/views/components/container_bg_default.dart';
+import 'package:flutter_jaring_ummat/src/views/onboarding/step3.dart';
 import '../components/form_field_container.dart';
 import '../components/create_account_icons.dart';
 import '../../models/UserDetails.dart';
@@ -42,80 +41,6 @@ class Step2State extends State<Step2View> {
   bool _obscureTextPassword = true;
   bool _obscureTextKonfirmPassword = true;
 
-  Future<Null> _loginFacebook() async {
-    _preferences = await SharedPreferences.getInstance();
-    final FacebookLoginResult result =
-        await facebookSignIn.logInWithReadPermissions(['email']);
-
-    switch (result.status) {
-      case FacebookLoginStatus.loggedIn:
-        final FacebookAccessToken accessToken = result.accessToken;
-        print('''
-         Logged in!
-         
-         Token: ${accessToken.token}
-         User id: ${accessToken.userId}
-         Expires: ${accessToken.expires}
-         Permissions: ${accessToken.permissions}
-         Declined permissions: ${accessToken.declinedPermissions}
-         ''');
-
-        var graphResponse = await http.get(
-            'https://graph.facebook.com/v2.12/me?fields=name,first_name,last_name,email,picture&access_token=${result.accessToken.token}');
-
-        var profile = json.decode(graphResponse.body);
-        print(profile.toString());
-
-        FacebookUserDetails userDetails = FacebookUserDetails.fromJson(profile);
-
-        _preferences.setString(FULLNAME_KEY, userDetails.name);
-        _preferences.setString(CONTACT_KEY, 'Not Found');
-        _preferences.setString(EMAIL_KEY, userDetails.email);
-        _preferences.setString(ACCESS_TOKEN_KEY, accessToken.token);
-        _preferences.setString(USER_ID_KEY, userDetails.id);
-        _preferences.setString(
-            PROFILE_FACEBOOK_KEY, profile['picture']['data']['url']);
-
-        print(_preferences.getString(PROFILE_FACEBOOK_KEY));
-
-        await Navigator.of(context).pushReplacementNamed('/home');
-        break;
-      case FacebookLoginStatus.cancelledByUser:
-        print('Login cancelled by the user.');
-        break;
-      case FacebookLoginStatus.error:
-        print('Something went wrong with the login process.\n'
-            'Here\'s the error Facebook gave us: ${result.errorMessage}');
-        break;
-    }
-  }
-
-  Future<Null> _logOut() async {
-    await facebookSignIn.logOut();
-    print('Logged out.');
-  }
-
-  Widget submitButton() {
-    return RaisedButton(
-      onPressed: _emailController.text.isNotEmpty ? this.onRegister : null,
-      disabledColor: Colors.grey,
-      disabledTextColor: Colors.white,
-      textColor: Colors.white,
-      padding: EdgeInsets.all(0.0),
-      color: Colors.blue,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(30.0),
-      ),
-      child: Container(
-        padding: EdgeInsets.fromLTRB(20.0, 2.0, 20.0, 2.0),
-        child: Text(
-          _isSubmit ? 'Loading ... ' : 'Selanjutnya',
-          style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
-        ),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -132,7 +57,7 @@ class Step2State extends State<Step2View> {
 
   List<Widget> _buildPage(BuildContext context) {
     var widgets = new List<Widget>();
-//    widgets.add(ContainerBackground());
+    widgets.add(ContainerBackground());
     widgets.add(
       Container(
         width: double.infinity,
@@ -319,6 +244,80 @@ class Step2State extends State<Step2View> {
     return widgets;
   }
 
+    Future<Null> _loginFacebook() async {
+    _preferences = await SharedPreferences.getInstance();
+    final FacebookLoginResult result =
+        await facebookSignIn.logInWithReadPermissions(['email']);
+
+    switch (result.status) {
+      case FacebookLoginStatus.loggedIn:
+        final FacebookAccessToken accessToken = result.accessToken;
+        print('''
+         Logged in!
+         
+         Token: ${accessToken.token}
+         User id: ${accessToken.userId}
+         Expires: ${accessToken.expires}
+         Permissions: ${accessToken.permissions}
+         Declined permissions: ${accessToken.declinedPermissions}
+         ''');
+
+        var graphResponse = await http.get(
+            'https://graph.facebook.com/v2.12/me?fields=name,first_name,last_name,email,picture&access_token=${result.accessToken.token}');
+
+        var profile = json.decode(graphResponse.body);
+        print(profile.toString());
+
+        FacebookUserDetails userDetails = FacebookUserDetails.fromJson(profile);
+
+        _preferences.setString(FULLNAME_KEY, userDetails.name);
+        _preferences.setString(CONTACT_KEY, 'Not Found');
+        _preferences.setString(EMAIL_KEY, userDetails.email);
+        _preferences.setString(ACCESS_TOKEN_KEY, accessToken.token);
+        _preferences.setString(USER_ID_KEY, userDetails.id);
+        _preferences.setString(
+            PROFILE_FACEBOOK_KEY, profile['picture']['data']['url']);
+
+        print(_preferences.getString(PROFILE_FACEBOOK_KEY));
+
+        await Navigator.of(context).pushReplacementNamed('/home');
+        break;
+      case FacebookLoginStatus.cancelledByUser:
+        print('Login cancelled by the user.');
+        break;
+      case FacebookLoginStatus.error:
+        print('Something went wrong with the login process.\n'
+            'Here\'s the error Facebook gave us: ${result.errorMessage}');
+        break;
+    }
+  }
+
+  Future<Null> _logOut() async {
+    await facebookSignIn.logOut();
+    print('Logged out.');
+  }
+
+  Widget submitButton() {
+    return RaisedButton(
+      onPressed: _emailController.text.isNotEmpty ? this.onRegister : null,
+      disabledColor: Colors.grey,
+      disabledTextColor: Colors.white,
+      textColor: Colors.white,
+      padding: EdgeInsets.all(0.0),
+      color: Colors.blue,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(30.0),
+      ),
+      child: Container(
+        padding: EdgeInsets.fromLTRB(20.0, 2.0, 20.0, 2.0),
+        child: Text(
+          _isSubmit ? 'Loading ... ' : 'Selanjutnya',
+          style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+        ),
+      ),
+    );
+  }
+
   void _togglePassword() {
     setState(() {
       _obscureTextPassword = !_obscureTextPassword;
@@ -345,16 +344,20 @@ class Step2State extends State<Step2View> {
           duration: 2, backgroundColor: Colors.red);
       return;
     }
+    
+    final postData = PostRegistration(
+      username: _emailController.text,
+      fullname: _fullnameController.text,
+      password: _passwordController.text,
+      contact: _contactController.text,
+      email: _emailController.text,
+      tipe_user: "Muzakki",
+    );
 
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => Step3View(
-              email: _emailController.text,
-              fullname: _fullnameController.text,
-              password: _passwordController.text,
-              contact: _contactController.text,
-            ),
+        builder: (context) => Step3View(data: postData,),
       ),
     );
   }

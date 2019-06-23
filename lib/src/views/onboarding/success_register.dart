@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_jaring_ummat/src/models/postModel.dart';
 import 'dart:io';
 import '../home.dart';
 
 class SuccessRegisterView extends StatelessWidget {
-
-  String email;
-  String username;
+  final PostRegistration data;
   File avatarImage;
 
-  SuccessRegisterView({Key key, @required this.avatarImage, this.email, this.username});
+  SuccessRegisterView({Key key, @required this.avatarImage, this.data});
 
   @override
   Widget build(BuildContext context) {

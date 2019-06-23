@@ -21,7 +21,7 @@ PODS:
   - FMDB/standard (2.7.5)
   - image_cropper (0.0.1):
     - Flutter
-    - TOCropViewController (~> 2.4.0)
+    - TOCropViewController (~> 2.5.0)
   - image_picker (0.0.1):
     - Flutter
   - intro_slider (0.0.1):
@@ -35,7 +35,7 @@ PODS:
   - sqflite (0.0.1):
     - Flutter
     - FMDB (~> 2.7.2)
-  - TOCropViewController (2.4.0)
+  - TOCropViewController (2.5.0)
   - video_player (0.0.1):
     - Flutter
 
@@ -94,14 +94,14 @@ SPEC CHECKSUMS:
   flutter_facebook_login: 8963f768786618d674fcb41f5eb648a09cddca47
   flutter_money_formatter: d0d18ddc5be333fad8d09964d741b59fa11a91dc
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
-  image_cropper: 88160bea3665a5fab6989ff3a6825811b8f19a3d
+  image_cropper: f25bdfbf1ef970c9a0a0f78306fb6a0aaac7229e
   image_picker: 16e5fec1fbc87fd3b297c53e4048521eaf17cd06
   intro_slider: 85847639533bfd8e898d76844e0aa2cf412ee190
   path_provider: f96fff6166a8867510d2c25fdcc346327cc4b259
   screen: abd91ca7bf3426e1cc3646d27e9b2358d6bf07b0
   shared_preferences: 1feebfa37bb57264736e16865e7ffae7fc99b523
   sqflite: ff1d9da63c06588cc8d1faf7256d741f16989d5a
-  TOCropViewController: 368d8df3ea43b62c3dc5a61f11b9048274d240bd
+  TOCropViewController: d86078d3a57a70c116bf3db7c89c80046a0e5fdf
   video_player: 3964090a33353060ed7f58aa6427c7b4b208ec21
 
 PODFILE CHECKSUM: aff02bfeed411c636180d6812254b2daeea14d09

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter_jaring_ummat/src/models/postModel.dart';
 import 'package:http/http.dart' as http;
 import 'package:dio/dio.dart';
 import 'dart:convert';
@@ -13,15 +14,8 @@ class RegisterApiProvider {
     'Content-type': 'application/json',
   };
 
-  Future<http.Response> saveUser(username, fullname, email, tipe_user, password, contact) async {
-    Map params = {
-      "username": username,
-      "fullname": fullname,
-      "email": email,
-      "tipe_user": tipe_user,
-      "password": password,
-      "contact": contact
-    };
+  Future<http.Response> saveUser(PostRegistration data) async {
+    Map params = data as Map;
 
     final response = await http.post(REGISTRATION_URL, headers: headers, body: json.encode(params));
     if (response.statusCode == 201) {

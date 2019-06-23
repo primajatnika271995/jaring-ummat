@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_jaring_ummat/src/models/postModel.dart';
 import 'package:flutter_jaring_ummat/src/views/onboarding/step4.dart';
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server.dart';
@@ -11,12 +12,10 @@ import '../components/container_bg_default.dart';
 import '../components/create_account_icons.dart';
 
 class Step3View extends StatefulWidget {
-  final String email;
-  final String fullname;
-  final String contact;
-  final String password;
 
-  Step3View({this.email, this.fullname, this.password, this.contact});
+  final PostRegistration data;
+
+  Step3View({@required this.data});
 
   @override
   State<StatefulWidget> createState() {
@@ -35,16 +34,12 @@ class Step3State extends State<Step3View> with TickerProviderStateMixin {
 
   TextEditingController currController = new TextEditingController();
 
-//
-
   FocusNode focusNode1 = new FocusNode();
   FocusNode focusNode2 = new FocusNode();
   FocusNode focusNode3 = new FocusNode();
   FocusNode focusNode4 = new FocusNode();
   FocusNode focusNode5 = new FocusNode();
   FocusNode focusNode6 = new FocusNode();
-
-// TIMER FOR OTP
 
   AnimationController _animationController;
 
@@ -82,7 +77,7 @@ class Step3State extends State<Step3View> with TickerProviderStateMixin {
 
     final message = new Message()
       ..from = new Address(username, 'Jaring Umat OTP')
-      ..recipients.add(widget.email)
+      ..recipients.add(widget.data.email)
       // ..ccRecipients.addAll(['braveavi.2@gmail.com', 'braveavi.2@gmail.com'])
       // ..bccRecipients.add(new Address('braveavi.2@gmail.com'))
       ..subject = 'Jaring Umat Register :: :: ${new DateTime.now()}'
@@ -104,17 +99,17 @@ class Step3State extends State<Step3View> with TickerProviderStateMixin {
     if (otp == otpKey.toString()) {
       setState(() {
         is_submited = true;
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => Step4View(
-                  email: widget.email,
-                  username: widget.fullname,
-                  password: widget.password,
-                  contact: widget.contact,
-                ),
-          ),
-        );
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(
+        //     builder: (context) => Step4View(
+        //           email: widget.email,
+        //           username: widget.fullname,
+        //           password: widget.password,
+        //           contact: widget.contact,
+        //         ),
+        //   ),
+        // );
       });
     } else {
       Toast.show('OTP Number is Wrong, check Again', context,
@@ -133,7 +128,7 @@ class Step3State extends State<Step3View> with TickerProviderStateMixin {
     super.initState();
 
     otpKey = OTP.generateHOTPCode(
-        widget.fullname + DateTime.now().toIso8601String(), 300,
+        widget.data.fullname + DateTime.now().toIso8601String(), 300,
         length: 6);
 
     print("INI KODE OTP");
@@ -225,7 +220,7 @@ class Step3State extends State<Step3View> with TickerProviderStateMixin {
                         color: Colors.white,
                       )),
                   Text(
-                    widget.email,
+                    widget.data.email,
                     style: TextStyle(
                       fontSize: 18.0,
                       fontWeight: FontWeight.bold,

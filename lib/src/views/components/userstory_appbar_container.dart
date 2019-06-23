@@ -24,10 +24,38 @@ class UserStoryAppBarState extends State<UserStoryAppBar> {
   Widget build(BuildContext context) {
     return Container(
       alignment: Alignment.topLeft,
+      margin: EdgeInsets.symmetric(horizontal: 10.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Container(
+                margin: EdgeInsets.symmetric(
+                    horizontal: 10.0, vertical: 8.0),
+                child: Row(
+                  children: <Widget>[
+                    const Text(
+                      'Stories',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black87),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 10.0),
+                child: const Text(
+                  'See fullscreen photos and videos before they disappear.',
+                  style:
+                  TextStyle(fontSize: 12.0, color: Colors.grey),
+                ),
+              ),
+            ],
+          ),
           StreamBuilder(
             stream: bloc.storyFetchAll,
             builder: (context, AsyncSnapshot<List<Story>> snapshot) {
@@ -46,6 +74,9 @@ class UserStoryAppBarState extends State<UserStoryAppBar> {
                 ),
               );
             },
+          ),
+          SizedBox(
+            height: 10.0,
           ),
         ],
       ),

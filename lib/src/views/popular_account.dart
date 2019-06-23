@@ -87,8 +87,8 @@ class PopularAccountState extends State<PopularAccountView>
     return new Scaffold(
       appBar: PreferredSize(
         child: AppBar(
-          backgroundColor: Colors.blueAccent,
-          leading: new Icon(Icons.arrow_back, color: Colors.white,),
+          backgroundColor: Colors.white,
+          leading: new Icon(Icons.arrow_back, color: Colors.black45,),
           actions: <Widget>[
             SizedBox(
               width: 5.0,
@@ -96,7 +96,7 @@ class PopularAccountState extends State<PopularAccountView>
             SizedBox(
               width: 0.0,
             ),
-            Icon(AppBarIcons.ic_action, color: Colors.blueAccent,),
+            Icon(AppBarIcons.ic_action, color: Colors.white,),
             SizedBox(
               width: 5.0,
             ),
@@ -129,7 +129,7 @@ class PopularAccountState extends State<PopularAccountView>
             ),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(30.0)),
-              color: Colors.white,
+              color: Colors.grey[200],
             ),
             padding: EdgeInsets.fromLTRB(15.0, 0.5, 15.0, 0.5),
           ),

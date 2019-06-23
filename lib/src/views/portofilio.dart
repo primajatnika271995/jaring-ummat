@@ -320,7 +320,6 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
       }, "Donasi", Colors.black, Colors.white, true),
     ];
 
-    Color foregroundColor = Theme.of(context).accentColor;
     Widget categoryDonation(category, total) {
       return Card(
         color: Colors.grey[200],

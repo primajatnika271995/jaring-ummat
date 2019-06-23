@@ -25,7 +25,7 @@ class UserStoryContainerOldState extends State<UserStoryContainerOld> {
   @override
   void initState() {
     super.initState();
-    _controller = VideoPlayerController.network(widget.url)
+    _controller = VideoPlayerController.network("http://www.sample-videos.com/video123/mp4/720/big_buck_bunny_720p_20mb.mp4")
       ..initialize().then((_) {
         setState(() {});
       });

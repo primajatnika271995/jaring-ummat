@@ -14,20 +14,20 @@ class ProgramAmalPage extends StatelessWidget {
       body: DefaultTabController(
         length: 8,
         child: Scaffold(
-          backgroundColor: Colors.grey[200],
+          backgroundColor: Colors.grey[300],
           appBar: PreferredSize(
             child: AppBar(
-              backgroundColor: Colors.blueAccent,
-              leading: new Icon(AppBarIcons.ic_leading),
+              backgroundColor: Colors.white,
+              leading: new Icon(AppBarIcons.ic_leading, color: Colors.black45,),
               actions: <Widget>[
                 SizedBox(
                   width: 7.0,
                 ),
-                Icon(Icons.chat),
+                Icon(Icons.chat, color: Colors.black45),
                 SizedBox(
                   width: 7.0,
                 ),
-                Icon(AppBarIcons.ic_action),
+                Icon(AppBarIcons.ic_action, color: Colors.black45),
                 SizedBox(
                   width: 13.0,
                 ),
@@ -40,7 +40,7 @@ class ProgramAmalPage extends StatelessWidget {
                   textInputAction: TextInputAction.next,
                   style: TextStyle(
                     fontSize: 12.0,
-                    color: Colors.black,
+                    color: Colors.white,
                   ),
                   decoration: InputDecoration(
                     contentPadding:
@@ -52,7 +52,7 @@ class ProgramAmalPage extends StatelessWidget {
                 ),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.all(Radius.circular(30.0)),
-                  color: Colors.white,
+                  color: Colors.grey[200],
                 ),
                 padding: EdgeInsets.fromLTRB(15.0, 0.5, 15.0, 0.5),
               ),
@@ -62,13 +62,22 @@ class ProgramAmalPage extends StatelessWidget {
           body: CustomScrollView(
             slivers: <Widget>[
               new SliverAppBar(
+                backgroundColor: Colors.grey[300],
                 automaticallyImplyLeading: false,
                 bottom: PreferredSize(
-                  preferredSize: Size.fromHeight(99.0),
+                  preferredSize: Size.fromHeight(-39.0),
                   child: Text(''),
                 ),
-                backgroundColor: Colors.white,
                 elevation: 10.0,
+              ),
+              new SliverAppBar(
+                automaticallyImplyLeading: false,
+                bottom: PreferredSize(
+                  preferredSize: Size.fromHeight(170.0),
+                  child: Text(''),
+                ),
+                backgroundColor: Colors.grey[400],
+                elevation: 20.0,
                 flexibleSpace: new Scaffold(
                   body: new UserStoryAppBar(),
                 ),

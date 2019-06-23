@@ -38,49 +38,61 @@ class _ProgramAmalContentState extends State<ProgramAmalContent> {
 
   Widget titleContent(BuildContext context) {
     return Container(
-      padding: EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 10.0),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
+      padding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 0.0),
+      child: Column(
         children: <Widget>[
-          Expanded(
-            flex: 2,
-            child: Container(
-              width: 53.0,
-              height: 53.0,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(50.0),
-                image: DecorationImage(
-                  fit: BoxFit.cover,
-                  image: NetworkImage(
-                      'https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg-1024x683.jpg'),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Expanded(
+                flex: 1,
+                child: Container(
+                  width: 40.0,
+                  height: 40.0,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(50.0),
+                    image: DecorationImage(
+                      fit: BoxFit.cover,
+                      image: NetworkImage(
+                          'https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg-1024x683.jpg'),
+                    ),
+                  ),
                 ),
               ),
-            ),
-          ),
-          Expanded(
-            flex: 8,
-            child: Container(
-              padding: EdgeInsets.only(left: 10.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  new Text(
-                    widget.programAmal.titleProgram,
-                    style:
+              Expanded(
+                flex: 8,
+                child: Container(
+                  padding: EdgeInsets.only(left: 10.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      new Text(
+                        widget.programAmal.titleProgram,
+                        style:
                         TextStyle(fontWeight: FontWeight.bold, fontSize: 15.0),
+                      ),
+                      Text(
+                        'oleh ' +
+                            widget.programAmal.createdBy +
+                            ' • ' +
+                            TimeAgoService()
+                                .timeAgoFormatting(widget.programAmal.createdDate),
+                        style: TextStyle(fontSize: 12.0),
+                      )
+                    ],
                   ),
-                  Text(
-                    'oleh ' +
-                        widget.programAmal.createdBy +
-                        ' • ' +
-                        TimeAgoService()
-                            .timeAgoFormatting(widget.programAmal.createdDate),
-                    style: TextStyle(fontSize: 12.0),
-                  )
-                ],
+                ),
               ),
-            ),
+              IconButton(
+                icon: Icon(Icons.share),
+                onPressed: () {},
+                iconSize: 15.0,
+                splashColor: Colors.grey,
+                highlightColor: Colors.grey,
+              ),
+            ],
           ),
+          dividerContent(context),
         ],
       ),
     );
@@ -99,13 +111,11 @@ class _ProgramAmalContentState extends State<ProgramAmalContent> {
             (url) {
               return Container(
                 child: ClipRRect(
-                  borderRadius: BorderRadius.all(Radius.circular(0.0)),
-                  child: CachedNetworkImage(
-                    fit: BoxFit.cover,
-                    imageUrl: url["imgUrl"],
-                    errorWidget: (content, url, error) => new Icon(Icons.error),
-                  ),
-                ),
+                    borderRadius: BorderRadius.all(Radius.circular(0.0)),
+                    child: Image.network(
+                      url["imgUrl"],
+                      fit: BoxFit.cover,
+                    )),
               );
             },
           ).toList(),
@@ -125,14 +135,14 @@ class _ProgramAmalContentState extends State<ProgramAmalContent> {
       child: moreDesc.isEmpty
           ? new Text(
               lessDesc,
-              style: TextStyle(color: Colors.black45),
+              style: TextStyle(color: Colors.black),
             )
           : new Column(
               children: <Widget>[
                 new Text(
                   flag ? (lessDesc + "...") : (lessDesc + moreDesc),
                   textAlign: TextAlign.justify,
-                  style: TextStyle(color: Colors.black45),
+                  style: TextStyle(color: Colors.black),
                 ),
                 new InkWell(
                   onTap: () {
@@ -205,7 +215,9 @@ class _ProgramAmalContentState extends State<ProgramAmalContent> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => GalangAmalView(programAmal: widget.programAmal,),
+                  builder: (context) => GalangAmalView(
+                        programAmal: widget.programAmal,
+                      ),
                 ),
               );
             },
@@ -227,7 +239,7 @@ class _ProgramAmalContentState extends State<ProgramAmalContent> {
 
   Widget bottomContent(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(top: 5.0, left: 10.0, right: 10.0),
+      padding: EdgeInsets.only(top: 5.0, left: 10.0, right: 10.0, bottom: 10.0),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -323,21 +335,18 @@ class _ProgramAmalContentState extends State<ProgramAmalContent> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 5.0,
-      child: Container(
-        color: Colors.white,
-        margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
-        child: Column(
-          children: <Widget>[
-            titleContent(context),
-            imageContent(context),
-            descriptionContent(context),
-            dividerContent(context),
-            donationContent(context),
-            bottomContent(context),
-          ],
-        ),
+    return Container(
+      color: Colors.white,
+      margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
+      child: Column(
+        children: <Widget>[
+          titleContent(context),
+          imageContent(context),
+          descriptionContent(context),
+          dividerContent(context),
+          donationContent(context),
+          bottomContent(context),
+        ],
       ),
     );
   }

@@ -2,12 +2,11 @@ import 'dart:io';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_jaring_ummat/src/models/login_model.dart';
+import 'package:flutter_jaring_ummat/src/models/postModel.dart';
 import 'package:flutter_jaring_ummat/src/services/login_service.dart';
 import 'package:flutter_jaring_ummat/src/services/registerApi.dart';
-import 'package:flutter_jaring_ummat/src/services/register_service.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image_cropper/image_cropper.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
 
@@ -18,13 +17,9 @@ import '../components/create_account_icons.dart';
 
 class Step4View extends StatefulWidget {
   final VoidCallback onNext;
-  String username;
-  String email;
-  String password;
-  String contact;
+  final PostRegistration data;
 
-  Step4View(
-      {this.onNext, this.username, this.password, this.email, this.contact});
+  Step4View({this.onNext, this.data});
 
   @override
   State<StatefulWidget> createState() {
@@ -33,103 +28,18 @@ class Step4View extends StatefulWidget {
 }
 
 class Step4State extends State<Step4View> {
-  //  SCAFFOLD KEY
-
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-
-  // Variable Shared Preferences
-
   SharedPreferences _preferences;
-
-  // Variable Page Controller
 
   PageController pageController;
 
-  bool isFollowed = false;
-
   File selected_image;
   bool _isSubmit = false;
+  bool isFollowed = false;
 
   Future<bool> showLoadingIndicator() async {
     await new Future.delayed(const Duration(seconds: 2));
     return true;
-  }
-
-  void onRegister() async {
-    print(widget.username);
-    print(widget.password);
-    print(widget.email);
-    print(widget.contact);
-    print(selected_image.path.split("/").last);
-
-    if (selected_image.path.isEmpty) {
-      Toast.show('Please Take image For Profile', context,
-          duration: 2, backgroundColor: Colors.red);
-      return;
-    }
-
-    RegisterApiProvider service = new RegisterApiProvider();
-    await service.saveUser(
-      widget.email, 
-      widget.username, 
-      widget.email, 
-      "Muzakki",
-      widget.password, 
-      widget.contact).then((response) {
-        print("For Response Status Register Text ${response.statusCode}");
-        if (response.statusCode == 200) {
-          var data = json.decode(response.body);
-          service.saveContent(data["id"], selected_image.path, "image", "Users Profile").then((response) {
-            print("For Response Status Register Content ${response.statusCode}");
-            onLogin();
-          });
-          setState(() {
-            new Future.delayed(new Duration(seconds: 3));
-            _isSubmit = false;
-        });
-      }
-    });
-  }
-
-  void onLogin() async {
-    _preferences = await SharedPreferences.getInstance();
-    _scaffoldKey.currentState.showSnackBar(
-      new SnackBar(
-        duration: new Duration(seconds: 2),
-        content: new Row(
-          children: <Widget>[
-            new CircularProgressIndicator(),
-            new Text(" Register Data, Please Wait ... ")
-          ],
-        ),
-      ),
-    );
-
-    await showLoadingIndicator();
-    setState(() {
-      LoginServices service = new LoginServices();
-      service.login(widget.email, widget.password).then((response) {
-        print(response.statusCode);
-
-        if (response.statusCode == 200) {
-          print(response.body);
-          var value = AccessToken.fromJson(json.decode(response.body));
-          var token = value.access_token;
-          _preferences.setString(ACCESS_TOKEN_KEY, token);
-          _preferences.setString(EMAIL_KEY, widget.email);
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => SuccessRegisterView(
-                    email: widget.email,
-                    username: widget.username,
-                    avatarImage: selected_image,
-                  ),
-            ),
-          );
-        }
-      });
-    });
   }
 
   Future<ImageSource> _asyncImageSourceDialog(BuildContext context) async {
@@ -450,14 +360,14 @@ class Step4State extends State<Step4View> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 new Text(
-                                  widget.username,
+                                  widget.data.username,
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 20.0,
                                       color: Colors.white),
                                 ),
                                 new Text(
-                                  '${widget.email} - ${widget.contact}',
+                                  '${widget.data.email} - ${widget.data.contact}',
                                   style: TextStyle(
                                     fontWeight: FontWeight.normal,
                                     fontSize: 11.0,
@@ -552,5 +462,71 @@ class Step4State extends State<Step4View> {
             ],
           )),
     );
+  }
+
+  void onRegister() async {
+    print(widget.data);
+    print(selected_image.path.split("/").last);
+
+    if (selected_image.path.isEmpty) {
+      Toast.show('Please Take image For Profile', context,
+          duration: 2, backgroundColor: Colors.red);
+      return;
+    }
+
+    RegisterApiProvider service = new RegisterApiProvider();
+    await service.saveUser(widget.data).then((response) {
+        print("For Response Status Register Text ${response.statusCode}");
+        if (response.statusCode == 200) {
+          var data = json.decode(response.body);
+          service.saveContent(data["id"], selected_image.path, "image", "Users Profile").then((response) {
+            print("For Response Status Register Content ${response.statusCode}");
+            onLogin();
+          });
+          setState(() {
+            new Future.delayed(new Duration(seconds: 3));
+            _isSubmit = false;
+        });
+      }
+    });
+  }
+
+  void onLogin() async {
+    _preferences = await SharedPreferences.getInstance();
+    _scaffoldKey.currentState.showSnackBar(
+      new SnackBar(
+        duration: new Duration(seconds: 2),
+        content: new Row(
+          children: <Widget>[
+            new CircularProgressIndicator(),
+            new Text(" Register Data, Please Wait ... ")
+          ],
+        ),
+      ),
+    );
+
+    await showLoadingIndicator();
+    setState(() {
+      LoginServices service = new LoginServices();
+      service.login(widget.data.email, widget.data.email).then((response) {
+        print("For response status code Login ${response.statusCode}");
+        if (response.statusCode == 200) {
+          var value = AccessToken.fromJson(json.decode(response.body));
+          var token = value.access_token;
+          _preferences.setString(ACCESS_TOKEN_KEY, token);
+          _preferences.setString(EMAIL_KEY, widget.data.email);
+          // Navigator.push(
+          //   context,
+          //   MaterialPageRoute(
+          //     builder: (context) => SuccessRegisterView(
+          //           email: widget.email,
+          //           username: widget.username,
+          //           avatarImage: selected_image,
+          //         ),
+          //   ),
+          // );
+        }
+      });
+    });
   }
 }

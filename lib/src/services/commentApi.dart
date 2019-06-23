@@ -36,8 +36,6 @@ class CommentApiProvider {
 
     if (response.statusCode == 200) {
       return compute(commentFromJson, response.body);
-    } else {
-      throw Exception('Failed to load');
     }
   }
 

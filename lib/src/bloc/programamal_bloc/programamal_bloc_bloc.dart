@@ -4,7 +4,6 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_jaring_ummat/src/config/preferences.dart';
 import 'package:flutter_jaring_ummat/src/models/programAmalModel.dart';
-import 'package:flutter_jaring_ummat/src/utils/preference.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import './bloc.dart';
@@ -39,7 +38,7 @@ class ProgramamalBlocBloc extends Bloc<ProgramamalBlocEvent, ProgramamalBlocStat
     if (event is Fetch && !_hasReachedMax(currentState)) {
       try {
         if (currentState is ProgramAmalUninitialized) {
-          final programAmal = await _fetchProgramAmal(userId, 0, 2);
+          final programAmal = await _fetchProgramAmal(userId, 0, 10);
           yield ProgramAmalLoaded(programAmal: programAmal, hasReachedMax: false);
         }
 //        if (currentState is ProgramAmalLoaded) {
@@ -65,7 +64,7 @@ class ProgramamalBlocBloc extends Bloc<ProgramamalBlocEvent, ProgramamalBlocStat
     print("this start index ${startIndex}");
     print("this limit data ${limit}");
 
-    final response = await httpClient.get('http://192.168.1.50:9091/api/program-amal/list?idUserLogin=${userId}&start=$startIndex&limit=$limit');
+    final response = await httpClient.get('http://139.162.15.91/jaring-ummat/api/program-amal/list?idUserLogin=${userId}&start=$startIndex&limit=$limit');
       print(response.statusCode);
       if (response.statusCode == 200) {
         final data = json.decode(response.body) as List;

@@ -3,8 +3,8 @@
 //const BASE_API_URL = 'http://192.168.1.7:9091';
 //const BASE_API_UPLOADER_URL = 'http://192.168.1.7:8080';
 
-const BASE_API_URL = 'http://192.168.1.50:9091';
-const BASE_API_UPLOADER_URL = 'http://192.168.1.50:9095';
+const BASE_API_URL = 'http://139.162.15.91/jaring-ummat';
+const BASE_API_UPLOADER_URL = 'http://139.162.15.91/uploader';
 
 const UPLOADER_MEDIA_IMAGE = BASE_API_UPLOADER_URL + '/api/media/upload/image';
 
