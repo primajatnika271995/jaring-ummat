@@ -476,16 +476,19 @@ class Step4State extends State<Step4View> {
 
     RegisterApiProvider service = new RegisterApiProvider();
     await service.saveUser(widget.data).then((response) {
-        print("For Response Status Register Text ${response.statusCode}");
-        if (response.statusCode == 200) {
-          var data = json.decode(response.body);
-          service.saveContent(data["id"], selected_image.path, "image", "Users Profile").then((response) {
-            print("For Response Status Register Content ${response.statusCode}");
-            onLogin();
-          });
-          setState(() {
-            new Future.delayed(new Duration(seconds: 3));
-            _isSubmit = false;
+      print("For Response Status Register Text ${response.statusCode}");
+      if (response.statusCode == 201) {
+        var data = json.decode(response.body);
+        service
+            .saveContent(
+                data["id"], "Users Profile", "image", selected_image.path)
+            .then((response) {
+          print("For Response Status Register Content ${response.statusCode}");
+          onLogin();
+        });
+        setState(() {
+          new Future.delayed(new Duration(seconds: 3));
+          _isSubmit = false;
         });
       }
     });
@@ -508,23 +511,22 @@ class Step4State extends State<Step4View> {
     await showLoadingIndicator();
     setState(() {
       LoginServices service = new LoginServices();
-      service.login(widget.data.email, widget.data.email).then((response) {
-        print("For response status code Login ${response.statusCode}");
+      service.login(widget.data.email, widget.data.password).then((response) {
+        print("For Response status code Login ${response.statusCode}");
         if (response.statusCode == 200) {
           var value = AccessToken.fromJson(json.decode(response.body));
           var token = value.access_token;
           _preferences.setString(ACCESS_TOKEN_KEY, token);
           _preferences.setString(EMAIL_KEY, widget.data.email);
-          // Navigator.push(
-          //   context,
-          //   MaterialPageRoute(
-          //     builder: (context) => SuccessRegisterView(
-          //           email: widget.email,
-          //           username: widget.username,
-          //           avatarImage: selected_image,
-          //         ),
-          //   ),
-          // );
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => SuccessRegisterView(
+                    data: widget.data,
+                    avatarImage: selected_image,
+                  ),
+            ),
+          );
         }
       });
     });

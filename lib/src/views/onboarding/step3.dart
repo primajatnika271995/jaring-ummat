@@ -99,17 +99,14 @@ class Step3State extends State<Step3View> with TickerProviderStateMixin {
     if (otp == otpKey.toString()) {
       setState(() {
         is_submited = true;
-        // Navigator.push(
-        //   context,
-        //   MaterialPageRoute(
-        //     builder: (context) => Step4View(
-        //           email: widget.email,
-        //           username: widget.fullname,
-        //           password: widget.password,
-        //           contact: widget.contact,
-        //         ),
-        //   ),
-        // );
+         Navigator.push(
+           context,
+           MaterialPageRoute(
+             builder: (context) => Step4View(
+                   data: widget.data,
+                 ),
+           ),
+         );
       });
     } else {
       Toast.show('OTP Number is Wrong, check Again', context,
