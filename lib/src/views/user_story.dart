@@ -3,10 +3,11 @@ import 'components/userstory_container.dart';
 
 class UserStoryView extends StatefulWidget {
 
-  String url;
-  String createdBy; 
+  String userId;
+  String createdBy;
   int createdDate;
-  UserStoryView({@required this.url, this.createdBy, this.createdDate});
+  String video;
+  UserStoryView({@required this.userId, this.createdBy, this.createdDate, @required this.video});
 
   @override
   State<StatefulWidget> createState() {
@@ -23,7 +24,7 @@ class UserStoryState extends State<UserStoryView> {
           onTap: () {
             Navigator.pop(context);
           },
-          child: UserStoryContainerOld(url: widget.url, createdBy: widget.createdBy, createdDate: widget.createdDate,),
+          child: UserStoryContainerOld(video: widget.video, userId: widget.userId, createdBy: widget.createdBy, createdDate: widget.createdDate,),
         )
       ),
     );

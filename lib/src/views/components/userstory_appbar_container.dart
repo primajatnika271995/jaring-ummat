@@ -33,8 +33,7 @@ class UserStoryAppBarState extends State<UserStoryAppBar> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Container(
-                margin: EdgeInsets.symmetric(
-                    horizontal: 10.0, vertical: 8.0),
+                margin: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0.0),
                 child: Row(
                   children: <Widget>[
                     const Text(
@@ -47,7 +46,7 @@ class UserStoryAppBarState extends State<UserStoryAppBar> {
                 ),
               ),
               Container(
-                margin: EdgeInsets.symmetric(horizontal: 10.0),
+                margin: EdgeInsets.fromLTRB(10.0, 4.0, 10.0, 0.0),
                 child: const Text(
                   'See fullscreen photos and videos before they disappear.',
                   style:
@@ -109,10 +108,10 @@ class UserStoryAppBarState extends State<UserStoryAppBar> {
               videoUrl.add(video);
             });
           });
-
+          print("Video index 0 : ${videoUrl[0]}");
           return GestureDetector(
             onTap: () {
-              Route route = MaterialPageRoute(builder: (context) => UserStoryView(url: video, createdBy: data.createdBy, createdDate: data.storyList[0].createdDate,));
+              Route route = MaterialPageRoute(builder: (context) => UserStoryView(video: videoUrl[0], userId: data.userId, createdBy: data.createdBy, createdDate: data.storyList[0].createdDate,));
               Navigator.push(context, route);
             },
             child: Container(

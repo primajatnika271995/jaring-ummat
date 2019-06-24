@@ -61,19 +61,19 @@ class ProgramAmalPage extends StatelessWidget {
           ),
           body: CustomScrollView(
             slivers: <Widget>[
+//              new SliverAppBar(
+//                backgroundColor: Colors.grey[300],
+//                automaticallyImplyLeading: false,
+//                bottom: PreferredSize(
+//                  preferredSize: Size.fromHeight(-39.0),
+//                  child: Text(''),
+//                ),
+//                elevation: 10.0,
+//              ),
               new SliverAppBar(
-                backgroundColor: Colors.grey[300],
                 automaticallyImplyLeading: false,
                 bottom: PreferredSize(
-                  preferredSize: Size.fromHeight(-39.0),
-                  child: Text(''),
-                ),
-                elevation: 10.0,
-              ),
-              new SliverAppBar(
-                automaticallyImplyLeading: false,
-                bottom: PreferredSize(
-                  preferredSize: Size.fromHeight(170.0),
+                  preferredSize: Size.fromHeight(160.0),
                   child: Text(''),
                 ),
                 backgroundColor: Colors.grey[400],
