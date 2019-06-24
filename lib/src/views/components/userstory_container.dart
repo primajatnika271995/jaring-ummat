@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_jaring_ummat/src/models/storiesModel.dart';
+import 'package:flutter_jaring_ummat/src/views/components/video_player_container.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_jaring_ummat/src/services/time_ago_service.dart';
 import 'package:video_player/video_player.dart';
@@ -14,7 +15,10 @@ class UserStoryContainerOld extends StatefulWidget {
   String video;
   int createdDate;
   UserStoryContainerOld(
-      {@required this.userId, this.createdBy, this.createdDate, @required this.video});
+      {@required this.userId,
+      this.createdBy,
+      this.createdDate,
+      @required this.video});
 
   @override
   State<StatefulWidget> createState() {
@@ -77,12 +81,11 @@ class UserStoryContainerOldState extends State<UserStoryContainerOld> {
                         elevation: 10.0,
                         child: Center(
                           child: urlContent[index].imgUrl == null
-                              ? _controller.value.initialized
-                                  ? AspectRatio(
-                            aspectRatio: _controller.value.aspectRatio,
-                            child: VideoPlayer(_controller),
-                          )
-                              : CircularProgressIndicator()
+                              ? VideoPlayerContainer(
+                                  videoPlayerController:
+                                      VideoPlayerController.network(
+                                          urlContent[index].videoUrl),
+                                )
                               : Image.network(
                                   urlContent[index].imgUrl,
                                   fit: BoxFit.cover,
