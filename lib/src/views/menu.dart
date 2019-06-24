@@ -110,10 +110,10 @@ class _MenuState extends State<Menu> {
           child: new AppBar(
             title: new Text(
               'Akun dan menu lain',
-              style: TextStyle(fontSize: 14.0),
+              style: TextStyle(fontSize: 14.0, color: Colors.blueAccent),
             ),
             centerTitle: false,
-            backgroundColor: Colors.blueAccent,
+            backgroundColor: Colors.white,
             automaticallyImplyLeading: false,
             actions: <Widget>[
               IconButton(
@@ -122,7 +122,7 @@ class _MenuState extends State<Menu> {
                 },
                 icon: Icon(
                   CreateAccount.logout,
-                  color: Colors.white,
+                  color: Colors.blueAccent,
                 ),
               )
             ],
@@ -168,11 +168,7 @@ class _MenuState extends State<Menu> {
                                                     color: Colors.white
                                                         .withOpacity(0.5),
                                                     image: DecorationImage(
-                                                      image: _profilePictureLocal ==
-                                                              null
-                                                          ? NetworkImage(
-                                                              _profilePictureLocalFB)
-                                                          : NetworkImage(_profilePictureLocal),
+                                                      image: NetworkImage(_profilePictureLocal),
                                                       fit: BoxFit.cover,
                                                     )),
                                               ),

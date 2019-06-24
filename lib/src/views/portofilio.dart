@@ -457,17 +457,25 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(47.0),
           child: AppBar(
-            backgroundColor: Colors.blueAccent,
+            elevation: 3.0,
+            backgroundColor: Colors.white,
             title: new Text(
               'Portofolio Tahun 2019',
-              style: TextStyle(fontSize: 14.0),
+              style: TextStyle(fontSize: 14.0, color: Colors.blueAccent),
             ),
             centerTitle: false,
             automaticallyImplyLeading: false,
             actions: <Widget>[
               IconButton(
-                onPressed: () {},
-                icon: Icon(Icons.settings),
+                onPressed: () {
+                  Scaffold.of(context).showSnackBar(SnackBar(
+                    content: Text('Setting Menu Under Development'),
+                  ));
+                },
+                icon: Icon(
+                  Icons.settings,
+                  color: Colors.blueAccent,
+                ),
               )
             ],
           ),
@@ -475,6 +483,7 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
         body: CustomScrollView(
           slivers: <Widget>[
             new SliverAppBar(
+                elevation: 1.0,
                 automaticallyImplyLeading: false,
                 bottom: PreferredSize(
                   preferredSize: Size.fromHeight(40.0),

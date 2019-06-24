@@ -1,13 +1,12 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_jaring_ummat/src/models/storiesModel.dart';
-import 'package:flutter_jaring_ummat/src/views/components/video_player_container.dart';
-import 'package:http/http.dart' as http;
 import 'package:flutter_jaring_ummat/src/services/time_ago_service.dart';
-import 'package:video_player/video_player.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
+import 'package:flutter_ijkplayer/flutter_ijkplayer.dart';
 
 class UserStoryContainerOld extends StatefulWidget {
   String userId;
@@ -28,27 +27,13 @@ class UserStoryContainerOld extends StatefulWidget {
 
 class UserStoryContainerOldState extends State<UserStoryContainerOld> {
   List<Content> urlContent = List<Content>();
+  IjkMediaController controller = IjkMediaController();
 
-  VideoPlayerController _controller;
+  int currentIndex = 0;
 
   @override
   void initState() {
     super.initState();
-
-    print("hello : ${widget.video}");
-
-    _controller = VideoPlayerController.network(
-        "http://139.162.15.91:80/066b697d-f439-4f8d-aec5-9dae577e8e00.mp4")
-      ..initialize().then((_) {
-        setState(() {});
-      });
-    _controller.play();
-    _controller.setLooping(false);
-    _controller.value.position.inMicroseconds;
-    Timer.periodic(Duration(seconds: 15), (Timer t) {
-      print(t);
-    });
-
     storiesList().then((response) {
       var data = json.decode(response.body);
       Story stories = Story.fromJson(data[0]);
@@ -65,7 +50,6 @@ class UserStoryContainerOldState extends State<UserStoryContainerOld> {
     return Scaffold(
       backgroundColor: Colors.black,
       body: Stack(
-        fit: StackFit.expand,
         children: <Widget>[
           Column(
             children: <Widget>[
@@ -75,17 +59,14 @@ class UserStoryContainerOldState extends State<UserStoryContainerOld> {
                   itemCount: urlContent.length,
                   itemBuilder: (BuildContext context, int index) {
                     print(urlContent.length);
+                    if (urlContent[index].imgUrl == null) {}
                     return Container(
                       margin: EdgeInsets.fromLTRB(1.0, 25.0, 4.0, 1.0),
                       child: Card(
                         elevation: 10.0,
                         child: Center(
                           child: urlContent[index].imgUrl == null
-                              ? VideoPlayerContainer(
-                                  videoPlayerController:
-                                      VideoPlayerController.network(
-                                          urlContent[index].videoUrl),
-                                )
+                              ? videoPlayer(urlContent[index].videoUrl)
                               : Image.network(
                                   urlContent[index].imgUrl,
                                   fit: BoxFit.cover,
@@ -235,18 +216,28 @@ class UserStoryContainerOldState extends State<UserStoryContainerOld> {
         LinearPercentIndicator(
           lineHeight: 4.0,
           padding: EdgeInsets.symmetric(horizontal: 4.0),
-          width: MediaQuery.of(context).size.width / urlContent.length - 5,
+          width: MediaQuery.of(context).size.width - 10,
           progressColor: Colors.blue,
-          animationDuration: 15000,
+          animationDuration: 7000,
           percent: 1,
           animation: true,
         ),
       );
     }
     return new Container(
-      margin: EdgeInsets.only(left: 10.0, right: 10.0),
+      margin: EdgeInsets.only(left: 10.0, right: 50.0),
       child: Row(
         children: list,
+      ),
+    );
+  }
+
+  Widget videoPlayer(String url) {
+    controller.setNetworkDataSource(url, autoPlay: true);
+    return Container(
+      height: 700.0,
+      child: IjkPlayer(
+        mediaController: controller,
       ),
     );
   }
@@ -254,7 +245,7 @@ class UserStoryContainerOldState extends State<UserStoryContainerOld> {
   @override
   void dispose() {
     super.dispose();
-    _controller.dispose();
+    controller.dispose();
   }
 
   Future<http.Response> storiesList() async {

@@ -1,12 +1,15 @@
 import 'dart:io';
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_jaring_ummat/src/models/UserDetails.dart';
 import 'package:flutter_jaring_ummat/src/models/login_model.dart';
 import 'package:flutter_jaring_ummat/src/models/postModel.dart';
 import 'package:flutter_jaring_ummat/src/services/login_service.dart';
 import 'package:flutter_jaring_ummat/src/services/registerApi.dart';
+import 'package:flutter_jaring_ummat/src/services/user_details.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image_cropper/image_cropper.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
 
@@ -32,6 +35,9 @@ class Step4State extends State<Step4View> {
   SharedPreferences _preferences;
 
   PageController pageController;
+
+  ProgressDialog _progressDialog;
+  UserDetailsService userDetailsService = new UserDetailsService();
 
   File selected_image;
   bool _isSubmit = false;
@@ -285,16 +291,8 @@ class Step4State extends State<Step4View> {
                                           var image =
                                               await ImagePicker.pickImage(
                                                   source: imageSource);
-                                          File croppedFile =
-                                              await ImageCropper.cropImage(
-                                            sourcePath: image.path,
-                                            ratioX: 1.0,
-                                            ratioY: 1.0,
-                                            maxWidth: 512,
-                                            maxHeight: 512,
-                                          );
                                           setState(() {
-                                            selected_image = croppedFile;
+                                            selected_image = image;
                                           });
                                         },
                                         child: Container(
@@ -518,17 +516,54 @@ class Step4State extends State<Step4View> {
           var token = value.access_token;
           _preferences.setString(ACCESS_TOKEN_KEY, token);
           _preferences.setString(EMAIL_KEY, widget.data.email);
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => SuccessRegisterView(
-                    data: widget.data,
-                    avatarImage: selected_image,
-                  ),
-            ),
-          );
+          getUserDetail();
         }
       });
     });
+  }
+
+  Future<void> getUserDetail() async {
+    UserDetails userDetails;
+    _preferences = await SharedPreferences.getInstance();
+    var _email = _preferences.getString(EMAIL_KEY);
+
+//    _scaffoldKey.currentState.showSnackBar(
+//      new SnackBar(
+//        content: new Row(
+//          children: <Widget>[
+//            new CircularProgressIndicator(),
+//            new Text(" Please Wait For Details Users ... ")
+//          ],
+//        ),
+//      ),
+//    );
+
+    _progressDialog = new ProgressDialog(context, ProgressDialogType.Normal);
+    _progressDialog.setMessage("Get User Details ...");
+    _progressDialog.show();
+
+    _email != null
+        ? userDetailsService.userDetails(_email).then((response) async {
+            print("For Response Users Detail Code ${response.statusCode}");
+            if (response.statusCode == 200) {
+              print("For Response Users Detail by Email ${response.data} ");
+              userDetails = UserDetails.fromJson(response.data);
+              _preferences.setString(FULLNAME_KEY, userDetails.fullname);
+              _preferences.setString(CONTACT_KEY, userDetails.contact);
+              _preferences.setString(USER_ID_KEY, userDetails.userId);
+              _preferences.setString(
+                  PROFILE_PICTURE_KEY, userDetails.imgProfile[0].imgUrl);
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SuccessRegisterView(
+                        data: widget.data,
+                        avatarImage: selected_image,
+                      ),
+                ),
+              );
+            }
+          })
+        : null;
   }
 }

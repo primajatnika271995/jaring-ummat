@@ -62,6 +62,7 @@ class BeritaBloc extends Bloc<BeritaEvent, BeritaState> {
     print("this start index ${startIndex}");
     print("this limit data ${limit}");
     final response = await httpClient.get('http://139.162.15.91/jaring-ummat/api/berita/list?start=$startIndex&limit=$limit&idUserLogin=$userId');
+//    final response = await httpClient.get('http://192.168.1.50:9091/api/berita/list?start=$startIndex&limit=$limit&idUserLogin=$userId');
       print(response.statusCode);
       if (response.statusCode == 200) {
         final data = json.decode(response.body) as List;

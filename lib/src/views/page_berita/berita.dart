@@ -19,6 +19,7 @@ class BeritaPage extends StatelessWidget {
           appBar: PreferredSize(
               child: AppBar(
                 titleSpacing: 10.0,
+                elevation: 3.0,
                 automaticallyImplyLeading: false,
                 centerTitle: true,
                 backgroundColor: Colors.white,
@@ -27,7 +28,7 @@ class BeritaPage extends StatelessWidget {
                     textInputAction: TextInputAction.next,
                     style: TextStyle(
                       fontSize: 12.0,
-                      color: Colors.black,
+                      color: Colors.blueAccent,
                     ),
                     decoration: InputDecoration(
                       contentPadding:
@@ -45,8 +46,8 @@ class BeritaPage extends StatelessWidget {
                 ),
                 actions: <Widget>[
                   IconButton(
-                      icon: Icon(Icons.arrow_forward, color: Colors.black45),
-                      onPressed: () => Navigator.pop(context)),
+                      icon: Icon(Icons.arrow_forward, color: Colors.blueAccent),
+                      onPressed: () {}),
                 ],
               ),
               preferredSize: Size.fromHeight(47.0)),

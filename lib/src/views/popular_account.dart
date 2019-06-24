@@ -32,6 +32,7 @@ class PopularAccountState extends State<PopularAccountView>
   @override
   Widget build(BuildContext context) {
     Widget buttonsWidget = new Container(
+      color: Colors.white,
       child: new TabBar(
         isScrollable: true,
         indicator: UnderlineTabIndicator(
@@ -87,8 +88,9 @@ class PopularAccountState extends State<PopularAccountView>
     return new Scaffold(
       appBar: PreferredSize(
         child: AppBar(
+          elevation: 3.0,
           backgroundColor: Colors.white,
-          leading: new Icon(Icons.arrow_back, color: Colors.black45,),
+          leading: new Icon(Icons.arrow_back, color: Colors.blueAccent,),
           actions: <Widget>[
             SizedBox(
               width: 5.0,

@@ -72,19 +72,21 @@ class _InboxState extends State<Inbox> with SingleTickerProviderStateMixin {
           child: new AppBar(
             title: new Text(
               'Kotak Masuk',
-              style: TextStyle(fontSize: 14.0),
+              style: TextStyle(fontSize: 14.0, color: Colors.blueAccent),
             ),
             centerTitle: false,
-            backgroundColor: Colors.blueAccent,
+            backgroundColor: Colors.white,
             automaticallyImplyLeading: false,
             actions: <Widget>[
               IconButton(
                 onPressed: () {
-//                  logout();
+                  Scaffold.of(context).showSnackBar(SnackBar(
+                    content: Text('Setting Menu Under Development'),
+                  ));
                 },
                 icon: Icon(
                   CreateAccount.setting_2,
-                  color: Colors.white,
+                  color: Colors.blueAccent,
                 ),
               )
             ],

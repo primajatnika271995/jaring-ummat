@@ -147,6 +147,7 @@ class Step3State extends State<Step3View> with TickerProviderStateMixin {
     textEditingController5.dispose();
     textEditingController6.dispose();
     currController.dispose();
+    _animationController.dispose();
   }
 
 //
@@ -371,4 +372,5 @@ class Step3State extends State<Step3View> with TickerProviderStateMixin {
       ),
     );
   }
+
 }

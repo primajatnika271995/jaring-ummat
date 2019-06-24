@@ -29,32 +29,32 @@ class UserStoryAppBarState extends State<UserStoryAppBar> {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Container(
-                margin: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0.0),
-                child: Row(
-                  children: <Widget>[
-                    const Text(
-                      'Stories',
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black87),
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                margin: EdgeInsets.fromLTRB(10.0, 4.0, 10.0, 0.0),
-                child: const Text(
-                  'See fullscreen photos and videos before they disappear.',
-                  style:
-                  TextStyle(fontSize: 12.0, color: Colors.grey),
-                ),
-              ),
-            ],
-          ),
+//          Column(
+//            crossAxisAlignment: CrossAxisAlignment.start,
+//            children: <Widget>[
+//              Container(
+//                margin: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0.0),
+//                child: Row(
+//                  children: <Widget>[
+//                    const Text(
+//                      'Stories',
+//                      style: TextStyle(
+//                          fontWeight: FontWeight.bold,
+//                          color: Colors.black87),
+//                    ),
+//                  ],
+//                ),
+//              ),
+//              Container(
+//                margin: EdgeInsets.fromLTRB(10.0, 4.0, 10.0, 0.0),
+//                child: const Text(
+//                  'See fullscreen photos and videos before they disappear.',
+//                  style:
+//                  TextStyle(fontSize: 12.0, color: Colors.grey),
+//                ),
+//              ),
+//            ],
+//          ),
           StreamBuilder(
             stream: bloc.storyFetchAll,
             builder: (context, AsyncSnapshot<List<Story>> snapshot) {

@@ -18,16 +18,42 @@ class ProgramAmalPage extends StatelessWidget {
           appBar: PreferredSize(
             child: AppBar(
               backgroundColor: Colors.white,
-              leading: new Icon(AppBarIcons.ic_leading, color: Colors.black45,),
+              leading: InkWell(
+                onTap: () {
+                  Scaffold.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Menu Under Development'),
+                    ),
+                  );
+                },
+                child: new Icon(
+                  AppBarIcons.ic_leading,
+                  color: Colors.blueAccent,
+                ),
+              ),
               actions: <Widget>[
                 SizedBox(
                   width: 7.0,
                 ),
-                Icon(Icons.chat, color: Colors.black45),
+                InkWell(
+                  onTap: () {
+                    Scaffold.of(context).showSnackBar(SnackBar(
+                      content: Text('Chats Menu Under Development'),
+                    ));
+                  },
+                  child: Icon(Icons.chat, color: Colors.blueAccent),
+                ),
                 SizedBox(
                   width: 7.0,
                 ),
-                Icon(AppBarIcons.ic_action, color: Colors.black45),
+                InkWell(
+                  onTap: () {
+                    Scaffold.of(context).showSnackBar(SnackBar(
+                      content: Text('Add Menu Under Development'),
+                    ));
+                  },
+                  child: Icon(AppBarIcons.ic_action, color: Colors.blueAccent),
+                ),
                 SizedBox(
                   width: 13.0,
                 ),
@@ -73,10 +99,10 @@ class ProgramAmalPage extends StatelessWidget {
               new SliverAppBar(
                 automaticallyImplyLeading: false,
                 bottom: PreferredSize(
-                  preferredSize: Size.fromHeight(160.0),
+                  preferredSize: Size.fromHeight(105.0),
                   child: Text(''),
                 ),
-                backgroundColor: Colors.grey[400],
+                backgroundColor: Colors.white,
                 elevation: 20.0,
                 flexibleSpace: new Scaffold(
                   body: new UserStoryAppBar(),

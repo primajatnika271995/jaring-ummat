@@ -109,84 +109,112 @@ class _HomeState extends State<HomeView> {
   }
 
   Widget bottomNavBar(int currentIndex, Function onTap) {
-    return BottomNavigationBar(
-      type: BottomNavigationBarType.fixed,
-      currentIndex: currentIndex,
-      onTap: onTap,
-      items: [
-        BottomNavigationBarItem(
-          icon: new Icon(NavbarCustom.nav_home_inactive),
-          activeIcon: new Icon(NavbarCustom.nav_home_active),
-          title: new Text('Beranda'),
-        ),
-        BottomNavigationBarItem(
-          icon: new Icon(NavbarCustom.nav_portfolio_inactive),
-          activeIcon: new Icon(NavbarCustom.nav_portfolio_active),
-          title: new Text('Portofolio'),
-        ),
-        BottomNavigationBarItem(
-          icon: new Stack(
-            children: <Widget>[
-              new Icon(NavbarCustom.nav_inbox_inactive),
-              new Positioned(
-                right: 0,
-                child: new Container(
-                  padding: EdgeInsets.all(1),
-                  decoration: new BoxDecoration(
-                    color: Colors.red,
-                    borderRadius: BorderRadius.circular(6),
-                  ),
-                  constraints: BoxConstraints(
-                    minWidth: 12,
-                    minHeight: 12,
-                  ),
-                  child: new Text(
-                    '12',
-                    style: new TextStyle(
-                      color: Colors.white,
-                      fontSize: 8,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              )
-            ],
+    return SizedBox(
+      height: 50.0,
+      child: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        elevation: 20.0,
+        currentIndex: currentIndex,
+        onTap: onTap,
+        items: [
+          BottomNavigationBarItem(
+            icon: new Icon(
+              NavbarCustom.nav_home_inactive,
+              size: 27.0,
+            ),
+            activeIcon: new Icon(
+              NavbarCustom.nav_home_active,
+              size: 27.0,
+            ),
+            title: Container(height: 0.0),
           ),
-          activeIcon: new Stack(
-            children: <Widget>[
-              new Icon(NavbarCustom.nav_inbox_active),
-              new Positioned(
-                right: 0,
-                child: new Container(
-                  padding: EdgeInsets.all(1),
-                  decoration: new BoxDecoration(
-                    color: Colors.red,
-                    borderRadius: BorderRadius.circular(6),
-                  ),
-                  constraints: BoxConstraints(
-                    minWidth: 12,
-                    minHeight: 12,
-                  ),
-                  child: new Text(
-                    '12',
-                    style: new TextStyle(
-                      color: Colors.white,
-                      fontSize: 8,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              )
-            ],
+          BottomNavigationBarItem(
+            icon: new Icon(
+              NavbarCustom.nav_portfolio_inactive,
+              size: 27.0,
+            ),
+            activeIcon: new Icon(
+              NavbarCustom.nav_portfolio_active,
+              size: 27.0,
+            ),
+            title: Container(height: 0.0),
           ),
-          title: new Text('Kotak Masuk'),
-        ),
-        BottomNavigationBarItem(
-          icon: new Icon(NavbarCustom.nav_othersmenu_inactive),
-          activeIcon: new Icon(NavbarCustom.nav_othersmenu_active),
-          title: new Text('Menu Lain'),
-        ),
-      ],
+          BottomNavigationBarItem(
+            icon: new Stack(
+              children: <Widget>[
+                new Icon(
+                  NavbarCustom.nav_inbox_inactive,
+                  size: 27.0,
+                ),
+                new Positioned(
+                  right: 0,
+                  child: new Container(
+                    padding: EdgeInsets.all(1),
+                    decoration: new BoxDecoration(
+                      color: Colors.red,
+                      borderRadius: BorderRadius.circular(6),
+                    ),
+                    constraints: BoxConstraints(
+                      minWidth: 12,
+                      minHeight: 12,
+                    ),
+                    child: new Text(
+                      '12',
+                      style: new TextStyle(
+                        color: Colors.white,
+                        fontSize: 8,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                )
+              ],
+            ),
+            activeIcon: new Stack(
+              children: <Widget>[
+                new Icon(
+                  NavbarCustom.nav_inbox_active,
+                  size: 27.0,
+                ),
+                new Positioned(
+                  right: 0,
+                  child: new Container(
+                    padding: EdgeInsets.all(1),
+                    decoration: new BoxDecoration(
+                      color: Colors.red,
+                      borderRadius: BorderRadius.circular(6),
+                    ),
+                    constraints: BoxConstraints(
+                      minWidth: 12,
+                      minHeight: 12,
+                    ),
+                    child: new Text(
+                      '12',
+                      style: new TextStyle(
+                        color: Colors.white,
+                        fontSize: 8,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                )
+              ],
+            ),
+            title: Container(height: 0.0),
+          ),
+          BottomNavigationBarItem(
+            icon: new Icon(
+              NavbarCustom.nav_othersmenu_inactive,
+              size: 27.0,
+            ),
+            activeIcon: new Icon(
+              NavbarCustom.nav_othersmenu_active,
+              size: 27.0,
+            ),
+            title: Container(height: 0.0),
+          ),
+        ],
+      ),
     );
   }
 }

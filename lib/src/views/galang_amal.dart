@@ -25,14 +25,14 @@ class _GalangAmalState extends State<GalangAmalView> {
           onTap: () {
             Navigator.pop(context);
           },
-          child: Icon(Icons.arrow_back_ios),
+          child: Icon(Icons.arrow_back_ios, color: Colors.blueAccent,),
         ),
         title: new Text(
           'Galang Amal',
-          style: TextStyle(fontSize: 15.0),
+          style: TextStyle(fontSize: 15.0, color: Colors.blueAccent),
         ),
         centerTitle: false,
-        backgroundColor: Colors.blueAccent,
+        backgroundColor: Colors.white,
       ),
       body: ListView(
         children: <Widget>[

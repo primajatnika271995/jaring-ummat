@@ -82,13 +82,6 @@ class _BeritaContentState extends State<BeritaContent> {
                   ),
                 ),
               ),
-              IconButton(
-                icon: Icon(Icons.share),
-                onPressed: () {},
-                iconSize: 15.0,
-                splashColor: Colors.grey,
-                highlightColor: Colors.grey,
-              ),
             ],
           ),
           dividerContent(context),

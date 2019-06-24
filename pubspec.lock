@@ -225,6 +225,13 @@ packages:
       url: "https://github.com/lequanghiep74/flutter_facebook_login"
     source: git
     version: "2.0.0"
+  flutter_ijkplayer:
+    dependency: "direct main"
+    description:
+      name: flutter_ijkplayer
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.2.9"
   flutter_launcher_icons:
     dependency: "direct dev"
     description:
@@ -522,13 +529,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.9.3"
-  stories:
-    dependency: "direct main"
-    description:
-      name: stories
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.1.1"
   stream_channel:
     dependency: transitive
     description:
