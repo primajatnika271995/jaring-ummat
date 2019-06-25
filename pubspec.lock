@@ -43,6 +43,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.1"
+  bezier_chart:
+    dependency: "direct main"
+    description:
+      name: bezier_chart
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.9"
   bloc:
     dependency: transitive
     description:
@@ -335,6 +342,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.6.0"
+  linkedin_login:
+    dependency: "direct main"
+    description:
+      name: linkedin_login
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.5"
   logging:
     dependency: transitive
     description:

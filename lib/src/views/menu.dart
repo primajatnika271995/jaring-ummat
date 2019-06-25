@@ -42,6 +42,9 @@ class _MenuState extends State<Menu> {
       _profilePictureLocal = _preferences.getString(PROFILE_PICTURE_KEY);
       _profilePictureLocalFB = _preferences.getString(PROFILE_FACEBOOK_KEY);
     });
+
+    print(_profilePictureLocalFB);
+    print(_profilePictureLocal);
   }
 
   void logout() async {
@@ -201,8 +204,12 @@ class _MenuState extends State<Menu> {
                                                     color: Colors.white
                                                         .withOpacity(0.5),
                                                     image: DecorationImage(
-                                                      image: NetworkImage(
-                                                          _profilePictureLocal),
+                                                      image: _profilePictureLocal ==
+                                                              null
+                                                          ? NetworkImage(
+                                                              _profilePictureLocalFB)
+                                                          : NetworkImage(
+                                                              _profilePictureLocal),
                                                       fit: BoxFit.cover,
                                                     )),
                                               ),

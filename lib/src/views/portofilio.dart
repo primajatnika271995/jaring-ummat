@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter_fab_dialer/flutter_fab_dialer.dart';
+import 'package:bezier_chart/bezier_chart.dart';
 
 // Component
 import '../views/components/icon_baru_icons.dart';
@@ -537,7 +538,7 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
                           new charts.DatumLegend(
                             position: charts.BehaviorPosition.end,
                             outsideJustification:
-                                charts.OutsideJustification.startDrawArea,
+                            charts.OutsideJustification.startDrawArea,
                             horizontalFirst: false,
                             desiredMaxRows: 5,
                             cellPadding: new EdgeInsets.only(
@@ -839,10 +840,54 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
                 Text("Donasi Terkumpul per periode",
                     style: TextStyle(fontSize: 12)),
                 Container(
-                    margin: EdgeInsets.symmetric(vertical: 5),
-                    height: 170,
-                    child:
-                        charts.TimeSeriesChart(periodDonation, animate: false)),
+                  height: 170,
+                  child: BezierChart(
+                    bezierChartScale: BezierChartScale.CUSTOM,
+                    xAxisCustomValues: const [0, 5, 10, 15, 20, 25, 30, 35],
+                    footerValueBuilder: (double value) {
+                      return "${formatAsIntOrDouble(value)}\ndays";
+                    },
+                    series: const [
+                      BezierLine(
+                        lineColor: Colors.blue,
+                        label: "m",
+                        data: const [
+                          DataPoint<double>(value: 10, xAxis: 0),
+                          DataPoint<double>(value: 90, xAxis: 5),
+                          DataPoint<double>(value: 50, xAxis: 10),
+                          DataPoint<double>(value: 100, xAxis: 15),
+                          DataPoint<double>(value: 75, xAxis: 20),
+                          DataPoint<double>(value: 0, xAxis: 25),
+                          DataPoint<double>(value: 5, xAxis: 30),
+                          DataPoint<double>(value: 45, xAxis: 35),
+                        ],
+                      ),
+                    ],
+                    config: BezierChartConfig(
+                      footerHeight: 40,
+                      verticalIndicatorStrokeWidth: 3.0,
+                      verticalIndicatorColor: Colors.black,
+                      displayYAxis: true,
+                      showDataPoints: true,
+                      bubbleIndicatorColor: Colors.white.withOpacity(0.9),
+                      xLinesColor: Colors.black,
+                      showVerticalIndicator: true,
+                      verticalIndicatorFixedPosition: false,
+                      backgroundGradient: LinearGradient(
+                        colors: [
+                          Colors.transparent,
+                          Colors.transparent,
+                          Colors.transparent,
+                          Colors.transparent,
+                          Colors.transparent,
+                        ],
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                      ),
+                      snap: false,
+                    ),
+                  ),
+                ),
                 SizedBox(
                   height: 10.0,
                 ),

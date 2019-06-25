@@ -7,6 +7,8 @@ import 'package:flutter_jaring_ummat/src/models/programAmalModel.dart';
 import 'package:flutter_jaring_ummat/src/services/currency_format_service.dart';
 import 'package:flutter_jaring_ummat/src/services/time_ago_service.dart';
 import 'package:flutter_jaring_ummat/src/views/components/custom_fonts.dart';
+import 'package:flutter_jaring_ummat/src/views/page_program-amal/share_program_amal_container.dart';
+import 'package:rounded_modal/rounded_modal.dart';
 
 import '../../views/galang_amal.dart';
 
@@ -333,7 +335,14 @@ class _ProgramAmalContentState extends State<ProgramAmalContent> {
     return Row(
       children: <Widget>[
         GestureDetector(
-          onTap: () {},
+          onTap: () {
+            showRoundedModalBottomSheet(
+                radius: 10.0,
+                context: context,
+                builder: (context) {
+                  return ShareProgramAmal();
+                });
+          },
           child: Row(
             children: <Widget>[
               Icon(
