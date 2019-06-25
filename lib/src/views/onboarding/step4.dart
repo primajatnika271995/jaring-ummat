@@ -402,7 +402,7 @@ class Step4State extends State<Step4View> {
                               children: <Widget>[
                                 accountContainer(
                                     "assets/users/bamuis_min.png",
-                                    "Bamius BNI",
+                                    "Bamuis BNI",
                                     "821.211 Pengikut",
                                     "14 Aksi Galang Amal",
                                     "Diikuti",

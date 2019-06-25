@@ -21,15 +21,16 @@ class _GalangAmalState extends State<GalangAmalView> {
     return Scaffold(
       appBar: new AppBar(
         titleSpacing: 0.0,
+        elevation: 1.0,
         leading: InkWell(
           onTap: () {
             Navigator.pop(context);
           },
-          child: Icon(Icons.arrow_back_ios, color: Colors.blueAccent,),
+          child: Icon(Icons.arrow_back_ios, color: Colors.black),
         ),
         title: new Text(
           'Galang Amal',
-          style: TextStyle(fontSize: 15.0, color: Colors.blueAccent),
+          style: TextStyle(fontSize: 15.0, color: Colors.grey[600]),
         ),
         centerTitle: false,
         backgroundColor: Colors.white,

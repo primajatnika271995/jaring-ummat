@@ -12,7 +12,6 @@ class UserStoryAppBar extends StatefulWidget {
 }
 
 class UserStoryAppBarState extends State<UserStoryAppBar> {
-
   @override
   void initState() {
     // TODO: implement initState
@@ -24,7 +23,7 @@ class UserStoryAppBarState extends State<UserStoryAppBar> {
   Widget build(BuildContext context) {
     return Container(
       alignment: Alignment.topLeft,
-      margin: EdgeInsets.symmetric(horizontal: 10.0),
+//      margin: EdgeInsets.symmetric(horizontal: 10.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
@@ -111,7 +110,13 @@ class UserStoryAppBarState extends State<UserStoryAppBar> {
           print("Video index 0 : ${videoUrl[0]}");
           return GestureDetector(
             onTap: () {
-              Route route = MaterialPageRoute(builder: (context) => UserStoryView(video: videoUrl[0], userId: data.userId, createdBy: data.createdBy, createdDate: data.storyList[0].createdDate,));
+              Route route = MaterialPageRoute(
+                  builder: (context) => UserStoryView(
+                        video: videoUrl[0],
+                        userId: data.userId,
+                        createdBy: data.createdBy,
+                        createdDate: data.storyList[0].createdDate,
+                      ));
               Navigator.push(context, route);
             },
             child: Container(
@@ -124,10 +129,12 @@ class UserStoryAppBarState extends State<UserStoryAppBar> {
                     Container(
                       width: 100.0,
                       height: 140.0,
-                      child: Image.network(
-                        thumbnail[0],
-                        fit: BoxFit.cover,
-                      ),
+                      child: thumbnail[0] == null
+                          ? Image.network("https://cdn.shopify.com/s/files/1/0882/1686/products/lastolite-grey-vinyl-background-275x6m-018_a36fc2d2-5860-48f1-8ec7-4b0ed98e2cf4.jpg?v=1490271176", fit: BoxFit.cover,)
+                          : Image.network(
+                              thumbnail[0],
+                              fit: BoxFit.cover,
+                            ),
                     ),
                     Positioned(
                       left: 10.0,
@@ -153,9 +160,9 @@ class UserStoryAppBarState extends State<UserStoryAppBar> {
                                 begin: Alignment.bottomCenter,
                                 end: Alignment.topCenter,
                                 colors: [
-                                  Colors.black,
-                                  Colors.black.withOpacity(0.1)
-                                ])),
+                              Colors.black,
+                              Colors.black.withOpacity(0.1)
+                            ])),
                       ),
                     ),
                     Positioned(

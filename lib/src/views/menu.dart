@@ -23,7 +23,6 @@ class Menu extends StatefulWidget {
 }
 
 class _MenuState extends State<Menu> {
-
   SharedPreferences _preferences;
   String _fullname = null;
   String _email = null;
@@ -110,7 +109,7 @@ class _MenuState extends State<Menu> {
           child: new AppBar(
             title: new Text(
               'Akun dan menu lain',
-              style: TextStyle(fontSize: 14.0, color: Colors.blueAccent),
+              style: TextStyle(fontSize: 16.0, color: Colors.grey[600]),
             ),
             centerTitle: false,
             backgroundColor: Colors.white,
@@ -118,11 +117,45 @@ class _MenuState extends State<Menu> {
             actions: <Widget>[
               IconButton(
                 onPressed: () {
-                  logout();
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      // return object of type Dialog
+                      return AlertDialog(
+                        title: new Text(
+                          "LOGOUT ?",
+                          style: TextStyle(color: Colors.red),
+                        ),
+                        elevation: 10.0,
+                        backgroundColor: Colors.grey[200],
+                        content: new Text(
+                            "Apakah anda ingin keluar dari Aplikasi Jaring Ummat ?"),
+                        actions: <Widget>[
+                          new FlatButton(
+                            child: new Text("Close"),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                          new FlatButton(
+                            child: new Text(
+                              "Logout",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.red),
+                            ),
+                            onPressed: () {
+                              logout();
+                            },
+                          ),
+                        ],
+                      );
+                    },
+                  );
                 },
                 icon: Icon(
                   CreateAccount.logout,
-                  color: Colors.blueAccent,
+                  color: Colors.grey[600],
                 ),
               )
             ],
@@ -168,7 +201,8 @@ class _MenuState extends State<Menu> {
                                                     color: Colors.white
                                                         .withOpacity(0.5),
                                                     image: DecorationImage(
-                                                      image: NetworkImage(_profilePictureLocal),
+                                                      image: NetworkImage(
+                                                          _profilePictureLocal),
                                                       fit: BoxFit.cover,
                                                     )),
                                               ),
@@ -327,21 +361,70 @@ class _MenuState extends State<Menu> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             SizedBox(height: 10.0),
-                            Row(
-                              children: <Widget>[
-                                leftSection(
-                                  Icon(
-                                    MenuIcon.badge_member_menu,
-                                    color: Colors.redAccent,
+                            InkWell(
+                                onTap: () {
+                                  Scaffold.of(context).showSnackBar(SnackBar(
+                                    content: Text(
+                                        'Menu Level Keanggotaan Under Development'),
+                                  ));
+                                },
+                                child: Row(
+                                  children: <Widget>[
+                                    leftSection(
+                                      Icon(
+                                        MenuIcon.badge_member_menu,
+                                        color: Colors.blueAccent,
+                                        size: 30.0,
+                                      ),
+                                    ),
+                                    middleSection(
+                                        'Level Keanggotaan',
+                                        'Tingkatkan terus aktivitas amal '
+                                            'anda untuk memperbaharui ke anggotaan ke level selanjutnya'),
+                                    rightSection()
+                                  ],
+                                )),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10.0,
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(left: 10.0, right: 10.0),
+                    decoration: BoxDecoration(
+                        color: Colors.grey[200],
+                        borderRadius: BorderRadius.circular(10.0)),
+                    padding:
+                        EdgeInsets.only(left: 10.0, bottom: 10.0, right: 10.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            SizedBox(height: 10.0),
+                            InkWell(
+                              onTap: () {
+                                Scaffold.of(context).showSnackBar(SnackBar(
+                                  content: Text(
+                                      'Menu Tukar Point Amal Under Development'),
+                                ));
+                              },
+                              child: Row(
+                                children: <Widget>[
+                                  leftSection(Icon(
+                                    MenuLainIcon.redeem_point,
+                                    color: Colors.blueAccent,
                                     size: 30.0,
-                                  ),
-                                ),
-                                middleSection(
-                                    'Level Keanggotaan',
-                                    'Tingkatkan terus aktivitas amal '
-                                        'anda untuk memperbaharui ke anggotaan ke level selanjutnya'),
-                                rightSection()
-                              ],
+                                  )),
+                                  middleSection('Tukar Point Amal',
+                                      'Tukarkan Point Amal Anda dengan penawaran menarik dari Jaring Ummat'),
+                                  rightSection()
+                                ],
+                              ),
                             )
                           ],
                         ),
@@ -365,17 +448,25 @@ class _MenuState extends State<Menu> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             SizedBox(height: 10.0),
-                            Row(
-                              children: <Widget>[
-                                leftSection(Icon(
-                                  MenuLainIcon.redeem_point,
-                                  color: Colors.deepPurple,
-                                  size: 30.0,
-                                )),
-                                middleSection('Tukar Point Amal',
-                                    'Tukarkan Point Amal Anda dengan penawaran menarik dari Jaring Ummat'),
-                                rightSection()
-                              ],
+                            InkWell(
+                              onTap: () {
+                                Scaffold.of(context).showSnackBar(SnackBar(
+                                  content: Text(
+                                      'Menu Toko Jaring Umat Under Development'),
+                                ));
+                              },
+                              child: Row(
+                                children: <Widget>[
+                                  leftSection(Icon(
+                                    MenuLainIcon.merchant_amal,
+                                    color: Colors.blueAccent,
+                                    size: 30.0,
+                                  )),
+                                  middleSection('Toko Jaring Ummat',
+                                      'Belanja kebutuhan ibadah atau kebutuhan lainnya di toko-toko amal'),
+                                  rightSection()
+                                ],
+                              ),
                             )
                           ],
                         ),
@@ -399,17 +490,25 @@ class _MenuState extends State<Menu> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             SizedBox(height: 10.0),
-                            Row(
-                              children: <Widget>[
-                                leftSection(Icon(
-                                  MenuLainIcon.merchant_amal,
-                                  color: Colors.yellow,
-                                  size: 30.0,
-                                )),
-                                middleSection('Toko Jaring Ummat',
-                                    'Belanja kebutuhan ibadah atau kebutuhan lainnya di toko-toko amal'),
-                                rightSection()
-                              ],
+                            InkWell(
+                              onTap: () {
+                                Scaffold.of(context).showSnackBar(SnackBar(
+                                  content: Text(
+                                      'Menu Galang Amal Tersimpan Under Development'),
+                                ));
+                              },
+                              child: Row(
+                                children: <Widget>[
+                                  leftSection(Icon(
+                                    MenuLainIcon.saved_donation,
+                                    color: Colors.blueAccent,
+                                    size: 30.0,
+                                  )),
+                                  middleSection('Galang Amal Tersimpan',
+                                      'Daftar galang amal pada semua kategori yang tersimpan'),
+                                  rightSection()
+                                ],
+                              ),
                             )
                           ],
                         ),
@@ -433,17 +532,25 @@ class _MenuState extends State<Menu> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             SizedBox(height: 10.0),
-                            Row(
-                              children: <Widget>[
-                                leftSection(Icon(
-                                  MenuLainIcon.saved_donation,
-                                  color: Colors.deepOrange,
-                                  size: 30.0,
-                                )),
-                                middleSection('Galang Amal Tersimpan',
-                                    'Daftar galang amal pada semua kategori yang tersimpan'),
-                                rightSection()
-                              ],
+                            InkWell(
+                              onTap: () {
+                                Scaffold.of(context).showSnackBar(SnackBar(
+                                  content: Text(
+                                      'Menu Kalkulator Zakat Under Development'),
+                                ));
+                              },
+                              child: Row(
+                                children: <Widget>[
+                                  leftSection(Icon(
+                                    MenuLainIcon.calculator_zakat,
+                                    color: Colors.blueAccent,
+                                    size: 30.0,
+                                  )),
+                                  middleSection('Kalkulator Zakat',
+                                      'Hitung zakat profesi atau maal Anda sesuai pendapatan, tabungan dan hutang'),
+                                  rightSection()
+                                ],
+                              ),
                             )
                           ],
                         ),
@@ -467,51 +574,25 @@ class _MenuState extends State<Menu> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             SizedBox(height: 10.0),
-                            Row(
-                              children: <Widget>[
-                                leftSection(Icon(
-                                  MenuLainIcon.calculator_zakat,
-                                  color: Colors.pinkAccent,
-                                  size: 30.0,
-                                )),
-                                middleSection('Kalkulator Zakat',
-                                    'Hitung zakat profesi atau maal Anda sesuai pendapatan, tabungan dan hutang'),
-                                rightSection()
-                              ],
-                            )
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: 10.0,
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(left: 10.0, right: 10.0),
-                    decoration: BoxDecoration(
-                        color: Colors.grey[200],
-                        borderRadius: BorderRadius.circular(10.0)),
-                    padding:
-                        EdgeInsets.only(left: 10.0, bottom: 10.0, right: 10.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            SizedBox(height: 10.0),
-                            Row(
-                              children: <Widget>[
-                                leftSection(Icon(
-                                  IconBaru.app_setting,
-                                  color: Colors.blue,
-                                  size: 30.0,
-                                )),
-                                middleSection('Pengaturan Akun dan Aplikasi',
-                                    'Atur akun Anda dan aplikasi Jaring Ummat serta notifikasi'),
-                                rightSection()
-                              ],
+                            InkWell(
+                              onTap: () {
+                                Scaffold.of(context).showSnackBar(SnackBar(
+                                  content: Text(
+                                      'Menu Pengaturan Akun dan Aplikasi Under Development'),
+                                ));
+                              },
+                              child: Row(
+                                children: <Widget>[
+                                  leftSection(Icon(
+                                    IconBaru.app_setting,
+                                    color: Colors.blueAccent,
+                                    size: 30.0,
+                                  )),
+                                  middleSection('Pengaturan Akun dan Aplikasi',
+                                      'Atur akun Anda dan aplikasi Jaring Ummat serta notifikasi'),
+                                  rightSection()
+                                ],
+                              ),
                             )
                           ],
                         ),

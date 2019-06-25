@@ -42,11 +42,11 @@ class _GalangAmalContainerState extends State<GalangAmalContainer> {
   @override
   void initState() {
     super.initState();
-    if (description.length > 150) {
-      lessDesc = description.substring(0, 150);
-      moreDesc = description.substring(150, description.length);
+    if (widget.programAmal.descriptionProgram.length > 150) {
+      lessDesc = widget.programAmal.descriptionProgram.substring(0, 150);
+      moreDesc = widget.programAmal.descriptionProgram.substring(150, widget.programAmal.descriptionProgram.length);
     } else {
-      lessDesc = description;
+      lessDesc = widget.programAmal.descriptionProgram;
       moreDesc = "";
     }
   }
@@ -98,6 +98,7 @@ class _GalangAmalContainerState extends State<GalangAmalContainer> {
         image: DecorationImage(
           image: NetworkImage(
               'https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg-1024x683.jpg'),
+          fit: BoxFit.cover,
         ),
       ),
     );
@@ -168,6 +169,7 @@ class _GalangAmalContainerState extends State<GalangAmalContainer> {
                     fit: BoxFit.cover,
                     imageUrl: url["imgUrl"],
                     errorWidget: (content, url, error) => new Icon(Icons.error),
+                    width: MediaQuery.of(context).size.width,
                   ),
                 ),
               );

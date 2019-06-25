@@ -37,18 +37,18 @@ class BeritaBloc extends Bloc<BeritaEvent, BeritaState> {
     if (event is Fetch && !_hasReachedMax(currentState)) {
       try {
         if (currentState is BeritaUninitialized) {
-          final berita = await _fetchBerita(userId, 0, 10);
+          final berita = await _fetchBerita(userId, 0, 15);
           yield BeritaLoaded(berita: berita, hasReachedMax: false);
         }
-        // if (currentState is BeritaLoaded) {
-        //   final berita = await _fetchBerita(userId, (currentState as BeritaLoaded).berita.length, 2);
-        //   yield berita.isEmpty
-        //       ? (currentState as BeritaLoaded).copyWith(hasReachedMax: true)
-        //       : BeritaLoaded(
-        //           berita: (currentState as BeritaLoaded).berita + berita,
-        //           hasReachedMax: false,
-        //       );
-        // }
+//         if (currentState is BeritaLoaded) {
+//           final berita = await _fetchBerita(userId, (currentState as BeritaLoaded).berita.length, 2);
+//           yield berita.isEmpty
+//               ? (currentState as BeritaLoaded).copyWith(hasReachedMax: true)
+//               : BeritaLoaded(
+//                   berita: (currentState as BeritaLoaded).berita + berita,
+//                   hasReachedMax: false,
+//               );
+//         }
       } catch (_) {
         yield BeritaError();
       }

@@ -3,10 +3,9 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 import 'package:flutter/material.dart';
-import 'package:flutter_jaring_ummat/src/models/storiesModel.dart';
+import 'package:story_view/story_view.dart';
 import 'package:flutter_jaring_ummat/src/services/time_ago_service.dart';
-import 'package:percent_indicator/linear_percent_indicator.dart';
-import 'package:flutter_ijkplayer/flutter_ijkplayer.dart';
+import '../../services/storyByUser.dart';
 
 class UserStoryContainerOld extends StatefulWidget {
   String userId;
@@ -27,16 +26,14 @@ class UserStoryContainerOld extends StatefulWidget {
 
 class UserStoryContainerOldState extends State<UserStoryContainerOld> {
   List<Content> urlContent = List<Content>();
-  IjkMediaController controller = IjkMediaController();
-
-  int currentIndex = 0;
 
   @override
   void initState() {
     super.initState();
-    storiesList().then((response) {
+    print("userid : ${widget.userId}");
+    storiesList(widget.userId).then((response) {
       var data = json.decode(response.body);
-      Story stories = Story.fromJson(data[0]);
+      StoryByUser stories = StoryByUser.fromJson(data);
       stories.storyList.forEach((val) {
         setState(() {
           urlContent.add(val.contents[0]);
@@ -55,26 +52,9 @@ class UserStoryContainerOldState extends State<UserStoryContainerOld> {
             children: <Widget>[
               Expanded(
                 flex: 10,
-                child: PageView.builder(
-                  itemCount: urlContent.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    print(urlContent.length);
-                    if (urlContent[index].imgUrl == null) {}
-                    return Container(
-                      margin: EdgeInsets.fromLTRB(1.0, 25.0, 4.0, 1.0),
-                      child: Card(
-                        elevation: 10.0,
-                        child: Center(
-                          child: urlContent[index].imgUrl == null
-                              ? videoPlayer(urlContent[index].videoUrl)
-                              : Image.network(
-                                  urlContent[index].imgUrl,
-                                  fit: BoxFit.cover,
-                                ),
-                        ),
-                      ),
-                    );
-                  },
+                child: Container(
+                  margin: EdgeInsets.fromLTRB(1.0, 25.0, 4.0, 1.0),
+                  child: storiesView(),
                 ),
               ),
               Expanded(
@@ -149,24 +129,20 @@ class UserStoryContainerOldState extends State<UserStoryContainerOld> {
                 gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
-                  colors: [Colors.black87, Colors.black54.withOpacity(0.1)],
+                  colors: [Colors.black45, Colors.black45.withOpacity(0.1)],
                 ),
               ),
             ),
           ),
           Positioned(
-            top: 37.0,
-            child: linearProgress(),
-          ),
-          Positioned(
-            top: 60.0,
+            top: 70.0,
             left: 40.0,
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 Container(
-                  width: 40.0,
-                  height: 40.0,
+                  width: 50.0,
+                  height: 50.0,
                   decoration: BoxDecoration(
                       image: DecorationImage(
                     image: NetworkImage(
@@ -175,7 +151,7 @@ class UserStoryContainerOldState extends State<UserStoryContainerOld> {
                   )),
                 ),
                 SizedBox(
-                  width: 20.0,
+                  width: 10.0,
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -185,17 +161,17 @@ class UserStoryContainerOldState extends State<UserStoryContainerOld> {
                       widget.createdBy,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontSize: 18.0,
+                        fontSize: 16.0,
                         color: Colors.white,
                       ),
                     ),
                     SizedBox(
-                      height: 4.0,
+                      height: 2.0,
                     ),
                     Text(
                       TimeAgoService().timeAgoFormatting(widget.createdDate),
                       style: TextStyle(
-                        fontSize: 14.0,
+                        fontSize: 11.0,
                         color: Colors.white,
                       ),
                     )
@@ -209,48 +185,63 @@ class UserStoryContainerOldState extends State<UserStoryContainerOld> {
     );
   }
 
-  Widget linearProgress() {
-    List<Widget> list = new List<Widget>();
+  Widget storiesView() {
+    List<StoryItem> widgetList = new List<StoryItem>();
     for (var i = 0; i < urlContent.length; i++) {
-      list.add(
-        LinearPercentIndicator(
-          lineHeight: 4.0,
-          padding: EdgeInsets.symmetric(horizontal: 4.0),
-          width: MediaQuery.of(context).size.width - 10,
-          progressColor: Colors.blue,
-          animationDuration: 7000,
-          percent: 1,
-          animation: true,
+      if (urlContent[i].imgUrl == null) {
+        setState(() {
+          widgetList.add(
+//            StoryItem.pageVideo(urlContent[i].videoUrl)
+          StoryItem.text(urlContent[i].videoUrl, Colors.blue)
+
+          );
+        });
+      }
+
+      if (urlContent[i].videoUrl == null) {
+        setState(() {
+          widgetList.add(
+            StoryItem.pageImage(
+              NetworkImage(urlContent[i].imgUrl),
+              caption: "Ini Stories konten ${widget.createdBy}",
+            ),
+          );
+        });
+      }
+    }
+
+    if (widgetList.isEmpty) {
+      return Container(
+        color: Colors.blue,
+        child: Center(
+          child: CircularProgressIndicator(
+            backgroundColor: Colors.white,
+          ),
         ),
       );
     }
-    return new Container(
-      margin: EdgeInsets.only(left: 10.0, right: 50.0),
-      child: Row(
-        children: list,
-      ),
-    );
-  }
 
-  Widget videoPlayer(String url) {
-    controller.setNetworkDataSource(url, autoPlay: true);
-    return Container(
-      height: 700.0,
-      child: IjkPlayer(
-        mediaController: controller,
-      ),
+    return StoryView(
+      widgetList,
+      onStoryShow: (s) {
+        print("Showing a story");
+      },
+      onComplete: () {
+        print("Completed a cycle");
+      },
+      progressPosition: ProgressPosition.top,
+      repeat: false,
     );
   }
 
   @override
   void dispose() {
     super.dispose();
-    controller.dispose();
   }
 
-  Future<http.Response> storiesList() async {
-    var response =
-        await http.get("http://139.162.15.91/jaring-ummat/api/stories/list");
+  Future<http.Response> storiesList(String userId) async {
+    var response = await http
+        .get("http://139.162.15.91/jaring-ummat/api/stories/list/${userId}");
     return response;
   }
 }

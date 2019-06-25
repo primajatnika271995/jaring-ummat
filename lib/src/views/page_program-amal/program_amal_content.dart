@@ -1,5 +1,7 @@
+import 'package:badges/badges.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_jaring_ummat/src/models/programAmalModel.dart';
 import 'package:flutter_jaring_ummat/src/services/currency_format_service.dart';
@@ -68,15 +70,15 @@ class _ProgramAmalContentState extends State<ProgramAmalContent> {
                     children: <Widget>[
                       new Text(
                         widget.programAmal.titleProgram,
-                        style:
-                        TextStyle(fontWeight: FontWeight.bold, fontSize: 15.0),
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 15.0),
                       ),
                       Text(
                         'oleh ' +
                             widget.programAmal.createdBy +
                             ' • ' +
-                            TimeAgoService()
-                                .timeAgoFormatting(widget.programAmal.createdDate),
+                            TimeAgoService().timeAgoFormatting(
+                                widget.programAmal.createdDate),
                         style: TextStyle(fontSize: 12.0),
                       )
                     ],
@@ -95,7 +97,7 @@ class _ProgramAmalContentState extends State<ProgramAmalContent> {
     return Stack(
       children: <Widget>[
         CarouselSlider(
-          height: 200.0,
+          height: 230.0,
           autoPlay: false,
           reverse: false,
           viewportFraction: 1.0,
@@ -103,12 +105,11 @@ class _ProgramAmalContentState extends State<ProgramAmalContent> {
           items: widget.programAmal.imageContent.map(
             (url) {
               return Container(
-                child: ClipRRect(
-                    borderRadius: BorderRadius.all(Radius.circular(0.0)),
-                    child: Image.network(
-                      url["imgUrl"],
-                      fit: BoxFit.cover,
-                    )),
+                child: CachedNetworkImage(
+                  imageUrl: url["imgUrl"],
+                  fit: BoxFit.cover,
+                  width: MediaQuery.of(context).size.width,
+                ),
               );
             },
           ).toList(),
@@ -118,6 +119,29 @@ class _ProgramAmalContentState extends State<ProgramAmalContent> {
             });
           },
         ),
+        Positioned(
+          right: 20.0,
+          top: 10.0,
+          child: Badge(
+            badgeColor: Colors.white,
+            elevation: 0.0,
+            shape: BadgeShape.square,
+            borderRadius: 20,
+            toAnimate: false,
+            badgeContent: Text('${_current} / ${widget.programAmal.imageContent.length}', style: TextStyle(color: Colors.grey)),
+          ),
+        ),
+        Positioned(
+          left: 10.0,
+          bottom: 15.0,
+          child: DotsIndicator(
+            dotsCount: widget.programAmal.imageContent.length,
+            position: _current,
+            decorator: DotsDecorator(
+              spacing: const EdgeInsets.all(2.0),
+            ),
+          ),
+        )
       ],
     );
   }
@@ -330,7 +354,7 @@ class _ProgramAmalContentState extends State<ProgramAmalContent> {
   Widget build(BuildContext context) {
     return Container(
       color: Colors.white,
-      margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
+      margin: EdgeInsets.only(top: 10.0),
       child: Column(
         children: <Widget>[
           titleContent(context),

@@ -38,11 +38,11 @@ class ProgramamalBlocBloc extends Bloc<ProgramamalBlocEvent, ProgramamalBlocStat
     if (event is Fetch && !_hasReachedMax(currentState)) {
       try {
         if (currentState is ProgramAmalUninitialized) {
-          final programAmal = await _fetchProgramAmal(userId, 0, 10);
+          final programAmal = await _fetchProgramAmal(userId, 0, 15);
           yield ProgramAmalLoaded(programAmal: programAmal, hasReachedMax: false);
         }
 //        if (currentState is ProgramAmalLoaded) {
-//          final programAmal = await _fetchProgramAmal(userId, (currentState as ProgramAmalLoaded).programAmal.length, 2);
+//          final programAmal = await _fetchProgramAmal(userId, (currentState as ProgramAmalLoaded).programAmal.length, 3);
 //          yield programAmal.isEmpty
 //              ? (currentState as ProgramAmalLoaded).copyWith(hasReachedMax: true)
 //              : ProgramAmalLoaded(

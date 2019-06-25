@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_jaring_ummat/src/models/beritaModel.dart';
 import 'package:flutter_jaring_ummat/src/services/time_ago_service.dart';
@@ -7,6 +8,7 @@ import 'package:flutter_jaring_ummat/src/views/components/custom_fonts.dart';
 import 'package:flutter_jaring_ummat/src/views/page_berita/komentar_container.dart';
 import 'package:flutter_jaring_ummat/src/views/page_berita/share_berita_container.dart';
 import 'package:rounded_modal/rounded_modal.dart';
+import 'package:badges/badges.dart';
 
 class BeritaContent extends StatefulWidget {
   final Berita berita;
@@ -97,6 +99,7 @@ class _BeritaContentState extends State<BeritaContent> {
           height: 200.0,
           autoPlay: false,
           reverse: false,
+
           viewportFraction: 1.0,
           aspectRatio: MediaQuery.of(context).size.aspectRatio,
           items: widget.berita.imageContent.map(
@@ -106,6 +109,7 @@ class _BeritaContentState extends State<BeritaContent> {
                   borderRadius: BorderRadius.all(Radius.circular(0.0)),
                   child: CachedNetworkImage(
                     fit: BoxFit.cover,
+                    width: MediaQuery.of(context).size.width,
                     imageUrl: url["imgUrl"],
                     errorWidget: (content, url, error) => new Icon(Icons.error),
                   ),
@@ -118,6 +122,29 @@ class _BeritaContentState extends State<BeritaContent> {
               _current = index;
             });
           },
+        ),
+        Positioned(
+          right: 20.0,
+          top: 10.0,
+          child: Badge(
+            badgeColor: Colors.white,
+            elevation: 0.0,
+            shape: BadgeShape.square,
+            borderRadius: 20,
+            toAnimate: false,
+            badgeContent: Text('${_current} / ${widget.berita.imageContent.length}', style: TextStyle(color: Colors.grey)),
+          ),
+        ),
+        Positioned(
+          left: 10.0,
+          bottom: 15.0,
+          child: DotsIndicator(
+            dotsCount: widget.berita.imageContent.length,
+            position: _current,
+            decorator: DotsDecorator(
+              spacing: const EdgeInsets.all(2.0),
+            ),
+          ),
         ),
       ],
     );
@@ -280,13 +307,7 @@ class _BeritaContentState extends State<BeritaContent> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-        boxShadow: [
-          BoxShadow(
-            color: Colors.white
-          )
-        ]
-      ),
+      decoration: BoxDecoration(boxShadow: [BoxShadow(color: Colors.white)]),
       margin: EdgeInsets.only(top: 10.0),
       child: Column(
         children: <Widget>[

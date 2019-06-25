@@ -19,7 +19,7 @@ class BeritaPage extends StatelessWidget {
           appBar: PreferredSize(
               child: AppBar(
                 titleSpacing: 10.0,
-                elevation: 3.0,
+                elevation: 0.0,
                 automaticallyImplyLeading: false,
                 centerTitle: true,
                 backgroundColor: Colors.white,
@@ -46,7 +46,7 @@ class BeritaPage extends StatelessWidget {
                 ),
                 actions: <Widget>[
                   IconButton(
-                      icon: Icon(Icons.arrow_forward, color: Colors.blueAccent),
+                      icon: Icon(Icons.arrow_forward, color: Colors.black),
                       onPressed: () {}),
                 ],
               ),

@@ -29,6 +29,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.0"
+  badges:
+    dependency: "direct main"
+    description:
+      name: badges
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.3"
   base32:
     dependency: transitive
     description:
@@ -225,13 +232,6 @@ packages:
       url: "https://github.com/lequanghiep74/flutter_facebook_login"
     source: git
     version: "2.0.0"
-  flutter_ijkplayer:
-    dependency: "direct main"
-    description:
-      name: flutter_ijkplayer
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.2.9"
   flutter_launcher_icons:
     dependency: "direct dev"
     description:
@@ -265,6 +265,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_webview_plugin:
+    dependency: "direct main"
+    description:
+      name: flutter_webview_plugin
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.3.5"
   font_awesome_flutter:
     dependency: "direct main"
     description:
@@ -529,6 +536,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.9.3"
+  story_view:
+    dependency: "direct main"
+    description:
+      name: story_view
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.9.1"
   stream_channel:
     dependency: transitive
     description:

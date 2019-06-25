@@ -17,6 +17,7 @@ class ProgramAmalPage extends StatelessWidget {
           backgroundColor: Colors.grey[300],
           appBar: PreferredSize(
             child: AppBar(
+              elevation: 0.0,
               backgroundColor: Colors.white,
               leading: InkWell(
                 onTap: () {
@@ -28,7 +29,7 @@ class ProgramAmalPage extends StatelessWidget {
                 },
                 child: new Icon(
                   AppBarIcons.ic_leading,
-                  color: Colors.blueAccent,
+                  color: Colors.grey[600],
                 ),
               ),
               actions: <Widget>[
@@ -41,7 +42,7 @@ class ProgramAmalPage extends StatelessWidget {
                       content: Text('Chats Menu Under Development'),
                     ));
                   },
-                  child: Icon(Icons.chat, color: Colors.blueAccent),
+                  child: Icon(Icons.chat, color: Colors.grey[600]),
                 ),
                 SizedBox(
                   width: 7.0,
@@ -52,7 +53,7 @@ class ProgramAmalPage extends StatelessWidget {
                       content: Text('Add Menu Under Development'),
                     ));
                   },
-                  child: Icon(AppBarIcons.ic_action, color: Colors.blueAccent),
+                  child: Icon(AppBarIcons.ic_action, color: Colors.grey[600]),
                 ),
                 SizedBox(
                   width: 13.0,
@@ -99,12 +100,12 @@ class ProgramAmalPage extends StatelessWidget {
               new SliverAppBar(
                 automaticallyImplyLeading: false,
                 bottom: PreferredSize(
-                  preferredSize: Size.fromHeight(105.0),
+                  preferredSize: Size.fromHeight(100.0),
                   child: Text(''),
                 ),
-                backgroundColor: Colors.white,
                 elevation: 20.0,
                 flexibleSpace: new Scaffold(
+                  backgroundColor: Colors.white,
                   body: new UserStoryAppBar(),
                 ),
               ),

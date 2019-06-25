@@ -120,10 +120,12 @@ class _HomeState extends State<HomeView> {
           BottomNavigationBarItem(
             icon: new Icon(
               NavbarCustom.nav_home_inactive,
+              color: Colors.black,
               size: 27.0,
             ),
             activeIcon: new Icon(
               NavbarCustom.nav_home_active,
+              color: Colors.black,
               size: 27.0,
             ),
             title: Container(height: 0.0),
@@ -131,10 +133,12 @@ class _HomeState extends State<HomeView> {
           BottomNavigationBarItem(
             icon: new Icon(
               NavbarCustom.nav_portfolio_inactive,
+              color: Colors.black,
               size: 27.0,
             ),
             activeIcon: new Icon(
               NavbarCustom.nav_portfolio_active,
+              color: Colors.black,
               size: 27.0,
             ),
             title: Container(height: 0.0),
@@ -144,6 +148,7 @@ class _HomeState extends State<HomeView> {
               children: <Widget>[
                 new Icon(
                   NavbarCustom.nav_inbox_inactive,
+                  color: Colors.black,
                   size: 27.0,
                 ),
                 new Positioned(
@@ -174,6 +179,7 @@ class _HomeState extends State<HomeView> {
               children: <Widget>[
                 new Icon(
                   NavbarCustom.nav_inbox_active,
+                  color: Colors.black,
                   size: 27.0,
                 ),
                 new Positioned(
@@ -205,10 +211,12 @@ class _HomeState extends State<HomeView> {
           BottomNavigationBarItem(
             icon: new Icon(
               NavbarCustom.nav_othersmenu_inactive,
+              color: Colors.black,
               size: 27.0,
             ),
             activeIcon: new Icon(
               NavbarCustom.nav_othersmenu_active,
+              color: Colors.black,
               size: 27.0,
             ),
             title: Container(height: 0.0),

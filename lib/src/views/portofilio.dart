@@ -265,6 +265,7 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
                                     MaterialPageRoute(
                                       builder: (context) => PembayaranZakat(
                                             title: title,
+                                            icon: icon,
                                             nominal: nominalZakat.text,
                                           ),
                                     ),
@@ -360,15 +361,15 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
       return new Container(
         child: new CircleAvatar(
 //      backgroundImage: new NetworkImage(url),
-          backgroundColor: Colors.green,
+          backgroundColor: Colors.transparent,
           child: Material(
-            elevation: 4.0,
+            elevation: 0.0,
             color: Colors.transparent,
             child: GestureDetector(
               onTap: () {},
               child: Icon(
                 IconBaru.scan_qr,
-                color: Colors.white,
+                color: Colors.black,
               ),
             ),
           ),
@@ -457,11 +458,11 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(47.0),
           child: AppBar(
-            elevation: 3.0,
+            elevation: 0.0,
             backgroundColor: Colors.white,
             title: new Text(
               'Portofolio Tahun 2019',
-              style: TextStyle(fontSize: 14.0, color: Colors.blueAccent),
+              style: TextStyle(fontSize: 16.0, color: Colors.grey[600]),
             ),
             centerTitle: false,
             automaticallyImplyLeading: false,
@@ -474,7 +475,7 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
                 },
                 icon: Icon(
                   Icons.settings,
-                  color: Colors.blueAccent,
+                  color: Colors.grey[600],
                 ),
               )
             ],
@@ -485,10 +486,6 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
             new SliverAppBar(
                 elevation: 1.0,
                 automaticallyImplyLeading: false,
-                bottom: PreferredSize(
-                  preferredSize: Size.fromHeight(40.0),
-                  child: Text(''),
-                ),
                 flexibleSpace: AppBar(
                   automaticallyImplyLeading: false,
                   flexibleSpace: new Container(
@@ -526,6 +523,7 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
                 preferredSize: Size.fromHeight(160.0),
                 child: Text(''),
               ),
+              elevation: 0.0,
               flexibleSpace: AppBar(
                 backgroundColor: Colors.white,
                 automaticallyImplyLeading: false,
@@ -564,6 +562,7 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
                   preferredSize: Size.fromHeight(40.0),
                   child: Text(''),
                 ),
+                elevation: 0.0,
                 backgroundColor: Colors.white,
                 automaticallyImplyLeading: false,
                 floating: false,

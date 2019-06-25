@@ -70,9 +70,10 @@ class _InboxState extends State<Inbox> with SingleTickerProviderStateMixin {
     return Scaffold(
         appBar: PreferredSize(
           child: new AppBar(
+            elevation: 0.0,
             title: new Text(
               'Kotak Masuk',
-              style: TextStyle(fontSize: 14.0, color: Colors.blueAccent),
+              style: TextStyle(fontSize: 16.0, color: Colors.grey[600]),
             ),
             centerTitle: false,
             backgroundColor: Colors.white,
@@ -86,7 +87,7 @@ class _InboxState extends State<Inbox> with SingleTickerProviderStateMixin {
                 },
                 icon: Icon(
                   CreateAccount.setting_2,
-                  color: Colors.blueAccent,
+                  color: Colors.grey[600],
                 ),
               )
             ],
@@ -330,7 +331,7 @@ class _InboxState extends State<Inbox> with SingleTickerProviderStateMixin {
                           leftSection(
                             Icon(
                               IconBaru.reward_point,
-                              color: Colors.orangeAccent,
+                              color: Colors.blueAccent,
                               size: 30.0,
                             ),
                           ),
@@ -366,7 +367,7 @@ class _InboxState extends State<Inbox> with SingleTickerProviderStateMixin {
                           leftSection(
                             Icon(
                               IconBaru.donation_small,
-                              color: Colors.deepPurple,
+                              color: Colors.blueAccent,
                               size: 30.0,
                             ),
                           ),
@@ -402,7 +403,7 @@ class _InboxState extends State<Inbox> with SingleTickerProviderStateMixin {
                           leftSection(
                             Icon(
                               IconBaru.chat,
-                              color: Colors.redAccent,
+                              color: Colors.blueAccent,
                               size: 30.0,
                             ),
                           ),
@@ -438,7 +439,7 @@ class _InboxState extends State<Inbox> with SingleTickerProviderStateMixin {
                           leftSection(
                             Icon(
                               HeaderCustom.ic_news,
-                              color: Colors.blue,
+                              color: Colors.blueAccent,
                               size: 30.0,
                             ),
                           ),
@@ -474,7 +475,7 @@ class _InboxState extends State<Inbox> with SingleTickerProviderStateMixin {
                           leftSection(
                             Icon(
                               IconBaru.zakat_small,
-                              color: Colors.deepOrange,
+                              color: Colors.blueAccent,
                               size: 30.0,
                             ),
                           ),

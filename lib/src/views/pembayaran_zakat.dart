@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_jaring_ummat/src/services/currency_format_service.dart';
+import 'package:toast/toast.dart';
 
 import '../views/components/icon_baru_icons.dart';
 
@@ -15,6 +17,14 @@ class PembayaranZakat extends StatefulWidget {
 }
 
 class _PembayaranZakatState extends State<PembayaranZakat> {
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    print(widget.icon);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,7 +43,7 @@ class _PembayaranZakatState extends State<PembayaranZakat> {
                     Icon(
                       widget.icon,
                       size: 45.0,
-                      color: Colors.amber,
+                      color: Colors.white,
                     ),
                     SizedBox(
                       height: 15.0,
@@ -47,11 +57,11 @@ class _PembayaranZakatState extends State<PembayaranZakat> {
                       ),
                     ),
                     Text(
-                      'Rp ${widget.nominal}',
+                      'Rp ${CurrencyFormat().currency(double.parse(widget.nominal))}',
                       style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
-                        fontSize: 16.0,
+                        fontSize: 30.0,
                       ),
                     ),
                     SizedBox(
@@ -128,7 +138,6 @@ class _PembayaranZakatState extends State<PembayaranZakat> {
                         padding: EdgeInsets.only(right: 10.0),
                         child: RaisedButton(
                           onPressed: () {
-//                            Navigator.of(context).pop();
                           },
                           color: Colors.blueAccent,
                           shape: RoundedRectangleBorder(
