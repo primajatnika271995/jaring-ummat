@@ -8,6 +8,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:linkedin_login/linkedin_login.dart';
+import 'package:linkedin_auth/linkedin_auth.dart';
 
 // Component Import
 import 'package:flutter_jaring_ummat/src/views/components/container_bg_default.dart';
@@ -35,6 +37,12 @@ class Step2State extends State<Step2View> {
   final TextEditingController _contactController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _cpasswordController = TextEditingController();
+
+  final String redirectUrl = 'https://api.linkedin.com/v2/me';
+  final String clientId = '81vfnbt57g6p6q';
+  final String clientSecret = 'QOzI7o0ZTBAF8hr7';
+
+  String token;
 
   bool _selected = false;
   bool _isSubmit = false;
@@ -231,6 +239,56 @@ class Step2State extends State<Step2View> {
                                 borderRadius: BorderRadius.circular(30.0),
                               ),
                             ),
+                            SizedBox(
+                              width: 20,
+                            ),
+                            RaisedButton.icon(
+                              onPressed: () async {
+                                await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => Scaffold(
+                                          appBar: AppBar(
+                                            leading: CloseButton(),
+                                            title: Text('LinkedIn Login Auth'),
+                                          ),
+                                          body: LinkedInLoginView(
+                                            clientId: clientId,
+                                            redirectUrl: redirectUrl,
+                                            onError: (String error) {
+                                              print(error);
+                                            },
+                                            onServerResponse: (res) {
+                                              var parsed =
+                                                  json.decode(res.body);
+                                              return AccessToken(
+                                                  parsed["token"],
+                                                  parsed["expiry"]);
+                                            },
+                                            onTokenCapture: (token) {
+                                              this.token = token.token;
+                                              Navigator.pop(context, token);
+                                            },
+                                          ),
+                                        ),
+                                  ),
+                                );
+                                print(
+                                    "Ended, must've gotten result here: ${this.token}");
+                              },
+                              icon: Icon(
+                                FontAwesomeIcons.linkedin,
+                                color: Colors.white,
+                              ),
+                              label: new Text(
+                                'LinkedIn',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              color: Colors.blueAccent,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30.0),
+                              ),
+                            ),
                           ])
                     ],
                   ),
@@ -244,7 +302,7 @@ class Step2State extends State<Step2View> {
     return widgets;
   }
 
-    Future<Null> _loginFacebook() async {
+  Future<Null> _loginFacebook() async {
     _preferences = await SharedPreferences.getInstance();
     final FacebookLoginResult result =
         await facebookSignIn.logInWithReadPermissions(['email']);
@@ -344,7 +402,7 @@ class Step2State extends State<Step2View> {
           duration: 2, backgroundColor: Colors.red);
       return;
     }
-    
+
     final postData = PostRegistration(
       username: _emailController.text,
       fullname: _fullnameController.text,
@@ -357,7 +415,9 @@ class Step2State extends State<Step2View> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => Step3View(data: postData,),
+        builder: (context) => Step3View(
+              data: postData,
+            ),
       ),
     );
   }

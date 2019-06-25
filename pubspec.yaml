@@ -61,6 +61,7 @@ dependencies:
   badges: ^1.0.3
   bezier_chart: ^1.0.6
   linkedin_login: ^0.1.5
+  linkedin_auth: any
 
   flutter_facebook_login:
     git: https://github.com/lequanghiep74/flutter_facebook_login
