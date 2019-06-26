@@ -6,8 +6,7 @@ class UserStoryView extends StatefulWidget {
   String userId;
   String createdBy;
   int createdDate;
-  String video;
-  UserStoryView({@required this.userId, this.createdBy, this.createdDate, @required this.video});
+  UserStoryView({@required this.userId, this.createdBy, this.createdDate});
 
   @override
   State<StatefulWidget> createState() {
@@ -24,7 +23,7 @@ class UserStoryState extends State<UserStoryView> {
           onTap: () {
             Navigator.pop(context);
           },
-          child: UserStoryContainerOld(video: widget.video, userId: widget.userId, createdBy: widget.createdBy, createdDate: widget.createdDate,),
+          child: UserStoryContainerOld(userId: widget.userId, createdBy: widget.createdBy, createdDate: widget.createdDate,),
         )
       ),
     );

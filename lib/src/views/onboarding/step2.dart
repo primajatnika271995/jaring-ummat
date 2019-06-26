@@ -38,7 +38,7 @@ class Step2State extends State<Step2View> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _cpasswordController = TextEditingController();
 
-  final String redirectUrl = 'https://api.linkedin.com/v2/me';
+  final String redirectUrl = 'https://api.linkedin.com/v2/';
   final String clientId = '81vfnbt57g6p6q';
   final String clientSecret = 'QOzI7o0ZTBAF8hr7';
 
@@ -48,6 +48,8 @@ class Step2State extends State<Step2View> {
   bool _isSubmit = false;
   bool _obscureTextPassword = true;
   bool _obscureTextKonfirmPassword = true;
+
+  AuthorizationCodeResponse authorizationCodeResponse;
 
   @override
   Widget build(BuildContext context) {
@@ -189,7 +191,7 @@ class Step2State extends State<Step2View> {
                                       style: TextStyle(
                                           color: Colors.blue, fontSize: 11)),
                                   TextSpan(text: "!")
-                                ])),
+                                ],),),
                           ),
                         ),
                       ],
@@ -244,37 +246,32 @@ class Step2State extends State<Step2View> {
                             ),
                             RaisedButton.icon(
                               onPressed: () async {
-                                await Navigator.push(
+                                Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => Scaffold(
-                                          appBar: AppBar(
-                                            leading: CloseButton(),
-                                            title: Text('LinkedIn Login Auth'),
-                                          ),
-                                          body: LinkedInLoginView(
-                                            clientId: clientId,
-                                            redirectUrl: redirectUrl,
-                                            onError: (String error) {
-                                              print(error);
-                                            },
-                                            onServerResponse: (res) {
-                                              var parsed =
-                                                  json.decode(res.body);
-                                              return AccessToken(
-                                                  parsed["token"],
-                                                  parsed["expiry"]);
-                                            },
-                                            onTokenCapture: (token) {
-                                              this.token = token.token;
-                                              Navigator.pop(context, token);
-                                            },
-                                          ),
-                                        ),
+                                    builder: (BuildContext context) => LinkedInUserWidget(
+                                      redirectUrl: redirectUrl,
+                                      clientId: clientId,
+                                      clientSecret: clientSecret,
+                                      onGetUserProfile:
+                                          (LinkedInUserModel linkedInUser) {
+                                        print(
+                                            'Access token ${linkedInUser.token.accessToken}');
+
+                                        setState(() {});
+                                        onRegisterLinkedIn(linkedInUser.token.accessToken);
+
+                                        Navigator.pop(context);
+                                      },
+                                      catchError: (LinkedInErrorObject error) {
+                                        print('Error description: ${error.description},'
+                                            ' Error code: ${error.statusCode.toString()}');
+                                        Navigator.pop(context);
+                                      },
+                                    ),
+                                    fullscreenDialog: true,
                                   ),
                                 );
-                                print(
-                                    "Ended, must've gotten result here: ${this.token}");
                               },
                               icon: Icon(
                                 FontAwesomeIcons.linkedin,
@@ -420,5 +417,24 @@ class Step2State extends State<Step2View> {
             ),
       ),
     );
+  }
+
+  void onRegisterLinkedIn(String token) async {
+    _preferences = await SharedPreferences.getInstance();
+    var liteProfile = await LinkedInService.getLiteProfile(token);
+    var liteEmail = await LinkedInService.getEmailAddress(token);
+
+    var profileImage = await liteProfile.profileImage.getDisplayImageUrl(token);
+    print(liteEmail);
+    print(profileImage);
+
+    _preferences.setString(FULLNAME_KEY, liteEmail);
+    _preferences.setString(CONTACT_KEY, 'Not Found');
+    _preferences.setString(EMAIL_KEY, liteEmail);
+    _preferences.setString(ACCESS_TOKEN_KEY, token);
+    _preferences.setString(USER_ID_KEY, "");
+    _preferences.setString(PROFILE_FACEBOOK_KEY, profileImage);
+
+    await Navigator.of(context).pushReplacementNamed('/home');
   }
 }

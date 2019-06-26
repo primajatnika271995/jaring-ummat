@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import '../models/storiesModel.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_jaring_ummat/src/config/urls.dart';
+
 class StoriesApiProvider {
   Client client = new Client();
 
@@ -19,7 +20,7 @@ class StoriesApiProvider {
 
   Future<http.Response> storiesList(String userId) async {
     var response = await http
-        .get("http://139.162.15.91/jaring-ummat/api/stories/list/${userId}");
+        .get("${BASE_API_URL}/api/stories/list/${userId}");
     return response;
   }
 }

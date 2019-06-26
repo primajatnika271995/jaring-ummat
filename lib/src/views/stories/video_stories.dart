@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_jaring_ummat/src/services/storyByUser.dart';
+import 'package:flutter_jaring_ummat/src/models/storyByUser.dart';
 import 'package:video_player/video_player.dart';
 import 'package:flutter_jaring_ummat/src/services/storiesApi.dart';
 import 'package:flutter_simple_video_player/flutter_simple_video_player.dart';

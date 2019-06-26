@@ -5,18 +5,14 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:story_view/story_view.dart';
 import 'package:flutter_jaring_ummat/src/services/time_ago_service.dart';
-import '../../services/storyByUser.dart';
+import 'package:flutter_jaring_ummat/src/services/storiesApi.dart';
+import 'package:flutter_jaring_ummat/src/models/storyByUser.dart';
 
 class UserStoryContainerOld extends StatefulWidget {
   String userId;
   String createdBy;
-  String video;
   int createdDate;
-  UserStoryContainerOld(
-      {@required this.userId,
-        this.createdBy,
-        this.createdDate,
-        @required this.video});
+  UserStoryContainerOld({@required this.userId, this.createdBy, this.createdDate,});
 
   @override
   State<StatefulWidget> createState() {
@@ -30,8 +26,13 @@ class UserStoryContainerOldState extends State<UserStoryContainerOld> {
   @override
   void initState() {
     super.initState();
+    getStoryList();
+  }
+
+  void getStoryList() {
+    StoriesApiProvider api = new StoriesApiProvider();
     print("userid : ${widget.userId}");
-    storiesList(widget.userId).then((response) {
+    api.storiesList(widget.userId).then((response) {
       var data = json.decode(response.body);
       StoryByUser stories = StoryByUser.fromJson(data);
       stories.storyList.forEach((val) {
@@ -192,8 +193,6 @@ class UserStoryContainerOldState extends State<UserStoryContainerOld> {
         setState(() {
           widgetList.add(
             StoryItem.pageVideo(urlContent[i].videoUrl)
-//              StoryItem.text(urlContent[i].videoUrl, Colors.blue)
-
           );
         });
       }
@@ -237,11 +236,5 @@ class UserStoryContainerOldState extends State<UserStoryContainerOld> {
   @override
   void dispose() {
     super.dispose();
-  }
-
-  Future<http.Response> storiesList(String userId) async {
-    var response = await http
-        .get("http://139.162.15.91/jaring-ummat/api/stories/list/${userId}");
-    return response;
   }
 }

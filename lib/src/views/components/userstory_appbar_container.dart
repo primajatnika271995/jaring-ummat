@@ -23,42 +23,14 @@ class UserStoryAppBarState extends State<UserStoryAppBar> {
   Widget build(BuildContext context) {
     return Container(
       alignment: Alignment.topLeft,
-//      margin: EdgeInsets.symmetric(horizontal: 10.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
-//          Column(
-//            crossAxisAlignment: CrossAxisAlignment.start,
-//            children: <Widget>[
-//              Container(
-//                margin: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0.0),
-//                child: Row(
-//                  children: <Widget>[
-//                    const Text(
-//                      'Stories',
-//                      style: TextStyle(
-//                          fontWeight: FontWeight.bold,
-//                          color: Colors.black87),
-//                    ),
-//                  ],
-//                ),
-//              ),
-//              Container(
-//                margin: EdgeInsets.fromLTRB(10.0, 4.0, 10.0, 0.0),
-//                child: const Text(
-//                  'See fullscreen photos and videos before they disappear.',
-//                  style:
-//                  TextStyle(fontSize: 12.0, color: Colors.grey),
-//                ),
-//              ),
-//            ],
-//          ),
           StreamBuilder(
             stream: bloc.storyFetchAll,
             builder: (context, AsyncSnapshot<List<Story>> snapshot) {
               if (snapshot.hasData) {
-                print("GET Stories");
                 return userStories(snapshot.data);
               } else if (snapshot.hasError) {
                 return Text(snapshot.error.toString());
@@ -94,11 +66,6 @@ class UserStoryAppBarState extends State<UserStoryAppBar> {
           String video;
           String thumbnails;
           var data = snapshot[index];
-//          var list = snapshot[index];
-//           list.storyList[index].contents.forEach((val) {
-//             String data = val.videoUrl;
-//             videoUrl.add(data);
-//           });
           data.storyList.forEach((f) {
             f.contents.forEach((val) {
               thumbnails = val.thumbnailUrl;
@@ -110,26 +77,38 @@ class UserStoryAppBarState extends State<UserStoryAppBar> {
           return GestureDetector(
             onTap: () {
               Route route = MaterialPageRoute(
-                  builder: (context) => UserStoryView(
-                        video: videoUrl[0],
-                        userId: data.userId,
-                        createdBy: data.createdBy,
-                        createdDate: data.storyList[0].createdDate,
-                      ));
+                builder: (context) => UserStoryView(
+                      userId: data.userId,
+                      createdBy: data.createdBy,
+                      createdDate: data.storyList[0].createdDate,
+                    ),
+              );
               Navigator.push(context, route);
             },
             child: Container(
               margin: EdgeInsets.only(top: 8.0),
               padding: EdgeInsets.only(left: 7.0),
+              decoration: BoxDecoration(
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey[300],
+                      offset: new Offset(2.0, 2.0),
+                      blurRadius: 40.0,
+                  ),
+                ]
+              ),
               child: ClipRRect(
                 borderRadius: BorderRadius.all(Radius.circular(10.0)),
                 child: Stack(
                   children: <Widget>[
                     Container(
-                      width: 100.0,
+                      width: 90.0,
                       height: 140.0,
                       child: thumbnail[0] == null
-                          ? Image.network("https://cdn.shopify.com/s/files/1/0882/1686/products/lastolite-grey-vinyl-background-275x6m-018_a36fc2d2-5860-48f1-8ec7-4b0ed98e2cf4.jpg?v=1490271176", fit: BoxFit.cover,)
+                          ? Image.network(
+                              "https://cdn.shopify.com/s/files/1/0882/1686/products/lastolite-grey-vinyl-background-275x6m-018_a36fc2d2-5860-48f1-8ec7-4b0ed98e2cf4.jpg?v=1490271176",
+                              fit: BoxFit.cover,
+                            )
                           : Image.network(
                               thumbnail[0],
                               fit: BoxFit.cover,
@@ -141,7 +120,7 @@ class UserStoryAppBarState extends State<UserStoryAppBar> {
                       child: CircularProfileAvatar(
                         'https://avatars0.githubusercontent.com/u/8264639?s=460&v=4',
                         borderWidth: 3.0,
-                        radius: 25.0,
+                        radius: 20.0,
                         elevation: 15.0,
                         cacheImage: true,
                         borderColor: Colors.blue,
@@ -175,7 +154,7 @@ class UserStoryAppBarState extends State<UserStoryAppBar> {
                             fontSize: 12.0),
                         overflow: TextOverflow.ellipsis,
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),
