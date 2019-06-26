@@ -62,6 +62,7 @@ dependencies:
   bezier_chart: ^1.0.6
   linkedin_login: ^0.1.5
   linkedin_auth: any
+  flutter_simple_video_player: ^0.0.9
 
   flutter_facebook_login:
     git: https://github.com/lequanghiep74/flutter_facebook_login

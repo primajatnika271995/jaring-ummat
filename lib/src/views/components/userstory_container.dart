@@ -14,9 +14,9 @@ class UserStoryContainerOld extends StatefulWidget {
   int createdDate;
   UserStoryContainerOld(
       {@required this.userId,
-      this.createdBy,
-      this.createdDate,
-      @required this.video});
+        this.createdBy,
+        this.createdDate,
+        @required this.video});
 
   @override
   State<StatefulWidget> createState() {
@@ -97,7 +97,7 @@ class UserStoryContainerOldState extends State<UserStoryContainerOld> {
                           ),
                           decoration: BoxDecoration(
                             borderRadius:
-                                BorderRadius.all(Radius.circular(30.0)),
+                            BorderRadius.all(Radius.circular(30.0)),
                             color: Colors.grey[200],
                           ),
                           padding: EdgeInsets.fromLTRB(15.0, 0.5, 15.0, 0.5),
@@ -145,10 +145,10 @@ class UserStoryContainerOldState extends State<UserStoryContainerOld> {
                   height: 50.0,
                   decoration: BoxDecoration(
                       image: DecorationImage(
-                    image: NetworkImage(
-                        "https://www.skylightsearch.co.uk/wp-content/uploads/2017/01/Loren-profile-pic-circle.png"),
-                    fit: BoxFit.contain,
-                  )),
+                        image: NetworkImage(
+                            "https://www.skylightsearch.co.uk/wp-content/uploads/2017/01/Loren-profile-pic-circle.png"),
+                        fit: BoxFit.contain,
+                      )),
                 ),
                 SizedBox(
                   width: 10.0,
@@ -191,8 +191,8 @@ class UserStoryContainerOldState extends State<UserStoryContainerOld> {
       if (urlContent[i].imgUrl == null) {
         setState(() {
           widgetList.add(
-//            StoryItem.pageVideo(urlContent[i].videoUrl)
-          StoryItem.text(urlContent[i].videoUrl, Colors.blue)
+            StoryItem.pageVideo(urlContent[i].videoUrl)
+//              StoryItem.text(urlContent[i].videoUrl, Colors.blue)
 
           );
         });

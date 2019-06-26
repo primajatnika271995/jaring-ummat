@@ -107,7 +107,6 @@ class UserStoryAppBarState extends State<UserStoryAppBar> {
               videoUrl.add(video);
             });
           });
-          print("Video index 0 : ${videoUrl[0]}");
           return GestureDetector(
             onTap: () {
               Route route = MaterialPageRoute(
