@@ -11,35 +11,43 @@ checkIfAuthenticated() async {
   return true;
 }
 
-
 void main() {
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   App();
 }
 
-class LandingPage extends StatelessWidget {
+class LandingPage extends StatefulWidget {
+  @override
+  _LandingPageState createState() => _LandingPageState();
+}
+
+class _LandingPageState extends State<LandingPage> {
   SharedPreferences _preferences;
 
   @override
-  Widget build(BuildContext context) {
-    // Check if success
+  void initState() {
     checkIfAuthenticated().then((_) async {
       _preferences = await SharedPreferences.getInstance();
       var token = _preferences.getString(ACCESS_TOKEN_KEY);
-      print(token);
-       if (token == null) {
-         Navigator.of(context).pushReplacementNamed('/login');
-       } else {
-         Navigator.of(context).pushReplacementNamed('/home');
-       }
+      print('Login Token : ${token}');
+      if (token == null) {
+        Navigator.of(context).pushReplacementNamed('/login');
+      } else {
+        Navigator.of(context).pushReplacementNamed('/home');
+      }
     });
+    super.initState();
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return Container(
       child: Center(
-          child: SpinKitThreeBounce(
-        color: Colors.white,
-        size: 20.0,
-      ),),
+        child: SpinKitThreeBounce(
+          color: Colors.white,
+          size: 20.0,
+        ),
+      ),
       height: MediaQuery.of(context).size.height,
       decoration: BoxDecoration(
         color: Colors.grey,
@@ -53,4 +61,3 @@ class LandingPage extends StatelessWidget {
     );
   }
 }
-

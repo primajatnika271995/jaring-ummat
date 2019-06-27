@@ -3,7 +3,6 @@ import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter_fab_dialer/flutter_fab_dialer.dart';
 import 'package:bezier_chart/bezier_chart.dart';
 
-// Component
 import '../views/components/icon_baru_icons.dart';
 import '../views/pembayaran_zakat.dart';
 
@@ -13,11 +12,34 @@ class Portofolio extends StatefulWidget {
 }
 
 class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
-  final List<charts.Series> periodDonation = _periodDonation();
-  final List<charts.Series> higestDonation = _higestDonation();
-  final List<charts.Series> seriesList = _createSampleData();
-
+  List<charts.Series<AktivitasAmal, String>> _seriesPieData;
   AnimationController _controller;
+
+  int indexTab = 0;
+
+  TextEditingController nominalZakat = new TextEditingController();
+
+  var aktivitasData = [
+    new AktivitasAmal('Donasi', 40, Color(0xFF3A5F99)),
+    new AktivitasAmal('Zakat', 20, Color(0xFFDB7E27)),
+    new AktivitasAmal('Wakaf', 10, Color(0xFFDEDE71)),
+    new AktivitasAmal('Shodaqoh', 35, Color(0xFFDB4B1F)),
+    new AktivitasAmal('Infaq', 15, Color(0xFF2938C2)),
+  ];
+
+  _generateData() {
+    _seriesPieData.add(
+      charts.Series(
+        domainFn: (AktivitasAmal aktivitas, _) => aktivitas.task,
+        measureFn: (AktivitasAmal aktivitas, _) => aktivitas.taskvalue,
+        colorFn: (AktivitasAmal aktivitas, _) =>
+            charts.ColorUtil.fromDartColor(aktivitas.colorval),
+        id: 'Aktivitas Amal',
+        data: aktivitasData,
+        labelAccessorFn: (AktivitasAmal row, _) => '${row.taskvalue}',
+      ),
+    );
+  }
 
   List<String> _metodePembayaran = [
     'BNI Syariah Virtual Account',
@@ -43,8 +65,6 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
     Colors.deepPurpleAccent,
   ];
 
-  bool isSelected;
-
   final List<String> _listTitleCategories = [
     "Semua Kategori",
     "Donasi",
@@ -60,6 +80,7 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
   ];
 
   int _selectedIndex = 0;
+  bool isSelected;
 
   Map<String, double> dataMap = new Map();
 
@@ -77,20 +98,16 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
     });
   }
 
-  TextEditingController nominalZakat = new TextEditingController();
-
   @override
   void initState() {
-    // TODO: implement initState
-    super.initState();
     _controller = new AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 500),
     );
-    dataMap.putIfAbsent("Flutter", () => 5);
-    dataMap.putIfAbsent("React", () => 3);
-    dataMap.putIfAbsent("Xamarin", () => 2);
-    dataMap.putIfAbsent("Ionic", () => 2);
+
+    _seriesPieData = List<charts.Series<AktivitasAmal, String>>();
+    _generateData();
+    super.initState();
   }
 
   Widget tambahZakat(BuildContext context, String title, IconData icon) {
@@ -302,23 +319,87 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     var _fabMiniMenuItemList = [
       new FabMiniMenuItem.withText(
-          new Icon(IconBaru.wakaf_small), Colors.orange, 10.0, "Wakaf Menu",
-          () {
-        tambahZakat(context, 'Wakaf', IconBaru.wakaf_small);
-      }, "Wakaf", Colors.black, Colors.white, true),
-      new FabMiniMenuItem.withText(new Icon(IconBaru.shodaqoh_small),
-          Colors.redAccent, 10.0, "Shodaqoh Menu", () {
-        tambahZakat(context, 'Shodaqoh', IconBaru.shodaqoh_small);
-      }, "Shodaqoh", Colors.black, Colors.white, true),
-      new FabMiniMenuItem.withText(new Icon(IconBaru.infaq_small), Colors.blue,
-          10.0, "Infaq Menu", () {}, "Infaq", Colors.black, Colors.white, true),
-      new FabMiniMenuItem.withText(new Icon(IconBaru.zakat_small),
-          Colors.orangeAccent, 10.0, "Zakat Menu", () {
-        tambahZakat(context, 'Zakat', IconBaru.zakat_small);
-      }, "Zakat", Colors.black, Colors.white, true),
-      new FabMiniMenuItem.withText(new Icon(IconBaru.donation_small),
-          Colors.deepPurpleAccent, 10.0, "Donasi Menu", () {
-        tambahZakat(context, 'Donasi', IconBaru.donation_small);
+        new Icon(
+          IconBaru.wakaf_small,
+        ),
+        Colors.orange,
+        10.0,
+        "Wakaf Menu",
+        () {
+          tambahZakat(
+            context,
+            'Wakaf',
+            IconBaru.wakaf_small,
+          );
+        },
+        "Wakaf",
+        Colors.black,
+        Colors.white,
+        true,
+      ),
+      new FabMiniMenuItem.withText(
+        new Icon(
+          IconBaru.shodaqoh_small,
+        ),
+        Colors.redAccent,
+        10.0,
+        "Shodaqoh Menu",
+        () {
+          tambahZakat(
+            context,
+            'Shodaqoh',
+            IconBaru.shodaqoh_small,
+          );
+        },
+        "Shodaqoh",
+        Colors.black,
+        Colors.white,
+        true,
+      ),
+      new FabMiniMenuItem.withText(
+        new Icon(
+          IconBaru.infaq_small,
+        ),
+        Colors.blue,
+        10.0,
+        "Infaq Menu",
+        () {},
+        "Infaq",
+        Colors.black,
+        Colors.white,
+        true,
+      ),
+      new FabMiniMenuItem.withText(
+        new Icon(
+          IconBaru.zakat_small,
+        ),
+        Colors.orangeAccent,
+        10.0,
+        "Zakat Menu",
+        () {
+          tambahZakat(
+            context,
+            'Zakat',
+            IconBaru.zakat_small,
+          );
+        },
+        "Zakat",
+        Colors.black,
+        Colors.white,
+        true,
+      ),
+      new FabMiniMenuItem.withText(
+          new Icon(
+            IconBaru.donation_small,
+          ),
+          Colors.deepPurpleAccent,
+          10.0,
+          "Donasi Menu", () {
+        tambahZakat(
+          context,
+          'Donasi',
+          IconBaru.donation_small,
+        );
       }, "Donasi", Colors.black, Colors.white, true),
     ];
 
@@ -399,17 +480,17 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
                   new Text(
                     'Saldo jaring Umat',
                     style: new TextStyle(
-                        color: Colors.black87,
-                        fontSize: 11.0,
-                        fontWeight: FontWeight.bold),
+                      color: Colors.black,
+                      fontSize: 11.0,
+                    ),
                     overflow: TextOverflow.ellipsis,
                   ),
                   new Text(
                     'Rp 120.930',
                     style: new TextStyle(
-                      color: Colors.black,
-                      fontSize: 14.0,
-                    ),
+                        color: Colors.black,
+                        fontSize: 14.0,
+                        fontWeight: FontWeight.bold),
                   ),
                 ],
               ),
@@ -419,75 +500,84 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
 
     Widget rightSection() {
       return Container(
-          width: 130,
-          padding: new EdgeInsets.only(left: 8.0),
-          child: new Row(
-            children: <Widget>[
-              new Icon(
-                IconBaru.reward_point,
-                color: Colors.orange,
-              ),
-              SizedBox(
-                width: 6.0,
-              ),
-              new Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  new Text(
-                    'Point Amal',
-                    style: new TextStyle(
-                        color: Colors.black87,
-                        fontSize: 11.0,
-                        fontWeight: FontWeight.bold),
-                    overflow: TextOverflow.ellipsis,
+        width: 130,
+        padding: new EdgeInsets.only(left: 8.0),
+        child: new Row(
+          children: <Widget>[
+            new Icon(
+              IconBaru.reward_point,
+              color: Colors.orange,
+            ),
+            SizedBox(
+              width: 6.0,
+            ),
+            new Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                new Text(
+                  'Point Amal',
+                  style: new TextStyle(
+                    color: Colors.black,
+                    fontSize: 11.0,
                   ),
-                  new Text(
-                    'Rp 59.430',
-                    style: new TextStyle(
-                      color: Colors.black,
-                      fontSize: 14.0,
-                    ),
+                  overflow: TextOverflow.ellipsis,
+                ),
+                new Text(
+                  'Rp 59.430',
+                  style: new TextStyle(
+                    color: Colors.black,
+                    fontSize: 14.0,
+                    fontWeight: FontWeight.bold,
                   ),
-                ],
-              ),
-            ],
-          ));
+                ),
+              ],
+            ),
+          ],
+        ),
+      );
     }
 
     return Scaffold(
-        appBar: PreferredSize(
-          preferredSize: Size.fromHeight(47.0),
-          child: AppBar(
-            elevation: 0.0,
-            backgroundColor: Colors.white,
-            title: new Text(
-              'Portofolio Tahun 2019',
-              style: TextStyle(fontSize: 16.0, color: Colors.grey[600]),
-            ),
-            centerTitle: false,
-            automaticallyImplyLeading: false,
-            actions: <Widget>[
-              IconButton(
-                onPressed: () {
-                  Scaffold.of(context).showSnackBar(SnackBar(
-                    content: Text('Setting Menu Under Development'),
-                  ));
-                },
-                icon: Icon(
-                  Icons.settings,
-                  color: Colors.grey[600],
+      body: DefaultTabController(
+        length: 5,
+        initialIndex: indexTab,
+        child: Scaffold(
+          appBar: PreferredSize(
+            preferredSize: Size.fromHeight(47.0),
+            child: AppBar(
+              elevation: 0.0,
+              backgroundColor: Colors.white,
+              title: new Text(
+                'Portofolio Tahun 2019',
+                style: TextStyle(fontSize: 16.0, color: Colors.grey[600]),
+              ),
+              centerTitle: false,
+              automaticallyImplyLeading: false,
+              actions: <Widget>[
+                IconButton(
+                  onPressed: () {
+                    Scaffold.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Setting Menu Under Development'),
+                      ),
+                    );
+                  },
+                  icon: Icon(
+                    Icons.settings,
+                    color: Colors.grey[600],
+                  ),
                 ),
-              )
-            ],
+              ],
+            ),
           ),
-        ),
-        body: CustomScrollView(
-          slivers: <Widget>[
-            new SliverAppBar(
+          body: CustomScrollView(
+            slivers: <Widget>[
+              new SliverAppBar(
                 elevation: 1.0,
                 automaticallyImplyLeading: false,
                 flexibleSpace: AppBar(
+                  elevation: 3.0,
                   automaticallyImplyLeading: false,
                   flexibleSpace: new Container(
                     padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
@@ -517,154 +607,343 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
                       ],
                     ),
                   ),
-                )),
-            new SliverAppBar(
-              automaticallyImplyLeading: false,
-              bottom: PreferredSize(
-                preferredSize: Size.fromHeight(160.0),
-                child: Text(''),
+                ),
               ),
-              elevation: 0.0,
-              flexibleSpace: AppBar(
-                backgroundColor: Colors.white,
+              new SliverAppBar(
                 automaticallyImplyLeading: false,
-                flexibleSpace: new Container(
-                  child: new Container(
-                    child: Container(
-                      padding: EdgeInsets.only(right: 50.0),
-                      child: charts.PieChart(
-                        seriesList,
-                        behaviors: [
-                          new charts.DatumLegend(
-                            position: charts.BehaviorPosition.end,
-                            outsideJustification:
-                            charts.OutsideJustification.startDrawArea,
-                            horizontalFirst: false,
-                            desiredMaxRows: 5,
-                            cellPadding: new EdgeInsets.only(
-                                right: 4.0, bottom: 20.0, top: 7.0),
-                          ),
-                        ],
-                        defaultRenderer: new charts.ArcRendererConfig(
-                            arcWidth: 30,
+                bottom: PreferredSize(
+                  preferredSize: Size.fromHeight(160.0),
+                  child: Text(''),
+                ),
+                flexibleSpace: AppBar(
+                  elevation: 0.0,
+                  backgroundColor: Colors.white,
+                  automaticallyImplyLeading: false,
+                  flexibleSpace: Stack(
+                    children: <Widget>[
+                      Container(
+                        padding: EdgeInsets.only(
+                          right: 50.0,
+                          top: 20.0,
+                          left: 20.0,
+                        ),
+                        child: charts.PieChart(
+                          _seriesPieData,
+                          behaviors: [
+                            new charts.DatumLegend(
+                              position: charts.BehaviorPosition.end,
+                              outsideJustification:
+                                  charts.OutsideJustification.startDrawArea,
+                              horizontalFirst: false,
+                              desiredMaxRows: 5,
+                              cellPadding: new EdgeInsets.only(
+                                  right: 24.0, bottom: 4.0, top: 10.0),
+                              entryTextStyle: charts.TextStyleSpec(
+                                color: charts.Color.black,
+                                fontSize: 14,
+                              ),
+                            ),
+                          ],
+                          defaultRenderer: new charts.ArcRendererConfig(
+                            arcWidth: 20,
                             arcRendererDecorators: [
                               new charts.ArcLabelDecorator(
-                                  labelPosition: charts.ArcLabelPosition.inside)
-                            ]),
-                        animate: true,
+                                labelPosition: charts.ArcLabelPosition.inside,
+                              ),
+                            ],
+                          ),
+                          animate: true,
+                          animationDuration: Duration(seconds: 2),
+                        ),
                       ),
-                    ),
+                      Positioned(
+                        left: 70.0,
+                        top: 100.0,
+                        child: const Text(
+                          "Total Aktivitas Amal",
+                          style: TextStyle(color: Colors.grey, fontSize: 10.0),
+                        ),
+                      ),
+                      Positioned(
+                        left: 69.0,
+                        top: 113.0,
+                        child: const Text(
+                          "Rp",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 12.0),
+                        ),
+                      ),
+                      Positioned(
+                        left: 84.0,
+                        top: 113.0,
+                        child: const Text(
+                          "8.950.420",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 17.0,
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        left: 10.0,
+                        top: 10.0,
+                        child: const Text(
+                          "Sebaran Aktivitas Amal",
+                          style: TextStyle(
+                            fontSize: 12.0,
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        right: 10.0,
+                        top: 10.0,
+                        child: InkWell(
+                          onTap: () {},
+                          child: const Text(
+                            "Selanjutnya",
+                            style: TextStyle(
+                              fontSize: 12.0,
+                              color: Colors.blue,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
-            ),
-            new SliverAppBar(
-                bottom: PreferredSize(
-                  preferredSize: Size.fromHeight(40.0),
-                  child: Text(''),
-                ),
-                elevation: 0.0,
+              new SliverAppBar(
                 backgroundColor: Colors.white,
-                automaticallyImplyLeading: false,
-                floating: false,
+                automaticallyImplyLeading: true,
+                floating: true,
                 pinned: true,
-                flexibleSpace: PreferredSize(
-                    child: AppBar(
-                      automaticallyImplyLeading: false,
-                      backgroundColor: Colors.white,
-                      flexibleSpace: Container(
-                        padding: EdgeInsets.only(top: 5.0, bottom: 5.0),
-                        child: ListView.builder(
-                          padding: EdgeInsets.symmetric(horizontal: 10.0),
-                          shrinkWrap: true,
-                          scrollDirection: Axis.horizontal,
-                          itemCount: _listTitleCategories.length,
-                          itemBuilder: (context, index) => new Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  GestureDetector(
-                                    onTap: () {
-                                      _onSelected(index);
-                                    },
-                                    child: Card(
-                                      color: _selectedIndex != null &&
-                                              _selectedIndex == index
-                                          ? Colors.lightBlueAccent
-                                          : Colors.grey[200],
-                                      child: Container(
-                                        width: 125.0,
-                                        padding:
-                                            EdgeInsets.fromLTRB(10, 0.0, 10, 0),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: <Widget>[
-                                            Container(
-                                              margin: EdgeInsets.only(left: 5),
-                                              child: Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
-                                                children: <Widget>[
-                                                  Text(
-                                                    _listTitleCategories[index],
-                                                    style: TextStyle(
-                                                        fontSize: 10,
-                                                        color: _selectedIndex !=
-                                                                    null &&
-                                                                _selectedIndex ==
-                                                                    index
-                                                            ? Colors.white
-                                                            : Colors.grey),
-                                                  ),
-                                                  Text(
-                                                    _listTotalPrice[index],
-                                                    style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        fontSize: 15.0,
-                                                        color: _selectedIndex !=
-                                                                    null &&
-                                                                _selectedIndex ==
-                                                                    index
-                                                            ? Colors.white
-                                                            : Colors.black87),
-                                                  ),
-                                                ],
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
+                flexibleSpace: AppBar(
+                  elevation: 3.0,
+                  backgroundColor: Colors.white,
+                  automaticallyImplyLeading: false,
+                  bottom: TabBar(
+                    isScrollable: true,
+                    indicator: UnderlineTabIndicator(
+                      borderSide:
+                          BorderSide(width: 4.0, color: Colors.blueAccent),
+                    ),
+                    labelColor: Colors.black,
+                    onTap: (int index) {
+                      print(index);
+                      if (index == 0) {
+                        setState(() {
+                          print(aktivitasData.length);
+                          aktivitasData.clear();
+                          aktivitasData.add(
+                            new AktivitasAmal('Donasi', 40, Color(0xFF3A5F99)),
+                          );
+                          print(aktivitasData.length);
+                          // _generateData();
+                        });
+                      }
+                      if (index == 1) {
+                        setState(() {
+                          print(aktivitasData.length);
+                          aktivitasData.clear();
+                          aktivitasData.add(
+                            new AktivitasAmal('Zakat', 20, Color(0xFFDB7E27)),
+                          );
+                          print(aktivitasData.length);
+                          // _generateData();
+                        });
+                      }
+                      if (index == 2) {
+                        setState(() {
+                          print(aktivitasData.length);
+                          aktivitasData.clear();
+                          aktivitasData.add(
+                            new AktivitasAmal('Wakaf', 10, Color(0xFFDEDE71)),
+                          );
+                          print(aktivitasData.length);
+                          // _generateData();
+                        });
+                      }
+                      if (index == 3) {
+                        setState(() {
+                          print(aktivitasData.length);
+                          aktivitasData.clear();
+                          aktivitasData.add(
+                            new AktivitasAmal('Shodaqoh', 35, Color(0xFFDB4B1F)),
+                          );
+                          print(aktivitasData.length);
+                          // _generateData();
+                        });
+                      }
+                      if (index == 4) {
+                        setState(() {
+                          print(aktivitasData.length);
+                          aktivitasData.clear();
+                          aktivitasData.add(
+                            new AktivitasAmal('Infaq', 15, Color(0xFF2938C2)),
+                          );
+                          print(aktivitasData.length);
+                          // _generateData();
+                        });
+                      }
+                    },
+                    tabs: <Widget>[
+                      new Tab(
+                        child: Column(
+                          children: <Widget>[
+                            const Text(
+                              'Donasi',
+                              style: TextStyle(
+                                color: Color(0xFF3A5F99),
                               ),
+                            ),
+                            new Row(
+                              children: <Widget>[
+                                const Text(
+                                  'Rp',
+                                  style: TextStyle(
+                                    fontSize: 11.0,
+                                  ),
+                                ),
+                                const Text(
+                                  '2.506.116',
+                                  style: TextStyle(
+                                    fontSize: 13.0,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
                       ),
+                      new Tab(
+                        child: Column(
+                          children: <Widget>[
+                            const Text(
+                              'Zakat',
+                              style: TextStyle(
+                                color: Color(0xFFDB7E27),
+                              ),
+                            ),
+                            new Row(
+                              children: <Widget>[
+                                const Text(
+                                  'Rp',
+                                  style: TextStyle(
+                                    fontSize: 11.0,
+                                  ),
+                                ),
+                                const Text(
+                                  '2.506.116',
+                                  style: TextStyle(
+                                    fontSize: 13.0,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                      new Tab(
+                        child: Column(
+                          children: <Widget>[
+                            const Text(
+                              'Wakaf',
+                              style: TextStyle(
+                                color: Color(0xFFDEDE71),
+                              ),
+                            ),
+                            new Row(
+                              children: <Widget>[
+                                const Text(
+                                  'Rp',
+                                  style: TextStyle(fontSize: 11.0),
+                                ),
+                                const Text(
+                                  '2.506.116',
+                                  style: TextStyle(fontSize: 13.0),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                      new Tab(
+                        child: Column(
+                          children: <Widget>[
+                            const Text(
+                              'Shodaqoh',
+                              style: TextStyle(
+                                color: Color(0xFFDB4B1F),
+                              ),
+                            ),
+                            new Row(
+                              children: <Widget>[
+                                const Text(
+                                  'Rp',
+                                  style: TextStyle(fontSize: 11.0),
+                                ),
+                                const Text(
+                                  '2.506.116',
+                                  style: TextStyle(fontSize: 13.0),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                      new Tab(
+                        child: Column(
+                          children: <Widget>[
+                            const Text(
+                              'Infaq',
+                              style: TextStyle(
+                                color: Color(0xFF2938C2),
+                              ),
+                            ),
+                            new Row(
+                              children: <Widget>[
+                                const Text(
+                                  'Rp',
+                                  style: TextStyle(fontSize: 11.0),
+                                ),
+                                const Text(
+                                  '2.506.116',
+                                  style: TextStyle(fontSize: 13.0),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              new SliverList(
+                delegate: SliverChildListDelegate(
+                  [
+                    new Column(
+                      children: <Widget>[_buildListItem()],
                     ),
-                    preferredSize: Size.fromHeight(100.0))),
-            new SliverList(
-              delegate: SliverChildListDelegate([
-                new Column(
-                  children: <Widget>[_buildListItem()],
-                )
-              ]),
-            )
-          ],
+                  ],
+                ),
+              ),
+            ],
+          ),
+          floatingActionButton: new Stack(
+            children: <Widget>[
+              new Container(
+                child: new FabDialer(
+                  _fabMiniMenuItemList,
+                  Colors.lightGreen,
+                  new Icon(IconBaru.add_donation_zakat_etc),
+                ),
+              ),
+            ],
+          ),
         ),
-        floatingActionButton: new Stack(
-          children: <Widget>[
-            new Container(
-              child: new FabDialer(_fabMiniMenuItemList, Colors.lightGreen,
-                  new Icon(IconBaru.add_donation_zakat_etc)),
-            )
-          ],
-        ));
+      ),
+    );
   }
 
   Widget setParticipan(var img, var title, var total, var price) {
@@ -674,8 +953,6 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
       padding:
           EdgeInsets.only(left: 10.0, bottom: 10.0, right: 10.0, top: 10.0),
       child: Row(
-//        mainAxisAlignment: MainAxisAlignment.center,
-//        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Expanded(
             flex: 2,
@@ -683,21 +960,17 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
               width: 40.0,
               height: 40.0,
               decoration: BoxDecoration(
-                  image: DecorationImage(
-                image: AssetImage(img),
-//                fit: BoxFit.contain,
-              )),
+                image: DecorationImage(
+                  image: AssetImage(img),
+                ),
+              ),
             ),
           ),
-//          SizedBox(
-//            width: 10.0,
-//          ),
           Expanded(
             flex: 5,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                // SizedBox(height: 3.0),
                 Text(
                   title,
                   style: TextStyle(
@@ -706,13 +979,6 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
                       color: Colors.black),
                 ),
                 SizedBox(height: 3.0),
-//                        Text(
-//                          'Semoga bermanfaat untuk adek-adek...',
-//                          style: TextStyle(
-//                              fontSize: 11.0,
-//                              fontWeight: FontWeight.bold,
-//                              color: Color.fromRGBO(122, 122, 122, 1.0)),
-//                        ),
                 Text(
                   total,
                   style: TextStyle(
@@ -723,9 +989,6 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
               ],
             ),
           ),
-//          SizedBox(
-//            width: 115.0,
-//          ),
           Expanded(
             flex: 3,
             child: Text(
@@ -749,41 +1012,36 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
       padding:
           EdgeInsets.only(left: 10.0, bottom: 10.0, right: 10.0, top: 10.0),
       child: Row(
-//        mainAxisAlignment: MainAxisAlignment.center,
-//        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Expanded(
-              flex: 3,
-              child: new Row(
-                children: <Widget>[
-                  Container(
-                    width: 40.0,
-                    height: 40.0,
-                    child: icon,
-                  ),
-                  SizedBox(
-                    width: 10.0,
-                  ),
-                  Container(
-                    width: 40.0,
-                    height: 40.0,
-                    decoration: BoxDecoration(
-                        image: DecorationImage(
+            flex: 3,
+            child: new Row(
+              children: <Widget>[
+                Container(
+                  width: 40.0,
+                  height: 40.0,
+                  child: icon,
+                ),
+                SizedBox(
+                  width: 10.0,
+                ),
+                Container(
+                  width: 40.0,
+                  height: 40.0,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
                       image: AssetImage(img),
-//                fit: BoxFit.contain,
-                    )),
+                    ),
                   ),
-                ],
-              )),
-//          SizedBox(
-//            width: 10.0,
-//          ),
+                ),
+              ],
+            ),
+          ),
           Expanded(
             flex: 4,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                // SizedBox(height: 3.0),
                 Text(
                   title,
                   style: TextStyle(
@@ -792,26 +1050,22 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
                       color: Colors.black),
                 ),
                 SizedBox(height: 3.0),
-//                        Text(
-//                          'Semoga bermanfaat untuk adek-adek...',
-//                          style: TextStyle(
-//                              fontSize: 11.0,
-//                              fontWeight: FontWeight.bold,
-//                              color: Color.fromRGBO(122, 122, 122, 1.0)),
-//                        ),
                 Text(
                   total,
                   style: TextStyle(
-                      fontSize: 11.0,
-                      fontWeight: FontWeight.normal,
-                      color: Color.fromRGBO(122, 122, 122, 1.0)),
-                )
+                    fontSize: 11.0,
+                    fontWeight: FontWeight.normal,
+                    color: Color.fromRGBO(
+                      122,
+                      122,
+                      122,
+                      1.0,
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
-//          SizedBox(
-//            width: 115.0,
-//          ),
           Expanded(
             flex: 3,
             child: Text(
@@ -969,85 +1223,12 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
       ],
     );
   }
-
-  static List<charts.Series<HigestDonation, String>> _higestDonation() {
-    final data = [
-      new HigestDonation('Yayasan', 50),
-      new HigestDonation('Sekolah', 90),
-      new HigestDonation('Dhuafa', 75),
-      new HigestDonation('Anak Yatim', 120),
-      new HigestDonation('Kesehatan', 80),
-    ];
-
-    return [
-      new charts.Series<HigestDonation, String>(
-        id: 'higest',
-        colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
-        domainFn: (HigestDonation sales, _) => sales.type,
-        measureFn: (HigestDonation sales, _) => sales.total,
-        data: data,
-      )
-    ];
-  }
-
-  static List<charts.Series<PeriodDonation, DateTime>> _periodDonation() {
-    final data1 = [
-      new PeriodDonation(new DateTime(2017, 9, 19), 15000),
-      new PeriodDonation(new DateTime(2017, 9, 26), 45000),
-      new PeriodDonation(new DateTime(2017, 10, 3), 30000),
-      new PeriodDonation(new DateTime(2017, 10, 15), 60000),
-      new PeriodDonation(new DateTime(2017, 10, 23), 75000),
-    ];
-
-    return [
-      new charts.Series<PeriodDonation, DateTime>(
-        id: 'data1',
-        colorFn: (_, __) => charts.MaterialPalette.red.shadeDefault,
-        labelAccessorFn: (PeriodDonation sales, _) =>
-            '${sales.time}: ${sales.total}',
-        domainFn: (PeriodDonation sales, _) => sales.time,
-        measureFn: (PeriodDonation sales, _) => sales.total,
-        data: data1,
-      ),
-    ];
-  }
-
-  static List<charts.Series<LinearSales, String>> _createSampleData() {
-    final data = [
-      new LinearSales('Zakat', 100),
-      new LinearSales('Donasi', 75),
-      new LinearSales('Pendidikan', 25),
-      new LinearSales('Sosial', 5),
-    ];
-
-    return [
-      new charts.Series<LinearSales, String>(
-        id: 'Portofolio',
-        domainFn: (LinearSales sales, _) => sales.name,
-        measureFn: (LinearSales sales, _) => sales.sales,
-        data: data,
-      ),
-    ];
-  }
 }
 
-class PeriodDonation {
-  final DateTime time;
-  final int total;
+class AktivitasAmal {
+  String task;
+  double taskvalue;
+  Color colorval;
 
-  PeriodDonation(this.time, this.total);
-}
-
-class HigestDonation {
-  final String type;
-  final int total;
-
-  HigestDonation(this.type, this.total);
-}
-
-class LinearSales {
-  final String name;
-  final int sales;
-
-  LinearSales(this.name, this.sales);
+  AktivitasAmal(this.task, this.taskvalue, this.colorval);
 }

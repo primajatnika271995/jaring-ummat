@@ -177,12 +177,12 @@ class Step2State extends State<Step2View> {
                                   .pushReplacementNamed('/login');
                             },
                             child: RichText(
-                                text: TextSpan(
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                    children: <TextSpan>[
+                              text: TextSpan(
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                children: <TextSpan>[
                                   TextSpan(
                                       text: 'Sudah punya akun? Login ',
                                       style: TextStyle(fontSize: 11)),
@@ -191,7 +191,9 @@ class Step2State extends State<Step2View> {
                                       style: TextStyle(
                                           color: Colors.blue, fontSize: 11)),
                                   TextSpan(text: "!")
-                                ],),),
+                                ],
+                              ),
+                            ),
                           ),
                         ),
                       ],
@@ -210,14 +212,19 @@ class Step2State extends State<Step2View> {
                             color: Colors.white,
                           )),
                       Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            RaisedButton.icon(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Expanded(
+                            flex: 3,
+                            child: RaisedButton.icon(
                               icon: Icon(
                                 FontAwesomeIcons.facebookF,
-                                size: 20.0,
+                                size: 18.0,
                               ),
-                              label: new Text('Facebook'),
+                              label: new Text(
+                                'Facebook',
+                                style: TextStyle(fontSize: 12.0),
+                              ),
                               onPressed: _loginFacebook,
                               textColor: Colors.white,
                               color: Color.fromRGBO(59, 89, 152, 1.0),
@@ -225,50 +232,63 @@ class Step2State extends State<Step2View> {
                                 borderRadius: BorderRadius.circular(30.0),
                               ),
                             ),
-                            SizedBox(
-                              width: 20,
-                            ),
-                            RaisedButton.icon(
+                          ),
+                          SizedBox(
+                            width: 5,
+                          ),
+                          Expanded(
+                            flex: 3,
+                            child: RaisedButton.icon(
                               onPressed: () {},
                               icon: SvgPicture.asset(
                                 'assets/icon/google_logo.svg',
-                                width: 20.0,
-                                height: 20.0,
+                                width: 18.0,
+                                height: 18.0,
                               ),
-                              label: new Text('Google'),
+                              label: new Text(
+                                'Google',
+                                style: TextStyle(fontSize: 12.0),
+                              ),
                               color: Color.fromRGBO(255, 255, 255, 1.0),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(30.0),
                               ),
                             ),
-                            SizedBox(
-                              width: 20,
-                            ),
-                            RaisedButton.icon(
+                          ),
+                          SizedBox(
+                            width: 5,
+                          ),
+                          Expanded(
+                            flex: 3,
+                            child: RaisedButton.icon(
                               onPressed: () async {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (BuildContext context) => LinkedInUserWidget(
-                                      redirectUrl: redirectUrl,
-                                      clientId: clientId,
-                                      clientSecret: clientSecret,
-                                      onGetUserProfile:
-                                          (LinkedInUserModel linkedInUser) {
-                                        print(
-                                            'Access token ${linkedInUser.token.accessToken}');
+                                    builder: (BuildContext context) =>
+                                        LinkedInUserWidget(
+                                          redirectUrl: redirectUrl,
+                                          clientId: clientId,
+                                          clientSecret: clientSecret,
+                                          onGetUserProfile:
+                                              (LinkedInUserModel linkedInUser) {
+                                            print(
+                                                'Access token ${linkedInUser.token.accessToken}');
 
-                                        setState(() {});
-                                        onRegisterLinkedIn(linkedInUser.token.accessToken);
+                                            setState(() {});
+                                            onRegisterLinkedIn(
+                                                linkedInUser.token.accessToken);
 
-                                        Navigator.pop(context);
-                                      },
-                                      catchError: (LinkedInErrorObject error) {
-                                        print('Error description: ${error.description},'
-                                            ' Error code: ${error.statusCode.toString()}');
-                                        Navigator.pop(context);
-                                      },
-                                    ),
+                                            Navigator.pop(context);
+                                          },
+                                          catchError:
+                                              (LinkedInErrorObject error) {
+                                            print(
+                                                'Error description: ${error.description},'
+                                                ' Error code: ${error.statusCode.toString()}');
+                                            Navigator.pop(context);
+                                          },
+                                        ),
                                     fullscreenDialog: true,
                                   ),
                                 );
@@ -276,17 +296,21 @@ class Step2State extends State<Step2View> {
                               icon: Icon(
                                 FontAwesomeIcons.linkedin,
                                 color: Colors.white,
+                                size: 18.0,
                               ),
                               label: new Text(
                                 'LinkedIn',
-                                style: TextStyle(color: Colors.white),
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 12.0),
                               ),
                               color: Colors.blueAccent,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(30.0),
                               ),
                             ),
-                          ])
+                          ),
+                        ],
+                      ),
                     ],
                   ),
                 ),

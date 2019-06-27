@@ -15,7 +15,8 @@ import 'views/create_aksi_amal.dart';
 import 'views/create_data_preview.dart';
 
 void App() {
-  runApp(MaterialApp(
+  runApp(
+    MaterialApp(
       debugShowCheckedModeBanner: false,
       initialRoute: '/',
       routes: {
@@ -28,10 +29,13 @@ void App() {
         '/onboarding/step2': (context) => Step2View(),
         '/onboarding/step3': (context) => Step3View(),
         '/onboarding/step4': (context) => Step4View(),
-        '/onboarding/success': (context) => SuccessRegisterView(avatarImage: null),
+        '/onboarding/success': (context) =>
+            SuccessRegisterView(avatarImage: null),
         '/user/story': (context) => UserStoryView(),
         '/create/news': (context) => CreateNews(),
         '/create/aksi-amal': (content) => CreateAksiAmal(),
         '/preview': (content) => PreviewData(),
-      }));
+      },
+    ),
+  );
 }

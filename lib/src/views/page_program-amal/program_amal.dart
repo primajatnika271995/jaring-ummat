@@ -49,9 +49,11 @@ class ProgramAmalPage extends StatelessWidget {
                 ),
                 InkWell(
                   onTap: () {
-                    Scaffold.of(context).showSnackBar(SnackBar(
-                      content: Text('Add Menu Under Development'),
-                    ));
+                    Scaffold.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Add Menu Under Development'),
+                      ),
+                    );
                   },
                   child: Icon(AppBarIcons.ic_action, color: Colors.grey[600]),
                 ),
