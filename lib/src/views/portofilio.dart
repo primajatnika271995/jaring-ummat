@@ -540,7 +540,7 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
 
     return Scaffold(
       body: DefaultTabController(
-        length: 5,
+        length: 6,
         initialIndex: indexTab,
         child: Scaffold(
           appBar: PreferredSize(
@@ -714,7 +714,7 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
               ),
               new SliverAppBar(
                 backgroundColor: Colors.white,
-                automaticallyImplyLeading: true,
+                automaticallyImplyLeading: false,
                 floating: true,
                 pinned: true,
                 flexibleSpace: AppBar(
@@ -737,6 +737,21 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
                           aktivitasData.add(
                             new AktivitasAmal('Donasi', 40, Color(0xFF3A5F99)),
                           );
+                          aktivitasData.add(
+
+                            new AktivitasAmal('Zakat', 20, Color(0xFFDB7E27)),
+                          );
+                          aktivitasData.add(
+                            new AktivitasAmal('Wakaf', 10, Color(0xFFDEDE71)),
+                          
+                          );
+                          aktivitasData.add(
+                            new AktivitasAmal('Infaq', 15, Color(0xFF2938C2)),
+                          );
+                          aktivitasData.add(
+
+                             new AktivitasAmal('Shodaqoh', 35, Color(0xFFDB4B1F)),
+                          );
                           print(aktivitasData.length);
                           // _generateData();
                         });
@@ -746,7 +761,7 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
                           print(aktivitasData.length);
                           aktivitasData.clear();
                           aktivitasData.add(
-                            new AktivitasAmal('Zakat', 20, Color(0xFFDB7E27)),
+                            new AktivitasAmal('Donasi', 40, Color(0xFF3A5F99)),
                           );
                           print(aktivitasData.length);
                           // _generateData();
@@ -757,7 +772,7 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
                           print(aktivitasData.length);
                           aktivitasData.clear();
                           aktivitasData.add(
-                            new AktivitasAmal('Wakaf', 10, Color(0xFFDEDE71)),
+                            new AktivitasAmal('Zakat', 20, Color(0xFFDB7E27)),
                           );
                           print(aktivitasData.length);
                           // _generateData();
@@ -768,13 +783,25 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
                           print(aktivitasData.length);
                           aktivitasData.clear();
                           aktivitasData.add(
-                            new AktivitasAmal('Shodaqoh', 35, Color(0xFFDB4B1F)),
+                            new AktivitasAmal('Wakaf', 10, Color(0xFFDEDE71)),
                           );
                           print(aktivitasData.length);
                           // _generateData();
                         });
                       }
                       if (index == 4) {
+                        setState(() {
+                          print(aktivitasData.length);
+                          aktivitasData.clear();
+                          aktivitasData.add(
+                            new AktivitasAmal(
+                                'Shodaqoh', 35, Color(0xFFDB4B1F)),
+                          );
+                          print(aktivitasData.length);
+                          // _generateData();
+                        });
+                      }
+                      if (index == 5) {
                         setState(() {
                           print(aktivitasData.length);
                           aktivitasData.clear();
@@ -787,6 +814,34 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
                       }
                     },
                     tabs: <Widget>[
+                      new Tab(
+                        child: Column(
+                          children: <Widget>[
+                            const Text(
+                              'Total',
+                              style: TextStyle(
+                                color: Color(0xFF3A5F99),
+                              ),
+                            ),
+                            new Row(
+                              children: <Widget>[
+                                const Text(
+                                  'Rp',
+                                  style: TextStyle(
+                                    fontSize: 11.0,
+                                  ),
+                                ),
+                                const Text(
+                                  '8.950.420',
+                                  style: TextStyle(
+                                    fontSize: 13.0,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
                       new Tab(
                         child: Column(
                           children: <Widget>[

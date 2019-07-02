@@ -33,7 +33,11 @@ const PROGRAM_AMAL_FINDBYID_URL = BASE_API_URL + '/api/program-amal/';
 // For Service LikeZone API
 const SAVE_LIKE_URL = BASE_API_URL + '/api/like/';
 const LIST_ALL_LIKE_URL = BASE_API_URL + '/api/like/list';
+const LIST_USER_LIKE_PROGRAM = BASE_API_URL + '/api/like/program/list/user';
+const LIST_USER_LIKE_BERITA = BASE_API_URL + '/api/like/berita/list/user';
 const FINDBYID_LIKE_URL = BASE_API_URL + '/api/like/';
+const UNLIKE_PROGRAM_URL = BASE_API_URL + '/api/like/unlikeProgramAmal';
+const UNLIKE_BERITA_URL = BASE_API_URL + '/api/like/unlikeNews';
 
 // URL for service CommentZone
 const SAVE_COMMENT_URL = BASE_API_URL + '/api/comment/';

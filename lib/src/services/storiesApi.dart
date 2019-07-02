@@ -14,7 +14,7 @@ class StoriesApiProvider {
     if (response.statusCode == 200) {
       return compute(storyFromJson, response.body);
     } else {
-      throw Exception('Failed to load');
+      print('Error code ${response.statusCode}');
     }
   }
 

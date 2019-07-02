@@ -14,6 +14,7 @@ class Comment {
     String title;
     String komentar;
     int createdDate;
+    List<Content> contents;
 
     Comment({
         this.idUser,
@@ -21,21 +22,60 @@ class Comment {
         this.title,
         this.komentar,
         this.createdDate,
+        this.contents,
     });
 
     factory Comment.fromJson(Map<String, dynamic> json) => new Comment(
-        idUser: json["idUser"],
-        fullname: json["fullname"],
-        title: json["title"],
-        komentar: json["komentar"],
-        createdDate: json["createdDate"],
+        idUser: json["idUser"] == null ? null : json["idUser"],
+        fullname: json["fullname"] == null ? null : json["fullname"],
+        title: json["title"] == null ? null : json["title"],
+        komentar: json["komentar"] == null ? null : json["komentar"],
+        createdDate: json["createdDate"] == null ? null : json["createdDate"],
+        contents: json["contents"] == null ? null : new List<Content>.from(json["contents"].map((x) => Content.fromJson(x))),
     );
 
     Map<String, dynamic> toJson() => {
-        "idUser": idUser,
-        "fullname": fullname,
-        "title": title,
-        "komentar": komentar,
-        "createdDate": createdDate,
+        "idUser": idUser == null ? null : idUser,
+        "fullname": fullname == null ? null : fullname,
+        "title": title == null ? null : title,
+        "komentar": komentar == null ? null : komentar,
+        "createdDate": createdDate == null ? null : createdDate,
+        "contents": contents == null ? null : new List<dynamic>.from(contents.map((x) => x.toJson())),
+    };
+}
+
+class Content {
+    String id;
+    dynamic thumbnailUrl;
+    dynamic videoUrl;
+    String imgUrl;
+    int createdDate;
+    dynamic createdBy;
+
+    Content({
+        this.id,
+        this.thumbnailUrl,
+        this.videoUrl,
+        this.imgUrl,
+        this.createdDate,
+        this.createdBy,
+    });
+
+    factory Content.fromJson(Map<String, dynamic> json) => new Content(
+        id: json["id"] == null ? null : json["id"],
+        thumbnailUrl: json["thumbnailUrl"],
+        videoUrl: json["videoUrl"],
+        imgUrl: json["imgUrl"] == null ? null : json["imgUrl"],
+        createdDate: json["createdDate"] == null ? null : json["createdDate"],
+        createdBy: json["createdBy"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "id": id == null ? null : id,
+        "thumbnailUrl": thumbnailUrl,
+        "videoUrl": videoUrl,
+        "imgUrl": imgUrl == null ? null : imgUrl,
+        "createdDate": createdDate == null ? null : createdDate,
+        "createdBy": createdBy,
     };
 }

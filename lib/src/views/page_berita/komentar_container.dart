@@ -221,7 +221,7 @@ class _KomentarContainerState extends State<KomentarContainer>
                 color: Colors.black,
               ),
               onPressed: () async {
-                commentBloc.bloc.saveComment(widget.berita.id);
+                commentBloc.bloc.saveComment(widget.berita.id, "");
                 await Future.delayed(Duration(milliseconds: 3));
                 commentBloc.bloc.fetchNewsComment(widget.berita.id);
               },

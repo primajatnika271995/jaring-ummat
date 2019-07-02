@@ -14,7 +14,7 @@ class ProgramAmal extends Equatable {
     final int createdDate;
     final String createdBy;
     final int totalComment;
-    final int totalLikes;
+    int totalLikes;
 
     ProgramAmal({
         this.id,

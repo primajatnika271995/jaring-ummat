@@ -3,12 +3,16 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_jaring_ummat/src/config/preferences.dart';
 import 'package:flutter_jaring_ummat/src/models/programAmalModel.dart';
 import 'package:flutter_jaring_ummat/src/services/currency_format_service.dart';
+import 'package:flutter_jaring_ummat/src/services/likeUnlikeApi.dart';
 import 'package:flutter_jaring_ummat/src/services/time_ago_service.dart';
 import 'package:flutter_jaring_ummat/src/views/components/custom_fonts.dart';
+import 'package:flutter_jaring_ummat/src/views/page_program-amal/komentar_program_amal_container.dart';
 import 'package:flutter_jaring_ummat/src/views/page_program-amal/share_program_amal_container.dart';
 import 'package:rounded_modal/rounded_modal.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../views/galang_amal.dart';
 
@@ -22,10 +26,53 @@ class ProgramAmalContent extends StatefulWidget {
 
 class _ProgramAmalContentState extends State<ProgramAmalContent> {
   int _current = 0;
+  int _currentImage = 1;
   bool isLoved = false;
   bool flag = true;
   String lessDesc;
   String moreDesc;
+  String idUserLogin;
+
+  LikeUnlikeProvider api = new LikeUnlikeProvider();
+  SharedPreferences _preferences;
+
+  Future<String> getIdUserLogin() async {
+    _preferences = await SharedPreferences.getInstance();
+    setState(() {
+      this.idUserLogin = _preferences.getString(USER_ID_KEY);
+    });
+  }
+
+  void likeProgram() async {
+    _preferences = await SharedPreferences.getInstance();
+    var userId = _preferences.getString(USER_ID_KEY);
+
+    api.likePost("", widget.programAmal.id, userId).then((response) {
+      if (response.statusCode == 201) {
+        var stateTotalLike = widget.programAmal.totalLikes;
+        var addLikes = stateTotalLike + 1;
+        setState(() {
+          widget.programAmal.totalLikes = addLikes;
+        });
+      }
+    });
+  }
+
+  void unlikeProgram() async {
+    _preferences = await SharedPreferences.getInstance();
+    var userId = _preferences.getString(USER_ID_KEY);
+    var stateTotalLike = widget.programAmal.totalLikes;
+    if (stateTotalLike > 0) {
+      api.unlikePost(widget.programAmal.id, userId).then((response) {
+        if (response.statusCode == 200) {
+          var sublike = stateTotalLike - 1;
+          setState(() {
+            widget.programAmal.totalLikes = sublike;
+          });
+        }
+      });
+    }
+  }
 
   @override
   void initState() {
@@ -38,6 +85,8 @@ class _ProgramAmalContentState extends State<ProgramAmalContent> {
       lessDesc = widget.programAmal.descriptionProgram;
       moreDesc = "";
     }
+
+    getIdUserLogin();
   }
 
   Widget titleContent(BuildContext context) {
@@ -118,6 +167,7 @@ class _ProgramAmalContentState extends State<ProgramAmalContent> {
           onPageChanged: (index) {
             setState(() {
               _current = index;
+              _currentImage = index + 1;
             });
           },
         ),
@@ -130,7 +180,9 @@ class _ProgramAmalContentState extends State<ProgramAmalContent> {
             shape: BadgeShape.square,
             borderRadius: 20,
             toAnimate: false,
-            badgeContent: Text('${_current} / ${widget.programAmal.imageContent.length}', style: TextStyle(color: Colors.grey)),
+            badgeContent: Text(
+                '${_currentImage} / ${widget.programAmal.imageContent.length}',
+                style: TextStyle(color: Colors.grey)),
           ),
         ),
         Positioned(
@@ -210,7 +262,7 @@ class _ProgramAmalContentState extends State<ProgramAmalContent> {
               SizedBox(height: 3.0),
               Text(
                 'Rp. ' +
-                    '${CurrencyFormat().currency(widget.programAmal.targetDonasi)}' +
+                    '${CurrencyFormat().currency(widget.programAmal.totalDonasi)}' +
                     ' / ' +
                     '${CurrencyFormat().currency(widget.programAmal.targetDonasi)}',
                 style: TextStyle(
@@ -276,19 +328,29 @@ class _ProgramAmalContentState extends State<ProgramAmalContent> {
         GestureDetector(
           onTap: () {
             setState(() {
+              setState(() {
+                isLoved = !isLoved;
+              });
+
               if (isLoved) {
-                isLoved = false;
-              } else {
-                isLoved = true;
+                likeProgram();
+              }
+
+              if (!isLoved) {
+                unlikeProgram();
               }
             });
           },
           child: Row(
             children: <Widget>[
               Icon(
-                (isLoved) ? CustomFonts.heart : CustomFonts.heart_empty,
+                widget.programAmal.idUserLike == idUserLogin
+                    ? CustomFonts.heart
+                    : (isLoved) ? CustomFonts.heart : CustomFonts.heart_empty,
                 size: 18.0,
-                color: (isLoved) ? Colors.red : null,
+                color: widget.programAmal.idUserLike == idUserLogin
+                    ? Colors.red
+                    : (isLoved) ? Colors.red : null,
               ),
               SizedBox(
                 width: 5.0,
@@ -307,7 +369,16 @@ class _ProgramAmalContentState extends State<ProgramAmalContent> {
           width: 10.0,
         ),
         GestureDetector(
-          onTap: () {},
+          onTap: () {
+            print("ID Berita ${this.widget.programAmal.id}");
+            showModalBottomSheet(
+                context: context,
+                builder: (context) {
+                  return KomentarContainer(
+                    programAmal: this.widget.programAmal,
+                  );
+                });
+          },
           child: Row(
             children: <Widget>[
               Icon(

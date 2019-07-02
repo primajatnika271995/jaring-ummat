@@ -39,11 +39,27 @@ class CommentApiProvider {
     }
   }
 
-  Future saveComment(comment, idUser, idNews) async {
+  Future<List<Comment>> fetchProgramAmalComment(idProgram) async {
+
+    Uri uri = Uri.parse(LIST_ALL_COMMENT_PROGRAM_AMAL_URL);
+    var params = {
+      "idProgram": idProgram
+    };
+
+    final uriParams = uri.replace(queryParameters: params);
+    final response = await client.get(uriParams);
+    print("ini response all comment program amal ${response.statusCode}");
+
+    if (response.statusCode == 200) {
+      return compute(commentFromJson, response.body);
+    }
+  }
+
+  Future saveComment(comment, idUser, idNews, idProgram) async {
 
     Map params = {
       "idNews": idNews,
-      "idProgram": "",
+      "idProgram": idProgram,
       "idStory": "",
       "idUser": idUser,
       "komentar": comment
