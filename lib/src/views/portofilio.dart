@@ -17,6 +17,14 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
 
   int indexTab = 0;
 
+  double data1;
+  double data2;
+  double data3;
+  double data4;
+  double data5;
+  double data6;
+  double data7;
+
   TextEditingController nominalZakat = new TextEditingController();
 
   var aktivitasData = [
@@ -78,17 +86,9 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
     "5.320.167",
     "4.332.761"
   ];
-
-  int _selectedIndex = 0;
   bool isSelected;
 
   Map<String, double> dataMap = new Map();
-
-  _onSelected(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
 
   void _changed(bool visibility, String field) {
     setState(() {
@@ -108,6 +108,52 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
     _seriesPieData = List<charts.Series<AktivitasAmal, String>>();
     _generateData();
     super.initState();
+  }
+
+  Widget bezierLineTotal() {
+    return BezierChart(
+      bezierChartScale: BezierChartScale.CUSTOM,
+      xAxisCustomValues: const [0, 5, 10, 15, 20, 25, 30, 35],
+      footerValueBuilder: (double value) {
+        return "${formatAsIntOrDouble(value)}\ndays";
+      },
+      series: const [
+        BezierLine(lineColor: Colors.blue, label: "m", data: const [
+          DataPoint<double>(value: 10, xAxis: 0),
+          DataPoint<double>(value: 90, xAxis: 5),
+          DataPoint<double>(value: 50, xAxis: 10),
+          DataPoint<double>(value: 100, xAxis: 15),
+          DataPoint<double>(value: 75, xAxis: 20),
+          DataPoint<double>(value: 0, xAxis: 25),
+          DataPoint<double>(value: 5, xAxis: 30),
+          DataPoint<double>(value: 45, xAxis: 35),
+
+        ]),
+      ],
+      config: BezierChartConfig(
+        footerHeight: 40,
+        verticalIndicatorStrokeWidth: 3.0,
+        verticalIndicatorColor: Colors.black,
+        displayYAxis: true,
+        showDataPoints: true,
+        bubbleIndicatorColor: Colors.white.withOpacity(0.9),
+        xLinesColor: Colors.black,
+        showVerticalIndicator: true,
+        verticalIndicatorFixedPosition: false,
+        backgroundGradient: LinearGradient(
+          colors: [
+            Colors.transparent,
+            Colors.transparent,
+            Colors.transparent,
+            Colors.transparent,
+            Colors.transparent,
+          ],
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+        ),
+        snap: false,
+      ),
+    );
   }
 
   Widget tambahZakat(BuildContext context, String title, IconData icon) {
@@ -729,7 +775,6 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
                     ),
                     labelColor: Colors.black,
                     onTap: (int index) {
-                      print(index);
                       if (index == 0) {
                         setState(() {
                           print(aktivitasData.length);
@@ -738,19 +783,17 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
                             new AktivitasAmal('Donasi', 40, Color(0xFF3A5F99)),
                           );
                           aktivitasData.add(
-
                             new AktivitasAmal('Zakat', 20, Color(0xFFDB7E27)),
                           );
                           aktivitasData.add(
                             new AktivitasAmal('Wakaf', 10, Color(0xFFDEDE71)),
-                          
                           );
                           aktivitasData.add(
                             new AktivitasAmal('Infaq', 15, Color(0xFF2938C2)),
                           );
                           aktivitasData.add(
-
-                             new AktivitasAmal('Shodaqoh', 35, Color(0xFFDB4B1F)),
+                            new AktivitasAmal(
+                                'Shodaqoh', 35, Color(0xFFDB4B1F)),
                           );
                           print(aktivitasData.length);
                           // _generateData();
@@ -1150,52 +1193,7 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
                     style: TextStyle(fontSize: 12)),
                 Container(
                   height: 170,
-                  child: BezierChart(
-                    bezierChartScale: BezierChartScale.CUSTOM,
-                    xAxisCustomValues: const [0, 5, 10, 15, 20, 25, 30, 35],
-                    footerValueBuilder: (double value) {
-                      return "${formatAsIntOrDouble(value)}\ndays";
-                    },
-                    series: const [
-                      BezierLine(
-                        lineColor: Colors.blue,
-                        label: "m",
-                        data: const [
-                          DataPoint<double>(value: 10, xAxis: 0),
-                          DataPoint<double>(value: 90, xAxis: 5),
-                          DataPoint<double>(value: 50, xAxis: 10),
-                          DataPoint<double>(value: 100, xAxis: 15),
-                          DataPoint<double>(value: 75, xAxis: 20),
-                          DataPoint<double>(value: 0, xAxis: 25),
-                          DataPoint<double>(value: 5, xAxis: 30),
-                          DataPoint<double>(value: 45, xAxis: 35),
-                        ],
-                      ),
-                    ],
-                    config: BezierChartConfig(
-                      footerHeight: 40,
-                      verticalIndicatorStrokeWidth: 3.0,
-                      verticalIndicatorColor: Colors.black,
-                      displayYAxis: true,
-                      showDataPoints: true,
-                      bubbleIndicatorColor: Colors.white.withOpacity(0.9),
-                      xLinesColor: Colors.black,
-                      showVerticalIndicator: true,
-                      verticalIndicatorFixedPosition: false,
-                      backgroundGradient: LinearGradient(
-                        colors: [
-                          Colors.transparent,
-                          Colors.transparent,
-                          Colors.transparent,
-                          Colors.transparent,
-                          Colors.transparent,
-                        ],
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                      ),
-                      snap: false,
-                    ),
-                  ),
+                  child: bezierLineTotal(),
                 ),
                 SizedBox(
                   height: 10.0,

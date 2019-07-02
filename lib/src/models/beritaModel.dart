@@ -11,7 +11,7 @@ class Berita extends Equatable {
   final int createdDate;
   final String createdBy;
   final int totalComment;
-  final int totalLikes;
+  int totalLikes;
 
   Berita({this.id, 
         this.idUser, 

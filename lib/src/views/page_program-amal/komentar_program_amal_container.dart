@@ -1,11 +1,13 @@
 import 'package:circular_profile_avatar/circular_profile_avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_jaring_ummat/src/models/commentModel.dart';
+import 'package:flutter_jaring_ummat/src/models/listUserLikes.dart';
 import 'package:flutter_jaring_ummat/src/models/programAmalModel.dart';
 import 'package:flutter_jaring_ummat/src/services/time_ago_service.dart';
 import 'package:rubber/rubber.dart';
 
 import 'package:flutter_jaring_ummat/src/bloc/commentBloc.dart' as commentBloc;
+import 'package:flutter_jaring_ummat/src/bloc/likesBloc.dart' as likesBloc;
 
 class KomentarContainer extends StatefulWidget {
   final ProgramAmal programAmal;
@@ -23,6 +25,7 @@ class _KomentarContainerState extends State<KomentarContainer>
   @override
   void initState() {
     commentBloc.bloc.fetchProgramAmalComment(widget.programAmal.id);
+    likesBloc.bloc.fetchAllLikesUserProgramAmal(widget.programAmal.id);
     _rubberAnimationController = RubberAnimationController(
         vsync: this,
         dismissable: true,
@@ -50,10 +53,11 @@ class _KomentarContainerState extends State<KomentarContainer>
             elevation: 10.0,
             backgroundColor: Colors.white,
             automaticallyImplyLeading: false,
-            expandedHeight: 50.0,
             bottom: PreferredSize(
-              preferredSize: Size.fromHeight(56.0),
-              child: Text(''),
+              preferredSize: Size.fromHeight(36.0),
+              child: new Divider(
+                color: Colors.grey,
+              ),
             ),
             flexibleSpace: Container(
               child: Column(
@@ -63,14 +67,13 @@ class _KomentarContainerState extends State<KomentarContainer>
                   ),
                   Container(
                     padding:
-                        EdgeInsets.only(left: 10.0, bottom: 10.0, right: 10.0),
+                        EdgeInsets.only(left: 10.0, bottom: 5.0, right: 10.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            SizedBox(height: 3.0),
                             Text(
                               '${widget.programAmal.totalLikes} Muzakki menyukai akun ini',
                               style: TextStyle(
@@ -83,63 +86,25 @@ class _KomentarContainerState extends State<KomentarContainer>
                       ],
                     ),
                   ),
-                  SizedBox(
-                    height: 10.0,
-                  ),
-                  new Container(
-                    padding:
-                        EdgeInsets.only(left: 10.0, bottom: 0.0, right: 10.0),
-                    child: Row(
-                      children: <Widget>[
-                        Container(
-                          width: 50.0,
-                          height: 50.0,
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: NetworkImage(
-                                  'https://i2.wp.com/www.coachcarson.com/wp-content/uploads/2018/09/Chad-Profile-pic-circle.png?resize=800%2C800&ssl=1'),
-                              fit: BoxFit.contain,
-                            ),
+                  Container(
+                    height: 40.0,
+                    margin: EdgeInsets.only(left: 10.0),
+                    child: StreamBuilder(
+                      stream: likesBloc.bloc.allLikeListUserProgramAmal,
+                      builder: (BuildContext context,
+                          AsyncSnapshot<List<ListUserLikes>> snapshot) {
+                        if (snapshot.hasData) {
+                          return buildListLike(snapshot);
+                        } else if (snapshot.hasError) {
+                          return Text(snapshot.error.toString());
+                        }
+                        return Container(
+                          child: Center(
+                            child: Text('Load Likes ...'),
                           ),
-                        ),
-                        Container(
-                          width: 50.0,
-                          height: 50.0,
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: NetworkImage(
-                                  'https://i2.wp.com/www.coachcarson.com/wp-content/uploads/2018/09/Chad-Profile-pic-circle.png?resize=800%2C800&ssl=1'),
-                              fit: BoxFit.contain,
-                            ),
-                          ),
-                        ),
-                        Container(
-                          width: 50.0,
-                          height: 50.0,
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: NetworkImage(
-                                  'https://i2.wp.com/www.coachcarson.com/wp-content/uploads/2018/09/Chad-Profile-pic-circle.png?resize=800%2C800&ssl=1'),
-                              fit: BoxFit.contain,
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          width: 10.0,
-                        ),
-                        GestureDetector(
-                          onTap: () {},
-                          child: new Text(
-                            'tampilkan semua',
-                            style: TextStyle(
-                                color: Colors.blueAccent, fontSize: 12.0),
-                          ),
-                        )
-                      ],
+                        );
+                      },
                     ),
-                  ),
-                  new Divider(
-                    color: Colors.grey,
                   ),
                 ],
               ),
@@ -158,7 +123,6 @@ class _KomentarContainerState extends State<KomentarContainer>
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            SizedBox(height: 10.0),
                             Text(
                               '${widget.programAmal.totalComment} Muzakki berkomentar pada aksi ini',
                               style: TextStyle(
@@ -258,6 +222,23 @@ class _KomentarContainerState extends State<KomentarContainer>
           ),
         ),
       ),
+    );
+  }
+
+  Widget buildListLike(AsyncSnapshot<List<ListUserLikes>> snapshot) {
+    return ListView.builder(
+      itemCount: snapshot.data.length,
+      scrollDirection: Axis.horizontal,
+      itemBuilder: (BuildContext context, int index) {
+        return Container(
+          width: 40.0,
+          height: 50.0,
+          margin: EdgeInsets.symmetric(horizontal: 2.0),
+          child: CircularProfileAvatar(
+            snapshot.data[index].imageProfile[0].imgUrl,
+          ),
+        );
+      },
     );
   }
 

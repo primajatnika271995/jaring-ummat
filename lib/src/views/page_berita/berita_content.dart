@@ -2,13 +2,16 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_jaring_ummat/src/config/preferences.dart';
 import 'package:flutter_jaring_ummat/src/models/beritaModel.dart';
+import 'package:flutter_jaring_ummat/src/services/likeUnlikeApi.dart';
 import 'package:flutter_jaring_ummat/src/services/time_ago_service.dart';
 import 'package:flutter_jaring_ummat/src/views/components/custom_fonts.dart';
 import 'package:flutter_jaring_ummat/src/views/page_berita/komentar_container.dart';
 import 'package:flutter_jaring_ummat/src/views/page_berita/share_berita_container.dart';
 import 'package:rounded_modal/rounded_modal.dart';
 import 'package:badges/badges.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class BeritaContent extends StatefulWidget {
   final Berita berita;
@@ -19,10 +22,55 @@ class BeritaContent extends StatefulWidget {
 
 class _BeritaContentState extends State<BeritaContent> {
   int _current = 0;
+  int _currentImage = 1;
   bool isLoved = false;
   bool flag = true;
   String lessDesc;
   String moreDesc;
+
+  String idUserLogin;
+
+  LikeUnlikeProvider api = new LikeUnlikeProvider();
+  SharedPreferences _preferences;
+
+  Future<String> getIdUserLogin() async {
+    _preferences = await SharedPreferences.getInstance();
+    setState(() {
+      this.idUserLogin = _preferences.getString(USER_ID_KEY);
+    });
+  }
+
+  void likeProgram() async {
+    _preferences = await SharedPreferences.getInstance();
+    var userId = _preferences.getString(USER_ID_KEY);
+
+    api.likePost(widget.berita.id, "", userId).then((response) {
+      print(response.statusCode);
+      if (response.statusCode == 201) {
+        var stateTotalLike = widget.berita.totalLikes;
+        var addLikes = stateTotalLike + 1;
+        setState(() {
+          widget.berita.totalLikes = addLikes;
+        });
+      }
+    });
+  }
+
+  void unlikeProgram() async {
+    _preferences = await SharedPreferences.getInstance();
+    var userId = _preferences.getString(USER_ID_KEY);
+    var stateTotalLike = widget.berita.totalLikes;
+    if (stateTotalLike > 0) {
+      api.unlikeNews(widget.berita.id, userId).then((response) {
+        if (response.statusCode == 200) {
+          var sublike = stateTotalLike - 1;
+          setState(() {
+            widget.berita.totalLikes = sublike;
+          });
+        }
+      });
+    }
+  }
 
   @override
   void initState() {
@@ -35,6 +83,8 @@ class _BeritaContentState extends State<BeritaContent> {
       lessDesc = widget.berita.description;
       moreDesc = "";
     }
+
+    getIdUserLogin();
   }
 
   Widget titleContent(BuildContext context) {
@@ -99,7 +149,6 @@ class _BeritaContentState extends State<BeritaContent> {
           height: 200.0,
           autoPlay: false,
           reverse: false,
-
           viewportFraction: 1.0,
           aspectRatio: MediaQuery.of(context).size.aspectRatio,
           items: widget.berita.imageContent.map(
@@ -120,6 +169,7 @@ class _BeritaContentState extends State<BeritaContent> {
           onPageChanged: (index) {
             setState(() {
               _current = index;
+              _currentImage = index + 1;
             });
           },
         ),
@@ -132,7 +182,9 @@ class _BeritaContentState extends State<BeritaContent> {
             shape: BadgeShape.square,
             borderRadius: 20,
             toAnimate: false,
-            badgeContent: Text('${_current} / ${widget.berita.imageContent.length}', style: TextStyle(color: Colors.grey)),
+            badgeContent: Text(
+                '${_currentImage} / ${widget.berita.imageContent.length}',
+                style: TextStyle(color: Colors.grey)),
           ),
         ),
         Positioned(
@@ -218,13 +270,25 @@ class _BeritaContentState extends State<BeritaContent> {
                 isLoved = true;
               }
             });
+
+            if (isLoved) {
+              likeProgram();
+            }
+
+            if (!isLoved) {
+              unlikeProgram();
+            }
           },
           child: Row(
             children: <Widget>[
               Icon(
-                (isLoved) ? CustomFonts.heart : CustomFonts.heart_empty,
+                widget.berita.idUserLike == idUserLogin
+                    ? CustomFonts.heart
+                    : (isLoved) ? CustomFonts.heart : CustomFonts.heart_empty,
                 size: 18.0,
-                color: (isLoved) ? Colors.red : null,
+                color: widget.berita.idUserLike == idUserLogin
+                    ? Colors.red
+                    : (isLoved) ? Colors.red : null,
               ),
               SizedBox(
                 width: 5.0,

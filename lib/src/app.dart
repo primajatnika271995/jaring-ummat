@@ -11,7 +11,6 @@ import 'views/onboarding/success_register.dart';
 import 'views/user_story.dart';
 import 'views/galang_amal.dart';
 import 'views/create_news.dart';
-import 'views/create_aksi_amal.dart';
 import 'views/create_data_preview.dart';
 
 void App() {
@@ -33,7 +32,6 @@ void App() {
             SuccessRegisterView(avatarImage: null),
         '/user/story': (context) => UserStoryView(),
         '/create/news': (context) => CreateNews(),
-        '/create/aksi-amal': (content) => CreateAksiAmal(),
         '/preview': (content) => PreviewData(),
       },
     ),

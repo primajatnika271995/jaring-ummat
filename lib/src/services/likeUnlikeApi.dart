@@ -36,7 +36,20 @@ class LikeUnlikeProvider {
     if (response.statusCode == 200) {
       return compute(listUserLikesFromJson, response.body);
     }
+  }
 
+  Future<List<ListUserLikes>> fetchAllUserLikeBerita(idBerita) async {
+    Uri uri = Uri.parse(LIST_USER_LIKE_BERITA);
+
+    var params = {
+      "idBerita": idBerita
+    };
+    final uriParams = uri.replace(queryParameters: params);
+    final response = await client.get(uriParams);
+
+    if (response.statusCode == 200) {
+      return compute(listUserLikesFromJson, response.body);
+    }
   }
 
   Future saveLikes(idUser, idProgram, idNews) async {
