@@ -35,8 +35,23 @@ class UserStoryAppBarState extends State<UserStoryAppBar> {
               } else if (snapshot.hasError) {
                 return Text(snapshot.error.toString());
               }
+
+              if (snapshot.data == null) {
+                return Container(
+                  padding: EdgeInsets.only(top: 60.0),
+                  child: Center(
+                    child: const Text(
+                      'No Story for Today',
+                      style: TextStyle(
+                        color: Colors.grey,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                );
+              }
               return Container(
-                padding: EdgeInsets.only(top: 20.0),
+                padding: EdgeInsets.only(top: 60.0),
                 child: Center(
                   child: CircularProgressIndicator(
                     strokeWidth: 2.0,
@@ -88,15 +103,13 @@ class UserStoryAppBarState extends State<UserStoryAppBar> {
             child: Container(
               margin: EdgeInsets.only(top: 8.0),
               padding: EdgeInsets.only(left: 7.0),
-              decoration: BoxDecoration(
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey[300],
-                      offset: new Offset(2.0, 2.0),
-                      blurRadius: 40.0,
-                  ),
-                ]
-              ),
+              decoration: BoxDecoration(boxShadow: [
+                BoxShadow(
+                  color: Colors.grey[300],
+                  offset: new Offset(2.0, 2.0),
+                  blurRadius: 40.0,
+                ),
+              ]),
               child: ClipRRect(
                 borderRadius: BorderRadius.all(Radius.circular(10.0)),
                 child: Stack(

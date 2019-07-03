@@ -1,5 +1,6 @@
 import 'package:circular_profile_avatar/circular_profile_avatar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_jaring_ummat/src/config/preferences.dart';
 import 'package:flutter_jaring_ummat/src/models/commentModel.dart';
 import 'package:flutter_jaring_ummat/src/models/listUserLikes.dart';
 import 'package:flutter_jaring_ummat/src/models/programAmalModel.dart';
@@ -8,6 +9,7 @@ import 'package:rubber/rubber.dart';
 
 import 'package:flutter_jaring_ummat/src/bloc/commentBloc.dart' as commentBloc;
 import 'package:flutter_jaring_ummat/src/bloc/likesBloc.dart' as likesBloc;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class KomentarContainer extends StatefulWidget {
   final ProgramAmal programAmal;
@@ -22,6 +24,9 @@ class _KomentarContainerState extends State<KomentarContainer>
   RubberAnimationController _rubberAnimationController;
   ScrollController _scrollController = ScrollController();
 
+  SharedPreferences _preferences;
+  String profilePictUrl;
+
   @override
   void initState() {
     commentBloc.bloc.fetchProgramAmalComment(widget.programAmal.id);
@@ -32,6 +37,8 @@ class _KomentarContainerState extends State<KomentarContainer>
         lowerBoundValue: AnimationControllerValue(pixel: 750),
         upperBoundValue: AnimationControllerValue(percentage: 4.5),
         duration: Duration(milliseconds: 200));
+
+    getUserProfile();
     // TODO: implement initState
     super.initState();
   }
@@ -93,16 +100,29 @@ class _KomentarContainerState extends State<KomentarContainer>
                       stream: likesBloc.bloc.allLikeListUserProgramAmal,
                       builder: (BuildContext context,
                           AsyncSnapshot<List<ListUserLikes>> snapshot) {
+                        print(snapshot.connectionState);
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return Container(
+                            child: Center(
+                              child: Text('Load Likes Data ...'),
+                            ),
+                          );
+                        }
+
                         if (snapshot.hasData) {
                           return buildListLike(snapshot);
                         } else if (snapshot.hasError) {
                           return Text(snapshot.error.toString());
                         }
-                        return Container(
-                          child: Center(
-                            child: Text('Load Likes ...'),
-                          ),
-                        );
+
+                        if (snapshot.data == null) {
+                          return Container(
+                            child: Center(
+                              child: Text('0 People like this'),
+                            ),
+                          );
+                        }
                       },
                     ),
                   ),
@@ -171,12 +191,14 @@ class _KomentarContainerState extends State<KomentarContainer>
           backgroundColor: Colors.white,
           elevation: 0.0,
           leading: Container(
-            width: 100.0,
-            height: 100.0,
+            width: 40.0,
+            height: 40.0,
             margin: EdgeInsets.all(10.0),
             decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(30.0),
               image: DecorationImage(
-                image: AssetImage("assets/users/orang.png"),
+                image: NetworkImage(profilePictUrl),
+                fit: BoxFit.cover,
               ),
             ),
           ),
@@ -392,6 +414,11 @@ class _KomentarContainerState extends State<KomentarContainer>
         ),
       ),
     );
+  }
+
+  void getUserProfile() async {
+    _preferences = await SharedPreferences.getInstance();
+    this.profilePictUrl = _preferences.getString(PROFILE_PICTURE_KEY);
   }
 
   @override

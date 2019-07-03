@@ -1,6 +1,7 @@
 import 'package:circular_profile_avatar/circular_profile_avatar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_jaring_ummat/src/config/preferences.dart';
 import 'package:flutter_jaring_ummat/src/models/beritaModel.dart';
 import 'package:flutter_jaring_ummat/src/models/commentModel.dart';
 import 'package:flutter_jaring_ummat/src/models/listUserLikes.dart';
@@ -9,6 +10,7 @@ import 'package:rubber/rubber.dart';
 
 import 'package:flutter_jaring_ummat/src/bloc/commentBloc.dart' as commentBloc;
 import 'package:flutter_jaring_ummat/src/bloc/likesBloc.dart' as likesBloc;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class KomentarContainer extends StatefulWidget {
   final Berita berita;
@@ -23,8 +25,12 @@ class _KomentarContainerState extends State<KomentarContainer>
   RubberAnimationController _rubberAnimationController;
   ScrollController _scrollController = ScrollController();
 
+  SharedPreferences _preferences;
+  String profilePictUrl;
+
   @override
   void initState() {
+    getUserProfile();
     super.initState();
     commentBloc.bloc.fetchNewsComment(widget.berita.id);
     likesBloc.bloc.fetchAllLikesUserBerita(widget.berita.id);
@@ -173,12 +179,14 @@ class _KomentarContainerState extends State<KomentarContainer>
           backgroundColor: Colors.white,
           elevation: 0.0,
           leading: Container(
-            width: 100.0,
-            height: 100.0,
+            width: 40.0,
+            height: 40.0,
             margin: EdgeInsets.all(10.0),
             decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(30.0),
               image: DecorationImage(
-                image: AssetImage("assets/users/orang.png"),
+                image: NetworkImage(profilePictUrl),
+                fit: BoxFit.cover,
               ),
             ),
           ),
@@ -265,11 +273,8 @@ class _KomentarContainerState extends State<KomentarContainer>
                     child: Container(
                       width: 50.0,
                       height: 50.0,
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: AssetImage("assets/users/orang.png"),
-                          fit: BoxFit.contain,
-                        ),
+                      child: CircularProfileAvatar(
+                        snapshot.data[index].contents[0].imgUrl,
                       ),
                     ),
                   ),
@@ -277,7 +282,7 @@ class _KomentarContainerState extends State<KomentarContainer>
                     width: 10.0,
                   ),
                   Expanded(
-                    flex: 8,
+                    flex: 12,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
@@ -396,6 +401,11 @@ class _KomentarContainerState extends State<KomentarContainer>
         ),
       ),
     );
+  }
+
+  void getUserProfile() async {
+    _preferences = await SharedPreferences.getInstance();
+    this.profilePictUrl = _preferences.getString(PROFILE_PICTURE_KEY);
   }
 
   @override

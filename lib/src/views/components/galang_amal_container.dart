@@ -11,13 +11,9 @@ import '../../services/time_ago_service.dart';
 import '../../models/programAmalModel.dart';
 
 class GalangAmalContainer extends StatefulWidget {
-
   final ProgramAmal programAmal;
 
-  GalangAmalContainer({
-    Key key,
-    this.programAmal
-  });
+  GalangAmalContainer({Key key, this.programAmal});
 
   @override
   _GalangAmalContainerState createState() => _GalangAmalContainerState();
@@ -28,14 +24,6 @@ class _GalangAmalContainerState extends State<GalangAmalContainer> {
   bool isLoved = false;
   bool flag = true;
 
-  String description = "Pendidikan Adalah suatu hal yang penting dalam islam,"
-      "kata pertama Al-Quran yang diwahyukan kepada Nabi Muhammad "
-      "Shallallahu Alaihi Wasalam adalah IQRA atau baca. Dan menuntut "
-      "ilmu adalah suatu kewajiban bagi umat Muslim .\n \nMelalui pendidikan "
-      "diaharapkan umat muslim dapat menjadi pribadi yang tidak hanya pandai tetapi juga "
-      "santun dan mulia. Dan kelak akan menjadi manusia yang bermanfaat untuk bangsa, negara "
-      "dan Agamanya.";
-
   String lessDesc;
   String moreDesc;
 
@@ -44,7 +32,8 @@ class _GalangAmalContainerState extends State<GalangAmalContainer> {
     super.initState();
     if (widget.programAmal.descriptionProgram.length > 150) {
       lessDesc = widget.programAmal.descriptionProgram.substring(0, 150);
-      moreDesc = widget.programAmal.descriptionProgram.substring(150, widget.programAmal.descriptionProgram.length);
+      moreDesc = widget.programAmal.descriptionProgram
+          .substring(150, widget.programAmal.descriptionProgram.length);
     } else {
       lessDesc = widget.programAmal.descriptionProgram;
       moreDesc = "";
@@ -122,7 +111,8 @@ class _GalangAmalContainerState extends State<GalangAmalContainer> {
             'Oleh ' +
                 widget.programAmal.createdBy +
                 ' • ' +
-                TimeAgoService().timeAgoFormatting(widget.programAmal.createdDate),
+                TimeAgoService()
+                    .timeAgoFormatting(widget.programAmal.createdDate),
             style: TextStyle(
               fontSize: 11.0,
             ),
@@ -161,7 +151,7 @@ class _GalangAmalContainerState extends State<GalangAmalContainer> {
           viewportFraction: 1.0,
           aspectRatio: MediaQuery.of(context).size.aspectRatio,
           items: widget.programAmal.imageContent.map(
-                (url) {
+            (url) {
               return Container(
                 child: ClipRRect(
                   borderRadius: BorderRadius.all(Radius.circular(0.0)),
@@ -198,9 +188,12 @@ class _GalangAmalContainerState extends State<GalangAmalContainer> {
 
   Widget setDescription() {
     return new Container(
-      padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+      padding: EdgeInsets.symmetric(horizontal: 5.0, vertical: 10.0),
       child: moreDesc.isEmpty
-          ? new Text(lessDesc)
+          ? new Text(
+              lessDesc,
+              textAlign: TextAlign.justify,
+            )
           : new Column(
               children: <Widget>[
                 new Text(
@@ -256,27 +249,9 @@ class _GalangAmalContainerState extends State<GalangAmalContainer> {
     return Container(
       decoration: BoxDecoration(
           color: Colors.grey[200], borderRadius: BorderRadius.circular(10.0)),
-      padding: EdgeInsets.only(left: 10.0, bottom: 10.0, right: 10.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              // SizedBox(height: 3.0),
-//              Text(
-//                'Muzaki yang berpartisipasi dalam aksi ini',
-//                style: TextStyle(
-//                    fontSize: 11.0,
-//                    fontWeight: FontWeight.bold,
-//                    color: Color.fromRGBO(122, 122, 122, 1.0)),
-//              ),
-              SizedBox(height: 10.0),
-              setDonatur()
-            ],
-          ),
-        ],
-      ),
+      padding:
+          EdgeInsets.only(left: 10.0, bottom: 10.0, right: 10.0, top: 10.0),
+      child: setDonatur(),
     );
   }
 
@@ -286,57 +261,62 @@ class _GalangAmalContainerState extends State<GalangAmalContainer> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          Container(
-            width: 53.0,
-            height: 53.0,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(30.0),
-              image: DecorationImage(
-                image: NetworkImage(
-                    'https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg-1024x683.jpg'),
+          Expanded(
+            flex: 2,
+            child: Container(
+              width: 53.0,
+              height: 53.0,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(30.0),
+                image: DecorationImage(
+                    image: NetworkImage(
+                        'https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg-1024x683.jpg'),
+                    fit: BoxFit.cover),
               ),
             ),
           ),
           SizedBox(
-            width: 10.0,
+            width: 20.0,
           ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              // SizedBox(height: 3.0),
-              Text(
-                'Soleh Indrawan',
-                style: TextStyle(
-                    fontSize: 12.0,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black),
+          Expanded(
+            flex: 5,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  'Soleh Indrawan',
+                  style: TextStyle(
+                      fontSize: 12.0,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black),
+                ),
+                SizedBox(height: 3.0),
+                Text(
+                  'Semoga bermanfaat untuk adek-adek...',
+                  style: TextStyle(
+                      fontSize: 11.0,
+                      fontWeight: FontWeight.bold,
+                      color: Color.fromRGBO(122, 122, 122, 1.0)),
+                ),
+                Text(
+                  '19 menit yang lalu',
+                  style: TextStyle(
+                      fontSize: 11.0,
+                      fontWeight: FontWeight.normal,
+                      color: Color.fromRGBO(122, 122, 122, 1.0)),
+                )
+              ],
+            ),
+          ),
+          Expanded(
+            flex: 3,
+            child: Text(
+              'Rp. ' + '120.930',
+              style: TextStyle(
+                fontSize: 16.0,
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
               ),
-              SizedBox(height: 3.0),
-              Text(
-                'Semoga bermanfaat untuk adek-adek...',
-                style: TextStyle(
-                    fontSize: 11.0,
-                    fontWeight: FontWeight.bold,
-                    color: Color.fromRGBO(122, 122, 122, 1.0)),
-              ),
-              Text(
-                '19 menit yang lalu',
-                style: TextStyle(
-                    fontSize: 11.0,
-                    fontWeight: FontWeight.normal,
-                    color: Color.fromRGBO(122, 122, 122, 1.0)),
-              )
-            ],
-          ),
-          SizedBox(
-            width: 15.0,
-          ),
-          Text(
-            'Rp. ' + '120.930',
-            style: TextStyle(
-              fontSize: 16.0,
-              fontWeight: FontWeight.bold,
-              color: Colors.black,
             ),
           ),
         ],
@@ -348,7 +328,6 @@ class _GalangAmalContainerState extends State<GalangAmalContainer> {
     return Container(
       padding: EdgeInsets.only(left: 10.0, bottom: 10.0, right: 10.0),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,

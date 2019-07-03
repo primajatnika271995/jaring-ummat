@@ -208,14 +208,15 @@ class _BeritaContentState extends State<BeritaContent> {
       child: moreDesc.isEmpty
           ? new Text(
               lessDesc,
-              style: TextStyle(color: Colors.black45),
+              style: TextStyle(color: Colors.black),
+              textAlign: TextAlign.justify,
             )
           : new Column(
               children: <Widget>[
                 new Text(
                   flag ? (lessDesc + "...") : (lessDesc + moreDesc),
                   textAlign: TextAlign.justify,
-                  style: TextStyle(color: Colors.black45),
+                  style: TextStyle(color: Colors.black),
                 ),
                 new InkWell(
                   onTap: () {

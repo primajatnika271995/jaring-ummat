@@ -207,6 +207,7 @@ class _ProgramAmalContentState extends State<ProgramAmalContent> {
           ? new Text(
               lessDesc,
               style: TextStyle(color: Colors.black),
+              textAlign: TextAlign.justify,
             )
           : new Column(
               children: <Widget>[
