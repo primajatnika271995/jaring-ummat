@@ -1,8 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_jaring_ummat/src/views/components/header_custom_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/components/navbar_custom_icon.dart';
 import 'package:flutter_jaring_ummat/src/views/page_berita/berita.dart';
 import 'package:flutter_jaring_ummat/src/views/page_program-amal/program_amal.dart';
+import 'package:toast/toast.dart';
 import 'portofilio.dart';
 import 'inbox.dart';
 import 'popular_account.dart';
@@ -24,6 +26,11 @@ class _HomeState extends State<HomeView> {
       _currentIndex = index;
     });
   }
+
+  static const snackBarDuration = Duration(seconds: 3);
+
+  final scaffoldKey = GlobalKey<ScaffoldState>();
+  DateTime backButtonPressTime;
 
   Widget searchBoxContainer() {
     return Padding(
@@ -72,9 +79,11 @@ class _HomeState extends State<HomeView> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      child: Scaffold(
-        body: PageView(
+    return Scaffold(
+      key: scaffoldKey,
+      body: WillPopScope(
+        onWillPop: onBackPressed,
+        child: PageView(
           controller: PageController(initialPage: 1),
           children: <Widget>[
             newsView(),
@@ -84,6 +93,22 @@ class _HomeState extends State<HomeView> {
         ),
       ),
     );
+  }
+
+  Future<bool> onBackPressed() async {
+    DateTime currentTime = DateTime.now();
+
+    bool backButtonHasNotBeenPressedOrSnackBarHasBeenClosed =
+        backButtonPressTime == null ||
+            currentTime.difference(backButtonPressTime) > snackBarDuration;
+
+    if (backButtonHasNotBeenPressedOrSnackBarHasBeenClosed) {
+      backButtonPressTime = currentTime;
+      Toast.show('Press again to leave', context, duration: 3, backgroundColor: Colors.grey);
+      return false;
+    }
+
+    return true;
   }
 
   Widget mainView() {

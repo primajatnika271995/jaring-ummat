@@ -34,11 +34,13 @@ class ProgramamalBlocBloc extends Bloc<ProgramamalBlocEvent, ProgramamalBlocStat
     _preferences = await SharedPreferences.getInstance();
 
     var userId = _preferences.getString(USER_ID_KEY);
+
+    var category = _preferences.getString("CATEGORY");
     
     if (event is Fetch && !_hasReachedMax(currentState)) {
       try {
         if (currentState is ProgramAmalUninitialized) {
-          final programAmal = await _fetchProgramAmal(userId, "", 0, 15);
+          final programAmal = await _fetchProgramAmal(userId, category, 0, 15);
           yield ProgramAmalLoaded(programAmal: programAmal, hasReachedMax: false);
         }
 //        if (currentState is ProgramAmalLoaded) {
@@ -63,8 +65,9 @@ class ProgramamalBlocBloc extends Bloc<ProgramamalBlocEvent, ProgramamalBlocStat
 
     print("this start index ${startIndex}");
     print("this limit data ${limit}");
+    print("this category ${category}");
 
-    final response = await httpClient.get('http://139.162.15.91/jaring-ummat/api/program-amal/list?idUserLogin=${userId}&category&start=$startIndex&limit=$limit');
+    final response = await httpClient.get('http://139.162.15.91/jaring-ummat/api/program-amal/list?idUserLogin=${userId}&category=${category}&start=$startIndex&limit=$limit');
 //    final response = await httpClient.get('http://192.168.1.50:9091/api/program-amal/list?idUserLogin=${userId}&start=$startIndex&limit=$limit');
       print(response.statusCode);
       if (response.statusCode == 200) {

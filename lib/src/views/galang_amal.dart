@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_jaring_ummat/src/models/program_amal.dart';
 import 'package:flutter_jaring_ummat/src/views/components/galang_amal_container.dart';
 import '../models/programAmalModel.dart';
 
@@ -7,7 +8,7 @@ import '../services/currency_format_service.dart';
 
 class GalangAmalView extends StatefulWidget {
 
-  final ProgramAmal programAmal;
+  final ProgramAmalModel programAmal;
 
   GalangAmalView({Key key, this.programAmal});
 

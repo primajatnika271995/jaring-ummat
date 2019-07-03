@@ -5,6 +5,7 @@ import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_jaring_ummat/src/config/preferences.dart';
 import 'package:flutter_jaring_ummat/src/models/programAmalModel.dart';
+import 'package:flutter_jaring_ummat/src/models/program_amal.dart';
 import 'package:flutter_jaring_ummat/src/services/currency_format_service.dart';
 import 'package:flutter_jaring_ummat/src/services/likeUnlikeApi.dart';
 import 'package:flutter_jaring_ummat/src/services/time_ago_service.dart';
@@ -17,7 +18,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../views/galang_amal.dart';
 
 class ProgramAmalContent extends StatefulWidget {
-  final ProgramAmal programAmal;
+  final ProgramAmalModel programAmal;
   ProgramAmalContent({Key key, @required this.programAmal}) : super(key: key);
 
   @override
@@ -157,7 +158,7 @@ class _ProgramAmalContentState extends State<ProgramAmalContent> {
             (url) {
               return Container(
                 child: CachedNetworkImage(
-                  imageUrl: url["imgUrl"],
+                  imageUrl: url.imgUrl,
                   fit: BoxFit.cover,
                   width: MediaQuery.of(context).size.width,
                 ),

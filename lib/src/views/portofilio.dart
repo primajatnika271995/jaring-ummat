@@ -17,13 +17,24 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
 
   int indexTab = 0;
 
-  double data1;
-  double data2;
-  double data3;
-  double data4;
-  double data5;
-  double data6;
-  double data7;
+  double data1 = 10.0;
+  double data2 = 3.0;
+  double data3 = 50.0;
+  double data4 = 12.0;
+  double data5 = 40.0;
+  double data6 = 110.0;
+
+  final fromDate = DateTime(2018, 11, 22);
+  final toDate = DateTime.now();
+
+  final date1 = DateTime.now().subtract(Duration(days: 2));
+  final date2 = DateTime.now().subtract(Duration(days: 3));
+
+  final date3 = DateTime.now().subtract(Duration(days: 15));
+  final date4 = DateTime.now().subtract(Duration(days: 36));
+
+  final date5 = DateTime.now().subtract(Duration(days: 65));
+  final date6 = DateTime.now().subtract(Duration(days: 64));
 
   TextEditingController nominalZakat = new TextEditingController();
 
@@ -112,33 +123,40 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
 
   Widget bezierLineTotal() {
     return BezierChart(
-      bezierChartScale: BezierChartScale.CUSTOM,
-      xAxisCustomValues: const [0, 5, 10, 15, 20, 25, 30, 35],
-      footerValueBuilder: (double value) {
-        return "${formatAsIntOrDouble(value)}\ndays";
-      },
-      series: const [
-        BezierLine(lineColor: Colors.blue, label: "m", data: const [
-          DataPoint<double>(value: 10, xAxis: 0),
-          DataPoint<double>(value: 90, xAxis: 5),
-          DataPoint<double>(value: 50, xAxis: 10),
-          DataPoint<double>(value: 100, xAxis: 15),
-          DataPoint<double>(value: 75, xAxis: 20),
-          DataPoint<double>(value: 0, xAxis: 25),
-          DataPoint<double>(value: 5, xAxis: 30),
-          DataPoint<double>(value: 45, xAxis: 35),
-
-        ]),
+      bezierChartScale: BezierChartScale.MONTHLY,
+      fromDate: fromDate,
+      toDate: toDate,
+      selectedDate: toDate,
+      series: [
+        BezierLine(
+          label: "Duty",
+          lineColor: Colors.blue,
+          onMissingValue: (dateTime) {
+            if (dateTime.month.isEven) {
+              return 20.0;
+            }
+            return 1.0;
+          },
+          data: [
+            DataPoint<DateTime>(value: data1, xAxis: date1),
+            DataPoint<DateTime>(value: data2, xAxis: date2),
+            DataPoint<DateTime>(value: data3, xAxis: date3),
+            DataPoint<DateTime>(value: data4, xAxis: date4),
+            DataPoint<DateTime>(value: data5, xAxis: date5),
+            DataPoint<DateTime>(value: data6, xAxis: date6),
+          ],
+        ),
       ],
       config: BezierChartConfig(
         footerHeight: 40,
         verticalIndicatorStrokeWidth: 3.0,
-        verticalIndicatorColor: Colors.black,
+        verticalIndicatorColor: Colors.white,
         displayYAxis: true,
         showDataPoints: true,
-        bubbleIndicatorColor: Colors.white.withOpacity(0.9),
+        bubbleIndicatorColor: Colors.black.withOpacity(0.9),
         xLinesColor: Colors.black,
         showVerticalIndicator: true,
+        backgroundColor: Colors.white,
         verticalIndicatorFixedPosition: false,
         backgroundGradient: LinearGradient(
           colors: [
@@ -151,7 +169,6 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
         ),
-        snap: false,
       ),
     );
   }
@@ -703,7 +720,7 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
                         ),
                       ),
                       Positioned(
-                        left: 70.0,
+                        left: 90.0,
                         top: 100.0,
                         child: const Text(
                           "Total Aktivitas Amal",
@@ -711,7 +728,7 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
                         ),
                       ),
                       Positioned(
-                        left: 69.0,
+                        left: 90.0,
                         top: 113.0,
                         child: const Text(
                           "Rp",
@@ -720,7 +737,7 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
                         ),
                       ),
                       Positioned(
-                        left: 84.0,
+                        left: 105.0,
                         top: 113.0,
                         child: const Text(
                           "8.950.420",
@@ -778,6 +795,14 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
                       if (index == 0) {
                         setState(() {
                           print(aktivitasData.length);
+
+                          data1 = 30.0;
+                          data2 = 12.0;
+                          data3 = 10.0;
+                          data4 = 92.0;
+                          data5 = 30.0;
+                          data6 = 10.0;
+
                           aktivitasData.clear();
                           aktivitasData.add(
                             new AktivitasAmal('Donasi', 40, Color(0xFF3A5F99)),

@@ -112,9 +112,9 @@ class _ProgramAmalContainerState extends State<ProgramAmalContainer> {
           return ListView.builder(
             shrinkWrap: true,
             itemBuilder: (BuildContext context, int index) {
-              return index >= state.programAmal.length
-                  ? BottomLoader()
-                  : ProgramAmalContent(programAmal: state.programAmal[index]);
+              // return index >= state.programAmal.length
+              //     ? BottomLoader()
+              //     : ProgramAmalContent(programAmal: state.programAmal[index]);
             },
             itemCount: state.hasReachedMax
                 ? state.programAmal.length

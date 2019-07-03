@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_jaring_ummat/src/models/program_amal.dart';
 import 'dart:convert';
 import 'package:flutter_jaring_ummat/src/views/components/custom_fonts.dart';
 import 'package:flutter_jaring_ummat/src/views/components/show_alert_dialog.dart';
@@ -11,7 +12,7 @@ import '../../services/time_ago_service.dart';
 import '../../models/programAmalModel.dart';
 
 class GalangAmalContainer extends StatefulWidget {
-  final ProgramAmal programAmal;
+  final ProgramAmalModel programAmal;
 
   GalangAmalContainer({Key key, this.programAmal});
 
@@ -157,7 +158,7 @@ class _GalangAmalContainerState extends State<GalangAmalContainer> {
                   borderRadius: BorderRadius.all(Radius.circular(0.0)),
                   child: CachedNetworkImage(
                     fit: BoxFit.cover,
-                    imageUrl: url["imgUrl"],
+                    imageUrl: url.imgUrl,
                     errorWidget: (content, url, error) => new Icon(Icons.error),
                     width: MediaQuery.of(context).size.width,
                   ),

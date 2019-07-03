@@ -4,6 +4,7 @@ import 'package:flutter_jaring_ummat/src/config/preferences.dart';
 import 'package:flutter_jaring_ummat/src/models/commentModel.dart';
 import 'package:flutter_jaring_ummat/src/models/listUserLikes.dart';
 import 'package:flutter_jaring_ummat/src/models/programAmalModel.dart';
+import 'package:flutter_jaring_ummat/src/models/program_amal.dart';
 import 'package:flutter_jaring_ummat/src/services/time_ago_service.dart';
 import 'package:rubber/rubber.dart';
 
@@ -12,7 +13,7 @@ import 'package:flutter_jaring_ummat/src/bloc/likesBloc.dart' as likesBloc;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class KomentarContainer extends StatefulWidget {
-  final ProgramAmal programAmal;
+  final ProgramAmalModel programAmal;
   KomentarContainer({Key key, @required this.programAmal}) : super(key: key);
 
   @override
@@ -367,7 +368,7 @@ class _KomentarContainerState extends State<KomentarContainer>
                           image: DecorationImage(
                             fit: BoxFit.cover,
                             image: NetworkImage(
-                              widget.programAmal.imageContent[0]["imgUrl"],
+                              widget.programAmal.imageContent[0].imgUrl,
                             ),
                           ),
                         ),
