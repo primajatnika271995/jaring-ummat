@@ -41,6 +41,7 @@ class _ProgramAmalContentState extends State<ProgramAmalContent> {
     _preferences = await SharedPreferences.getInstance();
     setState(() {
       this.idUserLogin = _preferences.getString(USER_ID_KEY);
+      print(idUserLogin);
     });
   }
 
@@ -193,6 +194,8 @@ class _ProgramAmalContentState extends State<ProgramAmalContent> {
             dotsCount: widget.programAmal.imageContent.length,
             position: _current,
             decorator: DotsDecorator(
+              color: Colors.white,
+              activeColor: Colors.blueAccent,
               spacing: const EdgeInsets.all(2.0),
             ),
           ),
@@ -330,18 +333,19 @@ class _ProgramAmalContentState extends State<ProgramAmalContent> {
         GestureDetector(
           onTap: () {
             setState(() {
-              setState(() {
-                isLoved = !isLoved;
-              });
-
               if (isLoved) {
-                likeProgram();
-              }
-
-              if (!isLoved) {
-                unlikeProgram();
+                isLoved = false;
+              } else {
+                isLoved = true;
               }
             });
+            if (isLoved) {
+              likeProgram();
+            }
+
+            if (!isLoved) {
+              unlikeProgram();
+            }
           },
           child: Row(
             children: <Widget>[

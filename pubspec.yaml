@@ -95,6 +95,10 @@ flutter:
   uses-material-design: true
 
   fonts:
+    - family:  Proxima
+      fonts:
+        - asset: assets/fonts/proxima_nova_soft.ttf
+
     - family:  CustomFonts 
       fonts:
         - asset: assets/fonts/custom_icons.ttf

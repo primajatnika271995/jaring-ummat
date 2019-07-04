@@ -5,120 +5,106 @@ class ShareBerita extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 300.0,
-      child: new Column(
+      height: 250.0,
+      padding: EdgeInsets.only(top: 45.0,),
+      child: GridView.count(
+        crossAxisCount: 4,
         children: <Widget>[
-          InkWell(
-            onTap: () {},
-            highlightColor: Colors.grey,
-            child: new Container(
-              height: 70.0,
-              child: new Row(
-                children: <Widget>[
-                  Expanded(
-                    flex: 3,
-                    child: Icon(
-                      FontAwesomeIcons.facebookF,
-                      color: Colors.blueAccent,
-                    ),
-                  ),
-                  Expanded(
-                    flex: 7,
-                    child: Text(
-                      'Bagikan Melalui Facebook',
-                      style: TextStyle(
-                          fontSize: 17.0,
-                          color: Colors.blueAccent,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  )
-                ],
+          Column(
+            children: <Widget>[
+              Icon(
+                FontAwesomeIcons.linkedin,
+                size: 50.0,
+                color: Colors.blue,
               ),
-            ),
+              const Text(
+                'LinkedIn',
+                style: TextStyle(
+                  fontFamily: 'Proxima',
+                  fontSize: 13.0,
+                ),
+              ),
+            ],
           ),
-          InkWell(
-            onTap: () {},
-            highlightColor: Colors.grey,
-            child: new Container(
-              height: 70.0,
-              child: new Row(
-                children: <Widget>[
-                  Expanded(
-                    flex: 3,
-                    child: Icon(
-                      FontAwesomeIcons.whatsapp,
-                      color: Colors.green,
-                    ),
-                  ),
-                  Expanded(
-                    flex: 7,
-                    child: Text(
-                      'Bagikan Melalui WhatsApp',
-                      style: TextStyle(
-                          fontSize: 17.0,
-                          color: Colors.blueAccent,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  )
-                ],
+          Column(
+            children: <Widget>[
+              Icon(
+                FontAwesomeIcons.facebookF,
+                size: 50.0,
+                color: Colors.blueAccent,
               ),
-            ),
+              const Text(
+                'Facebook',
+                style: TextStyle(
+                  fontFamily: 'Proxima',
+                  fontSize: 13.0,
+                ),
+              ),
+            ],
           ),
-          InkWell(
-            onTap: () {},
-            highlightColor: Colors.grey,
-            child: new Container(
-              height: 70.0,
-              child: new Row(
-                children: <Widget>[
-                  Expanded(
-                    flex: 3,
-                    child: Icon(
-                      FontAwesomeIcons.mailBulk,
-                      color: Colors.red,
-                    ),
-                  ),
-                  Expanded(
-                    flex: 7,
-                    child: Text(
-                      'Bagikan Melalui Email',
-                      style: TextStyle(
-                          fontSize: 17.0,
-                          color: Colors.blueAccent,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  )
-                ],
+          Column(
+            children: <Widget>[
+              Icon(
+                FontAwesomeIcons.whatsapp,
+                size: 50.0,
+                color: Colors.green,
               ),
-            ),
+              const Text(
+                'WhatsApp',
+                style: TextStyle(
+                  fontFamily: 'Proxima',
+                  fontSize: 13.0,
+                ),
+              ),
+            ],
           ),
-          InkWell(
-            onTap: () {},
-            highlightColor: Colors.grey,
-            child: new Container(
-              height: 70.0,
-              child: new Row(
-                children: <Widget>[
-                  Expanded(
-                    flex: 3,
-                    child: Icon(
-                      FontAwesomeIcons.link,
-                      color: Colors.black,
-                    ),
-                  ),
-                  Expanded(
-                    flex: 7,
-                    child: Text(
-                      'Salin Link Berita ini',
-                      style: TextStyle(
-                          fontSize: 17.0,
-                          color: Colors.blueAccent,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  )
-                ],
+          Column(
+            children: <Widget>[
+              Icon(
+                FontAwesomeIcons.instagram,
+                size: 50.0,
+                color: Colors.orangeAccent,
               ),
-            ),
+              const Text(
+                'Instagram',
+                style: TextStyle(
+                  fontFamily: 'Proxima',
+                  fontSize: 13.0,
+                ),
+              ),
+            ],
+          ),
+          Column(
+            children: <Widget>[
+              Icon(
+                FontAwesomeIcons.twitter,
+                size: 50.0,
+                color: Colors.blue,
+              ),
+              const Text(
+                'Twitter',
+                style: TextStyle(
+                  fontFamily: 'Proxima',
+                  fontSize: 13.0,
+                ),
+              ),
+            ],
+          ),
+                    Column(
+            children: <Widget>[
+              Icon(
+                FontAwesomeIcons.twitch,
+                size: 50.0,
+                color: Colors.purple,
+              ),
+              const Text(
+                'Twitch',
+                style: TextStyle(
+                  fontFamily: 'Proxima',
+                  fontSize: 13.0,
+                ),
+              ),
+            ],
           ),
         ],
       ),

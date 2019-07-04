@@ -104,7 +104,8 @@ class _HomeState extends State<HomeView> {
 
     if (backButtonHasNotBeenPressedOrSnackBarHasBeenClosed) {
       backButtonPressTime = currentTime;
-      Toast.show('Press again to leave', context, duration: 3, backgroundColor: Colors.grey);
+      Toast.show('Press again to leave', context,
+          duration: 3, backgroundColor: Colors.grey);
       return false;
     }
 
@@ -145,7 +146,7 @@ class _HomeState extends State<HomeView> {
           BottomNavigationBarItem(
             icon: new Icon(
               NavbarCustom.nav_home_inactive,
-              color: Colors.black,
+              color: Colors.grey,
               size: 27.0,
             ),
             activeIcon: new Icon(
@@ -158,7 +159,7 @@ class _HomeState extends State<HomeView> {
           BottomNavigationBarItem(
             icon: new Icon(
               NavbarCustom.nav_portfolio_inactive,
-              color: Colors.black,
+              color: Colors.grey,
               size: 27.0,
             ),
             activeIcon: new Icon(
@@ -173,7 +174,7 @@ class _HomeState extends State<HomeView> {
               children: <Widget>[
                 new Icon(
                   NavbarCustom.nav_inbox_inactive,
-                  color: Colors.black,
+                  color: Colors.grey,
                   size: 27.0,
                 ),
                 new Positioned(
@@ -236,7 +237,7 @@ class _HomeState extends State<HomeView> {
           BottomNavigationBarItem(
             icon: new Icon(
               NavbarCustom.nav_othersmenu_inactive,
-              color: Colors.black,
+              color: Colors.grey,
               size: 27.0,
             ),
             activeIcon: new Icon(

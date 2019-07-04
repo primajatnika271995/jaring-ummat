@@ -32,7 +32,7 @@ class ProgramAmalApiProvider {
       print("No Content");
     }
     else {
-      throw Exception("Failed to load POST AMAL");
+      print('Failed to load POST AMAL');
     }
 
   }

@@ -38,14 +38,27 @@ class UserStoryAppBarState extends State<UserStoryAppBar> {
 
               if (snapshot.data == null) {
                 return Container(
-                  padding: EdgeInsets.only(top: 60.0),
+                  padding: EdgeInsets.only(top: 20.0),
                   child: Center(
-                    child: const Text(
-                      'No Story for Today',
-                      style: TextStyle(
-                        color: Colors.grey,
-                        fontWeight: FontWeight.bold,
-                      ),
+                    child: Column(
+                      children: <Widget>[
+                        Image.asset(
+                          'assets/icon/img_not_found.png',
+                          height: 50.0,
+                          width: 50.0,
+                        ),
+                        SizedBox(
+                          height: 10.0,
+                        ),
+                        const Text(
+                          'Not found story for today. :(',
+                          style: TextStyle(
+                            color: Colors.black54,
+                            fontFamily: 'Proxima',
+                            fontWeight: FontWeight.bold
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 );

@@ -30,7 +30,7 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
       body: DefaultTabController(
         length: 8,
         child: Scaffold(
-          backgroundColor: Colors.grey[300],
+          backgroundColor: Colors.grey[200],
           appBar: PreferredSize(
             child: AppBar(
               elevation: 0.0,
@@ -119,82 +119,86 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                 ),
               ),
               new SliverAppBar(
-                expandedHeight: 20.0,
                 backgroundColor: Colors.white,
                 elevation: 10.0,
                 automaticallyImplyLeading: true,
                 floating: true,
                 pinned: true,
-                bottom: TabBar(
-                  isScrollable: true,
-                  indicator: UnderlineTabIndicator(
-                    borderSide:
-                        BorderSide(width: 4.0, color: Colors.blueAccent),
+                flexibleSpace: AppBar(
+                  backgroundColor: Colors.white,
+                  automaticallyImplyLeading: false,
+                  bottom: TabBar(
+                    isScrollable: true,
+                    indicator: UnderlineTabIndicator(
+                      borderSide:
+                          BorderSide(width: 4.0, color: Colors.blueAccent),
+                    ),
+                    labelColor: Colors.black,
+                    unselectedLabelColor: Colors.grey,
+                    onTap: (int index) {
+                      if (index == 0) {
+                        setState(() {
+                          selectedCategory = "";
+                        });
+                      } else if (index == 1) {
+                        setState(() {
+                          selectedCategory = "Pendidikan";
+                        });
+                      } else if (index == 2) {
+                        setState(() {
+                          selectedCategory = "Kemanusiaan";
+                        });
+                      } else if (index == 3) {
+                        setState(() {
+                          selectedCategory = "Amal";
+                        });
+                      } else if (index == 4) {
+                        setState(() {
+                          selectedCategory = "Pembangunan Mesjid";
+                        });
+                      } else if (index == 5) {
+                        setState(() {
+                          selectedCategory = "Zakat";
+                        });
+                      } else if (index == 6) {
+                        setState(() {
+                          selectedCategory = "Sosial";
+                        });
+                      } else if (index == 7) {
+                        setState(() {
+                          selectedCategory = "lain-lain";
+                        });
+                      }
+                      programAmalBloc.bloc
+                          .fetchAllProgramAmal(selectedCategory);
+                    },
+                    tabs: <Widget>[
+                      new Tab(
+                        text: 'Semua Kategori',
+                      ),
+                      new Tab(
+                        text: 'Pendidikan',
+                      ),
+                      new Tab(
+                        text: 'Kemanusiaan',
+                      ),
+                      new Tab(
+                        text: 'Amal',
+                      ),
+                      new Tab(
+                        text: 'Pembangunan Masjid',
+                      ),
+                      new Tab(
+                        text: 'Zakat',
+                      ),
+                      new Tab(
+                        text: 'Bakti Sosial',
+                      ),
+                      new Tab(
+                        text: 'lain-lain',
+                      ),
+                    ],
                   ),
-                  labelColor: Colors.black,
-                  unselectedLabelColor: Colors.grey,
-                  onTap: (int index) {
-                    if (index == 0) {
-                      setState(() {
-                        selectedCategory = "";
-                      });
-                    } else if (index == 1) {
-                      setState(() {
-                        selectedCategory = "Pendidikan";
-                      });
-                    } else if (index == 2) {
-                      setState(() {
-                        selectedCategory = "Kemanusiaan";
-                      });
-                    } else if (index == 3) {
-                      setState(() {
-                        selectedCategory = "Amal";
-                      });
-                    } else if (index == 4) {
-                      setState(() {
-                        selectedCategory = "Pembangunan Mesjid";
-                      });
-                    } else if (index == 5) {
-                      setState(() {
-                        selectedCategory = "Zakat";
-                      });
-                    } else if (index == 6) {
-                      setState(() {
-                        selectedCategory = "Sosial";
-                      });
-                    } else if (index == 7) {
-                      setState(() {
-                        selectedCategory = "lain-lain";
-                      });
-                    }
-                    programAmalBloc.bloc.fetchAllProgramAmal(selectedCategory);
-                  },
-                  tabs: <Widget>[
-                    new Tab(
-                      text: 'Semua Kategori',
-                    ),
-                    new Tab(
-                      text: 'Pendidikan',
-                    ),
-                    new Tab(
-                      text: 'Kemanusiaan',
-                    ),
-                    new Tab(
-                      text: 'Amal',
-                    ),
-                    new Tab(
-                      text: 'Pembangunan Masjid',
-                    ),
-                    new Tab(
-                      text: 'Zakat',
-                    ),
-                    new Tab(
-                      text: 'Bakti Sosial',
-                    ),
-                    new Tab(
-                      text: 'lain-lain',
-                    ),
-                  ],
                 ),
               ),
               SliverList(
@@ -205,6 +209,7 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                         stream: programAmalBloc.bloc.streamProgramAmal,
                         builder:
                             (BuildContext context, AsyncSnapshot snapshot) {
+                          print(snapshot.connectionState);
                           switch (snapshot.connectionState) {
                             case ConnectionState.none:
                               return Container(
@@ -246,13 +251,32 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                               } else {
                                 return Container(
                                   width: 500.0,
-                                  margin: EdgeInsets.only(top: 20.0),
+                                  margin: EdgeInsets.only(top: 10.0),
                                   child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: <Widget>[
-                                      Text('No Post Yet'),
+                                      Image.asset(
+                                        'assets/icon/img_not_found.png',
+                                        width: 150.0,
+                                      ),
+                                      Text(
+                                        'Oops..',
+                                        style: TextStyle(
+                                          fontFamily: 'Proxima',
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 17.0,
+                                        ),
+                                      ),
+                                      Text(
+                                        'There\'s nothing \'ere, yet.',
+                                        style: TextStyle(
+                                          fontFamily: 'Proxima',
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 17.0,
+                                        ),
+                                      ),
                                     ],
                                   ),
                                 );
@@ -310,7 +334,7 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
         baseColor: Colors.grey[300],
         highlightColor: Colors.grey[100],
         child: Column(
-          children: [0, 1, 2, 3, 4]
+          children: [0, 1, 2, 3, 4, 5, 6, 7]
               .map(
                 (_) => Padding(
                       padding: const EdgeInsets.only(bottom: 8.0),
