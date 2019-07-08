@@ -1,10 +1,14 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter_fab_dialer/flutter_fab_dialer.dart';
 import 'package:bezier_chart/bezier_chart.dart';
 
 import '../views/components/icon_baru_icons.dart';
 import '../views/pembayaran_zakat.dart';
+import 'components/indicator_container.dart';
 
 class Portofolio extends StatefulWidget {
   @override
@@ -12,53 +16,122 @@ class Portofolio extends StatefulWidget {
 }
 
 class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
-  List<charts.Series<AktivitasAmal, String>> _seriesPieData;
   AnimationController _controller;
 
+  List<PieChartSectionData> pieChartRawSections;
+  List<PieChartSectionData> showingSections;
+
+  StreamController<PieTouchResponse> pieTouchedResultStreamController;
+  StreamController<LineTouchResponse> controller;
+
+  int touchedIndex;
   int indexTab = 0;
 
-  double data1 = 10.0;
-  double data2 = 3.0;
-  double data3 = 50.0;
-  double data4 = 12.0;
-  double data5 = 40.0;
-  double data6 = 110.0;
+  String nameIndex = 'Total';
 
-  final fromDate = DateTime(2018, 11, 22);
-  final toDate = DateTime.now();
-
-  final date1 = DateTime.now().subtract(Duration(days: 2));
-  final date2 = DateTime.now().subtract(Duration(days: 3));
-
-  final date3 = DateTime.now().subtract(Duration(days: 15));
-  final date4 = DateTime.now().subtract(Duration(days: 36));
-
-  final date5 = DateTime.now().subtract(Duration(days: 65));
-  final date6 = DateTime.now().subtract(Duration(days: 64));
-
-  TextEditingController nominalZakat = new TextEditingController();
-
-  var aktivitasData = [
-    new AktivitasAmal('Donasi', 40, Color(0xFF3A5F99)),
-    new AktivitasAmal('Zakat', 20, Color(0xFFDB7E27)),
-    new AktivitasAmal('Wakaf', 10, Color(0xFFDEDE71)),
-    new AktivitasAmal('Shodaqoh', 35, Color(0xFFDB4B1F)),
-    new AktivitasAmal('Infaq', 15, Color(0xFF2938C2)),
+  var itemsLine = [
+    new LineChartBarData(
+      spots: [
+        FlSpot(1, 1),
+        FlSpot(3, 1.5),
+        FlSpot(5, 1.4),
+        FlSpot(7, 3.4),
+        FlSpot(10, 2),
+        FlSpot(12, 1.2),
+        FlSpot(13, 1.8),
+      ],
+      isCurved: true,
+      colors: [Color(0xFF3A5F99)],
+      barWidth: 4,
+      isStrokeCapRound: true,
+      dotData: FlDotData(
+        show: true,
+        dotColor: Colors.grey,
+      ),
+      belowBarData: BelowBarData(
+        show: false,
+      ),
+    ),
+    new LineChartBarData(
+      spots: [
+        FlSpot(1, 2.1),
+        FlSpot(3, 3.5),
+        FlSpot(5, 0.4),
+        FlSpot(7, 1.4),
+        FlSpot(10, 0.2),
+        FlSpot(12, 2.2),
+        FlSpot(13, 1.8),
+      ],
+      isCurved: true,
+      colors: [Color(0xFFDEDE71)],
+      barWidth: 4,
+      isStrokeCapRound: true,
+      dotData: FlDotData(
+        show: true,
+        dotColor: Colors.grey,
+      ),
+      belowBarData: BelowBarData(
+        show: false,
+      ),
+    ),
   ];
 
-  _generateData() {
-    _seriesPieData.add(
-      charts.Series(
-        domainFn: (AktivitasAmal aktivitas, _) => aktivitas.task,
-        measureFn: (AktivitasAmal aktivitas, _) => aktivitas.taskvalue,
-        colorFn: (AktivitasAmal aktivitas, _) =>
-            charts.ColorUtil.fromDartColor(aktivitas.colorval),
-        id: 'Aktivitas Amal',
-        data: aktivitasData,
-        labelAccessorFn: (AktivitasAmal row, _) => '${row.taskvalue}',
+  var items = [
+    new PieChartSectionData(
+      color: Color(0xFF3A5F99),
+      value: 40,
+      title: "40%",
+      radius: 20,
+      titleStyle: TextStyle(
+        fontSize: 10,
+        fontWeight: FontWeight.bold,
+        color: Color(0xffffffff),
       ),
-    );
-  }
+    ),
+    new PieChartSectionData(
+      color: Color(0xFFDB7E27),
+      value: 30,
+      title: "30%",
+      radius: 20,
+      titleStyle: TextStyle(
+        fontSize: 10,
+        fontWeight: FontWeight.bold,
+        color: Color(0xffffffff),
+      ),
+    ),
+    new PieChartSectionData(
+      color: Color(0xFFDEDE71),
+      value: 15,
+      title: "15%",
+      radius: 20,
+      titleStyle: TextStyle(
+          fontSize: 10, fontWeight: FontWeight.bold, color: Color(0xffffffff)),
+    ),
+    new PieChartSectionData(
+      color: Color(0xFFDB4B1F),
+      value: 15,
+      title: "15%",
+      radius: 20,
+      titleStyle: TextStyle(
+        fontSize: 10,
+        fontWeight: FontWeight.bold,
+        color: Color(0xffffffff),
+      ),
+    ),
+    new PieChartSectionData(
+      color: Color(0xFF2938C2),
+      value: 15,
+      title: "15%",
+      radius: 20,
+      titleStyle: TextStyle(
+        fontSize: 10,
+        fontWeight: FontWeight.bold,
+        color: Color(0xffffffff),
+      ),
+    ),
+  ];
+
+  TextEditingController nominalZakat = new TextEditingController();
 
   List<String> _metodePembayaran = [
     'BNI Syariah Virtual Account',
@@ -66,7 +139,7 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
 
   bool visibilityInformation = false;
 
-  String _selectedPembayaran; // Option 2
+  String _selectedPembayaran;
 
   static const List<IconData> icons = const [
     IconBaru.wakaf_small,
@@ -115,62 +188,44 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
       vsync: this,
       duration: const Duration(milliseconds: 500),
     );
-
-    _seriesPieData = List<charts.Series<AktivitasAmal, String>>();
-    _generateData();
+    controller = StreamController();
     super.initState();
-  }
 
-  Widget bezierLineTotal() {
-    return BezierChart(
-      bezierChartScale: BezierChartScale.MONTHLY,
-      fromDate: fromDate,
-      toDate: toDate,
-      selectedDate: toDate,
-      series: [
-        BezierLine(
-          label: "Duty",
-          lineColor: Colors.blue,
-          onMissingValue: (dateTime) {
-            if (dateTime.month.isEven) {
-              return 20.0;
-            }
-            return 1.0;
-          },
-          data: [
-            DataPoint<DateTime>(value: data1, xAxis: date1),
-            DataPoint<DateTime>(value: data2, xAxis: date2),
-            DataPoint<DateTime>(value: data3, xAxis: date3),
-            DataPoint<DateTime>(value: data4, xAxis: date4),
-            DataPoint<DateTime>(value: data5, xAxis: date5),
-            DataPoint<DateTime>(value: data6, xAxis: date6),
-          ],
-        ),
-      ],
-      config: BezierChartConfig(
-        footerHeight: 40,
-        verticalIndicatorStrokeWidth: 3.0,
-        verticalIndicatorColor: Colors.white,
-        displayYAxis: true,
-        showDataPoints: true,
-        bubbleIndicatorColor: Colors.black.withOpacity(0.9),
-        xLinesColor: Colors.black,
-        showVerticalIndicator: true,
-        backgroundColor: Colors.white,
-        verticalIndicatorFixedPosition: false,
-        backgroundGradient: LinearGradient(
-          colors: [
-            Colors.transparent,
-            Colors.transparent,
-            Colors.transparent,
-            Colors.transparent,
-            Colors.transparent,
-          ],
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-        ),
-      ),
-    );
+    pieChartRawSections = items;
+    showingSections = pieChartRawSections;
+
+    pieTouchedResultStreamController = StreamController();
+    pieTouchedResultStreamController.stream.distinct().listen((details) {
+      print(details);
+      if (details == null) {
+        return;
+      }
+
+      touchedIndex = -1;
+      if (details.sectionData != null) {
+        touchedIndex = showingSections.indexOf(details.sectionData);
+      }
+
+      setState(() {
+        if (details.touchInput is FlLongPressEnd) {
+          touchedIndex = -1;
+          showingSections = List.of(pieChartRawSections);
+        } else {
+          showingSections = List.of(pieChartRawSections);
+
+          if (touchedIndex != -1) {
+            final TextStyle style = showingSections[touchedIndex].titleStyle;
+            showingSections[touchedIndex] =
+                showingSections[touchedIndex].copyWith(
+              titleStyle: style.copyWith(
+                fontSize: 15,
+              ),
+              radius: 30,
+            );
+          }
+        }
+      });
+    });
   }
 
   Widget tambahZakat(BuildContext context, String title, IconData icon) {
@@ -690,37 +745,90 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
                           top: 20.0,
                           left: 20.0,
                         ),
-                        child: charts.PieChart(
-                          _seriesPieData,
-                          behaviors: [
-                            new charts.DatumLegend(
-                              position: charts.BehaviorPosition.end,
-                              outsideJustification:
-                                  charts.OutsideJustification.startDrawArea,
-                              horizontalFirst: false,
-                              desiredMaxRows: 5,
-                              cellPadding: new EdgeInsets.only(
-                                  right: 24.0, bottom: 4.0, top: 10.0),
-                              entryTextStyle: charts.TextStyleSpec(
-                                color: charts.Color.black,
-                                fontSize: 14,
+                        child: Row(
+                          children: <Widget>[
+                            Expanded(
+                              child: AspectRatio(
+                                aspectRatio: 1,
+                                child: FlChart(
+                                  chart: PieChart(
+                                    PieChartData(
+                                      pieTouchData: PieTouchData(
+                                        touchResponseStreamSink:
+                                            pieTouchedResultStreamController
+                                                .sink,
+                                      ),
+                                      borderData: FlBorderData(
+                                        show: false,
+                                      ),
+                                      sectionsSpace: 5,
+                                      centerSpaceRadius: 55,
+                                      sections: showingSections,
+                                    ),
+                                  ),
+                                ),
                               ),
                             ),
+                            Column(
+                              mainAxisSize: MainAxisSize.max,
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Indicator(
+                                  color: Color(0xff0293ee),
+                                  text: "Donasi",
+                                  size: 10.0,
+                                  isSquare: false,
+                                ),
+                                SizedBox(
+                                  height: 4,
+                                ),
+                                Indicator(
+                                  color: Color(0xfff8b250),
+                                  text: "Zakat",
+                                  size: 10.0,
+                                  isSquare: false,
+                                ),
+                                SizedBox(
+                                  height: 4,
+                                ),
+                                Indicator(
+                                  color: Color(0xFFDEDE71),
+                                  text: "Wakaf",
+                                  size: 10.0,
+                                  isSquare: false,
+                                ),
+                                SizedBox(
+                                  height: 4,
+                                ),
+                                Indicator(
+                                  color: Color(0xFFDB4B1F),
+                                  text: "Shodaqoh",
+                                  size: 10.0,
+                                  isSquare: false,
+                                ),
+                                SizedBox(
+                                  height: 4,
+                                ),
+                                Indicator(
+                                  color: Color(0xFF2938C2),
+                                  text: "Infaq",
+                                  size: 10.0,
+                                  isSquare: false,
+                                ),
+                                SizedBox(
+                                  height: 20,
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              width: 28,
+                            ),
                           ],
-                          defaultRenderer: new charts.ArcRendererConfig(
-                            arcWidth: 20,
-                            arcRendererDecorators: [
-                              new charts.ArcLabelDecorator(
-                                labelPosition: charts.ArcLabelPosition.inside,
-                              ),
-                            ],
-                          ),
-                          animate: true,
-                          animationDuration: Duration(seconds: 2),
                         ),
                       ),
                       Positioned(
-                        left: 90.0,
+                        left: 74.0,
                         top: 100.0,
                         child: const Text(
                           "Total Aktivitas Amal",
@@ -728,7 +836,7 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
                         ),
                       ),
                       Positioned(
-                        left: 90.0,
+                        left: 72.0,
                         top: 113.0,
                         child: const Text(
                           "Rp",
@@ -737,7 +845,7 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
                         ),
                       ),
                       Positioned(
-                        left: 105.0,
+                        left: 88.0,
                         top: 113.0,
                         child: const Text(
                           "8.950.420",
@@ -794,90 +902,354 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
                     onTap: (int index) {
                       if (index == 0) {
                         setState(() {
-                          print(aktivitasData.length);
+                          this.nameIndex = 'Total';
+                          items.clear();
+                          itemsLine.clear();
 
-                          data1 = 30.0;
-                          data2 = 12.0;
-                          data3 = 10.0;
-                          data4 = 92.0;
-                          data5 = 30.0;
-                          data6 = 10.0;
+                          itemsLine.add(
+                            new LineChartBarData(
+                              spots: [
+                                FlSpot(1, 1),
+                                FlSpot(3, 1.5),
+                                FlSpot(5, 1.4),
+                                FlSpot(7, 3.4),
+                                FlSpot(10, 2),
+                                FlSpot(12, 1.2),
+                                FlSpot(13, 1.8),
+                              ],
+                              isCurved: true,
+                              colors: [Colors.blueAccent],
+                              barWidth: 4,
+                              isStrokeCapRound: true,
+                              dotData: FlDotData(
+                                show: true,
+                                dotColor: Colors.grey,
+                              ),
+                              belowBarData: BelowBarData(
+                                show: false,
+                              ),
+                            ),
+                          );
 
-                          aktivitasData.clear();
-                          aktivitasData.add(
-                            new AktivitasAmal('Donasi', 40, Color(0xFF3A5F99)),
+                          itemsLine.add(
+                            new LineChartBarData(
+                              spots: [
+                                FlSpot(1, 2.1),
+                                FlSpot(3, 3.5),
+                                FlSpot(5, 0.4),
+                                FlSpot(7, 1.4),
+                                FlSpot(10, 0.2),
+                                FlSpot(12, 2.2),
+                                FlSpot(13, 1.8),
+                              ],
+                              isCurved: true,
+                              colors: [Color(0xFFDEDE71)],
+                              barWidth: 4,
+                              isStrokeCapRound: true,
+                              dotData: FlDotData(
+                                show: true,
+                                dotColor: Colors.grey,
+                              ),
+                              belowBarData: BelowBarData(
+                                show: false,
+                              ),
+                            ),
                           );
-                          aktivitasData.add(
-                            new AktivitasAmal('Zakat', 20, Color(0xFFDB7E27)),
+
+                          items.add(
+                            new PieChartSectionData(
+                              color: Color(0xFF2938C2),
+                              value: 15,
+                              title: "15%",
+                              radius: 20,
+                              titleStyle: TextStyle(
+                                fontSize: 10,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xffffffff),
+                              ),
+                            ),
                           );
-                          aktivitasData.add(
-                            new AktivitasAmal('Wakaf', 10, Color(0xFFDEDE71)),
+                          items.add(
+                            new PieChartSectionData(
+                              color: Color(0xFFDB7E27),
+                              value: 30,
+                              title: "30%",
+                              radius: 20,
+                              titleStyle: TextStyle(
+                                fontSize: 10,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xffffffff),
+                              ),
+                            ),
                           );
-                          aktivitasData.add(
-                            new AktivitasAmal('Infaq', 15, Color(0xFF2938C2)),
+                          items.add(
+                            new PieChartSectionData(
+                              color: Color(0xFF3A5F99),
+                              value: 40,
+                              title: "40%",
+                              radius: 20,
+                              titleStyle: TextStyle(
+                                fontSize: 10,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xffffffff),
+                              ),
+                            ),
                           );
-                          aktivitasData.add(
-                            new AktivitasAmal(
-                                'Shodaqoh', 35, Color(0xFFDB4B1F)),
+                          items.add(
+                            new PieChartSectionData(
+                              color: Color(0xFFDEDE71),
+                              value: 15,
+                              title: "15%",
+                              radius: 20,
+                              titleStyle: TextStyle(
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xffffffff)),
+                            ),
                           );
-                          print(aktivitasData.length);
-                          // _generateData();
+                          items.add(
+                            new PieChartSectionData(
+                              color: Color(0xFFDB4B1F),
+                              value: 15,
+                              title: "15%",
+                              radius: 20,
+                              titleStyle: TextStyle(
+                                fontSize: 10,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xffffffff),
+                              ),
+                            ),
+                          );
                         });
                       }
                       if (index == 1) {
                         setState(() {
-                          print(aktivitasData.length);
-                          aktivitasData.clear();
-                          aktivitasData.add(
-                            new AktivitasAmal('Donasi', 40, Color(0xFF3A5F99)),
+                          this.nameIndex = 'Donasi';
+                          items.clear();
+                          itemsLine.clear();
+
+                          itemsLine.add(
+                            new LineChartBarData(
+                              spots: [
+                                FlSpot(1, 2.0),
+                                FlSpot(3, 1.0),
+                                FlSpot(5, 0.4),
+                                FlSpot(7, 4.4),
+                                FlSpot(10, 1),
+                                FlSpot(12, 3.2),
+                                FlSpot(13, 2.8),
+                              ],
+                              isCurved: true,
+                              colors: [Color(0xFF3A5F99)],
+                              barWidth: 4,
+                              isStrokeCapRound: true,
+                              dotData: FlDotData(
+                                show: true,
+                                dotColor: Colors.green,
+                              ),
+                              belowBarData: BelowBarData(
+                                show: false,
+                              ),
+                            ),
                           );
-                          print(aktivitasData.length);
-                          // _generateData();
+
+                          items.add(
+                            new PieChartSectionData(
+                              color: Color(0xFF3A5F99),
+                              value: 30,
+                              title: "30%",
+                              radius: 20,
+                              titleStyle: TextStyle(
+                                fontSize: 10,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xffffffff),
+                              ),
+                            ),
+                          );
                         });
                       }
                       if (index == 2) {
                         setState(() {
-                          print(aktivitasData.length);
-                          aktivitasData.clear();
-                          aktivitasData.add(
-                            new AktivitasAmal('Zakat', 20, Color(0xFFDB7E27)),
+                          this.nameIndex = 'Zakat';
+                          items.clear();
+                          itemsLine.clear();
+
+                          itemsLine.add(
+                            new LineChartBarData(
+                              spots: [
+                                FlSpot(1, 4.0),
+                                FlSpot(3, 0.5),
+                                FlSpot(5, 2.4),
+                                FlSpot(7, 1.4),
+                                FlSpot(10, 2.9),
+                                FlSpot(12, 4.2),
+                                FlSpot(13, 2.1),
+                              ],
+                              isCurved: true,
+                              colors: [Color(0xFFDB7E27)],
+                              barWidth: 4,
+                              isStrokeCapRound: true,
+                              dotData: FlDotData(
+                                show: true,
+                                dotColor: Colors.redAccent,
+                              ),
+                              belowBarData: BelowBarData(
+                                show: false,
+                              ),
+                            ),
                           );
-                          print(aktivitasData.length);
-                          // _generateData();
+
+                          items.add(
+                            new PieChartSectionData(
+                              color: Color(0xFFDB7E27),
+                              value: 30,
+                              title: "30%",
+                              radius: 20,
+                              titleStyle: TextStyle(
+                                fontSize: 10,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xffffffff),
+                              ),
+                            ),
+                          );
                         });
                       }
                       if (index == 3) {
                         setState(() {
-                          print(aktivitasData.length);
-                          aktivitasData.clear();
-                          aktivitasData.add(
-                            new AktivitasAmal('Wakaf', 10, Color(0xFFDEDE71)),
+                          this.nameIndex = 'Wakaf';
+                          items.clear();
+                          itemsLine.clear();
+
+                          itemsLine.add(
+                            new LineChartBarData(
+                              spots: [
+                                FlSpot(1, 0.1),
+                                FlSpot(3, 3.2),
+                                FlSpot(5, 2.4),
+                                FlSpot(7, 4.4),
+                                FlSpot(10, 2.2),
+                                FlSpot(12, 0.2),
+                                FlSpot(13, 1.8),
+                              ],
+                              isCurved: true,
+                              colors: [Color(0xFFDEDE71)],
+                              barWidth: 3,
+                              isStrokeCapRound: true,
+                              dotData: FlDotData(
+                                show: true,
+                                dotColor: Colors.redAccent,
+                              ),
+                              belowBarData: BelowBarData(
+                                show: false,
+                              ),
+                            ),
                           );
-                          print(aktivitasData.length);
-                          // _generateData();
+
+                          items.add(
+                            new PieChartSectionData(
+                              color: Color(0xFFDEDE71),
+                              value: 15,
+                              title: "15%",
+                              radius: 20,
+                              titleStyle: TextStyle(
+                                fontSize: 10,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xffffffff),
+                              ),
+                            ),
+                          );
                         });
                       }
                       if (index == 4) {
                         setState(() {
-                          print(aktivitasData.length);
-                          aktivitasData.clear();
-                          aktivitasData.add(
-                            new AktivitasAmal(
-                                'Shodaqoh', 35, Color(0xFFDB4B1F)),
+                          this.nameIndex = 'Shodaqoh';
+                          items.clear();
+                          itemsLine.clear();
+
+                          itemsLine.add(
+                            new LineChartBarData(
+                              spots: [
+                                FlSpot(1, 1),
+                                FlSpot(3, 0.5),
+                                FlSpot(5, 3.4),
+                                FlSpot(7, 1.4),
+                                FlSpot(10, 2.9),
+                                FlSpot(12, 4.0),
+                                FlSpot(13, 4.8),
+                              ],
+                              isCurved: true,
+                              colors: [Color(0xFFDB4B1F)],
+                              barWidth: 4,
+                              isStrokeCapRound: true,
+                              dotData: FlDotData(
+                                show: true,
+                                dotColor: Colors.indigo,
+                              ),
+                              belowBarData: BelowBarData(
+                                show: false,
+                              ),
+                            ),
                           );
-                          print(aktivitasData.length);
-                          // _generateData();
+
+                          items.add(
+                            new PieChartSectionData(
+                              color: Color(0xFFDB4B1F),
+                              value: 15,
+                              title: "15%",
+                              radius: 20,
+                              titleStyle: TextStyle(
+                                fontSize: 10,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xffffffff),
+                              ),
+                            ),
+                          );
                         });
                       }
                       if (index == 5) {
                         setState(() {
-                          print(aktivitasData.length);
-                          aktivitasData.clear();
-                          aktivitasData.add(
-                            new AktivitasAmal('Infaq', 15, Color(0xFF2938C2)),
+                          this.nameIndex = 'Infaq';
+                          items.clear();
+                          itemsLine.clear();
+
+                          itemsLine.add(
+                            new LineChartBarData(
+                              spots: [
+                                FlSpot(1, 1.8),
+                                FlSpot(3, 0.5),
+                                FlSpot(5, 4.4),
+                                FlSpot(7, 2.4),
+                                FlSpot(10, 1.2),
+                                FlSpot(12, 2.2),
+                                FlSpot(13, 3.8),
+                              ],
+                              isCurved: true,
+                              colors: [Color(0xFF2938C2)],
+                              barWidth: 4,
+                              isStrokeCapRound: true,
+                              dotData: FlDotData(
+                                show: true,
+                                dotColor: Colors.limeAccent,
+                              ),
+                              belowBarData: BelowBarData(
+                                show: false,
+                              ),
+                            ),
                           );
-                          print(aktivitasData.length);
-                          // _generateData();
+
+                          items.add(
+                            new PieChartSectionData(
+                              color: Color(0xFF2938C2),
+                              value: 15,
+                              title: "15%",
+                              radius: 20,
+                              titleStyle: TextStyle(
+                                fontSize: 10,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xffffffff),
+                              ),
+                            ),
+                          );
                         });
                       }
                     },
@@ -1214,11 +1586,90 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
             return new Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text("Donasi Terkumpul per periode",
-                    style: TextStyle(fontSize: 12)),
+                Text(
+                  "${nameIndex} terkumpul per periode",
+                  style: TextStyle(fontSize: 12),
+                ),
+                SizedBox(
+                  height: 20.0,
+                ),
                 Container(
                   height: 170,
-                  child: bezierLineTotal(),
+                  width: MediaQuery.of(context).size.width,
+                  child: FlChart(
+                    chart: LineChart(
+                      LineChartData(
+                        lineTouchData: LineTouchData(
+                          touchResponseSink: controller.sink,
+                          touchTooltipData: TouchTooltipData(
+                            tooltipBgColor: Colors.blueGrey.withOpacity(0.8),
+                          ),
+                        ),
+                        gridData: FlGridData(
+                          show: false,
+                        ),
+                        titlesData: FlTitlesData(
+                          horizontalTitlesTextStyle: TextStyle(
+                            color: Color(0xff72719b),
+                            fontSize: 15,
+                          ),
+                          horizontalTitleMargin: 10,
+                          getHorizontalTitles: (value) {
+                            switch (value.toInt()) {
+                              case 2:
+                                return "SEPT";
+                              case 7:
+                                return "OCT";
+                              case 12:
+                                return "DEC";
+                            }
+                            return "";
+                          },
+                          verticalTitlesTextStyle: TextStyle(
+                            color: Colors.grey,
+                            fontSize: 14,
+                          ),
+                          getVerticalTitles: (value) {
+                            switch (value.toInt()) {
+                              case 1:
+                                return "1m";
+                              case 2:
+                                return "2m";
+                              case 3:
+                                return "3m";
+                              case 4:
+                                return "5m";
+                            }
+                            return "";
+                          },
+                          verticalTitleMargin: 5,
+                          verticalTitlesReservedWidth: 20,
+                        ),
+                        borderData: FlBorderData(
+                            show: true,
+                            border: Border(
+                              bottom: BorderSide(
+                                color: Color(0xff4e4965),
+                                width: 4,
+                              ),
+                              left: BorderSide(
+                                color: Colors.transparent,
+                              ),
+                              right: BorderSide(
+                                color: Colors.transparent,
+                              ),
+                              top: BorderSide(
+                                color: Colors.transparent,
+                              ),
+                            )),
+                        minX: 0,
+                        maxX: 14,
+                        maxY: 4,
+                        minY: 0,
+                        lineBarsData: itemsLine,
+                      ),
+                    ),
+                  ),
                 ),
                 SizedBox(
                   height: 10.0,

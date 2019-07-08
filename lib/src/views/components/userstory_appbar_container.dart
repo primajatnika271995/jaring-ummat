@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:giffy_dialog/giffy_dialog.dart';
 import 'package:circular_profile_avatar/circular_profile_avatar.dart';
 import 'package:flutter_jaring_ummat/src/models/storiesModel.dart';
 import 'package:flutter_jaring_ummat/src/views/user_story.dart';
@@ -30,6 +32,13 @@ class UserStoryAppBarState extends State<UserStoryAppBar> {
           StreamBuilder(
             stream: bloc.storyFetchAll,
             builder: (context, AsyncSnapshot<List<Story>> snapshot) {
+              print('connState : ${snapshot.connectionState}');
+              // switch (snapshot.connectionState) {
+              //   case ConnectionState.none:
+              //     break;
+              //   default:
+              // }
+
               if (snapshot.hasData) {
                 return userStories(snapshot.data);
               } else if (snapshot.hasError) {
@@ -37,30 +46,26 @@ class UserStoryAppBarState extends State<UserStoryAppBar> {
               }
 
               if (snapshot.data == null) {
-                return Container(
-                  padding: EdgeInsets.only(top: 20.0),
-                  child: Center(
-                    child: Column(
-                      children: <Widget>[
-                        Image.asset(
-                          'assets/icon/img_not_found.png',
-                          height: 50.0,
-                          width: 50.0,
-                        ),
-                        SizedBox(
-                          height: 10.0,
-                        ),
-                        const Text(
-                          'Not found story for today. :(',
-                          style: TextStyle(
-                            color: Colors.black54,
-                            fontFamily: 'Proxima',
-                            fontWeight: FontWeight.bold
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                WidgetsBinding.instance.addPostFrameCallback(
+                  (_) => showDialog(
+                        context: (context),
+                        builder: (_) => NetworkGiffyDialog(
+                           image: Image.network('http://www.bandbazza.com/images/404.gif'),
+                              title: Text(
+                                'Connection to slow',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: 22.0,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              description: Text(
+                                'This is a granny eating chocolate dialog box. This library helps you easily create fancy giffy dialog',
+                                textAlign: TextAlign.center,
+                              ),
+                              onOkButtonPressed: () {},
+                            ),
+                      ),
                 );
               }
               return Container(

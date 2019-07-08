@@ -56,11 +56,14 @@ class ContainerProfileAccountState extends State<ContainerProfileAccount> {
           child: Row(
             children: <Widget>[
               Expanded(
-                flex: 2,
+                flex: 1,
                 child: containerIconProfileAccount(this.imgIcon),
               ),
+              SizedBox(
+                width: 10.0,
+              ),
               Expanded(
-                flex: 4,
+                flex: 3,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -73,6 +76,9 @@ class ContainerProfileAccountState extends State<ContainerProfileAccount> {
                     textTotalEvents(this.totalEvents)
                   ],
                 ),
+              ),
+              SizedBox(
+                width: 10.0,
               ),
               Expanded(
                 flex: 2,
@@ -117,10 +123,12 @@ class ContainerProfileAccountState extends State<ContainerProfileAccount> {
       width: 50.0,
       height: 50.0,
       decoration: BoxDecoration(
-          image: DecorationImage(
-        image: AssetImage(imgIcon),
-        fit: BoxFit.contain,
-      )),
+        borderRadius: BorderRadius.circular(30.0),
+        image: DecorationImage(
+          image: AssetImage(imgIcon),
+          fit: BoxFit.cover,
+        ),
+      ),
     );
   }
 

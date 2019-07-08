@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_jaring_ummat/src/models/program_amal.dart';
 import 'package:flutter_jaring_ummat/src/views/components/userstory_appbar_container.dart';
@@ -5,7 +6,10 @@ import 'package:flutter_jaring_ummat/src/views/page_program-amal/program_amal_co
 import 'package:flutter_jaring_ummat/src/views/components/appbar_custom_icons.dart';
 import 'package:flutter_jaring_ummat/src/bloc/programAmalBloc.dart'
     as programAmalBloc;
+import 'package:flutter_jaring_ummat/src/bloc/storiesBloc.dart' as storiesBloc;
 import 'package:flutter_jaring_ummat/src/views/page_program-amal/program_amal_content.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:giffy_dialog/giffy_dialog.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:toast/toast.dart';
 
@@ -20,6 +24,7 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
   @override
   void initState() {
     programAmalBloc.bloc.fetchAllProgramAmal(selectedCategory);
+    storiesBloc.bloc.fetchAllStories();
     // TODO: implement initState
     super.initState();
   }
@@ -106,22 +111,60 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
           ),
           body: CustomScrollView(
             slivers: <Widget>[
-              new SliverAppBar(
-                automaticallyImplyLeading: false,
-                bottom: PreferredSize(
-                  preferredSize: Size.fromHeight(100.0),
-                  child: Text(''),
-                ),
-                elevation: 20.0,
-                flexibleSpace: new Scaffold(
-                  backgroundColor: Colors.white,
-                  body: new UserStoryAppBar(),
-                ),
+              StreamBuilder(
+                stream: storiesBloc.bloc.storyFetchAll,
+                builder: (context, AsyncSnapshot snapshot) {
+                  print('connState : ${snapshot.connectionState}');
+                  if (snapshot.hasData && snapshot != null) {
+                    return SliverAppBar(
+                      automaticallyImplyLeading: false,
+                      bottom: PreferredSize(
+                        preferredSize: Size.fromHeight(100.0),
+                        child: Text(''),
+                      ),
+                      elevation: 20.0,
+                      flexibleSpace: new Scaffold(
+                        backgroundColor: Colors.white,
+                        body: new UserStoryAppBar(),
+                      ),
+                    );
+                  }
+
+                  // WidgetsBinding.instance.addPostFrameCallback(
+                  //   (_) => showDialog(
+                  //         context: (context),
+                  //         builder: (_) => NetworkGiffyDialog(
+                  //               image: Image.network(
+                  //                 'http://www.bandbazza.com/images/404.gif',
+                  //               ),
+                  //               title: Text(
+                  //                 'Story Message',
+                  //                 textAlign: TextAlign.center,
+                  //                 style: TextStyle(
+                  //                   fontSize: 22.0,
+                  //                   fontWeight: FontWeight.w600,
+                  //                 ),
+                  //               ),
+                  //               description: Text(
+                  //                 'No stories for Today or you not Follow more Account.',
+                  //                 textAlign: TextAlign.center,
+                  //               ),
+                  //               onOkButtonPressed: () {
+                  //                 Navigator.of(context).pop();
+                  //               },
+                  //             ),
+                  //       ),
+                  // );
+
+                  return SliverList(
+                    delegate: SliverChildListDelegate([]),
+                  );
+                },
               ),
               new SliverAppBar(
                 backgroundColor: Colors.white,
                 elevation: 10.0,
-                automaticallyImplyLeading: true,
+                automaticallyImplyLeading: false,
                 floating: true,
                 pinned: true,
                 flexibleSpace: AppBar(
@@ -225,7 +268,6 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                               );
                             case ConnectionState.waiting:
                               return shimmerLoading();
-
                             default:
                               if (snapshot.hasData && snapshot != null) {
                                 if (snapshot.data.length > 0) {
@@ -251,22 +293,19 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                               } else {
                                 return Container(
                                   width: 500.0,
-                                  margin: EdgeInsets.only(top: 10.0),
+                                  margin: EdgeInsets.only(top: 30.0),
                                   child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: <Widget>[
-                                      Image.asset(
-                                        'assets/icon/img_not_found.png',
-                                        width: 150.0,
-                                      ),
+                                      SvgPicture.asset('assets/icon/no-content.svg', height: 250.0,),
                                       Text(
                                         'Oops..',
                                         style: TextStyle(
                                           fontFamily: 'Proxima',
                                           fontWeight: FontWeight.bold,
-                                          fontSize: 17.0,
+                                          fontSize: 16.0,
                                         ),
                                       ),
                                       Text(
@@ -274,7 +313,8 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                                         style: TextStyle(
                                           fontFamily: 'Proxima',
                                           fontWeight: FontWeight.bold,
-                                          fontSize: 17.0,
+                                          color: Colors.grey,
+                                          fontSize: 15.0,
                                         ),
                                       ),
                                     ],

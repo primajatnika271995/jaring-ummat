@@ -63,6 +63,8 @@ dependencies:
   linkedin_login: ^0.1.5
   linkedin_auth: any
   flutter_simple_video_player: ^0.0.9
+  giffy_dialog: ^1.3.0
+  fl_chart: ^0.1.2
 
   flutter_facebook_login:
     git: https://github.com/lequanghiep74/flutter_facebook_login

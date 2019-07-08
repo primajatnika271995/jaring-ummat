@@ -195,6 +195,8 @@ class _BeritaContentState extends State<BeritaContent> {
             position: _current,
             decorator: DotsDecorator(
               spacing: const EdgeInsets.all(2.0),
+              activeColor: Colors.blueAccent,
+              color: Colors.white,
             ),
           ),
         ),

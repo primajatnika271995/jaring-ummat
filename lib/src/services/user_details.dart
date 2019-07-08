@@ -1,7 +1,6 @@
-import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:flutter_jaring_ummat/src/config/urls.dart';
-import 'package:http/http.dart' as http;
 
 class UserDetailsService {
   Response response;
