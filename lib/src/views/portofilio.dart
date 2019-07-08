@@ -5,6 +5,7 @@ import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter_fab_dialer/flutter_fab_dialer.dart';
 import 'package:bezier_chart/bezier_chart.dart';
+import 'package:toast/toast.dart';
 
 import '../views/components/icon_baru_icons.dart';
 import '../views/pembayaran_zakat.dart';
@@ -17,6 +18,10 @@ class Portofolio extends StatefulWidget {
 
 class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
   AnimationController _controller;
+
+  static const snackBarDuration = Duration(seconds: 3);
+  final scaffoldKey = GlobalKey<ScaffoldState>();
+  DateTime backButtonPressTime;
 
   List<PieChartSectionData> pieChartRawSections;
   List<PieChartSectionData> showingSections;
@@ -656,785 +661,790 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
       );
     }
 
-    return Scaffold(
-      body: DefaultTabController(
-        length: 6,
-        initialIndex: indexTab,
-        child: Scaffold(
-          appBar: PreferredSize(
-            preferredSize: Size.fromHeight(47.0),
-            child: AppBar(
-              elevation: 0.0,
-              backgroundColor: Colors.white,
-              title: new Text(
-                'Portofolio Tahun 2019',
-                style: TextStyle(fontSize: 16.0, color: Colors.grey[600]),
+    return WillPopScope(
+      onWillPop: onBackPressed,
+      child: Scaffold(
+        key: scaffoldKey,
+        body: DefaultTabController(
+          length: 6,
+          initialIndex: indexTab,
+          child: Scaffold(
+            appBar: PreferredSize(
+              preferredSize: Size.fromHeight(47.0),
+              child: AppBar(
+                elevation: 0.0,
+                backgroundColor: Colors.white,
+                title: new Text(
+                  'Portofolio Tahun 2019',
+                  style: TextStyle(fontSize: 16.0, color: Colors.grey[600]),
+                ),
+                centerTitle: false,
+                automaticallyImplyLeading: false,
+                actions: <Widget>[
+                  IconButton(
+                    onPressed: () {
+                      Scaffold.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Setting Menu Under Development'),
+                        ),
+                      );
+                    },
+                    icon: Icon(
+                      Icons.settings,
+                      color: Colors.grey[600],
+                    ),
+                  ),
+                ],
               ),
-              centerTitle: false,
-              automaticallyImplyLeading: false,
-              actions: <Widget>[
-                IconButton(
-                  onPressed: () {
-                    Scaffold.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text('Setting Menu Under Development'),
+            ),
+            body: CustomScrollView(
+              slivers: <Widget>[
+                new SliverAppBar(
+                  elevation: 1.0,
+                  automaticallyImplyLeading: false,
+                  flexibleSpace: AppBar(
+                    elevation: 3.0,
+                    automaticallyImplyLeading: false,
+                    flexibleSpace: new Container(
+                      padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
+                      color: Colors.white,
+                      child: new Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Expanded(
+                            flex: 2,
+                            child: leftSection(),
+                          ),
+                          VerticalDivider(
+                            color: Colors.grey,
+                          ),
+                          Expanded(
+                            flex: 4,
+                            child: middleSection(),
+                          ),
+                          VerticalDivider(
+                            color: Colors.grey,
+                          ),
+                          Expanded(
+                            flex: 4,
+                            child: rightSection(),
+                          ),
+                        ],
                       ),
-                    );
-                  },
-                  icon: Icon(
-                    Icons.settings,
-                    color: Colors.grey[600],
+                    ),
                   ),
                 ),
-              ],
-            ),
-          ),
-          body: CustomScrollView(
-            slivers: <Widget>[
-              new SliverAppBar(
-                elevation: 1.0,
-                automaticallyImplyLeading: false,
-                flexibleSpace: AppBar(
-                  elevation: 3.0,
+                new SliverAppBar(
                   automaticallyImplyLeading: false,
-                  flexibleSpace: new Container(
-                    padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
-                    color: Colors.white,
-                    child: new Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  bottom: PreferredSize(
+                    preferredSize: Size.fromHeight(160.0),
+                    child: Text(''),
+                  ),
+                  flexibleSpace: AppBar(
+                    elevation: 0.0,
+                    backgroundColor: Colors.white,
+                    automaticallyImplyLeading: false,
+                    flexibleSpace: Stack(
                       children: <Widget>[
-                        Expanded(
-                          flex: 2,
-                          child: leftSection(),
+                        Container(
+                          padding: EdgeInsets.only(
+                            right: 50.0,
+                            top: 20.0,
+                            left: 20.0,
+                          ),
+                          child: Row(
+                            children: <Widget>[
+                              Expanded(
+                                child: AspectRatio(
+                                  aspectRatio: 1,
+                                  child: FlChart(
+                                    chart: PieChart(
+                                      PieChartData(
+                                        pieTouchData: PieTouchData(
+                                          touchResponseStreamSink:
+                                              pieTouchedResultStreamController
+                                                  .sink,
+                                        ),
+                                        borderData: FlBorderData(
+                                          show: false,
+                                        ),
+                                        sectionsSpace: 5,
+                                        centerSpaceRadius: 55,
+                                        sections: showingSections,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Column(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Indicator(
+                                    color: Color(0xff0293ee),
+                                    text: "Donasi",
+                                    size: 10.0,
+                                    isSquare: false,
+                                  ),
+                                  SizedBox(
+                                    height: 4,
+                                  ),
+                                  Indicator(
+                                    color: Color(0xfff8b250),
+                                    text: "Zakat",
+                                    size: 10.0,
+                                    isSquare: false,
+                                  ),
+                                  SizedBox(
+                                    height: 4,
+                                  ),
+                                  Indicator(
+                                    color: Color(0xFFDEDE71),
+                                    text: "Wakaf",
+                                    size: 10.0,
+                                    isSquare: false,
+                                  ),
+                                  SizedBox(
+                                    height: 4,
+                                  ),
+                                  Indicator(
+                                    color: Color(0xFFDB4B1F),
+                                    text: "Shodaqoh",
+                                    size: 10.0,
+                                    isSquare: false,
+                                  ),
+                                  SizedBox(
+                                    height: 4,
+                                  ),
+                                  Indicator(
+                                    color: Color(0xFF2938C2),
+                                    text: "Infaq",
+                                    size: 10.0,
+                                    isSquare: false,
+                                  ),
+                                  SizedBox(
+                                    height: 20,
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                width: 28,
+                              ),
+                            ],
+                          ),
                         ),
-                        VerticalDivider(
-                          color: Colors.grey,
+                        Positioned(
+                          left: 74.0,
+                          top: 100.0,
+                          child: const Text(
+                            "Total Aktivitas Amal",
+                            style:
+                                TextStyle(color: Colors.grey, fontSize: 10.0),
+                          ),
                         ),
-                        Expanded(
-                          flex: 4,
-                          child: middleSection(),
+                        Positioned(
+                          left: 72.0,
+                          top: 113.0,
+                          child: const Text(
+                            "Rp",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 12.0),
+                          ),
                         ),
-                        VerticalDivider(
-                          color: Colors.grey,
+                        Positioned(
+                          left: 88.0,
+                          top: 113.0,
+                          child: const Text(
+                            "8.950.420",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 17.0,
+                            ),
+                          ),
                         ),
-                        Expanded(
-                          flex: 4,
-                          child: rightSection(),
+                        Positioned(
+                          left: 10.0,
+                          top: 10.0,
+                          child: const Text(
+                            "Sebaran Aktivitas Amal",
+                            style: TextStyle(
+                              fontSize: 12.0,
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                          right: 10.0,
+                          top: 10.0,
+                          child: InkWell(
+                            onTap: () {},
+                            child: const Text(
+                              "Selanjutnya",
+                              style: TextStyle(
+                                fontSize: 12.0,
+                                color: Colors.blue,
+                              ),
+                            ),
+                          ),
                         ),
                       ],
                     ),
                   ),
                 ),
-              ),
-              new SliverAppBar(
-                automaticallyImplyLeading: false,
-                bottom: PreferredSize(
-                  preferredSize: Size.fromHeight(160.0),
-                  child: Text(''),
-                ),
-                flexibleSpace: AppBar(
-                  elevation: 0.0,
+                new SliverAppBar(
                   backgroundColor: Colors.white,
                   automaticallyImplyLeading: false,
-                  flexibleSpace: Stack(
-                    children: <Widget>[
-                      Container(
-                        padding: EdgeInsets.only(
-                          right: 50.0,
-                          top: 20.0,
-                          left: 20.0,
-                        ),
-                        child: Row(
-                          children: <Widget>[
-                            Expanded(
-                              child: AspectRatio(
-                                aspectRatio: 1,
-                                child: FlChart(
-                                  chart: PieChart(
-                                    PieChartData(
-                                      pieTouchData: PieTouchData(
-                                        touchResponseStreamSink:
-                                            pieTouchedResultStreamController
-                                                .sink,
-                                      ),
-                                      borderData: FlBorderData(
-                                        show: false,
-                                      ),
-                                      sectionsSpace: 5,
-                                      centerSpaceRadius: 55,
-                                      sections: showingSections,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Column(
-                              mainAxisSize: MainAxisSize.max,
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Indicator(
-                                  color: Color(0xff0293ee),
-                                  text: "Donasi",
-                                  size: 10.0,
-                                  isSquare: false,
-                                ),
-                                SizedBox(
-                                  height: 4,
-                                ),
-                                Indicator(
-                                  color: Color(0xfff8b250),
-                                  text: "Zakat",
-                                  size: 10.0,
-                                  isSquare: false,
-                                ),
-                                SizedBox(
-                                  height: 4,
-                                ),
-                                Indicator(
-                                  color: Color(0xFFDEDE71),
-                                  text: "Wakaf",
-                                  size: 10.0,
-                                  isSquare: false,
-                                ),
-                                SizedBox(
-                                  height: 4,
-                                ),
-                                Indicator(
-                                  color: Color(0xFFDB4B1F),
-                                  text: "Shodaqoh",
-                                  size: 10.0,
-                                  isSquare: false,
-                                ),
-                                SizedBox(
-                                  height: 4,
-                                ),
-                                Indicator(
-                                  color: Color(0xFF2938C2),
-                                  text: "Infaq",
-                                  size: 10.0,
-                                  isSquare: false,
-                                ),
-                                SizedBox(
-                                  height: 20,
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              width: 28,
-                            ),
-                          ],
-                        ),
+                  floating: true,
+                  pinned: true,
+                  flexibleSpace: AppBar(
+                    elevation: 3.0,
+                    backgroundColor: Colors.white,
+                    automaticallyImplyLeading: false,
+                    bottom: TabBar(
+                      isScrollable: true,
+                      indicator: UnderlineTabIndicator(
+                        borderSide:
+                            BorderSide(width: 4.0, color: Colors.blueAccent),
                       ),
-                      Positioned(
-                        left: 74.0,
-                        top: 100.0,
-                        child: const Text(
-                          "Total Aktivitas Amal",
-                          style: TextStyle(color: Colors.grey, fontSize: 10.0),
-                        ),
-                      ),
-                      Positioned(
-                        left: 72.0,
-                        top: 113.0,
-                        child: const Text(
-                          "Rp",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 12.0),
-                        ),
-                      ),
-                      Positioned(
-                        left: 88.0,
-                        top: 113.0,
-                        child: const Text(
-                          "8.950.420",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 17.0,
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        left: 10.0,
-                        top: 10.0,
-                        child: const Text(
-                          "Sebaran Aktivitas Amal",
-                          style: TextStyle(
-                            fontSize: 12.0,
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        right: 10.0,
-                        top: 10.0,
-                        child: InkWell(
-                          onTap: () {},
-                          child: const Text(
-                            "Selanjutnya",
-                            style: TextStyle(
-                              fontSize: 12.0,
-                              color: Colors.blue,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              new SliverAppBar(
-                backgroundColor: Colors.white,
-                automaticallyImplyLeading: false,
-                floating: true,
-                pinned: true,
-                flexibleSpace: AppBar(
-                  elevation: 3.0,
-                  backgroundColor: Colors.white,
-                  automaticallyImplyLeading: false,
-                  bottom: TabBar(
-                    isScrollable: true,
-                    indicator: UnderlineTabIndicator(
-                      borderSide:
-                          BorderSide(width: 4.0, color: Colors.blueAccent),
-                    ),
-                    labelColor: Colors.black,
-                    onTap: (int index) {
-                      if (index == 0) {
-                        setState(() {
-                          this.nameIndex = 'Total';
-                          items.clear();
-                          itemsLine.clear();
+                      labelColor: Colors.black,
+                      onTap: (int index) {
+                        if (index == 0) {
+                          setState(() {
+                            this.nameIndex = 'Total';
+                            items.clear();
+                            itemsLine.clear();
 
-                          itemsLine.add(
-                            new LineChartBarData(
-                              spots: [
-                                FlSpot(1, 1),
-                                FlSpot(3, 1.5),
-                                FlSpot(5, 1.4),
-                                FlSpot(7, 3.4),
-                                FlSpot(10, 2),
-                                FlSpot(12, 1.2),
-                                FlSpot(13, 1.8),
-                              ],
-                              isCurved: true,
-                              colors: [Colors.blueAccent],
-                              barWidth: 4,
-                              isStrokeCapRound: true,
-                              dotData: FlDotData(
-                                show: true,
-                                dotColor: Colors.grey,
+                            itemsLine.add(
+                              new LineChartBarData(
+                                spots: [
+                                  FlSpot(1, 1),
+                                  FlSpot(3, 1.5),
+                                  FlSpot(5, 1.4),
+                                  FlSpot(7, 3.4),
+                                  FlSpot(10, 2),
+                                  FlSpot(12, 1.2),
+                                  FlSpot(13, 1.8),
+                                ],
+                                isCurved: true,
+                                colors: [Colors.blueAccent],
+                                barWidth: 4,
+                                isStrokeCapRound: true,
+                                dotData: FlDotData(
+                                  show: true,
+                                  dotColor: Colors.grey,
+                                ),
+                                belowBarData: BelowBarData(
+                                  show: false,
+                                ),
                               ),
-                              belowBarData: BelowBarData(
-                                show: false,
-                              ),
-                            ),
-                          );
+                            );
 
-                          itemsLine.add(
-                            new LineChartBarData(
-                              spots: [
-                                FlSpot(1, 2.1),
-                                FlSpot(3, 3.5),
-                                FlSpot(5, 0.4),
-                                FlSpot(7, 1.4),
-                                FlSpot(10, 0.2),
-                                FlSpot(12, 2.2),
-                                FlSpot(13, 1.8),
-                              ],
-                              isCurved: true,
-                              colors: [Color(0xFFDEDE71)],
-                              barWidth: 4,
-                              isStrokeCapRound: true,
-                              dotData: FlDotData(
-                                show: true,
-                                dotColor: Colors.grey,
+                            itemsLine.add(
+                              new LineChartBarData(
+                                spots: [
+                                  FlSpot(1, 2.1),
+                                  FlSpot(3, 3.5),
+                                  FlSpot(5, 0.4),
+                                  FlSpot(7, 1.4),
+                                  FlSpot(10, 0.2),
+                                  FlSpot(12, 2.2),
+                                  FlSpot(13, 1.8),
+                                ],
+                                isCurved: true,
+                                colors: [Color(0xFFDEDE71)],
+                                barWidth: 4,
+                                isStrokeCapRound: true,
+                                dotData: FlDotData(
+                                  show: true,
+                                  dotColor: Colors.grey,
+                                ),
+                                belowBarData: BelowBarData(
+                                  show: false,
+                                ),
                               ),
-                              belowBarData: BelowBarData(
-                                show: false,
-                              ),
-                            ),
-                          );
+                            );
 
-                          items.add(
-                            new PieChartSectionData(
-                              color: Color(0xFF2938C2),
-                              value: 15,
-                              title: "15%",
-                              radius: 20,
-                              titleStyle: TextStyle(
-                                fontSize: 10,
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xffffffff),
-                              ),
-                            ),
-                          );
-                          items.add(
-                            new PieChartSectionData(
-                              color: Color(0xFFDB7E27),
-                              value: 30,
-                              title: "30%",
-                              radius: 20,
-                              titleStyle: TextStyle(
-                                fontSize: 10,
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xffffffff),
-                              ),
-                            ),
-                          );
-                          items.add(
-                            new PieChartSectionData(
-                              color: Color(0xFF3A5F99),
-                              value: 40,
-                              title: "40%",
-                              radius: 20,
-                              titleStyle: TextStyle(
-                                fontSize: 10,
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xffffffff),
-                              ),
-                            ),
-                          );
-                          items.add(
-                            new PieChartSectionData(
-                              color: Color(0xFFDEDE71),
-                              value: 15,
-                              title: "15%",
-                              radius: 20,
-                              titleStyle: TextStyle(
+                            items.add(
+                              new PieChartSectionData(
+                                color: Color(0xFF2938C2),
+                                value: 15,
+                                title: "15%",
+                                radius: 20,
+                                titleStyle: TextStyle(
                                   fontSize: 10,
                                   fontWeight: FontWeight.bold,
-                                  color: Color(0xffffffff)),
-                            ),
-                          );
-                          items.add(
-                            new PieChartSectionData(
-                              color: Color(0xFFDB4B1F),
-                              value: 15,
-                              title: "15%",
-                              radius: 20,
-                              titleStyle: TextStyle(
-                                fontSize: 10,
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xffffffff),
-                              ),
-                            ),
-                          );
-                        });
-                      }
-                      if (index == 1) {
-                        setState(() {
-                          this.nameIndex = 'Donasi';
-                          items.clear();
-                          itemsLine.clear();
-
-                          itemsLine.add(
-                            new LineChartBarData(
-                              spots: [
-                                FlSpot(1, 2.0),
-                                FlSpot(3, 1.0),
-                                FlSpot(5, 0.4),
-                                FlSpot(7, 4.4),
-                                FlSpot(10, 1),
-                                FlSpot(12, 3.2),
-                                FlSpot(13, 2.8),
-                              ],
-                              isCurved: true,
-                              colors: [Color(0xFF3A5F99)],
-                              barWidth: 4,
-                              isStrokeCapRound: true,
-                              dotData: FlDotData(
-                                show: true,
-                                dotColor: Colors.green,
-                              ),
-                              belowBarData: BelowBarData(
-                                show: false,
-                              ),
-                            ),
-                          );
-
-                          items.add(
-                            new PieChartSectionData(
-                              color: Color(0xFF3A5F99),
-                              value: 30,
-                              title: "30%",
-                              radius: 20,
-                              titleStyle: TextStyle(
-                                fontSize: 10,
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xffffffff),
-                              ),
-                            ),
-                          );
-                        });
-                      }
-                      if (index == 2) {
-                        setState(() {
-                          this.nameIndex = 'Zakat';
-                          items.clear();
-                          itemsLine.clear();
-
-                          itemsLine.add(
-                            new LineChartBarData(
-                              spots: [
-                                FlSpot(1, 4.0),
-                                FlSpot(3, 0.5),
-                                FlSpot(5, 2.4),
-                                FlSpot(7, 1.4),
-                                FlSpot(10, 2.9),
-                                FlSpot(12, 4.2),
-                                FlSpot(13, 2.1),
-                              ],
-                              isCurved: true,
-                              colors: [Color(0xFFDB7E27)],
-                              barWidth: 4,
-                              isStrokeCapRound: true,
-                              dotData: FlDotData(
-                                show: true,
-                                dotColor: Colors.redAccent,
-                              ),
-                              belowBarData: BelowBarData(
-                                show: false,
-                              ),
-                            ),
-                          );
-
-                          items.add(
-                            new PieChartSectionData(
-                              color: Color(0xFFDB7E27),
-                              value: 30,
-                              title: "30%",
-                              radius: 20,
-                              titleStyle: TextStyle(
-                                fontSize: 10,
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xffffffff),
-                              ),
-                            ),
-                          );
-                        });
-                      }
-                      if (index == 3) {
-                        setState(() {
-                          this.nameIndex = 'Wakaf';
-                          items.clear();
-                          itemsLine.clear();
-
-                          itemsLine.add(
-                            new LineChartBarData(
-                              spots: [
-                                FlSpot(1, 0.1),
-                                FlSpot(3, 3.2),
-                                FlSpot(5, 2.4),
-                                FlSpot(7, 4.4),
-                                FlSpot(10, 2.2),
-                                FlSpot(12, 0.2),
-                                FlSpot(13, 1.8),
-                              ],
-                              isCurved: true,
-                              colors: [Color(0xFFDEDE71)],
-                              barWidth: 3,
-                              isStrokeCapRound: true,
-                              dotData: FlDotData(
-                                show: true,
-                                dotColor: Colors.redAccent,
-                              ),
-                              belowBarData: BelowBarData(
-                                show: false,
-                              ),
-                            ),
-                          );
-
-                          items.add(
-                            new PieChartSectionData(
-                              color: Color(0xFFDEDE71),
-                              value: 15,
-                              title: "15%",
-                              radius: 20,
-                              titleStyle: TextStyle(
-                                fontSize: 10,
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xffffffff),
-                              ),
-                            ),
-                          );
-                        });
-                      }
-                      if (index == 4) {
-                        setState(() {
-                          this.nameIndex = 'Shodaqoh';
-                          items.clear();
-                          itemsLine.clear();
-
-                          itemsLine.add(
-                            new LineChartBarData(
-                              spots: [
-                                FlSpot(1, 1),
-                                FlSpot(3, 0.5),
-                                FlSpot(5, 3.4),
-                                FlSpot(7, 1.4),
-                                FlSpot(10, 2.9),
-                                FlSpot(12, 4.0),
-                                FlSpot(13, 4.8),
-                              ],
-                              isCurved: true,
-                              colors: [Color(0xFFDB4B1F)],
-                              barWidth: 4,
-                              isStrokeCapRound: true,
-                              dotData: FlDotData(
-                                show: true,
-                                dotColor: Colors.indigo,
-                              ),
-                              belowBarData: BelowBarData(
-                                show: false,
-                              ),
-                            ),
-                          );
-
-                          items.add(
-                            new PieChartSectionData(
-                              color: Color(0xFFDB4B1F),
-                              value: 15,
-                              title: "15%",
-                              radius: 20,
-                              titleStyle: TextStyle(
-                                fontSize: 10,
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xffffffff),
-                              ),
-                            ),
-                          );
-                        });
-                      }
-                      if (index == 5) {
-                        setState(() {
-                          this.nameIndex = 'Infaq';
-                          items.clear();
-                          itemsLine.clear();
-
-                          itemsLine.add(
-                            new LineChartBarData(
-                              spots: [
-                                FlSpot(1, 1.8),
-                                FlSpot(3, 0.5),
-                                FlSpot(5, 4.4),
-                                FlSpot(7, 2.4),
-                                FlSpot(10, 1.2),
-                                FlSpot(12, 2.2),
-                                FlSpot(13, 3.8),
-                              ],
-                              isCurved: true,
-                              colors: [Color(0xFF2938C2)],
-                              barWidth: 4,
-                              isStrokeCapRound: true,
-                              dotData: FlDotData(
-                                show: true,
-                                dotColor: Colors.limeAccent,
-                              ),
-                              belowBarData: BelowBarData(
-                                show: false,
-                              ),
-                            ),
-                          );
-
-                          items.add(
-                            new PieChartSectionData(
-                              color: Color(0xFF2938C2),
-                              value: 15,
-                              title: "15%",
-                              radius: 20,
-                              titleStyle: TextStyle(
-                                fontSize: 10,
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xffffffff),
-                              ),
-                            ),
-                          );
-                        });
-                      }
-                    },
-                    tabs: <Widget>[
-                      new Tab(
-                        child: Column(
-                          children: <Widget>[
-                            const Text(
-                              'Total',
-                              style: TextStyle(
-                                color: Color(0xFF3A5F99),
-                              ),
-                            ),
-                            new Row(
-                              children: <Widget>[
-                                const Text(
-                                  'Rp',
-                                  style: TextStyle(
-                                    fontSize: 11.0,
-                                  ),
+                                  color: Color(0xffffffff),
                                 ),
-                                const Text(
-                                  '8.950.420',
-                                  style: TextStyle(
-                                    fontSize: 13.0,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                      new Tab(
-                        child: Column(
-                          children: <Widget>[
-                            const Text(
-                              'Donasi',
-                              style: TextStyle(
-                                color: Color(0xFF3A5F99),
                               ),
-                            ),
-                            new Row(
-                              children: <Widget>[
-                                const Text(
-                                  'Rp',
-                                  style: TextStyle(
-                                    fontSize: 11.0,
-                                  ),
-                                ),
-                                const Text(
-                                  '2.506.116',
-                                  style: TextStyle(
-                                    fontSize: 13.0,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                      new Tab(
-                        child: Column(
-                          children: <Widget>[
-                            const Text(
-                              'Zakat',
-                              style: TextStyle(
+                            );
+                            items.add(
+                              new PieChartSectionData(
                                 color: Color(0xFFDB7E27),
+                                value: 30,
+                                title: "30%",
+                                radius: 20,
+                                titleStyle: TextStyle(
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xffffffff),
+                                ),
                               ),
-                            ),
-                            new Row(
-                              children: <Widget>[
-                                const Text(
-                                  'Rp',
-                                  style: TextStyle(
-                                    fontSize: 11.0,
-                                  ),
+                            );
+                            items.add(
+                              new PieChartSectionData(
+                                color: Color(0xFF3A5F99),
+                                value: 40,
+                                title: "40%",
+                                radius: 20,
+                                titleStyle: TextStyle(
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xffffffff),
                                 ),
-                                const Text(
-                                  '2.506.116',
-                                  style: TextStyle(
-                                    fontSize: 13.0,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                      new Tab(
-                        child: Column(
-                          children: <Widget>[
-                            const Text(
-                              'Wakaf',
-                              style: TextStyle(
+                              ),
+                            );
+                            items.add(
+                              new PieChartSectionData(
                                 color: Color(0xFFDEDE71),
+                                value: 15,
+                                title: "15%",
+                                radius: 20,
+                                titleStyle: TextStyle(
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.bold,
+                                    color: Color(0xffffffff)),
                               ),
-                            ),
-                            new Row(
-                              children: <Widget>[
-                                const Text(
-                                  'Rp',
-                                  style: TextStyle(fontSize: 11.0),
-                                ),
-                                const Text(
-                                  '2.506.116',
-                                  style: TextStyle(fontSize: 13.0),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                      new Tab(
-                        child: Column(
-                          children: <Widget>[
-                            const Text(
-                              'Shodaqoh',
-                              style: TextStyle(
+                            );
+                            items.add(
+                              new PieChartSectionData(
                                 color: Color(0xFFDB4B1F),
+                                value: 15,
+                                title: "15%",
+                                radius: 20,
+                                titleStyle: TextStyle(
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xffffffff),
+                                ),
                               ),
-                            ),
-                            new Row(
-                              children: <Widget>[
-                                const Text(
-                                  'Rp',
-                                  style: TextStyle(fontSize: 11.0),
+                            );
+                          });
+                        }
+                        if (index == 1) {
+                          setState(() {
+                            this.nameIndex = 'Donasi';
+                            items.clear();
+                            itemsLine.clear();
+
+                            itemsLine.add(
+                              new LineChartBarData(
+                                spots: [
+                                  FlSpot(1, 2.0),
+                                  FlSpot(3, 1.0),
+                                  FlSpot(5, 0.4),
+                                  FlSpot(7, 4.4),
+                                  FlSpot(10, 1),
+                                  FlSpot(12, 3.2),
+                                  FlSpot(13, 2.8),
+                                ],
+                                isCurved: true,
+                                colors: [Color(0xFF3A5F99)],
+                                barWidth: 4,
+                                isStrokeCapRound: true,
+                                dotData: FlDotData(
+                                  show: true,
+                                  dotColor: Colors.green,
                                 ),
-                                const Text(
-                                  '2.506.116',
-                                  style: TextStyle(fontSize: 13.0),
+                                belowBarData: BelowBarData(
+                                  show: false,
                                 ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                      new Tab(
-                        child: Column(
-                          children: <Widget>[
-                            const Text(
-                              'Infaq',
-                              style: TextStyle(
+                              ),
+                            );
+
+                            items.add(
+                              new PieChartSectionData(
+                                color: Color(0xFF3A5F99),
+                                value: 30,
+                                title: "30%",
+                                radius: 20,
+                                titleStyle: TextStyle(
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xffffffff),
+                                ),
+                              ),
+                            );
+                          });
+                        }
+                        if (index == 2) {
+                          setState(() {
+                            this.nameIndex = 'Zakat';
+                            items.clear();
+                            itemsLine.clear();
+
+                            itemsLine.add(
+                              new LineChartBarData(
+                                spots: [
+                                  FlSpot(1, 4.0),
+                                  FlSpot(3, 0.5),
+                                  FlSpot(5, 2.4),
+                                  FlSpot(7, 1.4),
+                                  FlSpot(10, 2.9),
+                                  FlSpot(12, 4.2),
+                                  FlSpot(13, 2.1),
+                                ],
+                                isCurved: true,
+                                colors: [Color(0xFFDB7E27)],
+                                barWidth: 4,
+                                isStrokeCapRound: true,
+                                dotData: FlDotData(
+                                  show: true,
+                                  dotColor: Colors.redAccent,
+                                ),
+                                belowBarData: BelowBarData(
+                                  show: false,
+                                ),
+                              ),
+                            );
+
+                            items.add(
+                              new PieChartSectionData(
+                                color: Color(0xFFDB7E27),
+                                value: 30,
+                                title: "30%",
+                                radius: 20,
+                                titleStyle: TextStyle(
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xffffffff),
+                                ),
+                              ),
+                            );
+                          });
+                        }
+                        if (index == 3) {
+                          setState(() {
+                            this.nameIndex = 'Wakaf';
+                            items.clear();
+                            itemsLine.clear();
+
+                            itemsLine.add(
+                              new LineChartBarData(
+                                spots: [
+                                  FlSpot(1, 0.1),
+                                  FlSpot(3, 3.2),
+                                  FlSpot(5, 2.4),
+                                  FlSpot(7, 4.4),
+                                  FlSpot(10, 2.2),
+                                  FlSpot(12, 0.2),
+                                  FlSpot(13, 1.8),
+                                ],
+                                isCurved: true,
+                                colors: [Color(0xFFDEDE71)],
+                                barWidth: 3,
+                                isStrokeCapRound: true,
+                                dotData: FlDotData(
+                                  show: true,
+                                  dotColor: Colors.redAccent,
+                                ),
+                                belowBarData: BelowBarData(
+                                  show: false,
+                                ),
+                              ),
+                            );
+
+                            items.add(
+                              new PieChartSectionData(
+                                color: Color(0xFFDEDE71),
+                                value: 15,
+                                title: "15%",
+                                radius: 20,
+                                titleStyle: TextStyle(
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xffffffff),
+                                ),
+                              ),
+                            );
+                          });
+                        }
+                        if (index == 4) {
+                          setState(() {
+                            this.nameIndex = 'Shodaqoh';
+                            items.clear();
+                            itemsLine.clear();
+
+                            itemsLine.add(
+                              new LineChartBarData(
+                                spots: [
+                                  FlSpot(1, 1),
+                                  FlSpot(3, 0.5),
+                                  FlSpot(5, 3.4),
+                                  FlSpot(7, 1.4),
+                                  FlSpot(10, 2.9),
+                                  FlSpot(12, 4.0),
+                                  FlSpot(13, 4.8),
+                                ],
+                                isCurved: true,
+                                colors: [Color(0xFFDB4B1F)],
+                                barWidth: 4,
+                                isStrokeCapRound: true,
+                                dotData: FlDotData(
+                                  show: true,
+                                  dotColor: Colors.indigo,
+                                ),
+                                belowBarData: BelowBarData(
+                                  show: false,
+                                ),
+                              ),
+                            );
+
+                            items.add(
+                              new PieChartSectionData(
+                                color: Color(0xFFDB4B1F),
+                                value: 15,
+                                title: "15%",
+                                radius: 20,
+                                titleStyle: TextStyle(
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xffffffff),
+                                ),
+                              ),
+                            );
+                          });
+                        }
+                        if (index == 5) {
+                          setState(() {
+                            this.nameIndex = 'Infaq';
+                            items.clear();
+                            itemsLine.clear();
+
+                            itemsLine.add(
+                              new LineChartBarData(
+                                spots: [
+                                  FlSpot(1, 1.8),
+                                  FlSpot(3, 0.5),
+                                  FlSpot(5, 4.4),
+                                  FlSpot(7, 2.4),
+                                  FlSpot(10, 1.2),
+                                  FlSpot(12, 2.2),
+                                  FlSpot(13, 3.8),
+                                ],
+                                isCurved: true,
+                                colors: [Color(0xFF2938C2)],
+                                barWidth: 4,
+                                isStrokeCapRound: true,
+                                dotData: FlDotData(
+                                  show: true,
+                                  dotColor: Colors.limeAccent,
+                                ),
+                                belowBarData: BelowBarData(
+                                  show: false,
+                                ),
+                              ),
+                            );
+
+                            items.add(
+                              new PieChartSectionData(
                                 color: Color(0xFF2938C2),
+                                value: 15,
+                                title: "15%",
+                                radius: 20,
+                                titleStyle: TextStyle(
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xffffffff),
+                                ),
                               ),
-                            ),
-                            new Row(
-                              children: <Widget>[
-                                const Text(
-                                  'Rp',
-                                  style: TextStyle(fontSize: 11.0),
+                            );
+                          });
+                        }
+                      },
+                      tabs: <Widget>[
+                        new Tab(
+                          child: Column(
+                            children: <Widget>[
+                              const Text(
+                                'Total',
+                                style: TextStyle(
+                                  color: Color(0xFF3A5F99),
                                 ),
-                                const Text(
-                                  '2.506.116',
-                                  style: TextStyle(fontSize: 13.0),
-                                ),
-                              ],
-                            ),
-                          ],
+                              ),
+                              new Row(
+                                children: <Widget>[
+                                  const Text(
+                                    'Rp',
+                                    style: TextStyle(
+                                      fontSize: 11.0,
+                                    ),
+                                  ),
+                                  const Text(
+                                    '8.950.420',
+                                    style: TextStyle(
+                                      fontSize: 13.0,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
+                        new Tab(
+                          child: Column(
+                            children: <Widget>[
+                              const Text(
+                                'Donasi',
+                                style: TextStyle(
+                                  color: Color(0xFF3A5F99),
+                                ),
+                              ),
+                              new Row(
+                                children: <Widget>[
+                                  const Text(
+                                    'Rp',
+                                    style: TextStyle(
+                                      fontSize: 11.0,
+                                    ),
+                                  ),
+                                  const Text(
+                                    '2.506.116',
+                                    style: TextStyle(
+                                      fontSize: 13.0,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                        new Tab(
+                          child: Column(
+                            children: <Widget>[
+                              const Text(
+                                'Zakat',
+                                style: TextStyle(
+                                  color: Color(0xFFDB7E27),
+                                ),
+                              ),
+                              new Row(
+                                children: <Widget>[
+                                  const Text(
+                                    'Rp',
+                                    style: TextStyle(
+                                      fontSize: 11.0,
+                                    ),
+                                  ),
+                                  const Text(
+                                    '2.506.116',
+                                    style: TextStyle(
+                                      fontSize: 13.0,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                        new Tab(
+                          child: Column(
+                            children: <Widget>[
+                              const Text(
+                                'Wakaf',
+                                style: TextStyle(
+                                  color: Color(0xFFDEDE71),
+                                ),
+                              ),
+                              new Row(
+                                children: <Widget>[
+                                  const Text(
+                                    'Rp',
+                                    style: TextStyle(fontSize: 11.0),
+                                  ),
+                                  const Text(
+                                    '2.506.116',
+                                    style: TextStyle(fontSize: 13.0),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                        new Tab(
+                          child: Column(
+                            children: <Widget>[
+                              const Text(
+                                'Shodaqoh',
+                                style: TextStyle(
+                                  color: Color(0xFFDB4B1F),
+                                ),
+                              ),
+                              new Row(
+                                children: <Widget>[
+                                  const Text(
+                                    'Rp',
+                                    style: TextStyle(fontSize: 11.0),
+                                  ),
+                                  const Text(
+                                    '2.506.116',
+                                    style: TextStyle(fontSize: 13.0),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                        new Tab(
+                          child: Column(
+                            children: <Widget>[
+                              const Text(
+                                'Infaq',
+                                style: TextStyle(
+                                  color: Color(0xFF2938C2),
+                                ),
+                              ),
+                              new Row(
+                                children: <Widget>[
+                                  const Text(
+                                    'Rp',
+                                    style: TextStyle(fontSize: 11.0),
+                                  ),
+                                  const Text(
+                                    '2.506.116',
+                                    style: TextStyle(fontSize: 13.0),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                new SliverList(
+                  delegate: SliverChildListDelegate(
+                    [
+                      new Column(
+                        children: <Widget>[_buildListItem()],
                       ),
                     ],
                   ),
                 ),
-              ),
-              new SliverList(
-                delegate: SliverChildListDelegate(
-                  [
-                    new Column(
-                      children: <Widget>[_buildListItem()],
-                    ),
-                  ],
+              ],
+            ),
+            floatingActionButton: new Stack(
+              children: <Widget>[
+                new Container(
+                  child: new FabDialer(
+                    _fabMiniMenuItemList,
+                    Colors.lightGreen,
+                    new Icon(IconBaru.add_donation_zakat_etc),
+                  ),
                 ),
-              ),
-            ],
-          ),
-          floatingActionButton: new Stack(
-            children: <Widget>[
-              new Container(
-                child: new FabDialer(
-                  _fabMiniMenuItemList,
-                  Colors.lightGreen,
-                  new Icon(IconBaru.add_donation_zakat_etc),
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -1752,12 +1762,21 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
       ],
     );
   }
-}
 
-class AktivitasAmal {
-  String task;
-  double taskvalue;
-  Color colorval;
+  Future<bool> onBackPressed() async {
+    DateTime currentTime = DateTime.now();
 
-  AktivitasAmal(this.task, this.taskvalue, this.colorval);
+    bool backButtonHasNotBeenPressedOrSnackBarHasBeenClosed =
+        backButtonPressTime == null ||
+            currentTime.difference(backButtonPressTime) > snackBarDuration;
+
+    if (backButtonHasNotBeenPressedOrSnackBarHasBeenClosed) {
+      backButtonPressTime = currentTime;
+      Toast.show('Press again to leave', context,
+          duration: 3, backgroundColor: Colors.grey);
+      return false;
+    }
+
+    return true;
+  }
 }

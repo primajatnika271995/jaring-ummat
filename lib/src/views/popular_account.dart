@@ -69,23 +69,7 @@ class PopularAccountState extends State<PopularAccountView>
         controller: _tabController,
       ),
     );
-
-    // Widget itemsWidget = new ListView(
-    //     scrollDirection: Axis.vertical,
-    //     shrinkWrap: true,
-    //     controller: _scrollController,
-    //     children: _items.map((Item item) {
-    //       return _singleItemDisplay(item);
-    //     }).toList());
-
-    // for (int i = 0; i < _items.length; i++) {
-    //   if (_items.elementAt(i).selected) {
-    //     _scrollController.animateTo(i * _ITEM_HEIGHT,
-    //         duration: new Duration(seconds: 2), curve: Curves.ease);
-    //     break;
-    //   }
-    // }
-    return new Scaffold(
+    return Scaffold(
       appBar: PreferredSize(
         child: AppBar(
           elevation: 0.0,

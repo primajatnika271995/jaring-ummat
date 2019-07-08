@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_baru_icons.dart';
+import 'package:toast/toast.dart';
 
 // Component
 import '../views/components/header_custom_icons.dart';
@@ -12,6 +13,10 @@ class Inbox extends StatefulWidget {
 
 class _InboxState extends State<Inbox> with SingleTickerProviderStateMixin {
   TabController _tabController;
+
+  static const snackBarDuration = Duration(seconds: 3);
+  final scaffoldKey = GlobalKey<ScaffoldState>();
+  DateTime backButtonPressTime;
 
   @override
   void initState() {
@@ -67,241 +72,246 @@ class _InboxState extends State<Inbox> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: PreferredSize(
-          child: new AppBar(
-            elevation: 0.0,
-            title: new Text(
-              'Kotak Masuk',
-              style: TextStyle(fontSize: 16.0, color: Colors.grey[600]),
-            ),
-            centerTitle: false,
-            backgroundColor: Colors.white,
-            automaticallyImplyLeading: false,
-            actions: <Widget>[
-              IconButton(
-                onPressed: () {
-                  Scaffold.of(context).showSnackBar(SnackBar(
-                    content: Text('Setting Menu Under Development'),
-                  ));
-                },
-                icon: Icon(
-                  CreateAccount.setting_2,
-                  color: Colors.grey[600],
-                ),
-              )
-            ],
-          ),
-          preferredSize: Size.fromHeight(47.0),
-        ),
-        body: CustomScrollView(
-          slivers: <Widget>[
-            new SliverAppBar(
-              expandedHeight: 20.0,
-              backgroundColor: Colors.white,
-              automaticallyImplyLeading: true,
-              floating: true,
-              pinned: true,
-              bottom: new TabBar(
-                isScrollable: true,
-                indicator: UnderlineTabIndicator(
-                  borderSide: BorderSide(width: 4.0, color: Colors.blueAccent),
-                ),
-                labelColor: Colors.black,
-                unselectedLabelColor: Colors.grey,
-                tabs: <Widget>[
-                  new Tab(
-                    child: Row(
-                      children: <Widget>[
-                        new Text('Semua Notifikasi'),
-                        new Stack(
-                          alignment: Alignment.topRight,
-                          children: <Widget>[
-                            new SizedBox(
-                              height: 26.0,
-                            ),
-                            new Positioned(
-                              // right: 0,
-                              child: new Container(
-                                padding: EdgeInsets.all(2),
-                                decoration: new BoxDecoration(
-                                  color: Colors.red,
-                                  borderRadius: BorderRadius.circular(6),
-                                ),
-                                constraints: BoxConstraints(
-                                  minWidth: 12,
-                                  minHeight: 12,
-                                ),
-                                child: new Text(
-                                  '8',
-                                  style: new TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 8,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                  new Tab(
-                    child: Row(
-                      children: <Widget>[
-                        new Text('Pesan Amil'),
-                        new Stack(
-                          alignment: Alignment.topRight,
-                          children: <Widget>[
-                            new SizedBox(
-                              height: 26.0,
-                            ),
-                            new Positioned(
-                              // right: 0,
-                              child: new Container(
-                                padding: EdgeInsets.all(2),
-                                decoration: new BoxDecoration(
-                                  color: Colors.red,
-                                  borderRadius: BorderRadius.circular(6),
-                                ),
-                                constraints: BoxConstraints(
-                                  minWidth: 12,
-                                  minHeight: 12,
-                                ),
-                                child: new Text(
-                                  '12',
-                                  style: new TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 8,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                  new Tab(
-                    child: Row(
-                      children: <Widget>[
-                        new Text('Diskusi Amal'),
-                        new Stack(
-                          children: <Widget>[
-                            new SizedBox(
-                              height: 26.0,
-                            ),
-                            new Positioned(
-                              // right: 0,
-                              child: new Container(
-                                padding: EdgeInsets.all(2),
-                                decoration: new BoxDecoration(
-                                  color: Colors.red,
-                                  borderRadius: BorderRadius.circular(6),
-                                ),
-                                constraints: BoxConstraints(
-                                  minWidth: 12,
-                                  minHeight: 12,
-                                ),
-                                child: new Text(
-                                  '8',
-                                  style: new TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 8,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                  new Tab(
-                    child: Row(
-                      children: <Widget>[
-                        new Text('Berita Amil'),
-                        new Stack(
-                          children: <Widget>[
-                            new SizedBox(
-                              height: 26.0,
-                            ),
-                            new Positioned(
-                              // right: 0,
-                              child: new Container(
-                                padding: EdgeInsets.all(2),
-                                decoration: new BoxDecoration(
-                                  color: Colors.red,
-                                  borderRadius: BorderRadius.circular(6),
-                                ),
-                                constraints: BoxConstraints(
-                                  minWidth: 12,
-                                  minHeight: 12,
-                                ),
-                                child: new Text(
-                                  '8',
-                                  style: new TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 8,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                  new Tab(
-                    child: Row(
-                      children: <Widget>[
-                        new Text('Pusat Bantuan'),
-                        new Stack(
-                          children: <Widget>[
-                            new SizedBox(
-                              height: 26.0,
-                            ),
-                            new Positioned(
-                              // right: 0,
-                              child: new Container(
-                                padding: EdgeInsets.all(2),
-                                decoration: new BoxDecoration(
-                                  color: Colors.red,
-                                  borderRadius: BorderRadius.circular(6),
-                                ),
-                                constraints: BoxConstraints(
-                                  minWidth: 12,
-                                  minHeight: 12,
-                                ),
-                                child: new Text(
-                                  '8',
-                                  style: new TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 8,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-                controller: _tabController,
+    return WillPopScope(
+      onWillPop: onBackPressed,
+      child: Scaffold(
+          key: scaffoldKey,
+          appBar: PreferredSize(
+            child: new AppBar(
+              elevation: 0.0,
+              title: new Text(
+                'Kotak Masuk',
+                style: TextStyle(fontSize: 16.0, color: Colors.grey[600]),
               ),
+              centerTitle: false,
+              backgroundColor: Colors.white,
+              automaticallyImplyLeading: false,
+              actions: <Widget>[
+                IconButton(
+                  onPressed: () {
+                    Scaffold.of(context).showSnackBar(SnackBar(
+                      content: Text('Setting Menu Under Development'),
+                    ));
+                  },
+                  icon: Icon(
+                    CreateAccount.setting_2,
+                    color: Colors.grey[600],
+                  ),
+                )
+              ],
             ),
-            new SliverList(
-                delegate: SliverChildListDelegate(
-              [_buildListItem()],
-            ))
-          ],
-        ));
+            preferredSize: Size.fromHeight(47.0),
+          ),
+          body: CustomScrollView(
+            slivers: <Widget>[
+              new SliverAppBar(
+                expandedHeight: 20.0,
+                backgroundColor: Colors.white,
+                automaticallyImplyLeading: true,
+                floating: true,
+                pinned: true,
+                bottom: new TabBar(
+                  isScrollable: true,
+                  indicator: UnderlineTabIndicator(
+                    borderSide:
+                        BorderSide(width: 4.0, color: Colors.blueAccent),
+                  ),
+                  labelColor: Colors.black,
+                  unselectedLabelColor: Colors.grey,
+                  tabs: <Widget>[
+                    new Tab(
+                      child: Row(
+                        children: <Widget>[
+                          new Text('Semua Notifikasi'),
+                          new Stack(
+                            alignment: Alignment.topRight,
+                            children: <Widget>[
+                              new SizedBox(
+                                height: 26.0,
+                              ),
+                              new Positioned(
+                                // right: 0,
+                                child: new Container(
+                                  padding: EdgeInsets.all(2),
+                                  decoration: new BoxDecoration(
+                                    color: Colors.red,
+                                    borderRadius: BorderRadius.circular(6),
+                                  ),
+                                  constraints: BoxConstraints(
+                                    minWidth: 12,
+                                    minHeight: 12,
+                                  ),
+                                  child: new Text(
+                                    '8',
+                                    style: new TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 8,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    new Tab(
+                      child: Row(
+                        children: <Widget>[
+                          new Text('Pesan Amil'),
+                          new Stack(
+                            alignment: Alignment.topRight,
+                            children: <Widget>[
+                              new SizedBox(
+                                height: 26.0,
+                              ),
+                              new Positioned(
+                                // right: 0,
+                                child: new Container(
+                                  padding: EdgeInsets.all(2),
+                                  decoration: new BoxDecoration(
+                                    color: Colors.red,
+                                    borderRadius: BorderRadius.circular(6),
+                                  ),
+                                  constraints: BoxConstraints(
+                                    minWidth: 12,
+                                    minHeight: 12,
+                                  ),
+                                  child: new Text(
+                                    '12',
+                                    style: new TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 8,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    new Tab(
+                      child: Row(
+                        children: <Widget>[
+                          new Text('Diskusi Amal'),
+                          new Stack(
+                            children: <Widget>[
+                              new SizedBox(
+                                height: 26.0,
+                              ),
+                              new Positioned(
+                                // right: 0,
+                                child: new Container(
+                                  padding: EdgeInsets.all(2),
+                                  decoration: new BoxDecoration(
+                                    color: Colors.red,
+                                    borderRadius: BorderRadius.circular(6),
+                                  ),
+                                  constraints: BoxConstraints(
+                                    minWidth: 12,
+                                    minHeight: 12,
+                                  ),
+                                  child: new Text(
+                                    '8',
+                                    style: new TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 8,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    new Tab(
+                      child: Row(
+                        children: <Widget>[
+                          new Text('Berita Amil'),
+                          new Stack(
+                            children: <Widget>[
+                              new SizedBox(
+                                height: 26.0,
+                              ),
+                              new Positioned(
+                                // right: 0,
+                                child: new Container(
+                                  padding: EdgeInsets.all(2),
+                                  decoration: new BoxDecoration(
+                                    color: Colors.red,
+                                    borderRadius: BorderRadius.circular(6),
+                                  ),
+                                  constraints: BoxConstraints(
+                                    minWidth: 12,
+                                    minHeight: 12,
+                                  ),
+                                  child: new Text(
+                                    '8',
+                                    style: new TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 8,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    new Tab(
+                      child: Row(
+                        children: <Widget>[
+                          new Text('Pusat Bantuan'),
+                          new Stack(
+                            children: <Widget>[
+                              new SizedBox(
+                                height: 26.0,
+                              ),
+                              new Positioned(
+                                // right: 0,
+                                child: new Container(
+                                  padding: EdgeInsets.all(2),
+                                  decoration: new BoxDecoration(
+                                    color: Colors.red,
+                                    borderRadius: BorderRadius.circular(6),
+                                  ),
+                                  constraints: BoxConstraints(
+                                    minWidth: 12,
+                                    minHeight: 12,
+                                  ),
+                                  child: new Text(
+                                    '8',
+                                    style: new TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 8,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                  controller: _tabController,
+                ),
+              ),
+              new SliverList(
+                  delegate: SliverChildListDelegate(
+                [_buildListItem()],
+              ))
+            ],
+          )),
+    );
   }
 
   Widget _buildListItem() {
@@ -590,5 +600,22 @@ class _InboxState extends State<Inbox> with SingleTickerProviderStateMixin {
           )),
       onTap: () {},
     );
+  }
+
+  Future<bool> onBackPressed() async {
+    DateTime currentTime = DateTime.now();
+
+    bool backButtonHasNotBeenPressedOrSnackBarHasBeenClosed =
+        backButtonPressTime == null ||
+            currentTime.difference(backButtonPressTime) > snackBarDuration;
+
+    if (backButtonHasNotBeenPressedOrSnackBarHasBeenClosed) {
+      backButtonPressTime = currentTime;
+      Toast.show('Press again to leave', context,
+          duration: 3, backgroundColor: Colors.grey);
+      return false;
+    }
+
+    return true;
   }
 }

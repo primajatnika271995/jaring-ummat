@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_jaring_ummat/src/models/UserDetails.dart';
+import 'package:giffy_dialog/giffy_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'dart:convert';
@@ -121,46 +122,38 @@ class _MenuState extends State<Menu> {
               IconButton(
                 onPressed: () {
                   showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      // return object of type Dialog
-                      return AlertDialog(
-                        title: new Text(
-                          "LOGOUT ?",
-                          style: TextStyle(color: Colors.red),
-                        ),
-                        elevation: 10.0,
-                        backgroundColor: Colors.grey[200],
-                        content: new Text(
-                            "Apakah anda ingin keluar dari Aplikasi Jaring Ummat ?"),
-                        actions: <Widget>[
-                          new FlatButton(
-                            child: new Text("Close"),
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                          ),
-                          new FlatButton(
-                            child: new Text(
-                              "Logout",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.red),
+                    context: (context),
+                    builder: (_) => NetworkGiffyDialog(
+                          image: Image.network(
+                              'http://www.bandbazza.com/images/404.gif'),
+                          title: Text(
+                            'Logout Message',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 22.0,
+                              fontWeight: FontWeight.w600,
                             ),
-                            onPressed: () {
-                              logout();
-                            },
                           ),
-                        ],
-                      );
-                    },
+                          description: Text(
+                            'Apakah anda ingin keluar dari Aplikasi Jaring Ummat ?',
+                            textAlign: TextAlign.center,
+                          ),
+                          buttonOkColor: Colors.redAccent,
+                          buttonOkText: Text(
+                            'Logout',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          onOkButtonPressed: () {
+                            logout();
+                          },
+                        ),
                   );
                 },
                 icon: Icon(
                   CreateAccount.logout,
                   color: Colors.grey[600],
                 ),
-              )
+              ),
             ],
           ),
           preferredSize: Size.fromHeight(47.0),
