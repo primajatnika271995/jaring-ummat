@@ -836,16 +836,16 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
                           ),
                         ),
                         Positioned(
-                          left: 74.0,
+                          left: 120.0,
                           top: 100.0,
                           child: const Text(
                             "Total Aktivitas Amal",
                             style:
-                                TextStyle(color: Colors.grey, fontSize: 10.0),
+                                TextStyle(color: Colors.grey, fontSize: 13.0),
                           ),
                         ),
                         Positioned(
-                          left: 72.0,
+                          left: 124.0,
                           top: 113.0,
                           child: const Text(
                             "Rp",
@@ -854,13 +854,13 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
                           ),
                         ),
                         Positioned(
-                          left: 88.0,
+                          left: 138.0,
                           top: 113.0,
                           child: const Text(
                             "8.950.420",
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
-                              fontSize: 17.0,
+                              fontSize: 20.0,
                             ),
                           ),
                         ),

@@ -5,12 +5,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 
-// Component
 import 'components/container_bg_default.dart';
-import '../config/preferences.dart';
-import '../services/login_service.dart';
+import 'package:flutter_jaring_ummat/src/config/preferences.dart';
+import 'package:flutter_jaring_ummat/src/services/login_service.dart';
 import 'components/form_field_container.dart';
-import '../views/components/create_account_icons.dart';
+import 'package:flutter_jaring_ummat/src/views/components/create_account_icons.dart';
 import 'package:flutter_jaring_ummat/src/models/UserDetails.dart';
 import 'package:flutter_jaring_ummat/src/services/user_details.dart';
 
@@ -22,7 +21,9 @@ class LoginView extends StatefulWidget {
 }
 
 class LoginState extends State<LoginView> {
-// VARIABLE FORM CONTROLLER
+  SharedPreferences _preferences;
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
 
   TextEditingController _emailTextEditController = TextEditingController();
   TextEditingController _passwordTextEditController = TextEditingController();
@@ -34,127 +35,16 @@ class LoginState extends State<LoginView> {
   final FocusNode _focusNodePassword = FocusNode();
 
   bool _isSubmit = false;
-
   bool _obscureTextPassword = true;
 
-//  VARIABLE SHARED PREFERENCES
-
-  SharedPreferences _preferences;
-
-//  SCAFFOLD KEY
-
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-  final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
-
-//  SERVICE VARIABLE
   LoginServices service = new LoginServices();
   UserDetailsService userDetailsService = new UserDetailsService();
 
-//  TOGGLE PASSWORD METODE
-  void _togglePassword() {
-    setState(() {
-      _obscureTextPassword = !_obscureTextPassword;
-    });
-  }
-
-//  PROGRES DIALOG
   ProgressDialog _progressDialog;
 
-//  LOGIN METODE
-
-  Future<void> login() async {
-    _preferences = await SharedPreferences.getInstance();
-    _emailTampung = _emailTextEditController.text;
-    _passwordTampung = _passwordTextEditController.text;
-
-    setState(() {
-      _isSubmit = true;
-    });
-
-//    _scaffoldKey.currentState.showSnackBar(
-//      new SnackBar(
-//        content: new Row(
-//          children: <Widget>[
-//            new CircularProgressIndicator(),
-//            new Text(" Please Wait ... ")
-//          ],
-//        ),
-//      ),
-//    );
-
-    _progressDialog = new ProgressDialog(context, ProgressDialogType.Normal);
-    _progressDialog.setMessage("Please Wait ...");
-    _progressDialog.show();
-
-    await service.login(_emailTampung, _passwordTampung).then((response) async {
-      print("INI RESPONSE CODE LOGIN ==>");
-      print(response.statusCode);
-
-      if (response.statusCode == 200) {
-        var value = AccessToken.fromJson(json.decode(response.body));
-        var token = value.access_token;
-        _preferences.setString(ACCESS_TOKEN_KEY, token);
-        _preferences.setString(EMAIL_KEY, _emailTampung);
-
-        await getUserDetail();
-      }
-
-      if (response.statusCode == 400) {
-        setState(() {
-          _isSubmit = false;
-          _progressDialog.hide();
-          Toast.show("Username atau Password Salah", context,
-              backgroundColor: Colors.redAccent,
-              textColor: Colors.white,
-              duration: 2);
-        });
-      }
-    });
-  }
-
-  Future<void> getUserDetail() async {
-    UserDetails userDetails;
-    _preferences = await SharedPreferences.getInstance();
-    var _email = _preferences.getString(EMAIL_KEY);
-
-//    _scaffoldKey.currentState.showSnackBar(
-//      new SnackBar(
-//        content: new Row(
-//          children: <Widget>[
-//            new CircularProgressIndicator(),
-//            new Text(" Please Wait For Details Users ... ")
-//          ],
-//        ),
-//      ),
-//    );
-
-    _progressDialog = new ProgressDialog(context, ProgressDialogType.Normal);
-    _progressDialog.setMessage("Get User Details ...");
-    _progressDialog.show();
-
-    _email != null
-        ? userDetailsService.userDetails(_email).then((response) async {
-            print("For Response Users Detail Code ${response.statusCode}");
-            if (response.statusCode == 200) {
-              print("For Response Users Detail by Email ${response.data} ");
-              userDetails = UserDetails.fromJson(response.data);
-              _preferences.setString(FULLNAME_KEY, userDetails.fullname);
-              _preferences.setString(CONTACT_KEY, userDetails.contact);
-              _preferences.setString(USER_ID_KEY, userDetails.userId);
-              _preferences.setString(
-                  PROFILE_PICTURE_KEY, userDetails.imgProfile[0].imgUrl);
-              await Navigator.of(context).pushReplacementNamed('/home');
-            }
-          })
-        : null;
-  }
-
-//  BATAS VARIABLE
-
-  //  WIDGET SUBMIT BUTTON
   Widget submitButton() {
     return RaisedButton(
-      onPressed: _emailTextEditController.text.isNotEmpty ? this.login : null,
+      onPressed: _emailTextEditController.text.isNotEmpty ?  this.login : null,
       disabledColor: Colors.grey,
       disabledTextColor: Colors.white,
       textColor: Colors.white,
@@ -207,13 +97,17 @@ class LoginState extends State<LoginView> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    SizedBox(height: 30.0),
+                    SizedBox(
+                      height: 30.0,
+                    ),
                     Icon(
                       CreateAccount.jaring_ummat_new_logo,
                       color: Colors.white,
                       size: 100.0,
                     ),
-                    SizedBox(height: 15.0),
+                    SizedBox(
+                      height: 15.0,
+                    ),
                     Text(
                       'Jaring Ummat',
                       style: TextStyle(
@@ -237,7 +131,12 @@ class LoginState extends State<LoginView> {
                 ),
                 Container(
                   child: Padding(
-                    padding: EdgeInsets.fromLTRB(50.0, 0.0, 50.0, 0.0),
+                    padding: EdgeInsets.fromLTRB(
+                      50.0,
+                      0.0,
+                      50.0,
+                      0.0,
+                    ),
                     child: Column(
                       children: <Widget>[
                         formField(
@@ -271,12 +170,18 @@ class LoginState extends State<LoginView> {
                               ),
                               children: <TextSpan>[
                                 TextSpan(
-                                    text: 'Lupa password? Klik ',
-                                    style: TextStyle(fontSize: 12)),
+                                  text: 'Lupa password? Klik ',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                  ),
+                                ),
                                 TextSpan(
-                                    text: 'disini',
-                                    style: TextStyle(
-                                        color: Colors.blue, fontSize: 12))
+                                  text: 'disini',
+                                  style: TextStyle(
+                                    color: Colors.blue,
+                                    fontSize: 12,
+                                  ),
+                                )
                               ],
                             ),
                           ),
@@ -287,25 +192,45 @@ class LoginState extends State<LoginView> {
                         Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
-                            SizedBox(height: 10.0),
-                            Text('Belum memiliki akun?',
-                                style: TextStyle(color: Colors.white)),
-                            SizedBox(height: 10.0),
+                            SizedBox(
+                              height: 10.0,
+                            ),
+                            Text(
+                              'Belum memiliki akun?',
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
+                            ),
+                            SizedBox(
+                              height: 10.0,
+                            ),
                             RaisedButton(
                               onPressed: () {
                                 Navigator.pushNamed(
-                                    context, '/onboarding/step2');
+                                  context,
+                                  '/onboarding/step2',
+                                );
                               },
                               textColor: Colors.white,
-                              padding: const EdgeInsets.all(0.0),
+                              padding: const EdgeInsets.all(
+                                0.0,
+                              ),
                               color: Colors.orange,
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(30.0),
+                                borderRadius: BorderRadius.circular(
+                                  30.0,
+                                ),
                               ),
                               child: Container(
                                 padding: const EdgeInsets.fromLTRB(
-                                    20.0, 2.0, 20.0, 2.0),
-                                child: Text('Buat Akun'),
+                                  20.0,
+                                  2.0,
+                                  20.0,
+                                  2.0,
+                                ),
+                                child: Text(
+                                  'Buat Akun',
+                                ),
                               ),
                             ),
                           ],
@@ -322,5 +247,81 @@ class LoginState extends State<LoginView> {
     );
 
     return widgets;
+  }
+
+  void _togglePassword() {
+    setState(() {
+      _obscureTextPassword = !_obscureTextPassword;
+    });
+  }
+
+  Future<void> login() async {
+    _preferences = await SharedPreferences.getInstance();
+    _emailTampung = _emailTextEditController.text;
+    _passwordTampung = _passwordTextEditController.text;
+
+    setState(() {
+      _isSubmit = true;
+    });
+
+    _progressDialog = new ProgressDialog(context, ProgressDialogType.Normal);
+    _progressDialog.setMessage("Please Wait ...");
+    _progressDialog.show();
+
+    await service.login(_emailTampung, _passwordTampung).then((response) async {
+      print("INI RESPONSE CODE LOGIN ==>");
+      print(response.statusCode);
+
+      if (response.statusCode == 200) {
+        var value = AccessToken.fromJson(json.decode(response.body));
+        var token = value.access_token;
+        _preferences.setString(ACCESS_TOKEN_KEY, token);
+        _preferences.setString(EMAIL_KEY, _emailTampung);
+
+        await getUserDetail();
+      }
+
+      if (response.statusCode == 400) {
+        setState(() {
+          _isSubmit = false;
+          _progressDialog.hide();
+          Toast.show(
+            "Username atau Password Salah",
+            context,
+            backgroundColor: Colors.redAccent,
+            textColor: Colors.white,
+            duration: 2,
+          );
+        });
+      }
+    });
+  }
+
+  Future<void> getUserDetail() async {
+    UserDetails userDetails;
+    _preferences = await SharedPreferences.getInstance();
+    var _email = _preferences.getString(EMAIL_KEY);
+
+    _progressDialog = new ProgressDialog(context, ProgressDialogType.Normal);
+    _progressDialog.setMessage("Get User Details ...");
+    _progressDialog.show();
+
+    _email != null
+        ? userDetailsService.userDetails(_email).then(
+            (response) async {
+              print("For Response Users Detail Code ${response.statusCode}");
+              if (response.statusCode == 200) {
+                print("For Response Users Detail by Email ${response.data} ");
+                userDetails = UserDetails.fromJson(response.data);
+                _preferences.setString(FULLNAME_KEY, userDetails.fullname);
+                _preferences.setString(CONTACT_KEY, userDetails.contact);
+                _preferences.setString(USER_ID_KEY, userDetails.userId);
+                _preferences.setString(
+                    PROFILE_PICTURE_KEY, userDetails.imgProfile[0].imgUrl);
+                await Navigator.of(context).pushReplacementNamed('/home');
+              }
+            },
+          )
+        : null;
   }
 }

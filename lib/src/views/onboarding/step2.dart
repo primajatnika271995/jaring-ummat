@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_jaring_ummat/src/models/postModel.dart';
+import 'package:flutter_jaring_ummat/src/services/user_details.dart';
 import 'package:http/http.dart' as http;
 import 'package:toast/toast.dart';
 import 'package:flutter/rendering.dart';
@@ -30,6 +31,7 @@ class Step2State extends State<Step2View> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
   final FacebookLogin facebookSignIn = new FacebookLogin();
+  final UserDetailsService _userDetailsService = new UserDetailsService();
   SharedPreferences _preferences;
 
   final TextEditingController _fullnameController = TextEditingController();
@@ -376,6 +378,20 @@ class Step2State extends State<Step2View> {
     print('Logged out.');
   }
 
+  void onLoading() async {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      child: new Center(
+        child: Dialog(
+          backgroundColor: Colors.white,
+          child: new CircularProgressIndicator(),
+        ),
+      ),
+    );
+    await Future.delayed(Duration(seconds: 2));
+  }
+
   Widget submitButton() {
     return RaisedButton(
       onPressed: _emailController.text.isNotEmpty ? this.onRegister : null,
@@ -414,13 +430,22 @@ class Step2State extends State<Step2View> {
         _passwordController.text.isEmpty |
         _fullnameController.text.isEmpty |
         _contactController.text.isEmpty) {
-      Toast.show('Field can\'t be Empty', context,
-          duration: 2, backgroundColor: Colors.red);
+      Toast.show(
+        'Field can\'t be Empty',
+        context,
+        duration: 2,
+        backgroundColor: Colors.red,
+      );
       return;
     }
+
     if (_passwordController.text != _cpasswordController.text) {
-      Toast.show('Password and cPassword not Valid', context,
-          duration: 2, backgroundColor: Colors.red);
+      Toast.show(
+        'Password and cPassword not Valid',
+        context,
+        duration: 2,
+        backgroundColor: Colors.red,
+      );
       return;
     }
 
@@ -433,14 +458,27 @@ class Step2State extends State<Step2View> {
       tipe_user: "Muzakki",
     );
 
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => Step3View(
-              data: postData,
-            ),
-      ),
-    );
+    await _userDetailsService.userDetails(_emailController.text).then((response) async {
+
+      print('status code ${response.statusCode}');
+      if (response.statusCode == 200) {
+        Toast.show(
+          'The email has been registered before.',
+          context,
+          duration: 2,
+          backgroundColor: Colors.red,
+        );
+      } else if (response.statusCode == 204) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => Step3View(
+                  data: postData,
+                ),
+          ),
+        );
+      }
+    });
   }
 
   void onRegisterLinkedIn(String token) async {

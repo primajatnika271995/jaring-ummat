@@ -38,6 +38,7 @@ class Step4State extends State<Step4View> {
 
   ProgressDialog _progressDialog;
   UserDetailsService userDetailsService = new UserDetailsService();
+  RegisterApiProvider service = new RegisterApiProvider();
 
   File selected_image;
   bool _isSubmit = false;
@@ -472,7 +473,6 @@ class Step4State extends State<Step4View> {
       return;
     }
 
-    RegisterApiProvider service = new RegisterApiProvider();
     await service.saveUser(widget.data).then((response) {
       print("For Response Status Register Text ${response.statusCode}");
       if (response.statusCode == 201) {
