@@ -439,20 +439,24 @@ class Step4State extends State<Step4View> {
                     child: SizedBox(
                       width: 140.0,
                       child: RaisedButton(
-                        onPressed: () {
-                          if (!_isSubmit) {
-                            onRegister();
-                            // submit();
-                          }
-                        },
-                        child: Text(_isSubmit ? 'Loading ... ' : 'Selanjutnya',
-                            style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white)),
+                        onPressed: selected_image == null ? null : onRegister,
+                        disabledColor: Colors.grey,
+                        disabledTextColor: Colors.white,
+                        textColor: Colors.white,
+                        child: Text(
+                          _isSubmit ? 'Loading ... ' : 'Selanjutnya',
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
                         color: Colors.blue,
                         shape: new RoundedRectangleBorder(
-                            borderRadius: new BorderRadius.circular(30.0)),
+                          borderRadius: new BorderRadius.circular(
+                            30.0,
+                          ),
+                        ),
                       ),
                     ),
                   )
@@ -465,12 +469,10 @@ class Step4State extends State<Step4View> {
 
   void onRegister() async {
     print(widget.data);
-    print(selected_image.path.split("/").last);
-
-    if (selected_image.path.isEmpty) {
+    if (selected_image == null) {
+      print('Please Take image For Profile');
       Toast.show('Please Take image For Profile', context,
           duration: 2, backgroundColor: Colors.red);
-      return;
     }
 
     await service.saveUser(widget.data).then((response) {
@@ -523,47 +525,32 @@ class Step4State extends State<Step4View> {
   }
 
   Future<void> getUserDetail() async {
-    UserDetails userDetails;
+    UserDetails userDetails = new UserDetails();
     _preferences = await SharedPreferences.getInstance();
-    var _email = _preferences.getString(EMAIL_KEY);
-
-//    _scaffoldKey.currentState.showSnackBar(
-//      new SnackBar(
-//        content: new Row(
-//          children: <Widget>[
-//            new CircularProgressIndicator(),
-//            new Text(" Please Wait For Details Users ... ")
-//          ],
-//        ),
-//      ),
-//    );
-
     _progressDialog = new ProgressDialog(context, ProgressDialogType.Normal);
     _progressDialog.setMessage("Get User Details ...");
     _progressDialog.show();
 
-    _email != null
-        ? userDetailsService.userDetails(_email).then((response) async {
-            print("For Response Users Detail Code ${response.statusCode}");
-            if (response.statusCode == 200) {
-              print("For Response Users Detail by Email ${response.data} ");
-              userDetails = UserDetails.fromJson(response.data);
-              _preferences.setString(FULLNAME_KEY, userDetails.fullname);
-              _preferences.setString(CONTACT_KEY, userDetails.contact);
-              _preferences.setString(USER_ID_KEY, userDetails.userId);
-              _preferences.setString(
-                  PROFILE_PICTURE_KEY, userDetails.imgProfile[0].imgUrl);
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => SuccessRegisterView(
-                        data: widget.data,
-                        avatarImage: selected_image,
-                      ),
+    await userDetailsService.userDetails(widget.data.email).then((response) {
+      print("For Response Users Detail Code ${response.statusCode}");
+      if (response.statusCode == 200) {
+        print("For Response Users Detail by Email ${response.data} ");
+        userDetails = UserDetails.fromJson(response.data);
+        _preferences.setString(FULLNAME_KEY, userDetails.fullname);
+        _preferences.setString(CONTACT_KEY, userDetails.contact);
+        _preferences.setString(USER_ID_KEY, userDetails.userId);
+        _preferences.setString(
+            PROFILE_PICTURE_KEY, userDetails.imgProfile[0].imgUrl);
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => SuccessRegisterView(
+                  data: widget.data,
+                  avatarImage: selected_image,
                 ),
-              );
-            }
-          })
-        : null;
+          ),
+        );
+      }
+    });
   }
 }

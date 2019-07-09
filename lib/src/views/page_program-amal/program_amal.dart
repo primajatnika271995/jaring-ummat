@@ -111,55 +111,17 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
           ),
           body: CustomScrollView(
             slivers: <Widget>[
-              StreamBuilder(
-                stream: storiesBloc.bloc.storyFetchAll,
-                builder: (context, AsyncSnapshot snapshot) {
-                  print('connState : ${snapshot.connectionState}');
-                  if (snapshot.hasData && snapshot != null) {
-                    return SliverAppBar(
-                      automaticallyImplyLeading: false,
-                      bottom: PreferredSize(
-                        preferredSize: Size.fromHeight(100.0),
-                        child: Text(''),
-                      ),
-                      elevation: 20.0,
-                      flexibleSpace: new Scaffold(
-                        backgroundColor: Colors.white,
-                        body: new UserStoryAppBar(),
-                      ),
-                    );
-                  }
-
-                  // WidgetsBinding.instance.addPostFrameCallback(
-                  //   (_) => showDialog(
-                  //         context: (context),
-                  //         builder: (_) => NetworkGiffyDialog(
-                  //               image: Image.network(
-                  //                 'http://www.bandbazza.com/images/404.gif',
-                  //               ),
-                  //               title: Text(
-                  //                 'Story Message',
-                  //                 textAlign: TextAlign.center,
-                  //                 style: TextStyle(
-                  //                   fontSize: 22.0,
-                  //                   fontWeight: FontWeight.w600,
-                  //                 ),
-                  //               ),
-                  //               description: Text(
-                  //                 'No stories for Today or you not Follow more Account.',
-                  //                 textAlign: TextAlign.center,
-                  //               ),
-                  //               onOkButtonPressed: () {
-                  //                 Navigator.of(context).pop();
-                  //               },
-                  //             ),
-                  //       ),
-                  // );
-
-                  return SliverList(
-                    delegate: SliverChildListDelegate([]),
-                  );
-                },
+              new SliverAppBar(
+                automaticallyImplyLeading: false,
+                bottom: PreferredSize(
+                  preferredSize: Size.fromHeight(100.0),
+                  child: Text(''),
+                ),
+                elevation: 20.0,
+                flexibleSpace: new Scaffold(
+                  backgroundColor: Colors.white,
+                  body: new UserStoryAppBar(),
+                ),
               ),
               new SliverAppBar(
                 backgroundColor: Colors.white,
@@ -299,7 +261,10 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                                         CrossAxisAlignment.center,
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: <Widget>[
-                                      SvgPicture.asset('assets/icon/no-content.svg', height: 250.0,),
+                                      SvgPicture.asset(
+                                        'assets/icon/no-content.svg',
+                                        height: 250.0,
+                                      ),
                                       Text(
                                         'Oops..',
                                         style: TextStyle(
