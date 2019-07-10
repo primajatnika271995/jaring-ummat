@@ -565,7 +565,6 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
     Widget leftSection() {
       return new Container(
         child: new CircleAvatar(
-//      backgroundImage: new NetworkImage(url),
           backgroundColor: Colors.transparent,
           child: Material(
             elevation: 0.0,
@@ -756,8 +755,10 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
                           child: Row(
                             children: <Widget>[
                               Expanded(
-                                child: AspectRatio(
-                                  aspectRatio: 1,
+                                flex: 7,
+                                child: Container(
+                                  height: MediaQuery.of(context).size.height,
+                                  width: MediaQuery.of(context).size.width,
                                   child: FlChart(
                                     chart: PieChart(
                                       PieChartData(
@@ -777,57 +778,60 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
                                   ),
                                 ),
                               ),
-                              Column(
-                                mainAxisSize: MainAxisSize.max,
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Indicator(
-                                    color: Color(0xff0293ee),
-                                    text: "Donasi",
-                                    size: 10.0,
-                                    isSquare: false,
-                                  ),
-                                  SizedBox(
-                                    height: 4,
-                                  ),
-                                  Indicator(
-                                    color: Color(0xfff8b250),
-                                    text: "Zakat",
-                                    size: 10.0,
-                                    isSquare: false,
-                                  ),
-                                  SizedBox(
-                                    height: 4,
-                                  ),
-                                  Indicator(
-                                    color: Color(0xFFDEDE71),
-                                    text: "Wakaf",
-                                    size: 10.0,
-                                    isSquare: false,
-                                  ),
-                                  SizedBox(
-                                    height: 4,
-                                  ),
-                                  Indicator(
-                                    color: Color(0xFFDB4B1F),
-                                    text: "Shodaqoh",
-                                    size: 10.0,
-                                    isSquare: false,
-                                  ),
-                                  SizedBox(
-                                    height: 4,
-                                  ),
-                                  Indicator(
-                                    color: Color(0xFF2938C2),
-                                    text: "Infaq",
-                                    size: 10.0,
-                                    isSquare: false,
-                                  ),
-                                  SizedBox(
-                                    height: 20,
-                                  ),
-                                ],
+                              Expanded(
+                                flex: 3,
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.max,
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Indicator(
+                                      color: Color(0xff0293ee),
+                                      text: "Donasi",
+                                      size: 10.0,
+                                      isSquare: false,
+                                    ),
+                                    SizedBox(
+                                      height: 4,
+                                    ),
+                                    Indicator(
+                                      color: Color(0xfff8b250),
+                                      text: "Zakat",
+                                      size: 10.0,
+                                      isSquare: false,
+                                    ),
+                                    SizedBox(
+                                      height: 4,
+                                    ),
+                                    Indicator(
+                                      color: Color(0xFFDEDE71),
+                                      text: "Wakaf",
+                                      size: 10.0,
+                                      isSquare: false,
+                                    ),
+                                    SizedBox(
+                                      height: 4,
+                                    ),
+                                    Indicator(
+                                      color: Color(0xFFDB4B1F),
+                                      text: "Shodaqoh",
+                                      size: 10.0,
+                                      isSquare: false,
+                                    ),
+                                    SizedBox(
+                                      height: 4,
+                                    ),
+                                    Indicator(
+                                      color: Color(0xFF2938C2),
+                                      text: "Infaq",
+                                      size: 10.0,
+                                      isSquare: false,
+                                    ),
+                                    SizedBox(
+                                      height: 20,
+                                    ),
+                                  ],
+                                ),
                               ),
                               SizedBox(
                                 width: 28,
@@ -836,16 +840,16 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
                           ),
                         ),
                         Positioned(
-                          left: 120.0,
+                          left: MediaQuery.of(context).size.width - 309,
                           top: 100.0,
                           child: const Text(
                             "Total Aktivitas Amal",
                             style:
-                                TextStyle(color: Colors.grey, fontSize: 13.0),
+                                TextStyle(color: Colors.grey, fontSize: 11.0),
                           ),
                         ),
                         Positioned(
-                          left: 124.0,
+                          left: MediaQuery.of(context).size.width - 309,
                           top: 113.0,
                           child: const Text(
                             "Rp",
@@ -854,13 +858,13 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
                           ),
                         ),
                         Positioned(
-                          left: 138.0,
+                          left: MediaQuery.of(context).size.width - 293,
                           top: 113.0,
                           child: const Text(
                             "8.950.420",
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
-                              fontSize: 20.0,
+                              fontSize: 17.0,
                             ),
                           ),
                         ),

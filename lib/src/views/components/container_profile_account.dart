@@ -125,22 +125,10 @@ class ContainerProfileAccountState extends State<ContainerProfileAccount> {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(30.0),
         image: DecorationImage(
-          image: AssetImage(imgIcon),
+          image: NetworkImage(imgIcon),
           fit: BoxFit.cover,
         ),
       ),
-    );
-  }
-
-  Widget containerIconProfileAccount2() {
-    return Container(
-      width: 50.0,
-      height: 50.0,
-      decoration: BoxDecoration(
-          image: DecorationImage(
-        image: AssetImage("assets/users/rumah-harapan.png"),
-        fit: BoxFit.contain,
-      )),
     );
   }
 
@@ -148,7 +136,6 @@ class ContainerProfileAccountState extends State<ContainerProfileAccount> {
     return RaisedButton(
       onPressed: () {
         setState(() {
-          // TODO: call follow API
           this.isFollowed = true;
         });
       },

@@ -7,6 +7,7 @@ import 'package:story_view/story_view.dart';
 import 'package:flutter_jaring_ummat/src/services/time_ago_service.dart';
 import 'package:flutter_jaring_ummat/src/services/storiesApi.dart';
 import 'package:flutter_jaring_ummat/src/models/storyByUser.dart';
+import 'package:video_player/video_player.dart';
 
 class UserStoryContainerOld extends StatefulWidget {
   String userId;
@@ -22,6 +23,7 @@ class UserStoryContainerOld extends StatefulWidget {
 
 class UserStoryContainerOldState extends State<UserStoryContainerOld> {
   List<Content> urlContent = List<Content>();
+  VideoPlayerController controller;
 
   @override
   void initState() {
@@ -192,7 +194,7 @@ class UserStoryContainerOldState extends State<UserStoryContainerOld> {
       if (urlContent[i].imgUrl == null) {
         setState(() {
           widgetList.add(
-            StoryItem.pageVideo(urlContent[i].videoUrl)
+            StoryItem.pageVideo(urlContent[i].videoUrl),
           );
         });
       }

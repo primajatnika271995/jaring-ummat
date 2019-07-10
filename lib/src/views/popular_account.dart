@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_jaring_ummat/src/models/lembagaAmalModel.dart';
 import 'package:flutter_jaring_ummat/src/views/components/appbar_custom_icons.dart';
-import 'package:flutter_jaring_ummat/src/views/components/header_custom_icons.dart';
-import 'components/container_bg_default.dart';
-import 'components/account_category_container.dart';
 import 'components/container_profile_account.dart';
+import 'package:flutter_jaring_ummat/src/bloc/lembagaAmalBloc.dart'
+    as lembagaAmalBloc;
 
 const double _ITEM_HEIGHT = 70.0;
 
@@ -16,16 +16,14 @@ class PopularAccountView extends StatefulWidget {
 
 class PopularAccountState extends State<PopularAccountView>
     with TickerProviderStateMixin {
-  // Variable list
   ScrollController _scrollController;
   TabController _tabController;
 
   @override
   void initState() {
     super.initState();
-    // Scroll Variable
+    lembagaAmalBloc.bloc.fetchAllLembagaAmal();
     _scrollController = new ScrollController();
-    // Tab Controller
     _tabController = new TabController(vsync: this, length: 8);
   }
 
@@ -82,18 +80,13 @@ class PopularAccountState extends State<PopularAccountView>
             SizedBox(
               width: 0.0,
             ),
-            Icon(AppBarIcons.ic_action, color: Colors.white,),
+            Icon(
+              AppBarIcons.ic_action,
+              color: Colors.white,
+            ),
             SizedBox(
               width: 5.0,
             ),
-//            IconButton(
-//              icon: Icon(Icons.chat),
-//              onPressed: () => {},
-//            ),
-//            IconButton(
-//              icon: Icon(AppBarIcons.ic_action),
-//              onPressed: () => {},
-//            ),
           ],
           centerTitle: true,
           automaticallyImplyLeading: true,
@@ -106,126 +99,85 @@ class PopularAccountState extends State<PopularAccountView>
                 color: Colors.black,
               ),
               decoration: InputDecoration(
-                contentPadding:
-                EdgeInsets.only(top: 7.0, bottom: 7.0, left: -15.0),
-                icon: Icon(Icons.search, size: 18.0),
+                contentPadding: EdgeInsets.only(
+                  top: 7.0,
+                  bottom: 7.0,
+                  left: -15.0,
+                ),
+                icon: Icon(
+                  Icons.search,
+                  size: 18.0,
+                ),
                 border: InputBorder.none,
                 hintText: 'Cari lembaga amal atau produk lainnya',
               ),
             ),
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(30.0)),
+              borderRadius: BorderRadius.all(
+                Radius.circular(
+                  30.0,
+                ),
+              ),
               color: Colors.grey[200],
             ),
-            padding: EdgeInsets.fromLTRB(15.0, 0.5, 15.0, 0.5),
+            padding: EdgeInsets.fromLTRB(
+              15.0,
+              0.5,
+              15.0,
+              0.5,
+            ),
           ),
         ),
-        preferredSize: Size.fromHeight(47.0),
+        preferredSize: Size.fromHeight(
+          47.0,
+        ),
       ),
       body: new Padding(
-          padding: new EdgeInsets.symmetric(vertical: 0.0, horizontal: 4.0),
-          child: new Column(children: <Widget>[
+        padding: new EdgeInsets.symmetric(
+          vertical: 0.0,
+          horizontal: 4.0,
+        ),
+        child: new Column(
+          children: <Widget>[
             buttonsWidget,
             new Expanded(
-              child: ListView.builder(
-                padding: EdgeInsets.only(top: 8.0),
-                itemBuilder: (context, index) {
-                  return new Column(
-                    children: <Widget>[
-                      ContainerProfileAccount(
-                        profileId: '1',
-                        name: 'Rumah Amal Salman',
-                        totalFollowers: '84.982',
-                        totalEvents: '14',
-                        imgIcon: 'assets/users/logo-rumaha-amal-salman.png',
-                        isFollowed: false,
-                      ),
-                      ContainerProfileAccount(
-                        profileId: '2',
-                        name: 'Yayasan Cinta Dakwah Indonesia',
-                        totalFollowers: '12.053',
-                        totalEvents: '8',
-                        imgIcon: 'assets/users/logo_yayasan.png',
-                        isFollowed: false,
-                      ),
-                      ContainerProfileAccount(
-                        profileId: '3',
-                        name: 'Pundi Amal Pemuda Indonesia',
-                        totalFollowers: '840.042',
-                        totalEvents: '27',
-                        imgIcon: 'assets/users/logo-pundi-amal-ind.png',
-                        isFollowed: false,
-                      ),
-                      ContainerProfileAccount(
-                        profileId: '4',
-                        name: 'Yayasan Amal Jariyah Indonesia',
-                        totalFollowers: '524.520',
-                        totalEvents: '17',
-                        imgIcon: 'assets/users/logo-yayasan-amal-jariyah.png',
-                        isFollowed: false,
-                      ),
-                      ContainerProfileAccount(
-                        profileId: '5',
-                        name: 'Inisiatif Zakat Indonesia',
-                        totalFollowers: '57.134',
-                        totalEvents: '6',
-                        imgIcon: 'assets/users/zakatpedia.png',
-                        isFollowed: false,
-                      ),
-                      ContainerProfileAccount(
-                        profileId: '6',
-                        name: 'Laznas Dewan Da\'wah',
-                        totalFollowers: '57.134',
-                        totalEvents: '6',
-                        imgIcon: 'assets/users/logo-dewan-dakwah.png',
-                        isFollowed: false,
-                      ),
-                    ],
+              child: StreamBuilder(
+                stream: lembagaAmalBloc.bloc.allLembagaAmalList,
+                builder: (BuildContext context,
+                    AsyncSnapshot<List<LembagaAmal>> snapshot) {
+                  if (snapshot.hasData) {
+                    return buildListLembagaAmal(snapshot);
+                  } else if (snapshot.hasError) {
+                    return Text(snapshot.error.toString());
+                  }
+                  return Center(
+                    child: CircularProgressIndicator(),
                   );
                 },
-                itemCount: 1,
-                shrinkWrap: true, // todo comment this out and check the result
-                physics:
-                    ClampingScrollPhysics(), // todo comment this out and check the result
               ),
-            )
-          ])),
+            ),
+          ],
+        ),
+      ),
     );
   }
 
-  // Widget _singleItemDisplay(Item item) {
-  //   return new Container(
-  //     height: _ITEM_HEIGHT,
-  //     child: new Container(
-  //       padding: const EdgeInsets.all(2.0),
-  //       child: new Text(item.displayName),
-  //     ),
-  //   );
-  // }
-
-  // void _filterSemuaKategori() {
-  //   setState(() {
-  //     for (var item in _items) {
-  //       if (item.categories == "Semua Kategori") {
-  //         item.selected = true;
-  //         _tabController.index = 0;
-  //       } else {
-  //         item.selected = false;
-  //       }
-  //     }
-  //   });
-  // }
-
-  // void _filterPendidikan() {
-  //   setState(() {
-  //     for (var item in _items) {
-  //       if (item.categories == "Pendidikan") {
-  //         item.selected = true;
-  //         _tabController.index = 1;
-  //       } else {
-  //         item.selected = false;
-  //       }
-  //     }
-  //   });
-  // }
+  Widget buildListLembagaAmal(AsyncSnapshot<List<LembagaAmal>> snapshot) {
+    return ListView.builder(
+      padding: EdgeInsets.only(top: 8.0),
+      itemBuilder: (context, index) {
+        return ContainerProfileAccount(
+          profileId: snapshot.data[index].id,
+          name: snapshot.data[index].namaLembaga,
+          totalFollowers: snapshot.data[index].totalFollow,
+          totalEvents: snapshot.data[index].totalPost,
+          imgIcon: snapshot.data[index].imageContent[0].imgUrl,
+          isFollowed: false,
+        );
+      },
+      itemCount: snapshot.data.length,
+      shrinkWrap: true,
+      physics: ClampingScrollPhysics(),
+    );
+  }
 }
