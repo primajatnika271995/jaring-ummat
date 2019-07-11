@@ -47,7 +47,7 @@ class ContainerProfileAccountState extends State<ContainerProfileAccount> {
   @override
   Widget build(BuildContext context) {
     return Container(
-        margin: EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 0.0),
+        margin: EdgeInsets.fromLTRB(2.0, 5.0, 2.0, 0.0),
         decoration: BoxDecoration(
             color: Colors.grey[200], borderRadius: BorderRadius.circular(10.0)),
         padding: EdgeInsets.only(left: 10.0, bottom: 10.0, right: 10.0),

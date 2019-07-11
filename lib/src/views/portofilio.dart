@@ -86,7 +86,7 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
       color: Color(0xFF3A5F99),
       value: 40,
       title: "40%",
-      radius: 20,
+      radius: 25,
       titleStyle: TextStyle(
         fontSize: 10,
         fontWeight: FontWeight.bold,
@@ -97,7 +97,7 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
       color: Color(0xFFDB7E27),
       value: 30,
       title: "30%",
-      radius: 20,
+      radius: 25,
       titleStyle: TextStyle(
         fontSize: 10,
         fontWeight: FontWeight.bold,
@@ -108,7 +108,7 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
       color: Color(0xFFDEDE71),
       value: 15,
       title: "15%",
-      radius: 20,
+      radius: 25,
       titleStyle: TextStyle(
           fontSize: 10, fontWeight: FontWeight.bold, color: Color(0xffffffff)),
     ),
@@ -116,7 +116,7 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
       color: Color(0xFFDB4B1F),
       value: 15,
       title: "15%",
-      radius: 20,
+      radius: 25,
       titleStyle: TextStyle(
         fontSize: 10,
         fontWeight: FontWeight.bold,
@@ -127,7 +127,7 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
       color: Color(0xFF2938C2),
       value: 15,
       title: "15%",
-      radius: 20,
+      radius: 25,
       titleStyle: TextStyle(
         fontSize: 10,
         fontWeight: FontWeight.bold,
@@ -748,14 +748,13 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
                       children: <Widget>[
                         Container(
                           padding: EdgeInsets.only(
-                            right: 50.0,
                             top: 20.0,
                             left: 20.0,
                           ),
                           child: Row(
                             children: <Widget>[
                               Expanded(
-                                flex: 7,
+                                flex: 6,
                                 child: Container(
                                   height: MediaQuery.of(context).size.height,
                                   width: MediaQuery.of(context).size.width,
@@ -779,12 +778,40 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
                                 ),
                               ),
                               Expanded(
-                                flex: 3,
+                                flex: 4,
                                 child: Column(
                                   mainAxisSize: MainAxisSize.max,
-                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
+                                    SizedBox(
+                                      height: 20.0,
+                                    ),
+                                    const Text(
+                                      "Total Aktivitas Amal",
+                                      style: TextStyle(
+                                          color: Colors.grey, fontSize: 13.0),
+                                    ),
+                                    Row(
+                                      children: <Widget>[
+                                        const Text(
+                                          "Rp",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 12.0),
+                                        ),
+                                        const Text(
+                                          "8.950.420",
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 15.0,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 20.0,
+                                    ),
                                     Indicator(
                                       color: Color(0xff0293ee),
                                       text: "Donasi",
@@ -837,35 +864,6 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
                                 width: 28,
                               ),
                             ],
-                          ),
-                        ),
-                        Positioned(
-                          left: MediaQuery.of(context).size.width - 309,
-                          top: 100.0,
-                          child: const Text(
-                            "Total Aktivitas Amal",
-                            style:
-                                TextStyle(color: Colors.grey, fontSize: 11.0),
-                          ),
-                        ),
-                        Positioned(
-                          left: MediaQuery.of(context).size.width - 309,
-                          top: 113.0,
-                          child: const Text(
-                            "Rp",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 12.0),
-                          ),
-                        ),
-                        Positioned(
-                          left: MediaQuery.of(context).size.width - 293,
-                          top: 113.0,
-                          child: const Text(
-                            "8.950.420",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 17.0,
-                            ),
                           ),
                         ),
                         Positioned(
@@ -974,7 +972,7 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
                                 color: Color(0xFF2938C2),
                                 value: 15,
                                 title: "15%",
-                                radius: 20,
+                                radius: 25,
                                 titleStyle: TextStyle(
                                   fontSize: 10,
                                   fontWeight: FontWeight.bold,
@@ -987,7 +985,7 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
                                 color: Color(0xFFDB7E27),
                                 value: 30,
                                 title: "30%",
-                                radius: 20,
+                                radius: 25,
                                 titleStyle: TextStyle(
                                   fontSize: 10,
                                   fontWeight: FontWeight.bold,
@@ -1000,7 +998,7 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
                                 color: Color(0xFF3A5F99),
                                 value: 40,
                                 title: "40%",
-                                radius: 20,
+                                radius: 25,
                                 titleStyle: TextStyle(
                                   fontSize: 10,
                                   fontWeight: FontWeight.bold,
@@ -1013,7 +1011,7 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
                                 color: Color(0xFFDEDE71),
                                 value: 15,
                                 title: "15%",
-                                radius: 20,
+                                radius: 25,
                                 titleStyle: TextStyle(
                                     fontSize: 10,
                                     fontWeight: FontWeight.bold,
@@ -1025,7 +1023,7 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
                                 color: Color(0xFFDB4B1F),
                                 value: 15,
                                 title: "15%",
-                                radius: 20,
+                                radius: 25,
                                 titleStyle: TextStyle(
                                   fontSize: 10,
                                   fontWeight: FontWeight.bold,
@@ -1071,7 +1069,7 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
                                 color: Color(0xFF3A5F99),
                                 value: 30,
                                 title: "30%",
-                                radius: 20,
+                                radius: 25,
                                 titleStyle: TextStyle(
                                   fontSize: 10,
                                   fontWeight: FontWeight.bold,
@@ -1117,7 +1115,7 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
                                 color: Color(0xFFDB7E27),
                                 value: 30,
                                 title: "30%",
-                                radius: 20,
+                                radius: 25,
                                 titleStyle: TextStyle(
                                   fontSize: 10,
                                   fontWeight: FontWeight.bold,
@@ -1163,7 +1161,7 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
                                 color: Color(0xFFDEDE71),
                                 value: 15,
                                 title: "15%",
-                                radius: 20,
+                                radius: 25,
                                 titleStyle: TextStyle(
                                   fontSize: 10,
                                   fontWeight: FontWeight.bold,
@@ -1209,7 +1207,7 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
                                 color: Color(0xFFDB4B1F),
                                 value: 15,
                                 title: "15%",
-                                radius: 20,
+                                radius: 25,
                                 titleStyle: TextStyle(
                                   fontSize: 10,
                                   fontWeight: FontWeight.bold,
@@ -1255,7 +1253,7 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
                                 color: Color(0xFF2938C2),
                                 value: 15,
                                 title: "15%",
-                                radius: 20,
+                                radius: 25,
                                 titleStyle: TextStyle(
                                   fontSize: 10,
                                   fontWeight: FontWeight.bold,
