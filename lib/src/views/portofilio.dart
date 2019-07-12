@@ -1621,41 +1621,44 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
                           show: false,
                         ),
                         titlesData: FlTitlesData(
-                          horizontalTitlesTextStyle: TextStyle(
-                            color: Color(0xff72719b),
-                            fontSize: 15,
+                          bottomTitles: SideTitles(
+                            getTitles: (value) {
+                              switch (value.toInt()) {
+                                case 2:
+                                  return "SEPT";
+                                case 7:
+                                  return "OCT";
+                                case 12:
+                                  return "DEC";
+                              }
+                              return "";
+                            },
+                            textStyle: TextStyle(
+                              color: Color(0xff72719b),
+                              fontSize: 15,
+                            ),
+                            margin: 10.0,
                           ),
-                          horizontalTitleMargin: 10,
-                          getHorizontalTitles: (value) {
-                            switch (value.toInt()) {
-                              case 2:
-                                return "SEPT";
-                              case 7:
-                                return "OCT";
-                              case 12:
-                                return "DEC";
-                            }
-                            return "";
-                          },
-                          verticalTitlesTextStyle: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 14,
-                          ),
-                          getVerticalTitles: (value) {
-                            switch (value.toInt()) {
-                              case 1:
-                                return "1m";
-                              case 2:
-                                return "2m";
-                              case 3:
-                                return "3m";
-                              case 4:
-                                return "5m";
-                            }
-                            return "";
-                          },
-                          verticalTitleMargin: 5,
-                          verticalTitlesReservedWidth: 20,
+                          leftTitles: SideTitles(
+                              textStyle: TextStyle(
+                                color: Colors.grey,
+                                fontSize: 14,
+                              ),
+                              getTitles: (value) {
+                                switch (value.toInt()) {
+                                  case 1:
+                                    return "1m";
+                                  case 2:
+                                    return "2m";
+                                  case 3:
+                                    return "3m";
+                                  case 4:
+                                    return "5m";
+                                }
+                                return "";
+                              },
+                              margin: 5.0,
+                              reservedSize: 20.0),
                         ),
                         borderData: FlBorderData(
                             show: true,
