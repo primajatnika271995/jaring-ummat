@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:flutter_jaring_ummat/src/views/components/video_player_container.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:flutter/material.dart';
@@ -24,6 +25,7 @@ class UserStoryContainerOld extends StatefulWidget {
 class UserStoryContainerOldState extends State<UserStoryContainerOld> {
   List<Content> urlContent = List<Content>();
   VideoPlayerController controller;
+  
 
   @override
   void initState() {
@@ -194,13 +196,14 @@ class UserStoryContainerOldState extends State<UserStoryContainerOld> {
       if (urlContent[i].imgUrl == null) {
         setState(() {
           widgetList.add(
-            StoryItem.pageVideo(urlContent[i].videoUrl),
+            StoryItem.pageVideo(urlContent[i].videoUrl, urlContent[i].thumbnailUrl),
           );
         });
       }
 
       if (urlContent[i].videoUrl == null) {
         setState(() {
+          
           widgetList.add(
             StoryItem.pageImage(
               NetworkImage(urlContent[i].imgUrl),
@@ -222,21 +225,26 @@ class UserStoryContainerOldState extends State<UserStoryContainerOld> {
       );
     }
 
-    return StoryView(
-      widgetList,
-      onStoryShow: (s) {
-        print("Showing a story");
-      },
-      onComplete: () {
-        print("Completed a cycle");
-      },
-      progressPosition: ProgressPosition.top,
-      repeat: false,
+    return Scaffold(
+
     );
+
+    // return StoryView(
+    //   widgetList,
+    //   onStoryShow: (s) {
+    //     print("Showing a story");
+    //   },
+    //   onComplete: () {
+    //     print("Completed a cycle");
+    //   },
+    //   progressPosition: ProgressPosition.top,
+    //   repeat: false,
+    // );
   }
 
   @override
   void dispose() {
     super.dispose();
   }
+  
 }

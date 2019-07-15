@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:circular_profile_avatar/circular_profile_avatar.dart';
 import 'package:flutter_jaring_ummat/src/models/storiesModel.dart';
+import 'package:flutter_jaring_ummat/src/models/storyByUser.dart';
 import 'package:flutter_jaring_ummat/src/views/user_story.dart';
+import 'package:flutter_jaring_ummat/src/views/page_stories/common_stories_layout.dart'
+    as layout;
 import '../../bloc/storiesBloc.dart';
 
 class UserStoryAppBar extends StatefulWidget {
@@ -12,6 +15,8 @@ class UserStoryAppBar extends StatefulWidget {
 }
 
 class UserStoryAppBarState extends State<UserStoryAppBar> {
+  bool loading = false;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -53,10 +58,9 @@ class UserStoryAppBarState extends State<UserStoryAppBar> {
                         const Text(
                           'Not found story for today. :(',
                           style: TextStyle(
-                            color: Colors.black54,
-                            fontFamily: 'Proxima',
-                            fontWeight: FontWeight.bold
-                          ),
+                              color: Colors.black54,
+                              fontFamily: 'Proxima',
+                              fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),
@@ -104,14 +108,23 @@ class UserStoryAppBarState extends State<UserStoryAppBar> {
           });
           return GestureDetector(
             onTap: () {
-              Route route = MaterialPageRoute(
-                builder: (context) => UserStoryView(
-                      userId: data.userId,
-                      createdBy: data.createdBy,
-                      createdDate: data.storyList[0].createdDate,
-                    ),
-              );
-              Navigator.push(context, route);
+              setState(() {
+                loading = true;
+              });
+              print(data.userId);
+              bloc.fetchAllStoryByIdUser(data.userId);
+              bloc.allStoryByIdUser.listen((value) {
+                print(value.createdBy);
+                StoryByUser contents;
+                contents = value;
+                setState(() {
+                  loading = false;
+                });
+                Route route = MaterialPageRoute(
+                  builder: (context) => layout.Story(data.userId, contents),
+                );
+                Navigator.push(context, route);
+              });
             },
             child: Container(
               margin: EdgeInsets.only(top: 8.0),
@@ -153,6 +166,17 @@ class UserStoryAppBarState extends State<UserStoryAppBar> {
                         backgroundColor: Colors.transparent,
                       ),
                     ),
+                    loading
+                        ? Positioned(
+                            left: 12.0,
+                            top: 11.0,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 3,
+                              valueColor: AlwaysStoppedAnimation<Color>(
+                                  Colors.greenAccent[100]),
+                            ),
+                          )
+                        : Container(),
                     Positioned(
                       left: 0.0,
                       bottom: 0.0,
@@ -188,6 +212,16 @@ class UserStoryAppBarState extends State<UserStoryAppBar> {
           );
         },
       ),
+    );
+  }
+
+  void _getStoriesById() {
+    StreamBuilder(
+      stream: bloc.allStoryByIdUser,
+      builder: (BuildContext context, AsyncSnapshot<StoryByUser> snapshot) {
+        print('masuk sini ga sih');
+        print(snapshot.data.userId);
+      },
     );
   }
 

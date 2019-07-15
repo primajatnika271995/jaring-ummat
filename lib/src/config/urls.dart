@@ -24,6 +24,7 @@ const NEWS_CREATE = BASE_API_URL + '/api/berita/';
 
 // BASE STORY
 const ALL_STORY_URL = BASE_API_URL + '/api/stories/list';
+const STORY_BY_ID_URL = BASE_API_URL + '/api/stories/list/';
 
 // For Service Program Amal API
 const PROGRAM_AMAL_SAVE_URL = BASE_API_URL + '/api/program-amal/';

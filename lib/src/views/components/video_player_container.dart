@@ -1,58 +1,64 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:video_player/video_player.dart';
-import 'package:chewie/chewie.dart';
 
-class VideoPlayerContainer extends StatefulWidget {
-
-  final VideoPlayerController videoPlayerController;
-  final bool looping;
-  VideoPlayerContainer({@required this.videoPlayerController, this.looping});
+class VideoStory extends StatefulWidget {
+  final String videoUri;
+  final String thumbnailUri;
+  VideoStory({Key key, this.videoUri, this.thumbnailUri}) : super(key: key);
 
   @override
-  _VideoPlayerContainerState createState() => _VideoPlayerContainerState();
+  State<StatefulWidget> createState() => _VideoStory();
 }
 
-class _VideoPlayerContainerState extends State<VideoPlayerContainer> {
-  ChewieController _chewieController;
+class _VideoStory extends State<VideoStory> {
+  VideoPlayerController _controller;
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    _chewieController = ChewieController(
-      videoPlayerController: widget.videoPlayerController,
-      aspectRatio: 18 / 32,
-      // Prepare the video to be played and display the first frame
-      autoInitialize: true,
-      allowMuting: true,
-      cupertinoProgressColors: ChewieProgressColors(playedColor: Colors.blue, backgroundColor: Colors.grey),
-//      showControls: false,
-      looping: widget.looping,
-      // Errors can occur for example when trying to play a video
-      // from a non-existent URL
-      errorBuilder: (context, errorMessage) {
-        return Center(
-          child: Text(
-            errorMessage,
-            style: TextStyle(color: Colors.white),
-          ),
-        );
-      },
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return  Chewie(
-        controller: _chewieController,
-    );
+    print(widget.videoUri);
+    _controller = VideoPlayerController.network(widget.videoUri)
+      ..initialize().then((_) {
+        // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
+        setState(() {
+          _controller.play();
+        });
+      });
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
+    _controller.dispose();
     super.dispose();
-//     widget.videoPlayerController.dispose();
-//     _chewieController.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: _controller.value.initialized
+                ? Stack(
+                    fit: StackFit.expand,
+                    children: <Widget>[
+                      AspectRatio(
+                        aspectRatio: _controller.value.aspectRatio,
+                        child: VideoPlayer(_controller),
+                      ),
+                    ],
+                  )
+                : Container(
+                    child: Stack(
+                    fit: StackFit.expand,
+                    children: <Widget>[
+                      FadeInImage(
+                          fit: BoxFit.cover,
+                          fadeInDuration: Duration(milliseconds: 100),
+                          placeholder: NetworkImage(widget.thumbnailUri),
+                          image: NetworkImage(widget.thumbnailUri)),
+                      Center(child: CircularProgressIndicator())
+                    ],
+                  )),
+    );
   }
 }
