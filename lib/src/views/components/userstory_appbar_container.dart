@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:circular_profile_avatar/circular_profile_avatar.dart';
 import 'package:flutter_jaring_ummat/src/models/storiesModel.dart';
 import 'package:flutter_jaring_ummat/src/models/storyByUser.dart';
-import 'package:flutter_jaring_ummat/src/views/user_story.dart';
 import 'package:flutter_jaring_ummat/src/views/page_stories/common_stories_layout.dart'
     as layout;
 import '../../bloc/storiesBloc.dart';
@@ -41,32 +40,32 @@ class UserStoryAppBarState extends State<UserStoryAppBar> {
                 return Text(snapshot.error.toString());
               }
 
-              if (snapshot.data == null) {
-                return Container(
-                  padding: EdgeInsets.only(top: 20.0),
-                  child: Center(
-                    child: Column(
-                      children: <Widget>[
-                        Image.asset(
-                          'assets/icon/img_not_found.png',
-                          height: 50.0,
-                          width: 50.0,
-                        ),
-                        SizedBox(
-                          height: 10.0,
-                        ),
-                        const Text(
-                          'Not found story for today. :(',
-                          style: TextStyle(
-                              color: Colors.black54,
-                              fontFamily: 'Proxima',
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ],
-                    ),
-                  ),
-                );
-              }
+              // if (snapshot.data == null) {
+              //   return Container(
+              //     padding: EdgeInsets.only(top: 20.0),
+              //     child: Center(
+              //       child: Column(
+              //         children: <Widget>[
+              //           Image.asset(
+              //             'assets/icon/img_not_found.png',
+              //             height: 50.0,
+              //             width: 50.0,
+              //           ),
+              //           SizedBox(
+              //             height: 10.0,
+              //           ),
+              //           const Text(
+              //             'Not found story for today. :(',
+              //             style: TextStyle(
+              //                 color: Colors.black54,
+              //                 fontFamily: 'Proxima',
+              //                 fontWeight: FontWeight.bold),
+              //           ),
+              //         ],
+              //       ),
+              //     ),
+              //   );
+              // }
               return Container(
                 padding: EdgeInsets.only(top: 60.0),
                 child: Center(
@@ -107,19 +106,19 @@ class UserStoryAppBarState extends State<UserStoryAppBar> {
             });
           });
           return GestureDetector(
-            onTap: () {
-              setState(() {
-                loading = true;
-              });
-              print(data.userId);
+            onTap: () async {
+              print(index);
+              // setState(() {
+              //   loading = true;
+              // });
               bloc.fetchAllStoryByIdUser(data.userId);
-              bloc.allStoryByIdUser.listen((value) {
+              await bloc.allStoryByIdUser.listen((value) {
                 print(value.createdBy);
                 StoryByUser contents;
                 contents = value;
-                setState(() {
-                  loading = false;
-                });
+                // setState(() {
+                //   loading = false;
+                // });
                 Route route = MaterialPageRoute(
                   builder: (context) => layout.Story(data.userId, contents),
                 );
@@ -166,17 +165,6 @@ class UserStoryAppBarState extends State<UserStoryAppBar> {
                         backgroundColor: Colors.transparent,
                       ),
                     ),
-                    loading
-                        ? Positioned(
-                            left: 12.0,
-                            top: 11.0,
-                            child: CircularProgressIndicator(
-                              strokeWidth: 3,
-                              valueColor: AlwaysStoppedAnimation<Color>(
-                                  Colors.greenAccent[100]),
-                            ),
-                          )
-                        : Container(),
                     Positioned(
                       left: 0.0,
                       bottom: 0.0,
@@ -212,16 +200,6 @@ class UserStoryAppBarState extends State<UserStoryAppBar> {
           );
         },
       ),
-    );
-  }
-
-  void _getStoriesById() {
-    StreamBuilder(
-      stream: bloc.allStoryByIdUser,
-      builder: (BuildContext context, AsyncSnapshot<StoryByUser> snapshot) {
-        print('masuk sini ga sih');
-        print(snapshot.data.userId);
-      },
     );
   }
 

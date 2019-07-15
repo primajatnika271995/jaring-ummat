@@ -225,21 +225,17 @@ class UserStoryContainerOldState extends State<UserStoryContainerOld> {
       );
     }
 
-    return Scaffold(
-
+    return StoryView(
+      widgetList,
+      onStoryShow: (s) {
+        print("Showing a story");
+      },
+      onComplete: () {
+        print("Completed a cycle");
+      },
+      progressPosition: ProgressPosition.top,
+      repeat: false,
     );
-
-    // return StoryView(
-    //   widgetList,
-    //   onStoryShow: (s) {
-    //     print("Showing a story");
-    //   },
-    //   onComplete: () {
-    //     print("Completed a cycle");
-    //   },
-    //   progressPosition: ProgressPosition.top,
-    //   repeat: false,
-    // );
   }
 
   @override

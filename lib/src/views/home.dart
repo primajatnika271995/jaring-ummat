@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_jaring_ummat/src/views/components/header_custom_icons.dart';
+import 'package:flutter_jaring_ummat/src/views/components/menu_lain_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/components/navbar_custom_icon.dart';
 import 'package:flutter_jaring_ummat/src/views/page_berita/berita.dart';
+import 'package:flutter_jaring_ummat/src/views/page_market/market.dart';
 import 'package:flutter_jaring_ummat/src/views/page_program-amal/program_amal.dart';
 import 'package:toast/toast.dart';
 import 'portofilio.dart';
@@ -116,6 +118,7 @@ class _HomeState extends State<HomeView> {
     final List<Widget> _children = [
       ProgramAmalPage(),
       Portofolio(),
+      Toko(),
       Inbox(),
       Menu()
     ];
@@ -164,6 +167,19 @@ class _HomeState extends State<HomeView> {
             ),
             activeIcon: new Icon(
               NavbarCustom.nav_portfolio_active,
+              color: Colors.black,
+              size: 27.0,
+            ),
+            title: Container(height: 0.0),
+          ),
+          BottomNavigationBarItem(
+            icon: new Icon(
+              MenuLainIcon.merchant_amal,
+              color: Colors.grey,
+              size: 27.0,
+            ),
+            activeIcon: new Icon(
+              MenuLainIcon.merchant_amal,
               color: Colors.black,
               size: 27.0,
             ),

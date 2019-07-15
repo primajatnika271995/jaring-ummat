@@ -124,29 +124,30 @@ class _MenuState extends State<Menu> {
                   showDialog(
                     context: (context),
                     builder: (_) => NetworkGiffyDialog(
-                          image: Image.network(
-                              'http://www.bandbazza.com/images/404.gif'),
-                          title: Text(
-                            'Logout Message',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize: 22.0,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          description: Text(
-                            'Apakah anda ingin keluar dari Aplikasi Jaring Ummat ?',
-                            textAlign: TextAlign.center,
-                          ),
-                          buttonOkColor: Colors.redAccent,
-                          buttonOkText: Text(
-                            'Logout',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                          onOkButtonPressed: () {
-                            logout();
-                          },
+                      image: Image.asset(
+                        'assets/404.gif',
+                      ),
+                      title: Text(
+                        'Logout Message',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 22.0,
+                          fontWeight: FontWeight.w600,
                         ),
+                      ),
+                      description: Text(
+                        'Apakah anda ingin keluar dari Aplikasi Jaring Ummat ?',
+                        textAlign: TextAlign.center,
+                      ),
+                      buttonOkColor: Colors.redAccent,
+                      buttonOkText: Text(
+                        'Logout',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      onOkButtonPressed: () {
+                        logout();
+                      },
+                    ),
                   );
                 },
                 icon: Icon(
@@ -422,48 +423,6 @@ class _MenuState extends State<Menu> {
                                   )),
                                   middleSection('Tukar Point Amal',
                                       'Tukarkan Point Amal Anda dengan penawaran menarik dari Jaring Ummat'),
-                                  rightSection()
-                                ],
-                              ),
-                            )
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: 10.0,
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(left: 10.0, right: 10.0),
-                    decoration: BoxDecoration(
-                        color: Colors.grey[200],
-                        borderRadius: BorderRadius.circular(10.0)),
-                    padding:
-                        EdgeInsets.only(left: 10.0, bottom: 10.0, right: 10.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            SizedBox(height: 10.0),
-                            InkWell(
-                              onTap: () {
-                                Scaffold.of(context).showSnackBar(SnackBar(
-                                  content: Text(
-                                      'Menu Toko Jaring Umat Under Development'),
-                                ));
-                              },
-                              child: Row(
-                                children: <Widget>[
-                                  leftSection(Icon(
-                                    MenuLainIcon.merchant_amal,
-                                    color: Colors.blueAccent,
-                                    size: 30.0,
-                                  )),
-                                  middleSection('Toko Jaring Ummat',
-                                      'Belanja kebutuhan ibadah atau kebutuhan lainnya di toko-toko amal'),
                                   rightSection()
                                 ],
                               ),

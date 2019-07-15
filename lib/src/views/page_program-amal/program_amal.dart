@@ -111,18 +111,22 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
           ),
           body: CustomScrollView(
             slivers: <Widget>[
-              new SliverAppBar(
-                automaticallyImplyLeading: false,
-                bottom: PreferredSize(
-                  preferredSize: Size.fromHeight(100.0),
-                  child: Text(''),
-                ),
-                elevation: 20.0,
-                flexibleSpace: new Scaffold(
-                  backgroundColor: Colors.white,
-                  body: new UserStoryAppBar(),
-                ),
-              ),
+              storiesBloc.bloc.allStoryList.length != 0
+                  ? new SliverAppBar(
+                      automaticallyImplyLeading: false,
+                      bottom: PreferredSize(
+                        preferredSize: Size.fromHeight(100.0),
+                        child: Text(''),
+                      ),
+                      elevation: 20.0,
+                      flexibleSpace: new Scaffold(
+                        backgroundColor: Colors.white,
+                        body: new UserStoryAppBar(),
+                      ),
+                    )
+                  : SliverList(
+                      delegate: SliverChildListDelegate([]),
+                    ),
               new SliverAppBar(
                 backgroundColor: Colors.white,
                 elevation: 10.0,
@@ -342,52 +346,51 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
           children: [0, 1, 2, 3, 4, 5, 6, 7]
               .map(
                 (_) => Padding(
-                      padding: const EdgeInsets.only(bottom: 8.0),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            width: 48.0,
-                            height: 48.0,
-                            color: Colors.white,
-                          ),
-                          Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 8.0),
-                          ),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  width: double.infinity,
-                                  height: 8.0,
-                                  color: Colors.white,
-                                ),
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 2.0),
-                                ),
-                                Container(
-                                  width: double.infinity,
-                                  height: 8.0,
-                                  color: Colors.white,
-                                ),
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 2.0),
-                                ),
-                                Container(
-                                  width: 40.0,
-                                  height: 8.0,
-                                  color: Colors.white,
-                                ),
-                              ],
-                            ),
-                          )
-                        ],
+                  padding: const EdgeInsets.only(bottom: 8.0),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        width: 48.0,
+                        height: 48.0,
+                        color: Colors.white,
                       ),
-                    ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      ),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              width: double.infinity,
+                              height: 8.0,
+                              color: Colors.white,
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 2.0),
+                            ),
+                            Container(
+                              width: double.infinity,
+                              height: 8.0,
+                              color: Colors.white,
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 2.0),
+                            ),
+                            Container(
+                              width: 40.0,
+                              height: 8.0,
+                              color: Colors.white,
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                ),
               )
               .toList(),
         ),
