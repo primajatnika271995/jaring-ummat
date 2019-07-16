@@ -1,4 +1,5 @@
 import 'package:flutter_jaring_ummat/src/models/storyByUser.dart';
+import 'package:http/http.dart' as http;
 
 import '../repository/StoriesRepository.dart';
 import '../models/storiesModel.dart';
@@ -8,9 +9,11 @@ class StoriesBloc {
   final repository = StoriesRepository();
   final storyFetchAll = PublishSubject<List<Story>>();
   final storyFetchByIdUser = PublishSubject<StoryByUser>();
+  final storyFetchResponse = PublishSubject<http.Response>();
 
   Observable<List<Story>> get allStoryList => storyFetchAll.stream;
   Observable<StoryByUser> get allStoryByIdUser => storyFetchByIdUser.stream;
+  Observable<http.Response> get allResponse => storyFetchResponse.stream;
 
   fetchAllStories() async {
     List<Story> story = await repository.fetchAllStory();

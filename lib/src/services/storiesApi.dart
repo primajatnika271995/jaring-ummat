@@ -19,8 +19,13 @@ class StoriesApiProvider {
       if (response.statusCode == 400) {
         throw NotFoundException("NOT_FOUND");
       }
-      throw NotFoundException("Unable to load ${response.toString()}");
+      // throw NotFoundException("Unable to load ${response.toString()}");
     }
+  }
+
+  Future<http.Response> response() async {
+    final response = await http.get(ALL_STORY_URL);
+    return response;
   }
 
   Future<http.Response>storiesList(String userId) async {

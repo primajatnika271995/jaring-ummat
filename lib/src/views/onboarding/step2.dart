@@ -477,7 +477,7 @@ class Step2State extends State<Step2View> {
                 ),
           ),
         );
-      }
+       }
     });
   }
 

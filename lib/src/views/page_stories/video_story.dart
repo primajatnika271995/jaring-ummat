@@ -28,30 +28,32 @@ class _VideoStoryState extends State<VideoStory> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: _controller.value.initialized
-          ? Stack(
-              fit: StackFit.expand,
-              children: <Widget>[
-                AspectRatio(
-                  aspectRatio: 16.0/9.0,
-                  child: VideoPlayer(_controller),
-                ),
-              ],
-            )
-          : Container(
-              child: Stack(
+    return Scaffold(
+      body: Container(
+        child: _controller.value.initialized
+            ? Stack(
                 fit: StackFit.expand,
                 children: <Widget>[
-                  FadeInImage(
-                      fit: BoxFit.cover,
-                      fadeInDuration: Duration(milliseconds: 100),
-                      placeholder: NetworkImage(widget.thumbnailsUri),
-                      image: NetworkImage(widget.thumbnailsUri)),
-                  Center(child: CircularProgressIndicator())
+                  AspectRatio(
+                    aspectRatio: _controller.value.aspectRatio,
+                    child: VideoPlayer(_controller),
+                  ),
                 ],
+              )
+            : Container(
+                child: Stack(
+                  fit: StackFit.expand,
+                  children: <Widget>[
+                    FadeInImage(
+                        fit: BoxFit.cover,
+                        fadeInDuration: Duration(milliseconds: 100),
+                        placeholder: NetworkImage(widget.thumbnailsUri),
+                        image: NetworkImage(widget.thumbnailsUri)),
+                    Center(child: CircularProgressIndicator())
+                  ],
+                ),
               ),
-            ),
+      ),
     );
   }
 

@@ -1,15 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_jaring_ummat/src/config/preferences.dart';
 import 'package:flutter_jaring_ummat/src/models/program_amal.dart';
+import 'package:flutter_jaring_ummat/src/repository/StoriesRepository.dart';
+import 'package:flutter_jaring_ummat/src/services/storiesApi.dart';
 import 'package:flutter_jaring_ummat/src/views/components/userstory_appbar_container.dart';
-import 'package:flutter_jaring_ummat/src/views/page_program-amal/program_amal_container.dart';
 import 'package:flutter_jaring_ummat/src/views/components/appbar_custom_icons.dart';
-import 'package:flutter_jaring_ummat/src/bloc/programAmalBloc.dart'
-    as programAmalBloc;
+import 'package:flutter_jaring_ummat/src/bloc/programAmalBloc.dart'as programAmalBloc;
 import 'package:flutter_jaring_ummat/src/bloc/storiesBloc.dart' as storiesBloc;
 import 'package:flutter_jaring_ummat/src/views/page_program-amal/program_amal_content.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:giffy_dialog/giffy_dialog.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:toast/toast.dart';
 
@@ -20,13 +21,32 @@ class ProgramAmalPage extends StatefulWidget {
 
 class _ProgramAmalPageState extends State<ProgramAmalPage> {
   String selectedCategory = "";
+  bool hide_story = false;
+
+  StoriesApiProvider _provider = new StoriesApiProvider();
 
   @override
   void initState() {
     programAmalBloc.bloc.fetchAllProgramAmal(selectedCategory);
-    storiesBloc.bloc.fetchAllStories();
-    // TODO: implement initState
+    response();
     super.initState();
+  }
+
+  void response() async {
+    await _provider.response().then((response) {
+      print(response.statusCode);
+      if (response.statusCode == 204) {
+        setState(() {
+          hide_story = true;
+        });
+      } else {
+        if (response.statusCode == 200) {
+          setState(() {
+            hide_story = false;
+          });
+        }
+      }
+    });
   }
 
   @override
@@ -111,7 +131,7 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
           ),
           body: CustomScrollView(
             slivers: <Widget>[
-              storiesBloc.bloc.allStoryList.length != 0
+              !hide_story
                   ? new SliverAppBar(
                       automaticallyImplyLeading: false,
                       bottom: PreferredSize(
