@@ -497,6 +497,10 @@ class Step2State extends State<Step2View> {
     var profileImage = await liteProfile.profileImage.getDisplayImageUrl(token);
 
     await _userDetailsService.userDetails(liteEmail).then((response) {
+      _progressDialog = new ProgressDialog(context, ProgressDialogType.Normal);
+      _progressDialog.setMessage("Login LinkedIn Account ...");
+      _progressDialog.show();
+
       if (response.statusCode == 200) {
         UserDetails userDetails = new UserDetails();
 
