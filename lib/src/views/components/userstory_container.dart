@@ -195,9 +195,9 @@ class UserStoryContainerOldState extends State<UserStoryContainerOld> {
     for (var i = 0; i < urlContent.length; i++) {
       if (urlContent[i].imgUrl == null) {
         setState(() {
-          widgetList.add(
-            StoryItem.pageVideo(urlContent[i].videoUrl, urlContent[i].thumbnailUrl),
-          );
+          // widgetList.add(
+          //   StoryItem.pageVideo(urlContent[i].videoUrl, urlContent[i].thumbnailUrl),
+          // );
         });
       }
 

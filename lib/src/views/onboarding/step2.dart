@@ -1,8 +1,13 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_jaring_ummat/src/models/postModel.dart';
+import 'package:flutter_jaring_ummat/src/services/registerApi.dart';
 import 'package:flutter_jaring_ummat/src/services/user_details.dart';
 import 'package:http/http.dart' as http;
+import 'package:mailer/mailer.dart';
+import 'package:mailer/smtp_server.dart';
+import 'package:otp/otp.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 import 'package:toast/toast.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -32,7 +37,9 @@ class Step2State extends State<Step2View> {
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
   final FacebookLogin facebookSignIn = new FacebookLogin();
   final UserDetailsService _userDetailsService = new UserDetailsService();
+  final RegisterApiProvider register = new RegisterApiProvider();
   SharedPreferences _preferences;
+  ProgressDialog _progressDialog;
 
   final TextEditingController _fullnameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
@@ -45,6 +52,7 @@ class Step2State extends State<Step2View> {
   final String clientSecret = 'QOzI7o0ZTBAF8hr7';
 
   String token;
+  int otpKey;
 
   bool _selected = false;
   bool _isSubmit = false;
@@ -269,28 +277,27 @@ class Step2State extends State<Step2View> {
                                   MaterialPageRoute(
                                     builder: (BuildContext context) =>
                                         LinkedInUserWidget(
-                                          redirectUrl: redirectUrl,
-                                          clientId: clientId,
-                                          clientSecret: clientSecret,
-                                          onGetUserProfile:
-                                              (LinkedInUserModel linkedInUser) {
-                                            print(
-                                                'Access token ${linkedInUser.token.accessToken}');
+                                      redirectUrl: redirectUrl,
+                                      clientId: clientId,
+                                      clientSecret: clientSecret,
+                                      onGetUserProfile:
+                                          (LinkedInUserModel linkedInUser) {
+                                        print(
+                                            'Access token ${linkedInUser.token.accessToken}');
 
-                                            setState(() {});
-                                            onRegisterLinkedIn(
-                                                linkedInUser.token.accessToken);
+                                        setState(() {});
+                                        onRegisterLinkedIn(
+                                            linkedInUser.token.accessToken);
 
-                                            Navigator.pop(context);
-                                          },
-                                          catchError:
-                                              (LinkedInErrorObject error) {
-                                            print(
-                                                'Error description: ${error.description},'
-                                                ' Error code: ${error.statusCode.toString()}');
-                                            Navigator.pop(context);
-                                          },
-                                        ),
+                                        Navigator.pop(context);
+                                      },
+                                      catchError: (LinkedInErrorObject error) {
+                                        print(
+                                            'Error description: ${error.description},'
+                                            ' Error code: ${error.statusCode.toString()}');
+                                        Navigator.pop(context);
+                                      },
+                                    ),
                                     fullscreenDialog: true,
                                   ),
                                 );
@@ -458,8 +465,9 @@ class Step2State extends State<Step2View> {
       tipe_user: "Muzakki",
     );
 
-    await _userDetailsService.userDetails(_emailController.text).then((response) async {
-
+    await _userDetailsService
+        .userDetails(_emailController.text)
+        .then((response) async {
       print('status code ${response.statusCode}');
       if (response.statusCode == 200) {
         Toast.show(
@@ -473,11 +481,11 @@ class Step2State extends State<Step2View> {
           context,
           MaterialPageRoute(
             builder: (context) => Step3View(
-                  data: postData,
-                ),
+              data: postData,
+            ),
           ),
         );
-       }
+      }
     });
   }
 
@@ -487,16 +495,77 @@ class Step2State extends State<Step2View> {
     var liteEmail = await LinkedInService.getEmailAddress(token);
 
     var profileImage = await liteProfile.profileImage.getDisplayImageUrl(token);
-    print(liteEmail);
-    print(profileImage);
 
-    _preferences.setString(FULLNAME_KEY, liteEmail);
-    _preferences.setString(CONTACT_KEY, 'Not Found');
-    _preferences.setString(EMAIL_KEY, liteEmail);
-    _preferences.setString(ACCESS_TOKEN_KEY, token);
-    _preferences.setString(USER_ID_KEY, "");
-    _preferences.setString(PROFILE_FACEBOOK_KEY, profileImage);
+    await _userDetailsService.userDetails(liteEmail).then((response) {
+      if (response.statusCode == 200) {
+        UserDetails userDetails = new UserDetails();
 
-    await Navigator.of(context).pushReplacementNamed('/home');
+        userDetails = UserDetails.fromJson(response.data);
+
+        _preferences.setString(FULLNAME_KEY, liteEmail);
+        _preferences.setString(CONTACT_KEY, 'Not Found');
+        _preferences.setString(EMAIL_KEY, liteEmail);
+        _preferences.setString(ACCESS_TOKEN_KEY, token);
+        _preferences.setString(USER_ID_KEY, userDetails.userId);
+        _preferences.setString(PROFILE_FACEBOOK_KEY, profileImage);
+
+        Navigator.of(context).pushReplacementNamed('/home');
+      } else {
+        if (response.statusCode == 204) {
+          _registerLinkedIn(token);
+        }
+      }
+    });
+  }
+
+  void _registerLinkedIn(String token) async {
+    _preferences = await SharedPreferences.getInstance();
+
+    _progressDialog = new ProgressDialog(context, ProgressDialogType.Normal);
+    _progressDialog.setMessage("Register LinkedIn Account ...");
+    _progressDialog.show();
+
+    var liteProfile = await LinkedInService.getLiteProfile(token);
+    var liteEmail = await LinkedInService.getEmailAddress(token);
+    var profileImage = await liteProfile.profileImage.getDisplayImageUrl(token);
+
+    otpKey = OTP.generateHOTPCode(
+      liteEmail + DateTime.now().toIso8601String(),
+      300,
+      length: 8,
+    );
+
+    final postData = PostRegistration(
+      contact: "Not Found",
+      email: liteEmail,
+      fullname: "LinkedIn User",
+      tipe_user: "LinkedIn",
+      username: liteEmail,
+      password: otpKey.toString(),
+    );
+
+    await register.saveUser(postData).then((response) {
+      _sendPassword(liteEmail);
+      _progressDialog.hide();
+      onRegisterLinkedIn(token);
+    });
+  }
+
+  void _sendPassword(String email) {
+    String username = "dis@tabeldata.com";
+    String password = "0fm6lyn9cjph";
+
+    final smtpServer = SmtpServer('mail.tabeldata.com',
+        username: username, password: password, port: 26, ssl: false);
+
+    final message = new Message()
+      ..from = new Address(username, 'Jaring Umat OTP')
+      ..recipients.add(email)
+      ..subject = 'Jaring Umat LinkedIn OTP :: :: ${new DateTime.now()}'
+      ..text = 'This is the plain text.\nThis is line 2 of the text part.'
+      ..html =
+          "<h1>Your Pasword CODE using $otpKey </h1>\n<p>If you are having any issues with your Account, please don\'t hesitate to contact us by replying to this email\n \n <p>Thank!";
+
+    send(message, smtpServer);
   }
 }

@@ -27,6 +27,7 @@ class _KomentarContainerState extends State<KomentarContainer>
 
   SharedPreferences _preferences;
   String profilePictUrl;
+  String medsosPictUrl;
 
   @override
   void initState() {
@@ -198,7 +199,9 @@ class _KomentarContainerState extends State<KomentarContainer>
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(30.0),
               image: DecorationImage(
-                image: NetworkImage(profilePictUrl),
+                image: profilePictUrl == null
+                    ? NetworkImage(medsosPictUrl)
+                    : NetworkImage(profilePictUrl),
                 fit: BoxFit.cover,
               ),
             ),
@@ -286,9 +289,13 @@ class _KomentarContainerState extends State<KomentarContainer>
                     child: Container(
                       width: 50.0,
                       height: 50.0,
-                      child: CircularProfileAvatar(
-                        snapshot.data[index].contents[0].imgUrl,
-                      ),
+                      child: snapshot.data[index].contents == null
+                          ? CircularProfileAvatar(
+                              medsosPictUrl,
+                            )
+                          : CircularProfileAvatar(
+                              snapshot.data[index].contents[0].imgUrl,
+                            ),
                     ),
                   ),
                   SizedBox(
@@ -368,8 +375,7 @@ class _KomentarContainerState extends State<KomentarContainer>
                           image: DecorationImage(
                             fit: BoxFit.cover,
                             image: NetworkImage(
-                              widget.programAmal.imageContent[0].imgUrl,
-                            ),
+                                widget.programAmal.imageContent[0].imgUrl),
                           ),
                         ),
                       ),
@@ -420,6 +426,7 @@ class _KomentarContainerState extends State<KomentarContainer>
   void getUserProfile() async {
     _preferences = await SharedPreferences.getInstance();
     this.profilePictUrl = _preferences.getString(PROFILE_PICTURE_KEY);
+    this.medsosPictUrl = _preferences.getString(PROFILE_FACEBOOK_KEY);
   }
 
   @override
