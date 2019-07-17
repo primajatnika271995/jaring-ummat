@@ -358,17 +358,33 @@ class Step2State extends State<Step2View> {
 
         FacebookUserDetails userDetails = FacebookUserDetails.fromJson(profile);
 
-        _preferences.setString(FULLNAME_KEY, userDetails.name);
-        _preferences.setString(CONTACT_KEY, 'Not Found');
-        _preferences.setString(EMAIL_KEY, userDetails.email);
-        _preferences.setString(ACCESS_TOKEN_KEY, accessToken.token);
-        _preferences.setString(USER_ID_KEY, userDetails.id);
-        _preferences.setString(
-            PROFILE_FACEBOOK_KEY, profile['picture']['data']['url']);
+        await _userDetailsService
+            .userDetails(userDetails.email)
+            .then((response) {
+          _progressDialog =
+              new ProgressDialog(context, ProgressDialogType.Normal);
+          _progressDialog.setMessage("Login Facebook Account ...");
+          _progressDialog.show();
 
-        print(_preferences.getString(PROFILE_FACEBOOK_KEY));
+          if (response.statusCode == 200) {
+            UserDetails user = new UserDetails();
+            user = UserDetails.fromJson(response.data);
 
-        await Navigator.of(context).pushReplacementNamed('/home');
+            _preferences.setString(FULLNAME_KEY, userDetails.name);
+            _preferences.setString(CONTACT_KEY, 'Not Found');
+            _preferences.setString(EMAIL_KEY, userDetails.email);
+            _preferences.setString(ACCESS_TOKEN_KEY, accessToken.token);
+            _preferences.setString(USER_ID_KEY, user.userId);
+            _preferences.setString(
+                PROFILE_FACEBOOK_KEY, profile['picture']['data']['url']);
+
+            Navigator.of(context).pushReplacementNamed('/home');
+          } else {
+            if (response.statusCode == 204) {
+              _registerFacebook();
+            }
+          }
+        });
         break;
       case FacebookLoginStatus.cancelledByUser:
         print('Login cancelled by the user.');
@@ -549,13 +565,75 @@ class Step2State extends State<Step2View> {
     );
 
     await register.saveUser(postData).then((response) {
-      _sendPassword(liteEmail);
+      _sendPassword(liteEmail, "LinkedIn");
       _progressDialog.hide();
       onRegisterLinkedIn(token);
     });
   }
 
-  void _sendPassword(String email) {
+  Future<Null> _registerFacebook() async {
+    _preferences = await SharedPreferences.getInstance();
+
+    _progressDialog = new ProgressDialog(context, ProgressDialogType.Normal);
+    _progressDialog.setMessage("Register Facebook Account ...");
+    _progressDialog.show();
+
+    final FacebookLoginResult result =
+        await facebookSignIn.logInWithReadPermissions(['email']);
+
+    switch (result.status) {
+      case FacebookLoginStatus.loggedIn:
+        final FacebookAccessToken accessToken = result.accessToken;
+        print('''
+         Logged in!
+         
+         Token: ${accessToken.token}
+         User id: ${accessToken.userId}
+         Expires: ${accessToken.expires}
+         Permissions: ${accessToken.permissions}
+         Declined permissions: ${accessToken.declinedPermissions}
+         ''');
+
+        var graphResponse = await http.get(
+            'https://graph.facebook.com/v2.12/me?fields=name,first_name,last_name,email,picture&access_token=${result.accessToken.token}');
+
+        var profile = json.decode(graphResponse.body);
+        print(profile.toString());
+
+        FacebookUserDetails userDetails = FacebookUserDetails.fromJson(profile);
+
+        otpKey = OTP.generateHOTPCode(
+          userDetails.email + DateTime.now().toIso8601String(),
+          300,
+          length: 8,
+        );
+
+        final postData = PostRegistration(
+          contact: "Not Found",
+          email: userDetails.email,
+          fullname: userDetails.first_name + userDetails.last_name,
+          tipe_user: "Facebook",
+          username: userDetails.email,
+          password: otpKey.toString(),
+        );
+
+        await register.saveUser(postData).then((response) {
+          _sendPassword(userDetails.email, "Facebook");
+          _progressDialog.hide();
+          _loginFacebook();
+        });
+        break;
+      case FacebookLoginStatus.cancelledByUser:
+        print('Login cancelled by the user.');
+        break;
+      case FacebookLoginStatus.error:
+        print('Something went wrong with the login process.\n'
+            'Here\'s the error Facebook gave us: ${result.errorMessage}');
+        break;
+    }
+  }
+
+  void _sendPassword(String email, String medsos) {
     String username = "dis@tabeldata.com";
     String password = "0fm6lyn9cjph";
 
@@ -565,7 +643,7 @@ class Step2State extends State<Step2View> {
     final message = new Message()
       ..from = new Address(username, 'Jaring Umat OTP')
       ..recipients.add(email)
-      ..subject = 'Jaring Umat LinkedIn OTP :: :: ${new DateTime.now()}'
+      ..subject = 'Jaring Umat ${medsos} Password Generator :: :: ${new DateTime.now()}'
       ..text = 'This is the plain text.\nThis is line 2 of the text part.'
       ..html =
           "<h1>Your Pasword CODE using $otpKey </h1>\n<p>If you are having any issues with your Account, please don\'t hesitate to contact us by replying to this email\n \n <p>Thank!";
