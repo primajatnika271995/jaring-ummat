@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
+import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 
 class VideoStory extends StatefulWidget {
   final String videoUri;
@@ -13,6 +14,7 @@ class VideoStory extends StatefulWidget {
 
 class _VideoStoryState extends State<VideoStory> {
   VideoPlayerController _controller;
+  final flutterWebViewPlugin = FlutterWebviewPlugin();
 
   @override
   void initState() {
@@ -23,6 +25,7 @@ class _VideoStoryState extends State<VideoStory> {
           _controller.play();
         });
       });
+    flutterWebViewPlugin.launch(widget.videoUri);
     super.initState();
   }
 
@@ -30,29 +33,9 @@ class _VideoStoryState extends State<VideoStory> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        child: _controller.value.initialized
-            ? Stack(
-                fit: StackFit.expand,
-                children: <Widget>[
-                  AspectRatio(
-                    aspectRatio: _controller.value.aspectRatio,
-                    child: VideoPlayer(_controller),
-                  ),
-                ],
-              )
-            : Container(
-                child: Stack(
-                  fit: StackFit.expand,
-                  children: <Widget>[
-                    FadeInImage(
-                        fit: BoxFit.cover,
-                        fadeInDuration: Duration(milliseconds: 100),
-                        placeholder: NetworkImage(widget.thumbnailsUri),
-                        image: NetworkImage(widget.thumbnailsUri)),
-                    Center(child: CircularProgressIndicator())
-                  ],
-                ),
-              ),
+        child: WebviewScaffold(
+          url: widget.videoUri,
+        ),
       ),
     );
   }

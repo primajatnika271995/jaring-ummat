@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:video_player/video_player.dart';
+import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 
 class VideoStory extends StatefulWidget {
   final String videoUri;
@@ -14,6 +15,7 @@ class VideoStory extends StatefulWidget {
 
 class _VideoStory extends State<VideoStory> {
   VideoPlayerController _controller;
+  final flutterWebViewPlugin = FlutterWebviewPlugin();
 
   @override
   void initState() {
@@ -36,29 +38,37 @@ class _VideoStory extends State<VideoStory> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: _controller.value.initialized
-                ? Stack(
-                    fit: StackFit.expand,
-                    children: <Widget>[
-                      AspectRatio(
-                        aspectRatio: _controller.value.aspectRatio,
-                        child: VideoPlayer(_controller),
-                      ),
-                    ],
-                  )
-                : Container(
-                    child: Stack(
-                    fit: StackFit.expand,
-                    children: <Widget>[
-                      FadeInImage(
-                          fit: BoxFit.cover,
-                          fadeInDuration: Duration(milliseconds: 100),
-                          placeholder: NetworkImage(widget.thumbnailUri),
-                          image: NetworkImage(widget.thumbnailUri)),
-                      Center(child: CircularProgressIndicator())
-                    ],
-                  )),
+    return WillPopScope(
+      onWillPop: () {
+        Navigator.of(context).pop();
+      },
+          child: Container(
+        child: _controller.value.initialized
+                  ? Stack(
+                      fit: StackFit.expand,
+                      children: <Widget>[
+                        AspectRatio(
+                          aspectRatio: _controller.value.aspectRatio,
+                          child: WebviewScaffold(
+                            url: widget.videoUri,
+                            withZoom: false,
+                          ),
+                        ),
+                      ],
+                    )
+                  : Container(
+                      child: Stack(
+                      fit: StackFit.expand,
+                      children: <Widget>[
+                        FadeInImage(
+                            fit: BoxFit.cover,
+                            fadeInDuration: Duration(milliseconds: 100),
+                            placeholder: NetworkImage(widget.thumbnailUri),
+                            image: NetworkImage(widget.thumbnailUri)),
+                        Center(child: CircularProgressIndicator())
+                      ],
+                    )),
+      ),
     );
   }
 }

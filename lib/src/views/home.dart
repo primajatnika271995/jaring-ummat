@@ -1,11 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_jaring_ummat/src/views/bni_page.dart';
+import 'package:flutter_jaring_ummat/src/views/components/fab_bottom_app_bar.dart';
 import 'package:flutter_jaring_ummat/src/views/components/header_custom_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/components/menu_lain_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/components/navbar_custom_icon.dart';
 import 'package:flutter_jaring_ummat/src/views/page_berita/berita.dart';
 import 'package:flutter_jaring_ummat/src/views/page_market/market.dart';
 import 'package:flutter_jaring_ummat/src/views/page_program-amal/program_amal.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:toast/toast.dart';
 import 'portofilio.dart';
 import 'inbox.dart';
@@ -23,11 +26,12 @@ class HomeView extends StatefulWidget {
 class _HomeState extends State<HomeView> {
   int _currentIndex = 0;
 
-  void onTabTapped(int index) async {
+  void _selectedTab(int index) {
     setState(() {
       _currentIndex = index;
     });
   }
+
 
   static const snackBarDuration = Duration(seconds: 3);
 
@@ -90,6 +94,7 @@ class _HomeState extends State<HomeView> {
           children: <Widget>[
             newsView(),
             mainView(),
+            bniAccount(),
             popularAccountView(),
           ],
         ),
@@ -118,14 +123,31 @@ class _HomeState extends State<HomeView> {
     final List<Widget> _children = [
       ProgramAmalPage(),
       Portofolio(),
-      Toko(),
+      // Toko(),
       Inbox(),
       Menu()
     ];
 
     return Scaffold(
       body: _children[_currentIndex],
-      bottomNavigationBar: bottomNavBar(_currentIndex, onTabTapped),
+      floatingActionButton: new FloatingActionButton(
+        child: const Icon(FontAwesomeIcons.qrcode),
+        backgroundColor: Colors.orange,
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      bottomNavigationBar: FABBottomAppBar(
+        color: Colors.grey,
+        selectedColor: Colors.black,
+        notchedShape: CircularNotchedRectangle(),
+        onTabSelected: _selectedTab,
+        iconSize: 30.0,
+        items: [
+          FABBottomAppBarItem(iconData: NavbarCustom.nav_home_active, text: ''),
+          FABBottomAppBarItem(iconData: NavbarCustom.nav_portfolio_active, text: ''),
+          FABBottomAppBarItem(iconData: NavbarCustom.nav_inbox_active, text: ''),
+          FABBottomAppBarItem(iconData: NavbarCustom.nav_othersmenu_active, text: ''),
+        ],
+      ),
     );
   }
 
@@ -135,6 +157,10 @@ class _HomeState extends State<HomeView> {
 
   Widget popularAccountView() {
     return PopularAccountView();
+  }
+
+  Widget bniAccount() {
+    return BNIPage();
   }
 
   Widget bottomNavBar(int currentIndex, Function onTap) {
