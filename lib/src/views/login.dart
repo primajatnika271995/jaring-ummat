@@ -1,9 +1,21 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:flutter_jaring_ummat/src/models/login_model.dart';
+import 'package:flutter_jaring_ummat/src/models/login_model.dart' as modelLogin;
+import 'package:flutter_jaring_ummat/src/models/postModel.dart';
+import 'package:flutter_jaring_ummat/src/services/registerApi.dart';
+import 'package:http/http.dart' as http;
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:mailer/mailer.dart';
+import 'package:mailer/smtp_server.dart';
+import 'package:otp/otp.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
 import 'package:progress_dialog/progress_dialog.dart';
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:linkedin_login/linkedin_login.dart';
+import 'package:linkedin_auth/linkedin_auth.dart';
 
 import 'components/container_bg_default.dart';
 import 'package:flutter_jaring_ummat/src/config/preferences.dart';
@@ -39,12 +51,23 @@ class LoginState extends State<LoginView> {
 
   LoginServices service = new LoginServices();
   UserDetailsService userDetailsService = new UserDetailsService();
+  final FacebookLogin facebookSignIn = new FacebookLogin();
+  final UserDetailsService _userDetailsService = new UserDetailsService();
+  final RegisterApiProvider register = new RegisterApiProvider();
 
   ProgressDialog _progressDialog;
+  AuthorizationCodeResponse authorizationCodeResponse;
+
+  final String redirectUrl = 'https://api.linkedin.com/v2/';
+  final String clientId = '81vfnbt57g6p6q';
+  final String clientSecret = 'QOzI7o0ZTBAF8hr7';
+
+  String token;
+  int otpKey;
 
   Widget submitButton() {
     return RaisedButton(
-      onPressed: _emailTextEditController.text.isNotEmpty ?  this.login : null,
+      onPressed: _emailTextEditController.text.isNotEmpty ? this.login : null,
       disabledColor: Colors.grey,
       disabledTextColor: Colors.white,
       textColor: Colors.white,
@@ -187,7 +210,122 @@ class LoginState extends State<LoginView> {
                           ),
                         ),
                         SizedBox(
-                          height: 70.0,
+                          height: 10.0,
+                        ),
+                        Container(
+                          padding: EdgeInsets.only(top: 5),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Expanded(
+                                    flex: 3,
+                                    child: RaisedButton.icon(
+                                      icon: Icon(
+                                        FontAwesomeIcons.facebookF,
+                                        size: 18.0,
+                                      ),
+                                      label: new Text(
+                                        'Facebook',
+                                        style: TextStyle(fontSize: 12.0),
+                                      ),
+                                      onPressed: _loginFacebook,
+                                      textColor: Colors.white,
+                                      color: Color.fromRGBO(59, 89, 152, 1.0),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(30.0),
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 5,
+                                  ),
+                                  Expanded(
+                                    flex: 3,
+                                    child: RaisedButton.icon(
+                                      onPressed: () {},
+                                      icon: SvgPicture.asset(
+                                        'assets/icon/google_logo.svg',
+                                        width: 18.0,
+                                        height: 18.0,
+                                      ),
+                                      label: new Text(
+                                        'Google',
+                                        style: TextStyle(fontSize: 12.0),
+                                      ),
+                                      color: Color.fromRGBO(255, 255, 255, 1.0),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(30.0),
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 5,
+                                  ),
+                                  Expanded(
+                                    flex: 3,
+                                    child: RaisedButton.icon(
+                                      onPressed: () async {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (BuildContext context) =>
+                                                LinkedInUserWidget(
+                                              redirectUrl: redirectUrl,
+                                              clientId: clientId,
+                                              clientSecret: clientSecret,
+                                              onGetUserProfile:
+                                                  (LinkedInUserModel linkedInUser) {
+                                                print(
+                                                    'Access token ${linkedInUser.token.accessToken}');
+
+                                                setState(() {});
+                                                onRegisterLinkedIn(
+                                                    linkedInUser.token.accessToken);
+
+                                                Navigator.pop(context);
+                                              },
+                                              catchError: (LinkedInErrorObject error) {
+                                                print(
+                                                    'Error description: ${error.description},'
+                                                    ' Error code: ${error.statusCode.toString()}');
+                                                Navigator.pop(context);
+                                              },
+                                            ),
+                                            fullscreenDialog: true,
+                                          ),
+                                        );
+                                      },
+                                      icon: Icon(
+                                        FontAwesomeIcons.linkedin,
+                                        color: Colors.white,
+                                        size: 18.0,
+                                      ),
+                                      label: new Text(
+                                        'LinkedIn',
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 12.0),
+                                      ),
+                                      color: Colors.blueAccent,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(30.0),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          height: 20.0,
                         ),
                         Column(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -200,9 +338,6 @@ class LoginState extends State<LoginView> {
                               style: TextStyle(
                                 color: Colors.white,
                               ),
-                            ),
-                            SizedBox(
-                              height: 10.0,
                             ),
                             RaisedButton(
                               onPressed: () {
@@ -273,7 +408,7 @@ class LoginState extends State<LoginView> {
       print(response.statusCode);
 
       if (response.statusCode == 200) {
-        var value = AccessToken.fromJson(json.decode(response.body));
+        var value = modelLogin.AccessToken.fromJson(json.decode(response.body));
         var token = value.access_token;
         _preferences.setString(ACCESS_TOKEN_KEY, token);
         _preferences.setString(EMAIL_KEY, _emailTampung);
@@ -323,5 +458,235 @@ class LoginState extends State<LoginView> {
             },
           )
         : null;
+  }
+
+  Future<Null> _loginFacebook() async {
+    _preferences = await SharedPreferences.getInstance();
+    final FacebookLoginResult result =
+        await facebookSignIn.logInWithReadPermissions(['email']);
+
+    switch (result.status) {
+      case FacebookLoginStatus.loggedIn:
+        final FacebookAccessToken accessToken = result.accessToken;
+        print('''
+         Logged in!
+         
+         Token: ${accessToken.token}
+         User id: ${accessToken.userId}
+         Expires: ${accessToken.expires}
+         Permissions: ${accessToken.permissions}
+         Declined permissions: ${accessToken.declinedPermissions}
+         ''');
+
+        var graphResponse = await http.get(
+            'https://graph.facebook.com/v2.12/me?fields=name,first_name,last_name,email,picture&access_token=${result.accessToken.token}');
+
+        var profile = json.decode(graphResponse.body);
+        print(profile.toString());
+
+        FacebookUserDetails userDetails = FacebookUserDetails.fromJson(profile);
+
+        await _userDetailsService
+            .userDetails(userDetails.email)
+            .then((response) {
+          _progressDialog =
+              new ProgressDialog(context, ProgressDialogType.Normal);
+          _progressDialog.setMessage("Login Facebook Account ...");
+          _progressDialog.show();
+
+          if (response.statusCode == 200) {
+            UserDetails user = new UserDetails();
+            user = UserDetails.fromJson(response.data);
+
+            _preferences.setString(FULLNAME_KEY, userDetails.name);
+            _preferences.setString(CONTACT_KEY, 'Not Found');
+            _preferences.setString(EMAIL_KEY, userDetails.email);
+            _preferences.setString(ACCESS_TOKEN_KEY, accessToken.token);
+            _preferences.setString(USER_ID_KEY, user.userId);
+            _preferences.setString(
+                PROFILE_FACEBOOK_KEY, profile['picture']['data']['url']);
+
+            Navigator.of(context).pushReplacementNamed('/home');
+          } else {
+            if (response.statusCode == 204) {
+              _registerFacebook();
+            }
+          }
+        });
+        break;
+      case FacebookLoginStatus.cancelledByUser:
+        print('Login cancelled by the user.');
+        break;
+      case FacebookLoginStatus.error:
+        print('Something went wrong with the login process.\n'
+            'Here\'s the error Facebook gave us: ${result.errorMessage}');
+        break;
+    }
+  }
+
+  Future<Null> _logOut() async {
+    await facebookSignIn.logOut();
+    print('Logged out.');
+  }
+
+  void onLoading() async {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      child: new Center(
+        child: Dialog(
+          backgroundColor: Colors.white,
+          child: new CircularProgressIndicator(),
+        ),
+      ),
+    );
+    await Future.delayed(Duration(seconds: 2));
+  }
+
+  void onRegisterLinkedIn(String token) async {
+    _preferences = await SharedPreferences.getInstance();
+    var liteProfile = await LinkedInService.getLiteProfile(token);
+    var liteEmail = await LinkedInService.getEmailAddress(token);
+
+    var profileImage = await liteProfile.profileImage.getDisplayImageUrl(token);
+
+    await _userDetailsService.userDetails(liteEmail).then((response) {
+      _progressDialog = new ProgressDialog(context, ProgressDialogType.Normal);
+      _progressDialog.setMessage("Login LinkedIn Account ...");
+      _progressDialog.show();
+
+      if (response.statusCode == 200) {
+        UserDetails userDetails = new UserDetails();
+
+        userDetails = UserDetails.fromJson(response.data);
+
+        _preferences.setString(FULLNAME_KEY, liteEmail);
+        _preferences.setString(CONTACT_KEY, 'Not Found');
+        _preferences.setString(EMAIL_KEY, liteEmail);
+        _preferences.setString(ACCESS_TOKEN_KEY, token);
+        _preferences.setString(USER_ID_KEY, userDetails.userId);
+        _preferences.setString(PROFILE_FACEBOOK_KEY, profileImage);
+
+        Navigator.of(context).pushReplacementNamed('/home');
+      } else {
+        if (response.statusCode == 204) {
+          _registerLinkedIn(token);
+        }
+      }
+    });
+  }
+
+  void _registerLinkedIn(String token) async {
+    _preferences = await SharedPreferences.getInstance();
+
+    _progressDialog = new ProgressDialog(context, ProgressDialogType.Normal);
+    _progressDialog.setMessage("Register LinkedIn Account ...");
+    _progressDialog.show();
+
+    var liteProfile = await LinkedInService.getLiteProfile(token);
+    var liteEmail = await LinkedInService.getEmailAddress(token);
+    var profileImage = await liteProfile.profileImage.getDisplayImageUrl(token);
+
+    otpKey = OTP.generateHOTPCode(
+      liteEmail + DateTime.now().toIso8601String(),
+      300,
+      length: 8,
+    );
+
+    final postData = PostRegistration(
+      contact: "Not Found",
+      email: liteEmail,
+      fullname: "LinkedIn User",
+      tipe_user: "LinkedIn",
+      username: liteEmail,
+      password: otpKey.toString(),
+    );
+
+    await register.saveUser(postData).then((response) {
+      _sendPassword(liteEmail, "LinkedIn");
+      _progressDialog.hide();
+      onRegisterLinkedIn(token);
+    });
+  }
+
+  Future<Null> _registerFacebook() async {
+    _preferences = await SharedPreferences.getInstance();
+
+    _progressDialog = new ProgressDialog(context, ProgressDialogType.Normal);
+    _progressDialog.setMessage("Register Facebook Account ...");
+    _progressDialog.show();
+
+    final FacebookLoginResult result =
+        await facebookSignIn.logInWithReadPermissions(['email']);
+
+    switch (result.status) {
+      case FacebookLoginStatus.loggedIn:
+        final FacebookAccessToken accessToken = result.accessToken;
+        print('''
+         Logged in!
+         
+         Token: ${accessToken.token}
+         User id: ${accessToken.userId}
+         Expires: ${accessToken.expires}
+         Permissions: ${accessToken.permissions}
+         Declined permissions: ${accessToken.declinedPermissions}
+         ''');
+
+        var graphResponse = await http.get(
+            'https://graph.facebook.com/v2.12/me?fields=name,first_name,last_name,email,picture&access_token=${result.accessToken.token}');
+
+        var profile = json.decode(graphResponse.body);
+        print(profile.toString());
+
+        FacebookUserDetails userDetails = FacebookUserDetails.fromJson(profile);
+
+        otpKey = OTP.generateHOTPCode(
+          userDetails.email + DateTime.now().toIso8601String(),
+          300,
+          length: 8,
+        );
+
+        final postData = PostRegistration(
+          contact: "Not Found",
+          email: userDetails.email,
+          fullname: userDetails.first_name + userDetails.last_name,
+          tipe_user: "Facebook",
+          username: userDetails.email,
+          password: otpKey.toString(),
+        );
+
+        await register.saveUser(postData).then((response) {
+          _sendPassword(userDetails.email, "Facebook");
+          _progressDialog.hide();
+          _loginFacebook();
+        });
+        break;
+      case FacebookLoginStatus.cancelledByUser:
+        print('Login cancelled by the user.');
+        break;
+      case FacebookLoginStatus.error:
+        print('Something went wrong with the login process.\n'
+            'Here\'s the error Facebook gave us: ${result.errorMessage}');
+        break;
+    }
+  }
+
+  void _sendPassword(String email, String medsos) {
+    String username = "dis@tabeldata.com";
+    String password = "0fm6lyn9cjph";
+
+    final smtpServer = SmtpServer('mail.tabeldata.com',
+        username: username, password: password, port: 26, ssl: false);
+
+    final message = new Message()
+      ..from = new Address(username, 'Jaring Umat OTP')
+      ..recipients.add(email)
+      ..subject =
+          'Jaring Umat ${medsos} Password Generator :: :: ${new DateTime.now()}'
+      ..text = 'This is the plain text.\nThis is line 2 of the text part.'
+      ..html =
+          "<h1>Your Pasword CODE using $otpKey </h1>\n<p>If you are having any issues with your Account, please don\'t hesitate to contact us by replying to this email\n \n <p>Thank!";
+
+    send(message, smtpServer);
   }
 }
