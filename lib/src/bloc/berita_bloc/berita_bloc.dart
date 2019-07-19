@@ -18,7 +18,6 @@ class BeritaBloc extends Bloc<BeritaEvent, BeritaState> {
 
   @override
   Stream<BeritaState> transform(Stream<BeritaEvent> events, Stream<BeritaState> Function(BeritaEvent event) next) {
-    // TODO: implement transform
     return super.transform(
       (events as Observable<BeritaEvent>).debounceTime(
         Duration(milliseconds: 500)), next,
@@ -59,8 +58,6 @@ class BeritaBloc extends Bloc<BeritaEvent, BeritaState> {
     state is BeritaLoaded && state.hasReachedMax;
 
   Future<List<Berita>> _fetchBerita(String userId, String category, int startIndex, int limit) async {
-    print("this start index ${startIndex}");
-    print("this limit data ${limit}");
     final response = await httpClient.get('http://139.162.15.91/jaring-ummat/api/berita/list?start=$startIndex&limit=$limit&category&idUserLogin');
 //    final response = await httpClient.get('http://192.168.1.50:9091/api/berita/list?start=$startIndex&limit=$limit&idUserLogin=$userId');
       print(response.statusCode);

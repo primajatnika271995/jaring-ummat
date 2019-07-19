@@ -1475,12 +1475,14 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
               ),
             ),
             Container(
-              margin: EdgeInsets.only(top: 15.0),
+              margin: EdgeInsets.only(top: 15.0, left: 3.0, right: 3.0),
               child: Text(
                 title,
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                 ),
+                overflow: TextOverflow.ellipsis,
+                textAlign: TextAlign.center,
               ),
             ),
             Container(
@@ -1498,7 +1500,7 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
                 'Rp ${price}',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  fontSize: 17.0,
+                  fontSize: 16.0,
                 ),
               ),
             ),
@@ -1698,11 +1700,14 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
                 SizedBox(
                   height: 10.0,
                 ),
-                new Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    setParticipan(
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: 180.0,
+                  child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    shrinkWrap: true,
+                    children: <Widget>[
+                      setParticipan(
                       'assets/users/bamuis-bni.png',
                       'Bamuis BNI',
                       '24 Aktivitas',
@@ -1720,7 +1725,8 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
                       '21 Aktivitas',
                       '893.167',
                     ),
-                  ],
+                    ],
+                  ),
                 ),
                 SizedBox(
                   height: 5.0,

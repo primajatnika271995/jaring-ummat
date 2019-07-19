@@ -11,8 +11,6 @@ class LikesBloc {
   final _likesUserProgramAmalFetchAll = PublishSubject<List<ListUserLikes>>();
   final _likesUserBeritaFetchAll = PublishSubject<List<ListUserLikes>>();
 
-  final _likes = BehaviorSubject<String>();
-
   SharedPreferences _preferences;
 
   Observable<List<Likes>> get allCommentList => _likesFetchAll.stream;

@@ -18,7 +18,6 @@ class ProgramamalBlocBloc extends Bloc<ProgramamalBlocEvent, ProgramamalBlocStat
 
   @override
   Stream<ProgramamalBlocState> transform(Stream<ProgramamalBlocEvent> events, Stream<ProgramamalBlocState> Function(ProgramamalBlocEvent event) next) {
-    // TODO: implement transform
     return super.transform(
       (events as Observable<ProgramamalBlocEvent>).debounceTime(
         Duration(milliseconds: 500),
@@ -62,13 +61,7 @@ class ProgramamalBlocBloc extends Bloc<ProgramamalBlocEvent, ProgramamalBlocStat
     state is ProgramAmalLoaded && state.hasReachedMax;
 
   Future<List<ProgramAmal>> _fetchProgramAmal(String userId, String category, int startIndex, int limit) async {
-
-    print("this start index ${startIndex}");
-    print("this limit data ${limit}");
-    print("this category ${category}");
-
     final response = await httpClient.get('http://139.162.15.91/jaring-ummat/api/program-amal/list?idUserLogin=${userId}&category=${category}&start=$startIndex&limit=$limit');
-//    final response = await httpClient.get('http://192.168.1.50:9091/api/program-amal/list?idUserLogin=${userId}&start=$startIndex&limit=$limit');
       print(response.statusCode);
       if (response.statusCode == 200) {
         final data = json.decode(response.body) as List;

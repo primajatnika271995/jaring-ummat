@@ -149,7 +149,7 @@ class _BNIPageState extends State<BNIPage> {
                 ),
               ),
               SizedBox(
-                height: 50.0,
+                height: 30.0,
               ),
               Container(
                 alignment: Alignment.topLeft,
@@ -157,7 +157,7 @@ class _BNIPageState extends State<BNIPage> {
                 child: const Text(
                   'Program dan Acara BNI',
                   style: TextStyle(
-                    fontSize: 18.0,
+                    fontSize: 15.0,
                     color: Colors.black87,
                     fontWeight: FontWeight.bold,
                   ),
@@ -168,7 +168,7 @@ class _BNIPageState extends State<BNIPage> {
               ),
               Container(
                 child: CarouselSlider(
-                  height: 280.0,
+                  height: 298.0,
                   autoPlay: false,
                   reverse: false,
                   viewportFraction: 1.0,
@@ -200,7 +200,7 @@ class _BNIPageState extends State<BNIPage> {
                               textAlign: TextAlign.justify,
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                fontSize: 16.0,
+                                fontSize: 12.0,
                               ),
                             ),
                           ),
@@ -245,7 +245,7 @@ class _BNIPageState extends State<BNIPage> {
                               textAlign: TextAlign.justify,
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                fontSize: 18.0,
+                                fontSize: 13.0,
                               ),
                             ),
                           ),
