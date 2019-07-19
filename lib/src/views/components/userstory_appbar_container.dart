@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:circular_profile_avatar/circular_profile_avatar.dart';
 import 'package:flutter_jaring_ummat/src/models/storiesModel.dart';
 import 'package:flutter_jaring_ummat/src/models/storyByUser.dart';
-import 'package:flutter_jaring_ummat/src/views/page_stories/common_stories_layout.dart'
-    as layout;
+import 'package:flutter_jaring_ummat/src/views/user_story.dart';
 import '../../bloc/storiesBloc.dart';
 
 class UserStoryAppBar extends StatefulWidget {
@@ -39,33 +38,6 @@ class UserStoryAppBarState extends State<UserStoryAppBar> {
               } else if (snapshot.hasError) {
                 return Text(snapshot.error.toString());
               }
-
-              // if (snapshot.data == null) {
-              //   return Container(
-              //     padding: EdgeInsets.only(top: 20.0),
-              //     child: Center(
-              //       child: Column(
-              //         children: <Widget>[
-              //           Image.asset(
-              //             'assets/icon/img_not_found.png',
-              //             height: 50.0,
-              //             width: 50.0,
-              //           ),
-              //           SizedBox(
-              //             height: 10.0,
-              //           ),
-              //           const Text(
-              //             'Not found story for today. :(',
-              //             style: TextStyle(
-              //                 color: Colors.black54,
-              //                 fontFamily: 'Proxima',
-              //                 fontWeight: FontWeight.bold),
-              //           ),
-              //         ],
-              //       ),
-              //     ),
-              //   );
-              // }
               return Container(
                 padding: EdgeInsets.only(top: 60.0),
                 child: Center(
@@ -107,23 +79,14 @@ class UserStoryAppBarState extends State<UserStoryAppBar> {
           });
           return GestureDetector(
             onTap: () async {
-              print(index);
-              // setState(() {
-              //   loading = true;
-              // });
-              bloc.fetchAllStoryByIdUser(data.userId);
-              await bloc.allStoryByIdUser.listen((value) {
-                print(value.createdBy);
-                StoryByUser contents;
-                contents = value;
-                // setState(() {
-                //   loading = false;
-                // });
-                Route route = MaterialPageRoute(
-                  builder: (context) => layout.Story(data.userId, contents),
-                );
-                Navigator.push(context, route);
-              });
+              Route route = MaterialPageRoute(
+                builder: (context) => UserStoryView(
+                      userId: data.userId,
+                      createdBy: data.createdBy,
+                      createdDate: data.storyList[0].createdDate,
+                    ),
+              );
+              Navigator.push(context, route);
             },
             child: Container(
               margin: EdgeInsets.only(top: 8.0),

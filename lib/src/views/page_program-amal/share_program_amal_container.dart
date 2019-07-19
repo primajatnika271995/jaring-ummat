@@ -6,7 +6,9 @@ class ShareProgramAmal extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 250.0,
-      padding: EdgeInsets.only(top: 45.0,),
+      padding: EdgeInsets.only(
+        top: 45.0,
+      ),
       child: GridView.count(
         crossAxisCount: 4,
         children: <Widget>[
@@ -14,8 +16,11 @@ class ShareProgramAmal extends StatelessWidget {
             children: <Widget>[
               Icon(
                 FontAwesomeIcons.linkedin,
-                size: 50.0,
+                size: 35.0,
                 color: Colors.blue,
+              ),
+              SizedBox(
+                height: 10.0,
               ),
               const Text(
                 'LinkedIn',
@@ -30,8 +35,11 @@ class ShareProgramAmal extends StatelessWidget {
             children: <Widget>[
               Icon(
                 FontAwesomeIcons.facebookF,
-                size: 50.0,
+                size: 35.0,
                 color: Colors.blueAccent,
+              ),
+              SizedBox(
+                height: 10.0,
               ),
               const Text(
                 'Facebook',
@@ -46,8 +54,11 @@ class ShareProgramAmal extends StatelessWidget {
             children: <Widget>[
               Icon(
                 FontAwesomeIcons.whatsapp,
-                size: 50.0,
+                size: 35.0,
                 color: Colors.green,
+              ),
+              SizedBox(
+                height: 10.0,
               ),
               const Text(
                 'WhatsApp',
@@ -62,8 +73,11 @@ class ShareProgramAmal extends StatelessWidget {
             children: <Widget>[
               Icon(
                 FontAwesomeIcons.instagram,
-                size: 50.0,
+                size: 35.0,
                 color: Colors.orangeAccent,
+              ),
+              SizedBox(
+                height: 10.0,
               ),
               const Text(
                 'Instagram',
@@ -78,8 +92,11 @@ class ShareProgramAmal extends StatelessWidget {
             children: <Widget>[
               Icon(
                 FontAwesomeIcons.twitter,
-                size: 50.0,
+                size: 35.0,
                 color: Colors.blue,
+              ),
+              SizedBox(
+                height: 10.0,
               ),
               const Text(
                 'Twitter',
@@ -90,12 +107,15 @@ class ShareProgramAmal extends StatelessWidget {
               ),
             ],
           ),
-                    Column(
+          Column(
             children: <Widget>[
               Icon(
                 FontAwesomeIcons.twitch,
-                size: 50.0,
+                size: 35.0,
                 color: Colors.purple,
+              ),
+              SizedBox(
+                height: 10.0,
               ),
               const Text(
                 'Twitch',

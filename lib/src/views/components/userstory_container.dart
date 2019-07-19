@@ -14,7 +14,11 @@ class UserStoryContainerOld extends StatefulWidget {
   String userId;
   String createdBy;
   int createdDate;
-  UserStoryContainerOld({@required this.userId, this.createdBy, this.createdDate,});
+  UserStoryContainerOld({
+    @required this.userId,
+    this.createdBy,
+    this.createdDate,
+  });
 
   @override
   State<StatefulWidget> createState() {
@@ -25,7 +29,6 @@ class UserStoryContainerOld extends StatefulWidget {
 class UserStoryContainerOldState extends State<UserStoryContainerOld> {
   List<Content> urlContent = List<Content>();
   VideoPlayerController controller;
-  
 
   @override
   void initState() {
@@ -56,70 +59,10 @@ class UserStoryContainerOldState extends State<UserStoryContainerOld> {
           Column(
             children: <Widget>[
               Expanded(
-                flex: 10,
+                flex: 1,
                 child: Container(
                   margin: EdgeInsets.fromLTRB(1.0, 25.0, 4.0, 1.0),
                   child: storiesView(),
-                ),
-              ),
-              Expanded(
-                flex: 1,
-                child: Container(
-                  margin: EdgeInsets.only(bottom: 10.0),
-                  child: Row(
-                    children: <Widget>[
-                      Expanded(
-                        flex: 3,
-                        child: Container(
-                          width: 30.0,
-                          height: 30.0,
-                          // margin: EdgeInsets.all(10.0),
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                                image: NetworkImage(
-                                    "https://www.skylightsearch.co.uk/wp-content/uploads/2017/01/Loren-profile-pic-circle.png")),
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        flex: 13,
-                        child: Container(
-                          child: Padding(
-                            padding: EdgeInsets.only(bottom: 0.0),
-                            child: TextField(
-                              autocorrect: false,
-                              textInputAction: TextInputAction.next,
-                              style: TextStyle(
-                                fontSize: 12.0,
-                                color: Colors.black,
-                              ),
-                              decoration: InputDecoration(
-                                icon: Icon(Icons.search, size: 18.0),
-                                border: InputBorder.none,
-                                hintText: 'Send Message',
-                              ),
-                            ),
-                          ),
-                          decoration: BoxDecoration(
-                            borderRadius:
-                            BorderRadius.all(Radius.circular(30.0)),
-                            color: Colors.grey[200],
-                          ),
-                          padding: EdgeInsets.fromLTRB(15.0, 0.5, 15.0, 0.5),
-                        ),
-                      ),
-                      Expanded(
-                        flex: 2,
-                        child: IconButton(
-                          icon: Icon(
-                            Icons.send,
-                            color: Colors.white,
-                          ),
-                          onPressed: () {},
-                        ),
-                      ),
-                    ],
-                  ),
                 ),
               ),
             ],
@@ -150,10 +93,10 @@ class UserStoryContainerOldState extends State<UserStoryContainerOld> {
                   height: 50.0,
                   decoration: BoxDecoration(
                       image: DecorationImage(
-                        image: NetworkImage(
-                            "https://www.skylightsearch.co.uk/wp-content/uploads/2017/01/Loren-profile-pic-circle.png"),
-                        fit: BoxFit.contain,
-                      )),
+                    image: AssetImage(
+                        "assets/users/profile.png"),
+                    fit: BoxFit.contain,
+                  )),
                 ),
                 SizedBox(
                   width: 10.0,
@@ -195,19 +138,19 @@ class UserStoryContainerOldState extends State<UserStoryContainerOld> {
     for (var i = 0; i < urlContent.length; i++) {
       if (urlContent[i].imgUrl == null) {
         setState(() {
-          // widgetList.add(
-          //   StoryItem.pageVideo(urlContent[i].videoUrl, urlContent[i].thumbnailUrl),
-          // );
+          widgetList.add(StoryItem.text(urlContent[i].videoUrl, Colors.blue)
+              // StoryItem.pageVideo(urlContent[i].videoUrl, urlContent[i].thumbnailUrl),
+              );
         });
       }
 
       if (urlContent[i].videoUrl == null) {
         setState(() {
-          
           widgetList.add(
             StoryItem.pageImage(
               NetworkImage(urlContent[i].imgUrl),
               caption: "Ini Stories konten ${widget.createdBy}",
+              imageFit: BoxFit.cover,
             ),
           );
         });
@@ -242,5 +185,4 @@ class UserStoryContainerOldState extends State<UserStoryContainerOld> {
   void dispose() {
     super.dispose();
   }
-  
 }

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_jaring_ummat/src/models/postModel.dart';
 import 'package:flutter_jaring_ummat/src/services/registerApi.dart';
 import 'package:flutter_jaring_ummat/src/services/user_details.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:http/http.dart' as http;
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server.dart';
@@ -10,7 +11,6 @@ import 'package:otp/otp.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:toast/toast.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -277,27 +277,28 @@ class Step2State extends State<Step2View> {
                                   MaterialPageRoute(
                                     builder: (BuildContext context) =>
                                         LinkedInUserWidget(
-                                      redirectUrl: redirectUrl,
-                                      clientId: clientId,
-                                      clientSecret: clientSecret,
-                                      onGetUserProfile:
-                                          (LinkedInUserModel linkedInUser) {
-                                        print(
-                                            'Access token ${linkedInUser.token.accessToken}');
+                                          redirectUrl: redirectUrl,
+                                          clientId: clientId,
+                                          clientSecret: clientSecret,
+                                          onGetUserProfile:
+                                              (LinkedInUserModel linkedInUser) {
+                                            print(
+                                                'Access token ${linkedInUser.token.accessToken}');
 
-                                        setState(() {});
-                                        onRegisterLinkedIn(
-                                            linkedInUser.token.accessToken);
+                                            setState(() {});
+                                            onRegisterLinkedIn(
+                                                linkedInUser.token.accessToken);
 
-                                        Navigator.pop(context);
-                                      },
-                                      catchError: (LinkedInErrorObject error) {
-                                        print(
-                                            'Error description: ${error.description},'
-                                            ' Error code: ${error.statusCode.toString()}');
-                                        Navigator.pop(context);
-                                      },
-                                    ),
+                                            Navigator.pop(context);
+                                          },
+                                          catchError:
+                                              (LinkedInErrorObject error) {
+                                            print(
+                                                'Error description: ${error.description},'
+                                                ' Error code: ${error.statusCode.toString()}');
+                                            Navigator.pop(context);
+                                          },
+                                        ),
                                     fullscreenDialog: true,
                                   ),
                                 );
@@ -497,8 +498,8 @@ class Step2State extends State<Step2View> {
           context,
           MaterialPageRoute(
             builder: (context) => Step3View(
-              data: postData,
-            ),
+                  data: postData,
+                ),
           ),
         );
       }
@@ -643,7 +644,8 @@ class Step2State extends State<Step2View> {
     final message = new Message()
       ..from = new Address(username, 'Jaring Umat OTP')
       ..recipients.add(email)
-      ..subject = 'Jaring Umat ${medsos} Password Generator :: :: ${new DateTime.now()}'
+      ..subject =
+          'Jaring Umat ${medsos} Password Generator :: :: ${new DateTime.now()}'
       ..text = 'This is the plain text.\nThis is line 2 of the text part.'
       ..html =
           "<h1>Your Pasword CODE using $otpKey </h1>\n<p>If you are having any issues with your Account, please don\'t hesitate to contact us by replying to this email\n \n <p>Thank!";

@@ -4,7 +4,6 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_jaring_ummat/src/config/preferences.dart';
-import 'package:flutter_jaring_ummat/src/models/programAmalModel.dart';
 import 'package:flutter_jaring_ummat/src/models/program_amal.dart';
 import 'package:flutter_jaring_ummat/src/services/currency_format_service.dart';
 import 'package:flutter_jaring_ummat/src/services/likeUnlikeApi.dart';
@@ -12,7 +11,6 @@ import 'package:flutter_jaring_ummat/src/services/time_ago_service.dart';
 import 'package:flutter_jaring_ummat/src/views/components/custom_fonts.dart';
 import 'package:flutter_jaring_ummat/src/views/page_program-amal/komentar_program_amal_container.dart';
 import 'package:flutter_jaring_ummat/src/views/page_program-amal/share_program_amal_container.dart';
-import 'package:rounded_modal/rounded_modal.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../views/galang_amal.dart';
@@ -413,12 +411,12 @@ class _ProgramAmalContentState extends State<ProgramAmalContent> {
       children: <Widget>[
         GestureDetector(
           onTap: () {
-            showRoundedModalBottomSheet(
-                radius: 10.0,
-                context: context,
-                builder: (context) {
-                  return ShareProgramAmal();
-                });
+            showModalBottomSheet(
+              context: context,
+              builder: (context) {
+                return ShareProgramAmal();
+              },
+            );
           },
           child: Row(
             children: <Widget>[

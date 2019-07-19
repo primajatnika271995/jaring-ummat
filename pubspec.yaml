@@ -19,56 +19,44 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_svg:
-  charts_flutter: ^0.6.0
+  flutter_svg: ^0.13.1
+  badges: ^1.1.0
   http: ^0.12.0+1
   shared_preferences: ^0.5.1+2
   image_picker: ^0.5.0+9
-  image_cropper: ^1.0.2
   cached_network_image: ^0.8.0
   flutter_spinkit: ^3.1.0
-  chewie:
   video_player: ^0.10.0+2
-  percent_indicator: "^1.0.16"
+  percent_indicator: ^1.0.16
   draggable_scrollbar: ^0.0.4
   font_awesome_flutter: ^8.4.0
   mailer: ^2.3.0
   otp: ^1.0.1
   toast: ^0.1.4
   flutter_fab_dialer: ^0.1.1
-  bottom_sheet_stateful: ^0.1.1
-  dio:
-  path_provider:
+  dio: ^2.1.13
   timeago: ^2.0.14
   flutter_money_formatter: ^0.8.0
   shimmer: ^1.0.0
   carousel_slider: ^1.3.0
   circular_profile_avatar: ^0.2.0
-  intro_slider:
-  intro_views_flutter: ^2.6.0
   pie_chart: ^0.9.0
-  scoped_model: ^1.0.1
   dots_indicator: ^0.0.5
-  file_cache: ^0.1.2
   rubber: ^0.3.2
   progress_dialog: ^1.1.0+1
   flutter_bloc: ^0.17.0
   equatable: ^0.2.0
-  rounded_modal: ^1.0.0
   camera: ^0.5.2+1
-  flutter_webview_plugin: ^0.3.5
   story_view: ^0.9.1
-  badges: ^1.0.3
-  bezier_chart: ^1.0.6
   linkedin_login: ^0.1.5
   linkedin_auth: any
   flutter_simple_video_player: ^0.0.9
   giffy_dialog: ^1.3.0
   fl_chart: ^0.1.2
+  rxdart: ^0.22.0
 
   flutter_facebook_login:
     git: https://github.com/lequanghiep74/flutter_facebook_login
-  rxdart: ^0.22.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

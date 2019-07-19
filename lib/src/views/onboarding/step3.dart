@@ -15,7 +15,7 @@ class Step3View extends StatefulWidget {
 
   final PostRegistration data;
 
-  Step3View({@required this.data});
+  Step3View({this.data});
 
   @override
   State<StatefulWidget> createState() {

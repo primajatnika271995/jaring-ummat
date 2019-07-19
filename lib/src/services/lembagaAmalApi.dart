@@ -15,7 +15,8 @@ class LembagaAmalProvider {
   Future<List<LembagaAmal>> fetchAllLembagaAmal(idUser) async {
     Uri uri = Uri.parse(LIST_ALL_LEMBAGA_AMAL);
     var params = {
-      "idUserLogin": idUser
+      "idUserLogin": idUser,
+      "limitCount": "15"
     };
 
     final uriParams = uri.replace(queryParameters: params);

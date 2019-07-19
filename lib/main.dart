@@ -29,7 +29,6 @@ class _LandingPageState extends State<LandingPage> {
     checkIfAuthenticated().then((_) async {
       _preferences = await SharedPreferences.getInstance();
       var token = _preferences.getString(ACCESS_TOKEN_KEY);
-      print('Login Token : ${token}');
       if (token == null) {
         Navigator.of(context).pushReplacementNamed('/login');
       } else {

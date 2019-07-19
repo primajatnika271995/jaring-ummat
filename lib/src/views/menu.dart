@@ -1,20 +1,13 @@
-import 'dart:typed_data';
-
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_jaring_ummat/src/models/UserDetails.dart';
 import 'package:giffy_dialog/giffy_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'dart:convert';
 
 // Component
 import '../views/components/icon_baru_icons.dart';
 import '../views/components/menu_icon_icons.dart';
-import '../views/components/icon_menu_lain_icons.dart';
 import '../views/components/float_icon_icons.dart';
 import '../views/components/menu_lain_icon_icons.dart';
-import '../config/urls.dart';
 import '../config/preferences.dart';
 import '../views/components/create_account_icons.dart';
 

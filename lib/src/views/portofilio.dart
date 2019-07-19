@@ -1,10 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_fab_dialer/flutter_fab_dialer.dart';
-import 'package:bezier_chart/bezier_chart.dart';
 import 'package:toast/toast.dart';
 
 import '../views/components/icon_baru_icons.dart';
@@ -1455,59 +1454,56 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
 
   Widget setParticipan(var img, var title, var total, var price) {
     return Container(
-      decoration: BoxDecoration(
-          color: Colors.grey[200], borderRadius: BorderRadius.circular(10.0)),
-      padding:
-          EdgeInsets.only(left: 10.0, bottom: 10.0, right: 10.0, top: 10.0),
-      child: Row(
-        children: <Widget>[
-          Expanded(
-            flex: 2,
-            child: Container(
-              width: 40.0,
-              height: 40.0,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage(img),
+      height: 170.0,
+      width: 130.0,
+      padding: EdgeInsets.only(left: 5.0, bottom: 5.0, right: 5.0, top: 10.0),
+      child: Card(
+        elevation: 5.0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        child: Column(
+          children: <Widget>[
+            Container(
+              margin: EdgeInsets.only(top: 10.0),
+              child: CircleAvatar(
+                child: Image.asset(
+                  img,
+                  height: 50.0,
+                  width: 50.0,
                 ),
               ),
             ),
-          ),
-          Expanded(
-            flex: 5,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  title,
-                  style: TextStyle(
-                      fontSize: 12.0,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black),
+            Container(
+              margin: EdgeInsets.only(top: 15.0),
+              child: Text(
+                title,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
                 ),
-                SizedBox(height: 3.0),
-                Text(
-                  total,
-                  style: TextStyle(
-                      fontSize: 11.0,
-                      fontWeight: FontWeight.normal,
-                      color: Color.fromRGBO(122, 122, 122, 1.0)),
-                )
-              ],
-            ),
-          ),
-          Expanded(
-            flex: 3,
-            child: Text(
-              'Rp. ' + price,
-              style: TextStyle(
-                fontSize: 16.0,
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
               ),
             ),
-          ),
-        ],
+            Container(
+              margin: EdgeInsets.only(top: 5.0),
+              child: Text(
+                total,
+                style: TextStyle(
+                  fontSize: 10.0,
+                ),
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(top: 10.0),
+              child: Text(
+                'Rp ${price}',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 17.0,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -1622,14 +1618,15 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
                         ),
                         titlesData: FlTitlesData(
                           bottomTitles: SideTitles(
+                            showTitles: true,
                             getTitles: (value) {
                               switch (value.toInt()) {
                                 case 2:
-                                  return "SEPT";
+                                  return "September";
                                 case 7:
-                                  return "OCT";
+                                  return "Oktober";
                                 case 12:
-                                  return "DEC";
+                                  return "November";
                               }
                               return "";
                             },
@@ -1640,6 +1637,7 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
                             margin: 10.0,
                           ),
                           leftTitles: SideTitles(
+                              showTitles: true,
                               textStyle: TextStyle(
                                 color: Colors.grey,
                                 fontSize: 14,
@@ -1700,20 +1698,32 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
                 SizedBox(
                   height: 10.0,
                 ),
-                setParticipan('assets/users/bamuis-bni.png', 'Bamuis BNI',
-                    '24 Aktivitas', '1.201.498'),
-                SizedBox(
-                  height: 10.0,
+                new Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    setParticipan(
+                      'assets/users/bamuis-bni.png',
+                      'Bamuis BNI',
+                      '24 Aktivitas',
+                      '1.201.498',
+                    ),
+                    setParticipan(
+                      'assets/users/dewan-dakwah.png',
+                      'Dewan Da\'wah',
+                      '9 Aktivitas',
+                      '1.019.024',
+                    ),
+                    setParticipan(
+                      'assets/users/logo yayasan.png',
+                      'Yayasan Hasanah',
+                      '21 Aktivitas',
+                      '893.167',
+                    ),
+                  ],
                 ),
-                setParticipan('assets/users/dewan-dakwah.png', 'Dewan Da\'wah',
-                    '9 Aktivitas', '1.019.024'),
                 SizedBox(
-                  height: 10.0,
-                ),
-                setParticipan('assets/users/logo yayasan.png',
-                    'Yayasan  Hasanah Titik', '21 Aktivitas', '893.167'),
-                SizedBox(
-                  height: 10.0,
+                  height: 5.0,
                 ),
                 Divider(),
                 SizedBox(
@@ -1760,9 +1770,8 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
             );
           },
           itemCount: 1,
-          shrinkWrap: true, // todo comment this out and check the result
-          physics:
-              ClampingScrollPhysics(), // todo comment this out and check the result
+          shrinkWrap: true,
+          physics: ClampingScrollPhysics(),
         ),
       ],
     );

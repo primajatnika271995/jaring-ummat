@@ -6,7 +6,7 @@ class UserStoryView extends StatefulWidget {
   String userId;
   String createdBy;
   int createdDate;
-  UserStoryView({@required this.userId, this.createdBy, this.createdDate});
+  UserStoryView({this.userId, this.createdBy, this.createdDate});
 
   @override
   State<StatefulWidget> createState() {

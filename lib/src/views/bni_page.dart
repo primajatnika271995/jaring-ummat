@@ -24,7 +24,6 @@ class _BNIPageState extends State<BNIPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[100],
       appBar: PreferredSize(
         child: AppBar(
           elevation: 0.0,
@@ -98,223 +97,225 @@ class _BNIPageState extends State<BNIPage> {
         ),
         preferredSize: Size.fromHeight(47.0),
       ),
-      body: Container(
-        padding: EdgeInsets.only(top: 10.0),
-        child: Column(
-          children: <Widget>[
-            Container(
-              height: 250.0,
-              child: ListView.builder(
-                itemCount: imageBg.length,
-                shrinkWrap: true,
-                scrollDirection: Axis.horizontal,
-                itemBuilder: (BuildContext context, int index) {
-                  return InkWell(
-                    onTap: () {
-                      print('Tap index ${index}');
-                    },
-                    child: Container(
-                      width: 160.0,
-                      child: Card(
-                        elevation: 5.0,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20.0),
+      body: SingleChildScrollView(
+        child: Container(
+          padding: EdgeInsets.only(top: 10.0),
+          child: Column(
+            children: <Widget>[
+              Container(
+                height: 210.0,
+                child: ListView.builder(
+                  itemCount: imageBg.length,
+                  shrinkWrap: true,
+                  scrollDirection: Axis.horizontal,
+                  itemBuilder: (BuildContext context, int index) {
+                    return InkWell(
+                      onTap: () {
+                        print('Tap index ${index}');
+                      },
+                      child: Container(
+                        width: 140.0,
+                        child: Card(
+                          elevation: 5.0,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15.0),
+                          ),
+                          child: Column(
+                            children: <Widget>[
+                              ClipRRect(
+                                borderRadius: new BorderRadius.only(
+                                    topLeft: Radius.circular(15.0),
+                                    topRight: Radius.circular(15.0)),
+                                child: Image.network(
+                                  imageBg[index],
+                                  fit: BoxFit.fitHeight,
+                                  height: 140.0,
+                                ),
+                              ),
+                              Container(
+                                margin: EdgeInsets.only(top: 8.0),
+                                child: Image.network(
+                                  bniAccount[index],
+                                  width: 150.0,
+                                  height: 50.0,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                        child: Column(
-                          children: <Widget>[
-                            ClipRRect(
-                              borderRadius: new BorderRadius.only(
-                                  topLeft: Radius.circular(20.0),
-                                  topRight: Radius.circular(20.0)),
+                      ),
+                    );
+                  },
+                ),
+              ),
+              SizedBox(
+                height: 50.0,
+              ),
+              Container(
+                alignment: Alignment.topLeft,
+                padding: EdgeInsets.only(left: 10.0),
+                child: const Text(
+                  'Program dan Acara BNI',
+                  style: TextStyle(
+                    fontSize: 18.0,
+                    color: Colors.black87,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 10.0,
+              ),
+              Container(
+                child: CarouselSlider(
+                  height: 280.0,
+                  autoPlay: false,
+                  reverse: false,
+                  viewportFraction: 1.0,
+                  aspectRatio: MediaQuery.of(context).size.aspectRatio,
+                  items: <Widget>[
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: 5.0),
+                      child: Column(
+                        children: <Widget>[
+                          Card(
+                            elevation: 5.0,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                            ),
+                            child: ClipRRect(
+                              borderRadius: new BorderRadius.circular(20.0),
                               child: Image.network(
-                                imageBg[index],
-                                fit: BoxFit.fitHeight,
-                                height: 170.0,
+                                "https://www.bni.co.id/Portals/1/DNNGalleryPro/uploads/2019/7/16/bnionlinebanking.jpg",
+                                fit: BoxFit.contain,
+                                height: 180.0,
                               ),
                             ),
-                            Container(
-                              margin: EdgeInsets.only(top: 8.0),
-                              child: Image.network(
-                                bniAccount[index],
-                                width: 150.0,
-                                height: 50.0,
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(top: 5.0),
+                            padding: EdgeInsets.symmetric(horizontal: 5.0),
+                            child: const Text(
+                              'Bisnis Itu Menjawab panggilan Hati, Bukan Cuma Asal Jual Beli.',
+                              textAlign: TextAlign.justify,
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16.0,
                               ),
                             ),
-                          ],
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(top: 5.0),
+                            padding: EdgeInsets.symmetric(horizontal: 5.0),
+                            child: const Text(
+                              'Buka rekening BNI Taplus Bisnis dan nikmati manfaat untuk usage Anda seperti informasi total debet dan krdit, rincian transaksi yang tercetak lengkap di buku tabungan.',
+                              textAlign: TextAlign.justify,
+                              style: TextStyle(
+                                color: Colors.black54,
+                                fontSize: 13.0,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: 5.0),
+                      child: Column(
+                        children: <Widget>[
+                          Card(
+                            elevation: 5.0,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                            ),
+                            child: ClipRRect(
+                              borderRadius: new BorderRadius.circular(20.0),
+                              child: Image.network(
+                                "https://www.bni.co.id/Portals/1/xNews/uploads/2018/2/23/more-website.jpg",
+                                fit: BoxFit.contain,
+                                height: 180.0,
+                              ),
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(top: 5.0),
+                            padding: EdgeInsets.symmetric(horizontal: 5.0),
+                            child: const Text(
+                              'Bisnis Itu Menjawab panggilan Hati, Bukan Cuma Asal Jual Beli.',
+                              textAlign: TextAlign.justify,
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18.0,
+                              ),
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(top: 5.0),
+                            padding: EdgeInsets.symmetric(horizontal: 5.0),
+                            child: const Text(
+                              'Buka rekening BNI Taplus Bisnis dan nikmati manfaat untuk usage Anda seperti informasi total debet dan krdit, rincian transaksi yang tercetak lengkap di buku tabungan.',
+                              textAlign: TextAlign.justify,
+                              style: TextStyle(
+                                color: Colors.black54,
+                                fontSize: 14.0,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              Container(
+                alignment: Alignment.topLeft,
+                padding: EdgeInsets.symmetric(horizontal: 10.0),
+                child: DotsIndicator(
+                  dotsCount: 6,
+                  position: 0,
+                  decorator: DotsDecorator(
+                    color: Colors.grey[300],
+                    activeColor: Colors.orange,
+                    spacing: const EdgeInsets.all(2.0),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 30.0,
+              ),
+              Row(
+                children: <Widget>[
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 10.0),
+                    alignment: Alignment.topLeft,
+                    child: RaisedButton(
+                      onPressed: () {
+                        print('_kembali ke atas');
+                      },
+                      color: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                      child: Container(
+                        child: const Text(
+                          'Kembali ke Atas',
+                          style: TextStyle(
+                            color: Colors.black,
+                          ),
                         ),
                       ),
                     ),
-                  );
-                },
-              ),
-            ),
-            SizedBox(
-              height: 50.0,
-            ),
-            Container(
-              alignment: Alignment.topLeft,
-              padding: EdgeInsets.only(left: 10.0),
-              child: const Text(
-                'Program dan Acara BNI',
-                style: TextStyle(
-                  fontSize: 24.0,
-                  color: Colors.black87,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 10.0,
-            ),
-            Container(
-              child: CarouselSlider(
-                height: 280.0,
-                autoPlay: false,
-                reverse: false,
-                viewportFraction: 1.0,
-                aspectRatio: MediaQuery.of(context).size.aspectRatio,
-                items: <Widget>[
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 5.0),
-                    child: Column(
-                      children: <Widget>[
-                        Card(
-                          elevation: 5.0,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20.0),
-                          ),
-                          child: ClipRRect(
-                            borderRadius: new BorderRadius.circular(20.0),
-                            child: Image.network(
-                              "https://www.bni.co.id/Portals/1/DNNGalleryPro/uploads/2019/7/16/bnionlinebanking.jpg",
-                              fit: BoxFit.contain,
-                              height: 180.0,
-                            ),
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(top: 5.0),
-                          padding: EdgeInsets.symmetric(horizontal: 5.0),
-                          child: const Text(
-                            'Bisnis Itu Menjawab panggilan Hati, Bukan Cuma Asal Jual Beli.',
-                            textAlign: TextAlign.justify,
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18.0,
-                            ),
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(top: 5.0),
-                          padding: EdgeInsets.symmetric(horizontal: 5.0),
-                          child: const Text(
-                            'Buka rekening BNI Taplus Bisnis dan nikmati manfaat untuk usage Anda seperti informasi total debet dan krdit, rincian transaksi yang tercetak lengkap di buku tabungan.',
-                            textAlign: TextAlign.justify,
-                            style: TextStyle(
-                              color: Colors.black54,
-                              fontSize: 14.0,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
                   ),
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 5.0),
-                    child: Column(
-                      children: <Widget>[
-                        Card(
-                          elevation: 5.0,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20.0),
-                          ),
-                          child: ClipRRect(
-                            borderRadius: new BorderRadius.circular(20.0),
-                            child: Image.network(
-                              "https://www.bni.co.id/Portals/1/xNews/uploads/2018/2/23/more-website.jpg",
-                              fit: BoxFit.contain,
-                              height: 180.0,
-                            ),
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(top: 5.0),
-                          padding: EdgeInsets.symmetric(horizontal: 5.0),
-                          child: const Text(
-                            'Bisnis Itu Menjawab panggilan Hati, Bukan Cuma Asal Jual Beli.',
-                            textAlign: TextAlign.justify,
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18.0,
-                            ),
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(top: 5.0),
-                          padding: EdgeInsets.symmetric(horizontal: 5.0),
-                          child: const Text(
-                            'Buka rekening BNI Taplus Bisnis dan nikmati manfaat untuk usage Anda seperti informasi total debet dan krdit, rincian transaksi yang tercetak lengkap di buku tabungan.',
-                            textAlign: TextAlign.justify,
-                            style: TextStyle(
-                              color: Colors.black54,
-                              fontSize: 14.0,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  )
+                  FlatButton(
+                    onPressed: () {
+                      print('_atur_beranda');
+                    },
+                    child: const Text('Atur Beranda'),
+                  ),
                 ],
               ),
-            ),
-            Container(
-              alignment: Alignment.topLeft,
-              padding: EdgeInsets.symmetric(horizontal: 10.0),
-              child: DotsIndicator(
-                dotsCount: 6,
-                position: 0,
-                decorator: DotsDecorator(
-                  color: Colors.grey[300],
-                  activeColor: Colors.orange,
-                  spacing: const EdgeInsets.all(2.0),
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 30.0,
-            ),
-            Row(
-              children: <Widget>[
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 10.0),
-                  alignment: Alignment.topLeft,
-                  child: RaisedButton(
-                    onPressed: () {
-                      print('_kembali ke atas');
-                    },
-                    color: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0),
-                    ),
-                    child: Container(
-                      child: const Text(
-                        'Kembali ke Atas',
-                        style: TextStyle(
-                          color: Colors.black,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                FlatButton(
-                  onPressed: () {
-                    print('_atur_beranda');
-                  },
-                  child: const Text('Atur Beranda'),
-                ),
-              ],
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

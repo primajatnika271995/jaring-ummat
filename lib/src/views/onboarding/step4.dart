@@ -8,7 +8,6 @@ import 'package:flutter_jaring_ummat/src/services/login_service.dart';
 import 'package:flutter_jaring_ummat/src/services/registerApi.dart';
 import 'package:flutter_jaring_ummat/src/services/user_details.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:image_cropper/image_cropper.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';

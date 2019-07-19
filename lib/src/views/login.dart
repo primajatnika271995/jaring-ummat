@@ -1,21 +1,23 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:flutter_jaring_ummat/src/models/login_model.dart' as modelLogin;
-import 'package:flutter_jaring_ummat/src/models/postModel.dart';
-import 'package:flutter_jaring_ummat/src/services/registerApi.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server.dart';
 import 'package:otp/otp.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
 import 'package:linkedin_login/linkedin_login.dart';
 import 'package:linkedin_auth/linkedin_auth.dart';
+
+import 'package:flutter_jaring_ummat/src/models/login_model.dart' as modelLogin;
+import 'package:flutter_jaring_ummat/src/models/postModel.dart';
+import 'package:flutter_jaring_ummat/src/services/registerApi.dart';
 
 import 'components/container_bg_default.dart';
 import 'package:flutter_jaring_ummat/src/config/preferences.dart';
@@ -276,27 +278,31 @@ class LoginState extends State<LoginView> {
                                           MaterialPageRoute(
                                             builder: (BuildContext context) =>
                                                 LinkedInUserWidget(
-                                              redirectUrl: redirectUrl,
-                                              clientId: clientId,
-                                              clientSecret: clientSecret,
-                                              onGetUserProfile:
-                                                  (LinkedInUserModel linkedInUser) {
-                                                print(
-                                                    'Access token ${linkedInUser.token.accessToken}');
+                                                  redirectUrl: redirectUrl,
+                                                  clientId: clientId,
+                                                  clientSecret: clientSecret,
+                                                  onGetUserProfile:
+                                                      (LinkedInUserModel
+                                                          linkedInUser) {
+                                                    print(
+                                                        'Access token ${linkedInUser.token.accessToken}');
 
-                                                setState(() {});
-                                                onRegisterLinkedIn(
-                                                    linkedInUser.token.accessToken);
+                                                    setState(() {});
+                                                    onRegisterLinkedIn(
+                                                        linkedInUser
+                                                            .token.accessToken);
 
-                                                Navigator.pop(context);
-                                              },
-                                              catchError: (LinkedInErrorObject error) {
-                                                print(
-                                                    'Error description: ${error.description},'
-                                                    ' Error code: ${error.statusCode.toString()}');
-                                                Navigator.pop(context);
-                                              },
-                                            ),
+                                                    Navigator.pop(context);
+                                                  },
+                                                  catchError:
+                                                      (LinkedInErrorObject
+                                                          error) {
+                                                    print(
+                                                        'Error description: ${error.description},'
+                                                        ' Error code: ${error.statusCode.toString()}');
+                                                    Navigator.pop(context);
+                                                  },
+                                                ),
                                             fullscreenDialog: true,
                                           ),
                                         );

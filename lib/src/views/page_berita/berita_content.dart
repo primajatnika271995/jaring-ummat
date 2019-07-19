@@ -9,7 +9,6 @@ import 'package:flutter_jaring_ummat/src/services/time_ago_service.dart';
 import 'package:flutter_jaring_ummat/src/views/components/custom_fonts.dart';
 import 'package:flutter_jaring_ummat/src/views/page_berita/komentar_container.dart';
 import 'package:flutter_jaring_ummat/src/views/page_berita/share_berita_container.dart';
-import 'package:rounded_modal/rounded_modal.dart';
 import 'package:badges/badges.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -348,12 +347,12 @@ class _BeritaContentState extends State<BeritaContent> {
       children: <Widget>[
         GestureDetector(
           onTap: () {
-            showRoundedModalBottomSheet(
-                radius: 10.0,
-                context: context,
-                builder: (context) {
-                  return ShareBerita();
-                });
+            showModalBottomSheet(
+              context: context,
+              builder: (context) {
+                return ShareBerita();
+              },
+            );
           },
           child: Row(
             children: <Widget>[

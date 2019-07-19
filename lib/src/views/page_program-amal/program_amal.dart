@@ -1,18 +1,15 @@
-import 'package:flutter/cupertino.dart';
+// import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_jaring_ummat/src/config/preferences.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:shimmer/shimmer.dart';
+import 'package:toast/toast.dart';
+
 import 'package:flutter_jaring_ummat/src/models/program_amal.dart';
-import 'package:flutter_jaring_ummat/src/repository/StoriesRepository.dart';
 import 'package:flutter_jaring_ummat/src/services/storiesApi.dart';
 import 'package:flutter_jaring_ummat/src/views/components/userstory_appbar_container.dart';
 import 'package:flutter_jaring_ummat/src/views/components/appbar_custom_icons.dart';
 import 'package:flutter_jaring_ummat/src/bloc/programAmalBloc.dart'as programAmalBloc;
-import 'package:flutter_jaring_ummat/src/bloc/storiesBloc.dart' as storiesBloc;
 import 'package:flutter_jaring_ummat/src/views/page_program-amal/program_amal_content.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:shimmer/shimmer.dart';
-import 'package:toast/toast.dart';
 
 class ProgramAmalPage extends StatefulWidget {
   @override
