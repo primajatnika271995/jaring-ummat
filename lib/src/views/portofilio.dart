@@ -1455,7 +1455,7 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
   Widget setParticipan(var img, var title, var total, var price) {
     return Container(
       height: 170.0,
-      width: 120.0,
+      width: 115.0,
       child: Card(
         elevation: 4.0,
         shape: RoundedRectangleBorder(
@@ -1475,6 +1475,7 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
                 title,
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
+                  fontSize: 11.0,
                 ),
                 overflow: TextOverflow.ellipsis,
                 textAlign: TextAlign.center,
@@ -1495,7 +1496,7 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
                 'Rp ${price}',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  fontSize: 16.0,
+                  fontSize: 13.0,
                 ),
               ),
             ),
