@@ -404,10 +404,10 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) => PembayaranZakat(
-                                            title: title,
-                                            icon: icon,
-                                            nominal: nominalZakat.text,
-                                          ),
+                                        title: title,
+                                        icon: icon,
+                                        nominal: nominalZakat.text,
+                                      ),
                                     ),
                                   );
                                 },
@@ -1455,23 +1455,18 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
   Widget setParticipan(var img, var title, var total, var price) {
     return Container(
       height: 170.0,
-      width: 130.0,
-      padding: EdgeInsets.only(left: 5.0, bottom: 5.0, right: 5.0, top: 10.0),
+      width: 120.0,
       child: Card(
-        elevation: 5.0,
+        elevation: 4.0,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10.0),
         ),
         child: Column(
           children: <Widget>[
             Container(
-              margin: EdgeInsets.only(top: 10.0),
+              margin: EdgeInsets.only(top: 20.0),
               child: CircleAvatar(
-                child: Image.asset(
-                  img,
-                  height: 50.0,
-                  width: 50.0,
-                ),
+                child: Image.asset(img),
               ),
             ),
             Container(
@@ -1700,14 +1695,10 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
                 SizedBox(
                   height: 10.0,
                 ),
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: 180.0,
-                  child: ListView(
-                    scrollDirection: Axis.horizontal,
-                    shrinkWrap: true,
-                    children: <Widget>[
-                      setParticipan(
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    setParticipan(
                       'assets/users/bamuis-bni.png',
                       'Bamuis BNI',
                       '24 Aktivitas',
@@ -1725,8 +1716,7 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
                       '21 Aktivitas',
                       '893.167',
                     ),
-                    ],
-                  ),
+                  ],
                 ),
                 SizedBox(
                   height: 5.0,

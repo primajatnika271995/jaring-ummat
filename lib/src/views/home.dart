@@ -93,7 +93,7 @@ class _HomeState extends State<HomeView> {
           children: <Widget>[
             newsView(),
             mainView(),
-            bniAccount(),
+            // bniAccount(),
             popularAccountView(),
           ],
         ),

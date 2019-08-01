@@ -15,14 +15,14 @@ class ProgramAmalApiProvider {
       "limit": limit,
       "start": start,
       "category": category
-
     };
 
     final uriParams = uri.replace(queryParameters: params);
 
     print(" URL API fetchProgramAmal $uriParams");
+    print("Category ${category}");
 
-    final response = await client.get(uriParams);
+    final response = await client.get("http://139.162.15.91/jaring-ummat/api/program-amal/list?idUserLogin=&start=0&limit=30&category=${category}");
 
     print ('Response From Program Amal Api ${response.statusCode}');
     if (response.statusCode == 200) {

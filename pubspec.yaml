@@ -30,7 +30,7 @@ dependencies:
   percent_indicator: ^1.0.16
   draggable_scrollbar: ^0.0.4
   font_awesome_flutter: ^8.4.0
-  mailer: ^2.3.0
+  mailer: ^3.0.1
   otp: ^1.0.1
   toast: ^0.1.4
   flutter_fab_dialer: ^0.1.1
