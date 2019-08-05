@@ -31,6 +31,7 @@ class _ProgramAmalContentState extends State<ProgramAmalContent> {
   String lessDesc;
   String moreDesc;
   String idUserLogin;
+  String token;
 
   LikeUnlikeProvider api = new LikeUnlikeProvider();
   SharedPreferences _preferences;
@@ -74,6 +75,14 @@ class _ProgramAmalContentState extends State<ProgramAmalContent> {
     }
   }
 
+  void checkToken() async {
+    _preferences = await SharedPreferences.getInstance();
+
+    setState(() {
+      token = _preferences.getString(ACCESS_TOKEN_KEY);
+    });
+  }
+
   @override
   void initState() {
     super.initState();
@@ -87,6 +96,7 @@ class _ProgramAmalContentState extends State<ProgramAmalContent> {
     }
 
     getIdUserLogin();
+    checkToken();
   }
 
   Widget titleContent(BuildContext context) {
@@ -286,14 +296,16 @@ class _ProgramAmalContentState extends State<ProgramAmalContent> {
           ),
           RaisedButton(
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => GalangAmalView(
-                        programAmal: widget.programAmal,
+              (token == null)
+                  ? Navigator.of(context).pushNamed('/login')
+                  : Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => GalangAmalView(
+                          programAmal: widget.programAmal,
+                        ),
                       ),
-                ),
-              );
+                    );
             },
             textColor: Colors.white,
             padding: EdgeInsets.all(0.0),
@@ -446,7 +458,7 @@ class _ProgramAmalContentState extends State<ProgramAmalContent> {
           descriptionContent(context),
           dividerContent(context),
           donationContent(context),
-          bottomContent(context),
+          (token == null) ? Container() : bottomContent(context),
         ],
       ),
     );

@@ -28,6 +28,7 @@ class _BeritaContentState extends State<BeritaContent> {
   String moreDesc;
 
   String idUserLogin;
+  String token;
 
   LikeUnlikeProvider api = new LikeUnlikeProvider();
   SharedPreferences _preferences;
@@ -71,6 +72,13 @@ class _BeritaContentState extends State<BeritaContent> {
     }
   }
 
+  void checkToken() async {
+    _preferences = await SharedPreferences.getInstance();
+    setState(() {
+      token = _preferences.getString(ACCESS_TOKEN_KEY);
+    });
+  }
+
   @override
   void initState() {
     super.initState();
@@ -84,6 +92,7 @@ class _BeritaContentState extends State<BeritaContent> {
     }
 
     getIdUserLogin();
+    checkToken();
   }
 
   Widget titleContent(BuildContext context) {
@@ -380,8 +389,8 @@ class _BeritaContentState extends State<BeritaContent> {
           titleContent(context),
           imageContent(context),
           descriptionContent(context),
-          dividerContent(context),
-          bottomContent(context),
+          (token == null) ? Container() : dividerContent(context),
+          (token == null) ? Container() : bottomContent(context),
         ],
       ),
     );

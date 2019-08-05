@@ -1,13 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_jaring_ummat/src/config/preferences.dart';
 import 'package:flutter_jaring_ummat/src/views/bni_page.dart';
 import 'package:flutter_jaring_ummat/src/views/components/fab_bottom_app_bar.dart';
 import 'package:flutter_jaring_ummat/src/views/components/header_custom_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_baru_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/components/menu_lain_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/components/navbar_custom_icon.dart';
+import 'package:flutter_jaring_ummat/src/views/login.dart';
 import 'package:flutter_jaring_ummat/src/views/page_berita/berita.dart';
 import 'package:flutter_jaring_ummat/src/views/page_program-amal/program_amal.dart';
+import 'package:flutter_jaring_ummat/src/views/welcome_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
 import 'portofilio.dart';
 import 'inbox.dart';
@@ -31,6 +35,8 @@ class _HomeState extends State<HomeView> {
     });
   }
 
+  SharedPreferences _preferences;
+  String _token;
 
   static const snackBarDuration = Duration(seconds: 3);
 
@@ -93,8 +99,7 @@ class _HomeState extends State<HomeView> {
           children: <Widget>[
             newsView(),
             mainView(),
-            // bniAccount(),
-            popularAccountView(),
+            (_token == null) ? welcomePage() : popularAccountView(),
           ],
         ),
       ),
@@ -118,13 +123,20 @@ class _HomeState extends State<HomeView> {
     return true;
   }
 
+  void checkToken() async {
+    _preferences = await SharedPreferences.getInstance();
+    setState(() {
+      _token = _preferences.getString(ACCESS_TOKEN_KEY);
+    });
+  }
+
   Widget mainView() {
+    checkToken();
     final List<Widget> _children = [
       ProgramAmalPage(),
       Portofolio(),
-      // Toko(),
       Inbox(),
-      Menu()
+      (_token == null) ? WelcomePage() : Menu()
     ];
 
     return Scaffold(
@@ -162,6 +174,10 @@ class _HomeState extends State<HomeView> {
 
   Widget bniAccount() {
     return BNIPage();
+  }
+
+  Widget welcomePage() {
+    return WelcomePage();
   }
 
   Widget bottomNavBar(int currentIndex, Function onTap) {

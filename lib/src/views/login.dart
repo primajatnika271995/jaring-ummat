@@ -90,14 +90,12 @@ class LoginState extends State<LoginView> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        key: _scaffoldKey,
-        resizeToAvoidBottomPadding: true,
-        resizeToAvoidBottomInset: true,
-        body: Stack(
-          children: _buildPage(context),
-        ),
+    return Scaffold(
+      key: _scaffoldKey,
+      resizeToAvoidBottomPadding: true,
+      resizeToAvoidBottomInset: true,
+      body: Stack(
+        children: _buildPage(context),
       ),
     );
   }
@@ -148,7 +146,7 @@ class LoginState extends State<LoginView> {
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
                       ),
-                    )
+                    ),
                   ],
                 ),
                 SizedBox(
@@ -278,31 +276,29 @@ class LoginState extends State<LoginView> {
                                           MaterialPageRoute(
                                             builder: (BuildContext context) =>
                                                 LinkedInUserWidget(
-                                                  redirectUrl: redirectUrl,
-                                                  clientId: clientId,
-                                                  clientSecret: clientSecret,
-                                                  onGetUserProfile:
-                                                      (LinkedInUserModel
-                                                          linkedInUser) {
-                                                    print(
-                                                        'Access token ${linkedInUser.token.accessToken}');
+                                              redirectUrl: redirectUrl,
+                                              clientId: clientId,
+                                              clientSecret: clientSecret,
+                                              onGetUserProfile:
+                                                  (LinkedInUserModel
+                                                      linkedInUser) {
+                                                print(
+                                                    'Access token ${linkedInUser.token.accessToken}');
 
-                                                    setState(() {});
-                                                    onRegisterLinkedIn(
-                                                        linkedInUser
-                                                            .token.accessToken);
+                                                setState(() {});
+                                                onRegisterLinkedIn(linkedInUser
+                                                    .token.accessToken);
 
-                                                    Navigator.pop(context);
-                                                  },
-                                                  catchError:
-                                                      (LinkedInErrorObject
-                                                          error) {
-                                                    print(
-                                                        'Error description: ${error.description},'
-                                                        ' Error code: ${error.statusCode.toString()}');
-                                                    Navigator.pop(context);
-                                                  },
-                                                ),
+                                                Navigator.pop(context);
+                                              },
+                                              catchError:
+                                                  (LinkedInErrorObject error) {
+                                                print(
+                                                    'Error description: ${error.description},'
+                                                    ' Error code: ${error.statusCode.toString()}');
+                                                Navigator.pop(context);
+                                              },
+                                            ),
                                             fullscreenDialog: true,
                                           ),
                                         );
