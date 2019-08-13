@@ -7,7 +7,6 @@ import 'package:flutter_jaring_ummat/src/views/components/header_custom_icons.da
 import 'package:flutter_jaring_ummat/src/views/components/icon_baru_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/components/menu_lain_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/components/navbar_custom_icon.dart';
-import 'package:flutter_jaring_ummat/src/views/login.dart';
 import 'package:flutter_jaring_ummat/src/views/page_berita/berita.dart';
 import 'package:flutter_jaring_ummat/src/views/page_program-amal/program_amal.dart';
 import 'package:flutter_jaring_ummat/src/views/welcome_page.dart';
@@ -27,21 +26,30 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeState extends State<HomeView> {
+
   int _currentIndex = 0;
-
-  void _selectedTab(int index) {
-    setState(() {
-      _currentIndex = index;
-    });
-  }
-
   SharedPreferences _preferences;
   String _token;
 
   static const snackBarDuration = Duration(seconds: 3);
-
-  final scaffoldKey = GlobalKey<ScaffoldState>();
+  GlobalKey<ScaffoldState> _globalKey = GlobalKey<ScaffoldState>();
   DateTime backButtonPressTime;
+
+  Widget newsView() {
+    return BeritaPage();
+  }
+
+  Widget popularAccountView() {
+    return PopularAccountView();
+  }
+
+  Widget bniAccount() {
+    return BNIPage();
+  }
+
+  Widget welcomePage() {
+    return WelcomePage();
+  }
 
   Widget searchBoxContainer() {
     return Padding(
@@ -91,7 +99,7 @@ class _HomeState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: scaffoldKey,
+      key: _globalKey,
       body: WillPopScope(
         onWillPop: onBackPressed,
         child: PageView(
@@ -102,6 +110,42 @@ class _HomeState extends State<HomeView> {
             (_token == null) ? welcomePage() : popularAccountView(),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget mainView() {
+    // Cek Terlebih dahulu Token
+    checkToken();
+
+    final List<Widget> _children = [
+      ProgramAmalPage(),
+      Portofolio(),
+      Inbox(),
+      (_token == null) ? WelcomePage() : Menu()
+    ];
+
+    return Scaffold(
+      body: _children[_currentIndex],
+      floatingActionButton: new FloatingActionButton(
+        onPressed: () {},
+        child: const Icon(IconBaru.scan_qr,),
+        backgroundColor: Colors.orange,
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      bottomNavigationBar: FABBottomAppBar(
+        color: Colors.grey,
+        height: 45.0,
+        selectedColor: Colors.black,
+        notchedShape: CircularNotchedRectangle(),
+        onTabSelected: _selectedTab,
+        iconSize: 25.0,
+        items: [
+          FABBottomAppBarItem(iconData: (_currentIndex == 0) ? NavbarCustom.nav_home_active : NavbarCustom.nav_home_inactive, text: ''),
+          FABBottomAppBarItem(iconData: (_currentIndex == 1) ? NavbarCustom.nav_portfolio_active : NavbarCustom.nav_portfolio_inactive, text: ''),
+          FABBottomAppBarItem(iconData: (_currentIndex == 2) ? NavbarCustom.nav_inbox_active : NavbarCustom.nav_inbox_inactive, text: ''),
+          FABBottomAppBarItem(iconData: (_currentIndex == 3) ? NavbarCustom.nav_othersmenu_active : NavbarCustom.nav_othersmenu_inactive, text: ''),
+        ],
       ),
     );
   }
@@ -130,185 +174,10 @@ class _HomeState extends State<HomeView> {
     });
   }
 
-  Widget mainView() {
-    checkToken();
-    final List<Widget> _children = [
-      ProgramAmalPage(),
-      Portofolio(),
-      Inbox(),
-      (_token == null) ? WelcomePage() : Menu()
-    ];
-
-    return Scaffold(
-      body: _children[_currentIndex],
-      floatingActionButton: new FloatingActionButton(
-        onPressed: () {},
-        child: const Icon(IconBaru.scan_qr,),
-        backgroundColor: Colors.orange,
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: FABBottomAppBar(
-        color: Colors.grey,
-        height: 45.0,
-        selectedColor: Colors.black,
-        notchedShape: CircularNotchedRectangle(),
-        onTabSelected: _selectedTab,
-        iconSize: 25.0,
-        items: [
-          FABBottomAppBarItem(iconData: NavbarCustom.nav_home_active, text: ''),
-          FABBottomAppBarItem(iconData: NavbarCustom.nav_portfolio_active, text: ''),
-          FABBottomAppBarItem(iconData: NavbarCustom.nav_inbox_active, text: ''),
-          FABBottomAppBarItem(iconData: NavbarCustom.nav_othersmenu_active, text: ''),
-        ],
-      ),
-    );
-  }
-
-  Widget newsView() {
-    return BeritaPage();
-  }
-
-  Widget popularAccountView() {
-    return PopularAccountView();
-  }
-
-  Widget bniAccount() {
-    return BNIPage();
-  }
-
-  Widget welcomePage() {
-    return WelcomePage();
-  }
-
-  Widget bottomNavBar(int currentIndex, Function onTap) {
-    return SizedBox(
-      height: 50.0,
-      child: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        elevation: 20.0,
-        currentIndex: currentIndex,
-        onTap: onTap,
-        items: [
-          BottomNavigationBarItem(
-            icon: new Icon(
-              NavbarCustom.nav_home_inactive,
-              color: Colors.grey,
-              size: 27.0,
-            ),
-            activeIcon: new Icon(
-              NavbarCustom.nav_home_active,
-              color: Colors.black,
-              size: 27.0,
-            ),
-            title: Container(height: 0.0),
-          ),
-          BottomNavigationBarItem(
-            icon: new Icon(
-              NavbarCustom.nav_portfolio_inactive,
-              color: Colors.grey,
-              size: 27.0,
-            ),
-            activeIcon: new Icon(
-              NavbarCustom.nav_portfolio_active,
-              color: Colors.black,
-              size: 27.0,
-            ),
-            title: Container(height: 0.0),
-          ),
-          BottomNavigationBarItem(
-            icon: new Icon(
-              MenuLainIcon.merchant_amal,
-              color: Colors.grey,
-              size: 27.0,
-            ),
-            activeIcon: new Icon(
-              MenuLainIcon.merchant_amal,
-              color: Colors.black,
-              size: 27.0,
-            ),
-            title: Container(height: 0.0),
-          ),
-          BottomNavigationBarItem(
-            icon: new Stack(
-              children: <Widget>[
-                new Icon(
-                  NavbarCustom.nav_inbox_inactive,
-                  color: Colors.grey,
-                  size: 27.0,
-                ),
-                new Positioned(
-                  right: 0,
-                  child: new Container(
-                    padding: EdgeInsets.all(1),
-                    decoration: new BoxDecoration(
-                      color: Colors.red,
-                      borderRadius: BorderRadius.circular(6),
-                    ),
-                    constraints: BoxConstraints(
-                      minWidth: 12,
-                      minHeight: 12,
-                    ),
-                    child: new Text(
-                      '12',
-                      style: new TextStyle(
-                        color: Colors.white,
-                        fontSize: 8,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                )
-              ],
-            ),
-            activeIcon: new Stack(
-              children: <Widget>[
-                new Icon(
-                  NavbarCustom.nav_inbox_active,
-                  color: Colors.black,
-                  size: 27.0,
-                ),
-                new Positioned(
-                  right: 0,
-                  child: new Container(
-                    padding: EdgeInsets.all(1),
-                    decoration: new BoxDecoration(
-                      color: Colors.red,
-                      borderRadius: BorderRadius.circular(6),
-                    ),
-                    constraints: BoxConstraints(
-                      minWidth: 12,
-                      minHeight: 12,
-                    ),
-                    child: new Text(
-                      '12',
-                      style: new TextStyle(
-                        color: Colors.white,
-                        fontSize: 8,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                )
-              ],
-            ),
-            title: Container(height: 0.0),
-          ),
-          BottomNavigationBarItem(
-            icon: new Icon(
-              NavbarCustom.nav_othersmenu_inactive,
-              color: Colors.grey,
-              size: 27.0,
-            ),
-            activeIcon: new Icon(
-              NavbarCustom.nav_othersmenu_active,
-              color: Colors.black,
-              size: 27.0,
-            ),
-            title: Container(height: 0.0),
-          ),
-        ],
-      ),
-    );
+  void _selectedTab(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
   }
 }
 

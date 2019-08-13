@@ -235,7 +235,6 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                         stream: programAmalBloc.bloc.streamProgramAmal,
                         builder:
                             (BuildContext context, AsyncSnapshot snapshot) {
-                          print(snapshot.connectionState);
                           switch (snapshot.connectionState) {
                             case ConnectionState.none:
                               return Container(
