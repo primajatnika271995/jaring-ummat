@@ -1,31 +1,38 @@
 import 'dart:convert';
-import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
 
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:flutter_svg/svg.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server.dart';
 import 'package:otp/otp.dart';
-import 'package:toast/toast.dart';
-import 'package:progress_dialog/progress_dialog.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
-
 import 'package:linkedin_login/linkedin_login.dart';
 import 'package:linkedin_auth/linkedin_auth.dart';
 
+// DIALOG
+import 'package:toast/toast.dart';
+import 'package:progress_dialog/progress_dialog.dart';
+
+// COMPONENT
+import 'package:flutter_jaring_ummat/src/views/components/container_bg_default.dart';
+import 'package:flutter_jaring_ummat/src/views/components/form_field_container.dart';
+import 'package:flutter_jaring_ummat/src/views/components/create_account_icons.dart';
+
+// CONFIG
+import 'package:flutter_jaring_ummat/src/config/preferences.dart';
+
+// SERVICE DATA
+import 'package:flutter_jaring_ummat/src/services/registerApi.dart';
+import 'package:flutter_jaring_ummat/src/services/user_details.dart';
+import 'package:flutter_jaring_ummat/src/services/login_service.dart';
+
+// MODEL DATA
 import 'package:flutter_jaring_ummat/src/models/login_model.dart' as modelLogin;
 import 'package:flutter_jaring_ummat/src/models/postModel.dart';
-import 'package:flutter_jaring_ummat/src/services/registerApi.dart';
-
-import 'components/container_bg_default.dart';
-import 'package:flutter_jaring_ummat/src/config/preferences.dart';
-import 'package:flutter_jaring_ummat/src/services/login_service.dart';
-import 'components/form_field_container.dart';
-import 'package:flutter_jaring_ummat/src/views/components/create_account_icons.dart';
 import 'package:flutter_jaring_ummat/src/models/UserDetails.dart';
-import 'package:flutter_jaring_ummat/src/services/user_details.dart';
 
 class LoginView extends StatefulWidget {
   @override
@@ -44,9 +51,6 @@ class LoginState extends State<LoginView> {
 
   String _emailTampung;
   String _passwordTampung;
-
-  final FocusNode _focusNodeEmail = FocusNode();
-  final FocusNode _focusNodePassword = FocusNode();
 
   bool _isSubmit = false;
   bool _obscureTextPassword = true;
@@ -382,7 +386,6 @@ class LoginState extends State<LoginView> {
         ),
       ),
     );
-
     return widgets;
   }
 

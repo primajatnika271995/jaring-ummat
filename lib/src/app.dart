@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_jaring_ummat/main.dart';
-import 'views/login.dart';
-import 'views/home.dart';
-import 'views/onboarding.dart';
-import 'views/onboarding/step2.dart';
-import 'views/onboarding/step3.dart';
-import 'views/onboarding/step4.dart';
-import 'views/onboarding/success_register.dart';
-import 'views/user_story.dart';
-import 'views/galang_amal.dart';
+import 'package:flutter_jaring_ummat/src/views/galang_amal.dart';
+import 'package:flutter_jaring_ummat/src/views/home.dart';
+import 'package:flutter_jaring_ummat/src/views/login/login.dart';
+import 'package:flutter_jaring_ummat/src/views/onboarding.dart';
+import 'package:flutter_jaring_ummat/src/views/onboarding/step2.dart';
+import 'package:flutter_jaring_ummat/src/views/onboarding/step3.dart';
+import 'package:flutter_jaring_ummat/src/views/onboarding/step4.dart';
+import 'package:flutter_jaring_ummat/src/views/onboarding/success_register.dart';
+import 'package:flutter_jaring_ummat/src/views/user_story.dart';
 
 void App() {
   runApp(
@@ -24,7 +24,7 @@ void App() {
         '/onboarding/step2': (context) => Step2View(),
         '/onboarding/step3': (context) => Step3View(),
         '/onboarding/step4': (context) => Step4View(),
-        '/onboarding/success': (context) =>SuccessRegisterView(avatarImage: null),
+        '/onboarding/success': (context) => SuccessRegisterView(avatarImage: null),
         '/user/story': (context) => UserStoryView(),
       },
     ),

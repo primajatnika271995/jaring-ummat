@@ -1,22 +1,19 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_jaring_ummat/src/views/login/reLogin.dart';
+
+import 'package:toast/toast.dart';
+import 'package:flutter_jaring_ummat/src/views/portofilio.dart';
+import 'package:flutter_jaring_ummat/src/views/inbox.dart';
+import 'package:flutter_jaring_ummat/src/views/popular_account.dart';
 import 'package:flutter_jaring_ummat/src/config/preferences.dart';
-import 'package:flutter_jaring_ummat/src/views/bni_page.dart';
 import 'package:flutter_jaring_ummat/src/views/components/fab_bottom_app_bar.dart';
-import 'package:flutter_jaring_ummat/src/views/components/header_custom_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_baru_icons.dart';
-import 'package:flutter_jaring_ummat/src/views/components/menu_lain_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/components/navbar_custom_icon.dart';
 import 'package:flutter_jaring_ummat/src/views/page_berita/berita.dart';
 import 'package:flutter_jaring_ummat/src/views/page_program-amal/program_amal.dart';
-import 'package:flutter_jaring_ummat/src/views/welcome_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:toast/toast.dart';
-import 'portofilio.dart';
-import 'inbox.dart';
-import 'popular_account.dart';
-import 'menu.dart';
-import '../views/components/navbar_custom_icon.dart';
+import 'package:flutter_jaring_ummat/src/views/menu.dart';
 
 class HomeView extends StatefulWidget {
   @override
@@ -35,67 +32,6 @@ class _HomeState extends State<HomeView> {
   GlobalKey<ScaffoldState> _globalKey = GlobalKey<ScaffoldState>();
   DateTime backButtonPressTime;
 
-  Widget newsView() {
-    return BeritaPage();
-  }
-
-  Widget popularAccountView() {
-    return PopularAccountView();
-  }
-
-  Widget bniAccount() {
-    return BNIPage();
-  }
-
-  Widget welcomePage() {
-    return WelcomePage();
-  }
-
-  Widget searchBoxContainer() {
-    return Padding(
-      padding: EdgeInsets.only(left: 10.0, right: 10.0),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          GestureDetector(
-            onTap: () {
-              print(1);
-            },
-            child: Icon(
-              HeaderCustom.ic_news,
-              size: 20.0,
-              color: Colors.white,
-            ),
-          ),
-          Container(
-            width: 270.0,
-            height: 25.0,
-            padding: EdgeInsets.fromLTRB(10.0, 0.5, 10.0, 0.5),
-            decoration: BoxDecoration(
-                color: Colors.white, borderRadius: BorderRadius.circular(20.0)),
-            child: TextField(
-              style:
-                  TextStyle(fontSize: 10.0, color: Colors.black, height: 0.4),
-              decoration: InputDecoration(
-                border: InputBorder.none,
-                hintText: 'Cari galang atau badan amil',
-              ),
-            ),
-          ),
-          GestureDetector(
-            onTap: () {},
-            child: Icon(
-              HeaderCustom.ic_comment_inactive,
-              size: 20.0,
-              color: Colors.white,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -105,9 +41,9 @@ class _HomeState extends State<HomeView> {
         child: PageView(
           controller: PageController(initialPage: 1),
           children: <Widget>[
-            newsView(),
+            BeritaPage(),
             mainView(),
-            (_token == null) ? welcomePage() : popularAccountView(),
+            (_token == null) ? ReLogin() : PopularAccountView(),
           ],
         ),
       ),
@@ -122,7 +58,7 @@ class _HomeState extends State<HomeView> {
       ProgramAmalPage(),
       Portofolio(),
       Inbox(),
-      (_token == null) ? WelcomePage() : Menu()
+      (_token == null) ? ReLogin() : Menu()
     ];
 
     return Scaffold(
@@ -163,7 +99,6 @@ class _HomeState extends State<HomeView> {
           duration: 3, backgroundColor: Colors.grey);
       return false;
     }
-
     return true;
   }
 
@@ -178,18 +113,5 @@ class _HomeState extends State<HomeView> {
     setState(() {
       _currentIndex = index;
     });
-  }
-}
-
-class PlaceholderWidget extends StatelessWidget {
-  final Color color;
-
-  PlaceholderWidget(this.color);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: color,
-    );
   }
 }
