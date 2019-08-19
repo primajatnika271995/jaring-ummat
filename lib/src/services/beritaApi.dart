@@ -5,18 +5,29 @@ import 'package:http/http.dart' show Client;
 
 class BeritaProvider {
   Client client = new Client();
+  var params;
+  Uri _uri;
 
-  Future<List<BeritaModel>> fetchBerita(String idUserlogin, String category, String start, String limit) async {
-    Uri uri = Uri.parse(BERITA_LIST_ALL_URL);
+  Future<List<BeritaModel>> fetchBerita(String idUser, String category, String offset, String limit) async {
 
-    var params = {
-      "idUserLogin": idUserlogin,
-      "category": category,
-      "start": start,
-      "limit": limit,
-    };
+    if (category.isEmpty) {
+      params = {
+        "idUser": idUser,
+        "offset": offset,
+        "limit": limit,
+      };
+      _uri =  Uri.parse(BERITA_LIST_ALL_URL);
+    } else {
+      params = {
+        "idUser": idUser,
+        "category": category,
+        "offset": offset,
+        "limit": limit,
+      };
+      _uri =  Uri.parse(BERITA_LIST_ALL_BY_CATEGORY_URL);
+    }
 
-    final uriParams = uri.replace(queryParameters: params);
+    final uriParams = _uri.replace(queryParameters: params);
     final response = await client.get(uriParams);
 
     print('_response_code : ${response.statusCode}');

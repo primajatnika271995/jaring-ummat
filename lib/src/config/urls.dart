@@ -15,10 +15,6 @@ const USER_BY_ID_URL = BASE_API_URL + '/api/user/';
 const USER_DETAILS_URL = BASE_API_URL + '/api/user/findByEmail';
 const CHECK_REGISTRATION_EMAIL = BASE_API_URL + '/api/user/checkout';
 
-// BASE NEWS CONTENT
-const NEWS_GET_LIST = BASE_API_URL + '/api/berita/list';
-const NEWS_CREATE = BASE_API_URL + '/api/berita/';
-
 // BASE STORY
 const ALL_STORY_URL = BASE_API_URL + '/api/stories/list';
 const STORY_BY_ID_URL = BASE_API_URL + '/api/stories/list/';
@@ -29,7 +25,9 @@ const PROGRAM_AMAL_LIST_ALL_URL = BASE_API_URL + '/api/program-amal/list/all';
 const PROGRAM_AMAL_LIST_BY_CATEGORY_URL = BASE_API_URL + '/api/program-amal/list/category';
 const PROGRAM_AMAL_FINDBYID_URL = BASE_API_URL + '/api/program-amal/';
 
+// For Service Berita API
 const BERITA_LIST_ALL_URL =  BASE_API_URL + '/api/berita/list';
+const BERITA_LIST_ALL_BY_CATEGORY_URL = BASE_API_URL + '/api/berita/list/category';
 
 // For Service LikeZone API
 const SAVE_LIKE_URL = BASE_API_URL + '/api/like/';

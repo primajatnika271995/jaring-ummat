@@ -19,7 +19,7 @@ class ProgramAmalBloc {
     _preferences = await SharedPreferences.getInstance();
     idUser = _preferences.getString(USER_ID_KEY);
     
-    List<ProgramAmalModel> listAllProgramAmal = await repository.fetchAllProgramAmal("a108ec61-202b-410a-b7d2-b5017064ac95", category, "0", "20");
+    List<ProgramAmalModel> listAllProgramAmal = await repository.fetchAllProgramAmal(idUser, category, "0", "20");
     programAmalFetcher.sink.add(listAllProgramAmal);
   }
 

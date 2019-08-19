@@ -17,7 +17,7 @@ class BeritaBloc {
     _preferences = await SharedPreferences.getInstance();
     idUser = _preferences.getString(USER_ID_KEY);
     
-    List<BeritaModel> listAllBerita = await repository.fetchAllBerita("a108ec61-202b-410a-b7d2-b5017064ac95", category, "0", "20");
+    List<BeritaModel> listAllBerita = await repository.fetchAllBerita(idUser, category, "0", "20");
     beritaFetcher.sink.add(listAllBerita);
   }
 

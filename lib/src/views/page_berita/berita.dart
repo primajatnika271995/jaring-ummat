@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_jaring_ummat/src/bloc/beritaBloc.dart';
 import 'package:flutter_jaring_ummat/src/models/beritaModel.dart';
+import 'package:flutter_jaring_ummat/src/views/page_berita/berita_content.dart';
 
 class BeritaPage extends StatefulWidget {
   const BeritaPage({Key key}) : super(key: key);
@@ -10,6 +11,8 @@ class BeritaPage extends StatefulWidget {
 }
 
 class _BeritaPageState extends State<BeritaPage> {
+  String selectedCategory = "";
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -69,6 +72,50 @@ class _BeritaPageState extends State<BeritaPage> {
                   ),
                   labelColor: Colors.black,
                   unselectedLabelColor: Colors.grey,
+                  onTap: (int index) {
+                    switch (index) {
+                      case 1:
+                        setState(() {
+                          selectedCategory = "Pendidikan";
+                        });
+                        break;
+                      case 2:
+                        setState(() {
+                          selectedCategory = "Kemanusiaan";
+                        });
+                        break;
+                      case 3:
+                        setState(() {
+                          selectedCategory = "Amal";
+                        });
+                        break;
+                      case 4:
+                        setState(() {
+                          selectedCategory = "Pembangunan Mesjid";
+                        });
+                        break;
+                      case 5:
+                        setState(() {
+                          selectedCategory = "Zakat";
+                        });
+                        break;
+                      case 6:
+                        setState(() {
+                          selectedCategory = "Sosial";
+                        });
+                        break;
+                      case 7:
+                        setState(() {
+                          selectedCategory = "lain-lain";
+                        });
+                        break;
+                      default:
+                        setState(() {
+                          selectedCategory = "";
+                        });
+                    }
+                    bloc.fetchAllBerita(selectedCategory);
+                  },
                   tabs: <Widget>[
                     new Tab(
                       text: 'Semua Kategori',
@@ -103,15 +150,17 @@ class _BeritaPageState extends State<BeritaPage> {
                     children: <Widget>[
                       StreamBuilder(
                         stream: bloc.allBerita,
-                        builder: (context,
-                            AsyncSnapshot<List<BeritaModel>> snapshot) {
+                        builder: (context, AsyncSnapshot<List<BeritaModel>> snapshot) {
                           if (snapshot.hasData) {
-                            return Text(snapshot.data[0].idUser);
+                            return buildList(snapshot);
                           } else if (snapshot.hasError) {
                             return Text(snapshot.error.toString());
                           }
-                          return Center(
-                            child: CircularProgressIndicator(),
+                          return Padding(
+                            padding: EdgeInsets.symmetric(vertical: 50.0),
+                            child: Center(
+                              child: CircularProgressIndicator(),
+                            ),
                           );
                         },
                       ),
@@ -126,9 +175,23 @@ class _BeritaPageState extends State<BeritaPage> {
     );
   }
 
+  Widget buildList(AsyncSnapshot<List<BeritaModel>> snapshot) {
+    return ListView.builder(
+      shrinkWrap: true,
+      physics: ClampingScrollPhysics(),
+      itemCount: snapshot.data.length,
+      itemBuilder: (BuildContext context, int index) {
+        var value = snapshot.data[index];
+        return BeritaContent(
+          berita: value,
+        );
+      },
+    );
+  }
+
   @override
-  void initState() { 
+  void initState() {
     super.initState();
-    bloc.fetchAllBerita("Pendidikan");
+    bloc.fetchAllBerita(selectedCategory);
   }
 }

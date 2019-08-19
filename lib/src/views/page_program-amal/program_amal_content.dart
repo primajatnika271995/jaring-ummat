@@ -89,6 +89,9 @@ class _ProgramAmalContentState extends State<ProgramAmalContent> {
                             fontWeight: FontWeight.bold, fontSize: 15.0),
                       ),
                     ),
+                    SizedBox(
+                      height: 3.0,
+                    ),
                     Text(
                       'oleh ' +
                           widget.programAmal.createdBy +

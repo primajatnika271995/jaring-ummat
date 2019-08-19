@@ -34,9 +34,6 @@ class _MenuState extends State<Menu> {
       _profilePictureLocal = _preferences.getString(PROFILE_PICTURE_KEY);
       _profilePictureLocalFB = _preferences.getString(PROFILE_FACEBOOK_KEY);
     });
-
-    print(_profilePictureLocalFB);
-    print(_profilePictureLocal);
   }
 
   void logout() async {

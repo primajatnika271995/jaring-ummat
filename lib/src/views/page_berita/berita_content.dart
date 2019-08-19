@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_jaring_ummat/src/config/preferences.dart';
 import 'package:flutter_jaring_ummat/src/models/beritaModel.dart';
@@ -20,10 +19,16 @@ class BeritaContent extends StatefulWidget {
 }
 
 class _BeritaContentState extends State<BeritaContent> {
+  final List<String> imgNoContent = [
+    "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/No_image_3x4.svg/1280px-No_image_3x4.svg.png"
+  ];
+
   int _current = 0;
   int _currentImage = 1;
+
   bool isLoved = false;
   bool flag = true;
+
   String lessDesc;
   String moreDesc;
 
@@ -97,49 +102,49 @@ class _BeritaContentState extends State<BeritaContent> {
 
   Widget titleContent(BuildContext context) {
     return Container(
-      padding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+      padding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 0.0),
       child: Column(
         children: <Widget>[
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              Expanded(
-                flex: 1,
-                child: Container(
-                  width: 30.0,
-                  height: 30.0,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(50.0),
-                    image: DecorationImage(
-                      fit: BoxFit.cover,
-                      image: NetworkImage(
-                          'https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg-1024x683.jpg'),
-                    ),
+              Container(
+                width: 40.0,
+                height: 40.0,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(50.0),
+                  image: DecorationImage(
+                    fit: BoxFit.cover,
+                    image: NetworkImage(
+                        'https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg-1024x683.jpg'),
                   ),
                 ),
               ),
-              Expanded(
-                flex: 9,
-                child: Container(
-                  padding: EdgeInsets.only(left: 10.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      new Text(
+              Container(
+                padding: EdgeInsets.only(left: 10.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Container(
+                      width: MediaQuery.of(context).size.width - 90.0,
+                      child: Text(
                         widget.berita.titleBerita,
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 15.0),
                       ),
-                      Text(
-                        'oleh ' +
-                            widget.berita.createdBy +
-                            ' • ' +
-                            TimeAgoService()
-                                .timeAgoFormatting(widget.berita.createdDate),
-                        style: TextStyle(fontSize: 12.0),
-                      )
-                    ],
-                  ),
+                    ),
+                    SizedBox(
+                      height: 3.0,
+                    ),
+                    Text(
+                      'oleh ' +
+                          widget.berita.createdBy +
+                          ' • ' +
+                          TimeAgoService()
+                              .timeAgoFormatting(widget.berita.createdDate),
+                      style: TextStyle(fontSize: 12.0),
+                    )
+                  ],
                 ),
               ),
             ],
@@ -154,26 +159,32 @@ class _BeritaContentState extends State<BeritaContent> {
     return Stack(
       children: <Widget>[
         CarouselSlider(
-          height: 200.0,
+          height: 260.0,
           autoPlay: false,
           reverse: false,
           viewportFraction: 1.0,
           aspectRatio: MediaQuery.of(context).size.aspectRatio,
-          items: widget.berita.imageContent.map(
-            (url) {
-              return Container(
-                child: ClipRRect(
-                  borderRadius: BorderRadius.all(Radius.circular(0.0)),
-                  child: CachedNetworkImage(
-                    fit: BoxFit.cover,
-                    width: MediaQuery.of(context).size.width,
-                    imageUrl: url["imgUrl"],
-                    errorWidget: (content, url, error) => new Icon(Icons.error),
-                  ),
-                ),
-              );
-            },
-          ).toList(),
+          items: (widget.berita.imageContent == null)
+              ? imgNoContent.map((url) {
+                  return Container(
+                    child: CachedNetworkImage(
+                      imageUrl: url,
+                      fit: BoxFit.cover,
+                      width: MediaQuery.of(context).size.width,
+                    ),
+                  );
+                }).toList()
+              : widget.berita.imageContent.map(
+                  (url) {
+                    return Container(
+                      child: CachedNetworkImage(
+                        imageUrl: url.imgUrl,
+                        fit: BoxFit.cover,
+                        width: MediaQuery.of(context).size.width,
+                      ),
+                    );
+                  },
+                ).toList(),
           onPageChanged: (index) {
             setState(() {
               _current = index;
@@ -190,22 +201,15 @@ class _BeritaContentState extends State<BeritaContent> {
             shape: BadgeShape.square,
             borderRadius: 20,
             toAnimate: false,
-            badgeContent: Text(
-                '${_currentImage} / ${widget.berita.imageContent.length}',
-                style: TextStyle(color: Colors.grey)),
-          ),
-        ),
-        Positioned(
-          left: 10.0,
-          bottom: 15.0,
-          child: DotsIndicator(
-            dotsCount: widget.berita.imageContent.length,
-            position: _current,
-            decorator: DotsDecorator(
-              spacing: const EdgeInsets.all(2.0),
-              activeColor: Colors.blueAccent,
-              color: Colors.white,
-            ),
+            badgeContent: (widget.berita.imageContent == null)
+                ? Text(
+                    '${_currentImage} / ${imgNoContent.length}',
+                    style: TextStyle(color: Colors.grey),
+                  )
+                : Text(
+                    '${_currentImage} / ${widget.berita.imageContent.length}',
+                    style: TextStyle(color: Colors.grey),
+                  ),
           ),
         ),
       ],
@@ -250,8 +254,11 @@ class _BeritaContentState extends State<BeritaContent> {
   }
 
   Widget dividerContent(BuildContext context) {
-    return Divider(
-      color: Colors.grey,
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 10.0),
+      child: Divider(
+        color: Colors.grey,
+      ),
     );
   }
 
