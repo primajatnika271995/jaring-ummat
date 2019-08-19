@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_jaring_ummat/src/config/preferences.dart';
 import 'package:flutter_jaring_ummat/src/models/commentModel.dart';
 import 'package:flutter_jaring_ummat/src/models/listUserLikes.dart';
-import 'package:flutter_jaring_ummat/src/models/programAmalModel.dart';
 import 'package:flutter_jaring_ummat/src/models/program_amal.dart';
 import 'package:flutter_jaring_ummat/src/services/time_ago_service.dart';
 import 'package:rubber/rubber.dart';
@@ -31,8 +30,8 @@ class _KomentarContainerState extends State<KomentarContainer>
 
   @override
   void initState() {
-    commentBloc.bloc.fetchProgramAmalComment(widget.programAmal.id);
-    likesBloc.bloc.fetchAllLikesUserProgramAmal(widget.programAmal.id);
+    commentBloc.bloc.fetchProgramAmalComment(widget.programAmal.idProgram);
+    likesBloc.bloc.fetchAllLikesUserProgramAmal(widget.programAmal.idProgram);
     _rubberAnimationController = RubberAnimationController(
         vsync: this,
         dismissable: true,
@@ -41,7 +40,6 @@ class _KomentarContainerState extends State<KomentarContainer>
         duration: Duration(milliseconds: 200));
 
     getUserProfile();
-    // TODO: implement initState
     super.initState();
   }
 
@@ -146,7 +144,7 @@ class _KomentarContainerState extends State<KomentarContainer>
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Text(
-                              '${widget.programAmal.totalComment} Muzakki berkomentar pada aksi ini',
+                              '${widget.programAmal.totalComments} Muzakki berkomentar pada aksi ini',
                               style: TextStyle(
                                   fontSize: 11.0,
                                   fontWeight: FontWeight.bold,
@@ -213,9 +211,9 @@ class _KomentarContainerState extends State<KomentarContainer>
                 color: Colors.black,
               ),
               onPressed: () async {
-                commentBloc.bloc.saveComment("", widget.programAmal.id);
+                commentBloc.bloc.saveComment("", widget.programAmal.idProgram);
                 await Future.delayed(Duration(milliseconds: 3));
-                commentBloc.bloc.fetchProgramAmalComment(widget.programAmal.id);
+                commentBloc.bloc.fetchProgramAmalComment(widget.programAmal.idProgram);
               },
             ),
           ],

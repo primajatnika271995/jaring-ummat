@@ -32,7 +32,7 @@ import 'package:flutter_jaring_ummat/src/services/login_service.dart';
 // MODEL DATA
 import 'package:flutter_jaring_ummat/src/models/login_model.dart' as modelLogin;
 import 'package:flutter_jaring_ummat/src/models/postModel.dart';
-import 'package:flutter_jaring_ummat/src/models/UserDetails.dart';
+import 'package:flutter_jaring_ummat/src/models/userdetailsModel.dart';
 
 class LoginView extends StatefulWidget {
   @override
@@ -49,14 +49,8 @@ class LoginState extends State<LoginView> {
   TextEditingController _emailTextEditController = TextEditingController();
   TextEditingController _passwordTextEditController = TextEditingController();
 
-  String _emailTampung;
-  String _passwordTampung;
-
-  bool _isSubmit = false;
-  bool _obscureTextPassword = true;
-
   LoginServices service = new LoginServices();
-  UserDetailsService userDetailsService = new UserDetailsService();
+  final UserDetailsService userDetailsService = new UserDetailsService();
   final FacebookLogin facebookSignIn = new FacebookLogin();
   final UserDetailsService _userDetailsService = new UserDetailsService();
   final RegisterApiProvider register = new RegisterApiProvider();
@@ -64,9 +58,11 @@ class LoginState extends State<LoginView> {
   ProgressDialog _progressDialog;
   AuthorizationCodeResponse authorizationCodeResponse;
 
-  final String redirectUrl = 'https://api.linkedin.com/v2/';
-  final String clientId = '81vfnbt57g6p6q';
-  final String clientSecret = 'QOzI7o0ZTBAF8hr7';
+  String _emailTampung;
+  String _passwordTampung;
+
+  bool _isSubmit = false;
+  bool _obscureTextPassword = true;
 
   String token;
   int otpKey;
@@ -280,9 +276,10 @@ class LoginState extends State<LoginView> {
                                           MaterialPageRoute(
                                             builder: (BuildContext context) =>
                                                 LinkedInUserWidget(
-                                              redirectUrl: redirectUrl,
-                                              clientId: clientId,
-                                              clientSecret: clientSecret,
+                                              redirectUrl: linkedInRedirectURI,
+                                              clientId: linkedInClientID,
+                                              clientSecret:
+                                                  linkedInClientSecret,
                                               onGetUserProfile:
                                                   (LinkedInUserModel
                                                       linkedInUser) {

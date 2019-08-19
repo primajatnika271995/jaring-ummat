@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:flutter_jaring_ummat/src/models/UserDetails.dart';
+import 'package:flutter_jaring_ummat/src/models/userdetailsModel.dart';
 import 'package:flutter_jaring_ummat/src/models/login_model.dart';
 import 'package:flutter_jaring_ummat/src/models/postModel.dart';
 import 'package:flutter_jaring_ummat/src/services/login_service.dart';

@@ -13,7 +13,7 @@ import 'package:badges/badges.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class BeritaContent extends StatefulWidget {
-  final Berita berita;
+  final BeritaModel berita;
   BeritaContent({Key key, @required this.berita}) : super(key: key);
 
   _BeritaContentState createState() => _BeritaContentState();
@@ -44,7 +44,7 @@ class _BeritaContentState extends State<BeritaContent> {
     _preferences = await SharedPreferences.getInstance();
     var userId = _preferences.getString(USER_ID_KEY);
 
-    api.likePost(widget.berita.id, "", userId).then((response) {
+    api.likePost(widget.berita.idBerita, "", userId).then((response) {
       print(response.statusCode);
       if (response.statusCode == 201) {
         var stateTotalLike = widget.berita.totalLikes;
@@ -61,7 +61,7 @@ class _BeritaContentState extends State<BeritaContent> {
     var userId = _preferences.getString(USER_ID_KEY);
     var stateTotalLike = widget.berita.totalLikes;
     if (stateTotalLike > 0) {
-      api.unlikeNews(widget.berita.id, userId).then((response) {
+      api.unlikeNews(widget.berita.idBerita, userId).then((response) {
         if (response.statusCode == 200) {
           var sublike = stateTotalLike - 1;
           setState(() {
@@ -82,12 +82,12 @@ class _BeritaContentState extends State<BeritaContent> {
   @override
   void initState() {
     super.initState();
-    if (widget.berita.description.length > 150) {
-      lessDesc = widget.berita.description.substring(0, 150);
-      moreDesc = widget.berita.description
-          .substring(150, widget.berita.description.length);
+    if (widget.berita.descriptionBerita.length > 150) {
+      lessDesc = widget.berita.descriptionBerita.substring(0, 150);
+      moreDesc = widget.berita.descriptionBerita
+          .substring(150, widget.berita.descriptionBerita.length);
     } else {
-      lessDesc = widget.berita.description;
+      lessDesc = widget.berita.descriptionBerita;
       moreDesc = "";
     }
 
@@ -126,7 +126,7 @@ class _BeritaContentState extends State<BeritaContent> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       new Text(
-                        widget.berita.title,
+                        widget.berita.titleBerita,
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 15.0),
                       ),
@@ -293,11 +293,11 @@ class _BeritaContentState extends State<BeritaContent> {
           child: Row(
             children: <Widget>[
               Icon(
-                widget.berita.idUserLike == idUserLogin
+                widget.berita.likeThis
                     ? CustomFonts.heart
                     : (isLoved) ? CustomFonts.heart : CustomFonts.heart_empty,
                 size: 18.0,
-                color: widget.berita.idUserLike == idUserLogin
+                color: widget.berita.likeThis
                     ? Colors.red
                     : (isLoved) ? Colors.red : null,
               ),
@@ -319,7 +319,7 @@ class _BeritaContentState extends State<BeritaContent> {
         ),
         GestureDetector(
           onTap: () {
-            print("ID Berita ${this.widget.berita.id}");
+            print("ID Berita ${this.widget.berita.idBerita}");
             showModalBottomSheet(
                 context: context,
                 builder: (context) {

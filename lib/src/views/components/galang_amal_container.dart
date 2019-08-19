@@ -1,7 +1,7 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_jaring_ummat/src/models/program_amal.dart';
-import 'dart:convert';
 import 'package:flutter_jaring_ummat/src/views/components/custom_fonts.dart';
 import 'package:flutter_jaring_ummat/src/views/components/show_alert_dialog.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -9,11 +9,9 @@ import 'package:dots_indicator/dots_indicator.dart';
 
 // Component
 import '../../services/time_ago_service.dart';
-import '../../models/programAmalModel.dart';
 
 class GalangAmalContainer extends StatefulWidget {
   final ProgramAmalModel programAmal;
-
   GalangAmalContainer({Key key, this.programAmal});
 
   @override
@@ -21,25 +19,17 @@ class GalangAmalContainer extends StatefulWidget {
 }
 
 class _GalangAmalContainerState extends State<GalangAmalContainer> {
+  final List<String> imgNoContent = [
+    "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/No_image_3x4.svg/1280px-No_image_3x4.svg.png"
+  ];
+
   int _current = 0;
+
   bool isLoved = false;
   bool flag = true;
 
   String lessDesc;
   String moreDesc;
-
-  @override
-  void initState() {
-    super.initState();
-    if (widget.programAmal.descriptionProgram.length > 150) {
-      lessDesc = widget.programAmal.descriptionProgram.substring(0, 150);
-      moreDesc = widget.programAmal.descriptionProgram
-          .substring(150, widget.programAmal.descriptionProgram.length);
-    } else {
-      lessDesc = widget.programAmal.descriptionProgram;
-      moreDesc = "";
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -151,21 +141,32 @@ class _GalangAmalContainerState extends State<GalangAmalContainer> {
           reverse: false,
           viewportFraction: 1.0,
           aspectRatio: MediaQuery.of(context).size.aspectRatio,
-          items: widget.programAmal.imageContent.map(
-            (url) {
-              return Container(
-                child: ClipRRect(
-                  borderRadius: BorderRadius.all(Radius.circular(0.0)),
-                  child: CachedNetworkImage(
-                    fit: BoxFit.cover,
-                    imageUrl: url.imgUrl,
-                    errorWidget: (content, url, error) => new Icon(Icons.error),
-                    width: MediaQuery.of(context).size.width,
-                  ),
-                ),
-              );
-            },
-          ).toList(),
+          items: (widget.programAmal.imageContent == null)
+              ? imgNoContent.map((url) {
+                  return Container(
+                    child: CachedNetworkImage(
+                      imageUrl: url,
+                      fit: BoxFit.cover,
+                      width: MediaQuery.of(context).size.width,
+                    ),
+                  );
+                }).toList()
+              : widget.programAmal.imageContent.map(
+                  (url) {
+                    return Container(
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.all(Radius.circular(0.0)),
+                        child: CachedNetworkImage(
+                          fit: BoxFit.cover,
+                          imageUrl: url.imgUrl,
+                          errorWidget: (content, url, error) =>
+                              new Icon(Icons.error),
+                          width: MediaQuery.of(context).size.width,
+                        ),
+                      ),
+                    );
+                  },
+                ).toList(),
           onPageChanged: (index) {
             setState(() {
               _current = index;
@@ -176,7 +177,9 @@ class _GalangAmalContainerState extends State<GalangAmalContainer> {
           left: 10.0,
           bottom: 15.0,
           child: DotsIndicator(
-            dotsCount: widget.programAmal.imageContent.length,
+            dotsCount: (widget.programAmal.imageContent == null)
+                ? imgNoContent.length
+                : widget.programAmal.imageContent.length,
             position: _current,
             decorator: DotsDecorator(
               spacing: const EdgeInsets.all(2.0),
@@ -438,7 +441,7 @@ class _GalangAmalContainerState extends State<GalangAmalContainer> {
                 width: 5.0,
               ),
               Text(
-                '${widget.programAmal.totalComment}' + ' Komentar',
+                '${widget.programAmal.totalComments}' + ' Komentar',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 13.0,
@@ -488,5 +491,18 @@ class _GalangAmalContainerState extends State<GalangAmalContainer> {
         ),
       ],
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.programAmal.descriptionProgram.length > 150) {
+      lessDesc = widget.programAmal.descriptionProgram.substring(0, 150);
+      moreDesc = widget.programAmal.descriptionProgram
+          .substring(150, widget.programAmal.descriptionProgram.length);
+    } else {
+      lessDesc = widget.programAmal.descriptionProgram;
+      moreDesc = "";
+    }
   }
 }

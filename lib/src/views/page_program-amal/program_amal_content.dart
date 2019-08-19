@@ -1,19 +1,19 @@
-import 'package:badges/badges.dart';
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:carousel_slider/carousel_slider.dart';
-import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
+
+import 'package:badges/badges.dart';
+import 'package:dots_indicator/dots_indicator.dart';
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter_jaring_ummat/src/services/currency_format_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_jaring_ummat/src/config/preferences.dart';
 import 'package:flutter_jaring_ummat/src/models/program_amal.dart';
-import 'package:flutter_jaring_ummat/src/services/currency_format_service.dart';
 import 'package:flutter_jaring_ummat/src/services/likeUnlikeApi.dart';
 import 'package:flutter_jaring_ummat/src/services/time_ago_service.dart';
+import 'package:flutter_jaring_ummat/src/views/galang_amal.dart';
 import 'package:flutter_jaring_ummat/src/views/components/custom_fonts.dart';
-import 'package:flutter_jaring_ummat/src/views/page_program-amal/komentar_program_amal_container.dart';
 import 'package:flutter_jaring_ummat/src/views/page_program-amal/share_program_amal_container.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
-import '../../views/galang_amal.dart';
+import 'package:flutter_jaring_ummat/src/views/page_program-amal/komentar_program_amal_container.dart';
 
 class ProgramAmalContent extends StatefulWidget {
   final ProgramAmalModel programAmal;
@@ -24,68 +24,27 @@ class ProgramAmalContent extends StatefulWidget {
 }
 
 class _ProgramAmalContentState extends State<ProgramAmalContent> {
+  final List<String> imgNoContent = [
+    "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/No_image_3x4.svg/1280px-No_image_3x4.svg.png"
+  ];
+
   int _current = 0;
   int _currentImage = 1;
+
   bool isLoved = false;
   bool flag = true;
+
   String lessDesc;
   String moreDesc;
-  String idUserLogin;
+
   String token;
 
   LikeUnlikeProvider api = new LikeUnlikeProvider();
-  SharedPreferences _preferences;
-
-  Future<String> getIdUserLogin() async {
-    _preferences = await SharedPreferences.getInstance();
-    setState(() {
-      this.idUserLogin = _preferences.getString(USER_ID_KEY);
-      print(idUserLogin);
-    });
-  }
-
-  void likeProgram() async {
-    _preferences = await SharedPreferences.getInstance();
-    var userId = _preferences.getString(USER_ID_KEY);
-
-    api.likePost("", widget.programAmal.id, userId).then((response) {
-      if (response.statusCode == 201) {
-        var stateTotalLike = widget.programAmal.totalLikes;
-        var addLikes = stateTotalLike + 1;
-        setState(() {
-          widget.programAmal.totalLikes = addLikes;
-        });
-      }
-    });
-  }
-
-  void unlikeProgram() async {
-    _preferences = await SharedPreferences.getInstance();
-    var userId = _preferences.getString(USER_ID_KEY);
-    var stateTotalLike = widget.programAmal.totalLikes;
-    if (stateTotalLike > 0) {
-      api.unlikePost(widget.programAmal.id, userId).then((response) {
-        if (response.statusCode == 200) {
-          var sublike = stateTotalLike - 1;
-          setState(() {
-            widget.programAmal.totalLikes = sublike;
-          });
-        }
-      });
-    }
-  }
-
-  void checkToken() async {
-    _preferences = await SharedPreferences.getInstance();
-
-    setState(() {
-      token = _preferences.getString(ACCESS_TOKEN_KEY);
-    });
-  }
 
   @override
   void initState() {
     super.initState();
+    // Untuk More Description or Less Description
     if (widget.programAmal.descriptionProgram.length > 150) {
       lessDesc = widget.programAmal.descriptionProgram.substring(0, 150);
       moreDesc = widget.programAmal.descriptionProgram
@@ -94,8 +53,6 @@ class _ProgramAmalContentState extends State<ProgramAmalContent> {
       lessDesc = widget.programAmal.descriptionProgram;
       moreDesc = "";
     }
-
-    getIdUserLogin();
     checkToken();
   }
 
@@ -107,43 +64,40 @@ class _ProgramAmalContentState extends State<ProgramAmalContent> {
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              Expanded(
-                flex: 1,
-                child: Container(
-                  width: 40.0,
-                  height: 40.0,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(50.0),
-                    image: DecorationImage(
-                      fit: BoxFit.cover,
-                      image: NetworkImage(
-                          'https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg-1024x683.jpg'),
-                    ),
+              Container(
+                width: 40.0,
+                height: 40.0,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(50.0),
+                  image: DecorationImage(
+                    fit: BoxFit.cover,
+                    image: NetworkImage(
+                        'https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg-1024x683.jpg'),
                   ),
                 ),
               ),
-              Expanded(
-                flex: 8,
-                child: Container(
-                  padding: EdgeInsets.only(left: 10.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      new Text(
+              Container(
+                padding: EdgeInsets.only(left: 10.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Container(
+                      width: MediaQuery.of(context).size.width - 90.0,
+                      child: Text(
                         widget.programAmal.titleProgram,
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 15.0),
                       ),
-                      Text(
-                        'oleh ' +
-                            widget.programAmal.createdBy +
-                            ' • ' +
-                            TimeAgoService().timeAgoFormatting(
-                                widget.programAmal.createdDate),
-                        style: TextStyle(fontSize: 12.0),
-                      )
-                    ],
-                  ),
+                    ),
+                    Text(
+                      'oleh ' +
+                          widget.programAmal.createdBy +
+                          ' • ' +
+                          TimeAgoService().timeAgoFormatting(
+                              widget.programAmal.createdDate),
+                      style: TextStyle(fontSize: 12.0),
+                    )
+                  ],
                 ),
               ),
             ],
@@ -158,22 +112,32 @@ class _ProgramAmalContentState extends State<ProgramAmalContent> {
     return Stack(
       children: <Widget>[
         CarouselSlider(
-          height: 230.0,
+          height: 260.0,
           autoPlay: false,
           reverse: false,
           viewportFraction: 1.0,
           aspectRatio: MediaQuery.of(context).size.aspectRatio,
-          items: widget.programAmal.imageContent.map(
-            (url) {
-              return Container(
-                child: CachedNetworkImage(
-                  imageUrl: url.imgUrl,
-                  fit: BoxFit.cover,
-                  width: MediaQuery.of(context).size.width,
-                ),
-              );
-            },
-          ).toList(),
+          items: (widget.programAmal.imageContent == null)
+              ? imgNoContent.map((url) {
+                  return Container(
+                    child: CachedNetworkImage(
+                      imageUrl: url,
+                      fit: BoxFit.cover,
+                      width: MediaQuery.of(context).size.width,
+                    ),
+                  );
+                }).toList()
+              : widget.programAmal.imageContent.map(
+                  (url) {
+                    return Container(
+                      child: CachedNetworkImage(
+                        imageUrl: url.imgUrl,
+                        fit: BoxFit.cover,
+                        width: MediaQuery.of(context).size.width,
+                      ),
+                    );
+                  },
+                ).toList(),
           onPageChanged: (index) {
             setState(() {
               _current = index;
@@ -190,24 +154,17 @@ class _ProgramAmalContentState extends State<ProgramAmalContent> {
             shape: BadgeShape.square,
             borderRadius: 20,
             toAnimate: false,
-            badgeContent: Text(
-                '${_currentImage} / ${widget.programAmal.imageContent.length}',
-                style: TextStyle(color: Colors.grey)),
+            badgeContent: (widget.programAmal.imageContent == null)
+                ? Text(
+                    '${_currentImage} / ${imgNoContent.length}',
+                    style: TextStyle(color: Colors.grey),
+                  )
+                : Text(
+                    '${_currentImage} / ${widget.programAmal.imageContent.length}',
+                    style: TextStyle(color: Colors.grey),
+                  ),
           ),
         ),
-        Positioned(
-          left: 10.0,
-          bottom: 15.0,
-          child: DotsIndicator(
-            dotsCount: widget.programAmal.imageContent.length,
-            position: _current,
-            decorator: DotsDecorator(
-              color: Colors.white,
-              activeColor: Colors.blueAccent,
-              spacing: const EdgeInsets.all(2.0),
-            ),
-          ),
-        )
       ],
     );
   }
@@ -250,8 +207,11 @@ class _ProgramAmalContentState extends State<ProgramAmalContent> {
   }
 
   Widget dividerContent(BuildContext context) {
-    return Divider(
-      color: Colors.grey,
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 10.0),
+      child: Divider(
+        color: Colors.grey,
+      ),
     );
   }
 
@@ -275,9 +235,9 @@ class _ProgramAmalContentState extends State<ProgramAmalContent> {
               SizedBox(height: 3.0),
               Text(
                 'Rp. ' +
-                    '${CurrencyFormat().currency(widget.programAmal.totalDonasi)}' +
+                    '${CurrencyFormat().currency(widget.programAmal.totalDonation)}' +
                     ' / ' +
-                    '${CurrencyFormat().currency(widget.programAmal.targetDonasi)}',
+                    '${CurrencyFormat().currency(widget.programAmal.targetDonation)}',
                 style: TextStyle(
                   fontSize: 16.0,
                   fontWeight: FontWeight.bold,
@@ -286,7 +246,7 @@ class _ProgramAmalContentState extends State<ProgramAmalContent> {
               ),
               SizedBox(height: 3.0),
               Text(
-                'Batas waktu ' + widget.programAmal.endDonasi,
+                'Batas waktu ' + widget.programAmal.endDate,
                 style: TextStyle(
                     fontSize: 11.0,
                     fontWeight: FontWeight.bold,
@@ -360,11 +320,11 @@ class _ProgramAmalContentState extends State<ProgramAmalContent> {
           child: Row(
             children: <Widget>[
               Icon(
-                widget.programAmal.idUserLike == idUserLogin
+                (widget.programAmal.userLikeThis)
                     ? CustomFonts.heart
                     : (isLoved) ? CustomFonts.heart : CustomFonts.heart_empty,
                 size: 18.0,
-                color: widget.programAmal.idUserLike == idUserLogin
+                color: (widget.programAmal.userLikeThis)
                     ? Colors.red
                     : (isLoved) ? Colors.red : null,
               ),
@@ -386,7 +346,7 @@ class _ProgramAmalContentState extends State<ProgramAmalContent> {
         ),
         GestureDetector(
           onTap: () {
-            print("ID Berita ${this.widget.programAmal.id}");
+            print("ID Berita ${this.widget.programAmal.idProgram}");
             showModalBottomSheet(
                 context: context,
                 builder: (context) {
@@ -405,7 +365,7 @@ class _ProgramAmalContentState extends State<ProgramAmalContent> {
                 width: 5.0,
               ),
               Text(
-                '${widget.programAmal.totalComment}' + ' Komentar',
+                '${widget.programAmal.totalComments}' + ' Komentar',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 13.0,
@@ -462,5 +422,43 @@ class _ProgramAmalContentState extends State<ProgramAmalContent> {
         ],
       ),
     );
+  }
+
+  void likeProgram() async {
+    SharedPreferences _preferences = await SharedPreferences.getInstance();
+    var userId = _preferences.getString(USER_ID_KEY);
+
+    api.likePost("", widget.programAmal.idProgram, userId).then((response) {
+      if (response.statusCode == 201) {
+        var stateTotalLike = widget.programAmal.totalLikes;
+        var addLikes = stateTotalLike + 1;
+        setState(() {
+          widget.programAmal.totalLikes = addLikes;
+        });
+      }
+    });
+  }
+
+  void unlikeProgram() async {
+    SharedPreferences _preferences = await SharedPreferences.getInstance();
+    var userId = _preferences.getString(USER_ID_KEY);
+    var stateTotalLike = widget.programAmal.totalLikes;
+    if (stateTotalLike > 0) {
+      api.unlikePost(widget.programAmal.idProgram, userId).then((response) {
+        if (response.statusCode == 200) {
+          var sublike = stateTotalLike - 1;
+          setState(() {
+            widget.programAmal.totalLikes = sublike;
+          });
+        }
+      });
+    }
+  }
+
+  void checkToken() async {
+    SharedPreferences _preferences = await SharedPreferences.getInstance();
+    setState(() {
+      token = _preferences.getString(ACCESS_TOKEN_KEY);
+    });
   }
 }

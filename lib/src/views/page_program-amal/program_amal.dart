@@ -1,14 +1,11 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:shimmer/shimmer.dart';
+import 'package:flutter_jaring_ummat/src/bloc/programAmalBloc.dart';
 import 'package:toast/toast.dart';
-
+import 'package:shimmer/shimmer.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_jaring_ummat/src/models/program_amal.dart';
 import 'package:flutter_jaring_ummat/src/services/storiesApi.dart';
 import 'package:flutter_jaring_ummat/src/views/components/userstory_appbar_container.dart';
-import 'package:flutter_jaring_ummat/src/views/components/appbar_custom_icons.dart';
-import 'package:flutter_jaring_ummat/src/bloc/programAmalBloc.dart'as programAmalBloc;
 import 'package:flutter_jaring_ummat/src/views/page_program-amal/program_amal_content.dart';
 
 class ProgramAmalPage extends StatefulWidget {
@@ -23,30 +20,6 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
   StoriesApiProvider _provider = new StoriesApiProvider();
 
   @override
-  void initState() {
-    programAmalBloc.bloc.fetchAllProgramAmal(selectedCategory);
-    response();
-    super.initState();
-  }
-
-  void response() async {
-    await _provider.response().then((response) {
-      print(response.statusCode);
-      if (response.statusCode == 204) {
-        setState(() {
-          hide_story = true;
-        });
-      } else {
-        if (response.statusCode == 200) {
-          setState(() {
-            hide_story = false;
-          });
-        }
-      }
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: DefaultTabController(
@@ -54,78 +27,40 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
         child: Scaffold(
           backgroundColor: Colors.grey[200],
           appBar: PreferredSize(
-            child: AppBar(
-              elevation: 0.0,
-              backgroundColor: Colors.white,
-              leading: InkWell(
-                onTap: () {
-                  Scaffold.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text('Menu Under Development'),
+              child: AppBar(
+                titleSpacing: 10.0,
+                elevation: 0.0,
+                automaticallyImplyLeading: false,
+                centerTitle: true,
+                backgroundColor: Colors.white,
+                title: Container(
+                  child: TextFormField(
+                    textInputAction: TextInputAction.next,
+                    style: TextStyle(
+                      fontSize: 12.0,
+                      color: Colors.blueAccent,
                     ),
-                  );
-                },
-                child: new Icon(
-                  AppBarIcons.ic_leading,
-                  color: Colors.grey[600],
-                ),
-              ),
-              actions: <Widget>[
-                SizedBox(
-                  width: 7.0,
-                ),
-                InkWell(
-                  onTap: () {
-                    Scaffold.of(context).showSnackBar(SnackBar(
-                      content: Text('Chats Menu Under Development'),
-                    ));
-                  },
-                  child: Icon(Icons.chat, color: Colors.grey[600]),
-                ),
-                SizedBox(
-                  width: 7.0,
-                ),
-                InkWell(
-                  onTap: () {
-                    Scaffold.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text('Add Menu Under Development'),
-                      ),
-                    );
-                  },
-                  child: Icon(AppBarIcons.ic_action, color: Colors.grey[600]),
-                ),
-                SizedBox(
-                  width: 13.0,
-                ),
-              ],
-              centerTitle: true,
-              automaticallyImplyLeading: true,
-              titleSpacing: 0.0,
-              title: Container(
-                child: TextFormField(
-                  textInputAction: TextInputAction.next,
-                  style: TextStyle(
-                    fontSize: 12.0,
-                    color: Colors.white,
+                    decoration: InputDecoration(
+                      contentPadding:
+                          EdgeInsets.only(top: 7.0, bottom: 7.0, left: -15.0),
+                      icon: Icon(Icons.search, size: 18.0),
+                      border: InputBorder.none,
+                      hintText: 'Cari lembaga amal atau produk lainnya',
+                    ),
                   ),
-                  decoration: InputDecoration(
-                    contentPadding:
-                        EdgeInsets.only(top: 7.0, bottom: 7.0, left: -15.0),
-                    icon: Icon(Icons.search, size: 18.0),
-                    border: InputBorder.none,
-                    hintText: 'Cari lembaga amal atau produk lainnya',
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(30.0)),
+                    color: Colors.grey[300],
                   ),
+                  padding: EdgeInsets.fromLTRB(15.0, 0.5, 15.0, 0.5),
                 ),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(30.0)),
-                  color: Colors.grey[200],
-                ),
-                padding: EdgeInsets.fromLTRB(15.0, 0.5, 15.0, 0.5),
+                actions: <Widget>[
+                  IconButton(
+                      icon: Icon(Icons.chat, color: Colors.black),
+                      onPressed: () {}),
+                ],
               ),
-            ),
-            preferredSize: Size.fromHeight(47.0),
-          ),
+              preferredSize: Size.fromHeight(47.0)),
           body: CustomScrollView(
             slivers: <Widget>[
               !hide_story
@@ -162,41 +97,48 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                     labelColor: Colors.black,
                     unselectedLabelColor: Colors.grey,
                     onTap: (int index) {
-                      if (index == 0) {
-                        setState(() {
-                          selectedCategory = "";
-                        });
-                      } else if (index == 1) {
-                        setState(() {
-                          selectedCategory = "Pendidikan";
-                        });
-                      } else if (index == 2) {
-                        setState(() {
-                          selectedCategory = "Kemanusiaan";
-                        });
-                      } else if (index == 3) {
-                        setState(() {
-                          selectedCategory = "Amal";
-                        });
-                      } else if (index == 4) {
-                        setState(() {
-                          selectedCategory = "Pembangunan Mesjid";
-                        });
-                      } else if (index == 5) {
-                        setState(() {
-                          selectedCategory = "Zakat";
-                        });
-                      } else if (index == 6) {
-                        setState(() {
-                          selectedCategory = "Sosial";
-                        });
-                      } else if (index == 7) {
-                        setState(() {
-                          selectedCategory = "lain-lain";
-                        });
+                      switch (index) {
+                        case 1:
+                          setState(() {
+                            selectedCategory = "Pendidikan";
+                          });
+                          break;
+                        case 2:
+                          setState(() {
+                            selectedCategory = "Kemanusiaan";
+                          });
+                          break;
+                        case 3:
+                          setState(() {
+                            selectedCategory = "Amal";
+                          });
+                          break;
+                        case 4:
+                          setState(() {
+                            selectedCategory = "Pembangunan Mesjid";
+                          });
+                          break;
+                        case 5:
+                          setState(() {
+                            selectedCategory = "Zakat";
+                          });
+                          break;
+                        case 6:
+                          setState(() {
+                            selectedCategory = "Sosial";
+                          });
+                          break;
+                        case 7:
+                          setState(() {
+                            selectedCategory = "lain-lain";
+                          });
+                          break;
+                        default:
+                          setState(() {
+                            selectedCategory = "";
+                          });
                       }
-                      programAmalBloc.bloc
-                          .fetchAllProgramAmal(selectedCategory);
+                      bloc.fetchAllProgramAmal(selectedCategory);
                     },
                     tabs: <Widget>[
                       new Tab(
@@ -228,90 +170,30 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                 ),
               ),
               SliverList(
-                delegate: SliverChildListDelegate([
-                  Column(
-                    children: <Widget>[
-                      StreamBuilder(
-                        stream: programAmalBloc.bloc.streamProgramAmal,
-                        builder:
-                            (BuildContext context, AsyncSnapshot snapshot) {
-                          switch (snapshot.connectionState) {
-                            case ConnectionState.none:
-                              return Container(
-                                width: 500.0,
-                                margin: EdgeInsets.only(top: 20.0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
-                                    Text('No Connection To Server')
-                                  ],
-                                ),
-                              );
-                            case ConnectionState.waiting:
-                              return shimmerLoading();
-                            default:
-                              if (snapshot.hasData && snapshot != null) {
-                                if (snapshot.data.length > 0) {
-                                  return buildList(snapshot.data);
-                                } else if (snapshot.data.length == 0) {
-                                  return Container(
-                                    width: 500.0,
-                                    margin: EdgeInsets.only(top: 20.0),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: <Widget>[
-                                        Text('No Data Post Amal')
-                                      ],
-                                    ),
-                                  );
-                                }
-                              } else if (snapshot.hasError) {
-                                var error = snapshot.error.toString();
-                                toastServerError(error);
-                              } else {
-                                return Container(
-                                  width: 500.0,
-                                  margin: EdgeInsets.only(top: 30.0),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: <Widget>[
-                                      SvgPicture.asset(
-                                        'assets/icon/no-content.svg',
-                                        height: 250.0,
-                                      ),
-                                      Text(
-                                        'Oops..',
-                                        style: TextStyle(
-                                          fontFamily: 'Proxima',
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 16.0,
-                                        ),
-                                      ),
-                                      Text(
-                                        'There\'s nothing \'ere, yet.',
-                                        style: TextStyle(
-                                          fontFamily: 'Proxima',
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.grey,
-                                          fontSize: 15.0,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                );
-                              }
-                          }
-                        },
-                      )
-                    ],
-                  ),
-                ]),
+                delegate: SliverChildListDelegate(
+                  [
+                    Column(
+                      children: <Widget>[
+                        StreamBuilder(
+                          stream: bloc.allProgramAmal,
+                          builder: (context, AsyncSnapshot<List<ProgramAmalModel>> snapshot) {
+                            if (snapshot.hasData) {
+                              return buildList(snapshot);
+                            } else if (snapshot.hasError) {
+                              return Text(snapshot.error.toString());
+                            }
+                            return Padding(
+                              padding: EdgeInsets.symmetric(vertical: 50.0),
+                              child: Center(
+                                child: CircularProgressIndicator(),
+                              ),
+                            );
+                          },
+                        )
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
@@ -320,97 +202,46 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
     );
   }
 
-  void toastServerError(String errorMsg) {
-    Toast.show(
-      "$errorMsg",
-      context,
-      backgroundColor: Colors.grey,
-      backgroundRadius: 5.0,
-      textColor: Colors.white,
-      gravity: Toast.CENTER,
-    );
-  }
-
-  Widget buildList(List<ProgramAmalModel> snapshot) {
+  Widget buildList(AsyncSnapshot<List<ProgramAmalModel>> snapshot) {
     return ListView.builder(
       shrinkWrap: true,
       physics: ClampingScrollPhysics(),
-      itemCount: snapshot.length,
+      itemCount: snapshot.data.length,
       itemBuilder: (BuildContext context, int index) {
-        List<String> thumbnailTemp = new List<String>();
-        var dataSnapshot = snapshot[index];
-        dataSnapshot.imageContent.forEach((val) {
-          String data = val.imgUrl;
-          thumbnailTemp.add(data);
-        });
-
+        var value = snapshot.data[index];
         return ProgramAmalContent(
-          programAmal: snapshot[index],
+          programAmal: value,
         );
       },
     );
   }
 
-  Widget shimmerLoading() {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
-      child: Shimmer.fromColors(
-        baseColor: Colors.grey[300],
-        highlightColor: Colors.grey[100],
-        child: Column(
-          children: [0, 1, 2, 3, 4, 5, 6, 7]
-              .map(
-                (_) => Padding(
-                  padding: const EdgeInsets.only(bottom: 8.0),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        width: 48.0,
-                        height: 48.0,
-                        color: Colors.white,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      ),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              width: double.infinity,
-                              height: 8.0,
-                              color: Colors.white,
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(vertical: 2.0),
-                            ),
-                            Container(
-                              width: double.infinity,
-                              height: 8.0,
-                              color: Colors.white,
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(vertical: 2.0),
-                            ),
-                            Container(
-                              width: 40.0,
-                              height: 8.0,
-                              color: Colors.white,
-                            ),
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              )
-              .toList(),
-        ),
-      ),
-    );
+  @override
+  void initState() {
+    bloc.fetchAllProgramAmal(selectedCategory);
+    hideStory();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    bloc.dispose();
+    super.dispose();
+  }
+
+  void hideStory() async {
+    await _provider.response().then((response) {
+      if (response.statusCode == 204) {
+        setState(() {
+          hide_story = true;
+        });
+      } else {
+        if (response.statusCode == 200) {
+          setState(() {
+            hide_story = false;
+          });
+        }
+      }
+    });
   }
 }

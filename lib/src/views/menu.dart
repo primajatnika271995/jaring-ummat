@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_jaring_ummat/src/models/UserDetails.dart';
 import 'package:giffy_dialog/giffy_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -22,11 +21,10 @@ class _MenuState extends State<Menu> {
   String _email = null;
   String _userId = null;
   String _contact = null;
-  String _profilePictureLocal = null;
-  String _profilePictureLocalFB = null;
+  String _profilePictureLocal = 'https://content-static.upwork.com/uploads/2014/10/01073427/profilephoto1.jpg';
+  String _profilePictureLocalFB = 'https://content-static.upwork.com/uploads/2014/10/01073427/profilephoto1.jpg';
 
   getUserDetails() async {
-    UserDetails userDetails;
     _preferences = await SharedPreferences.getInstance();
     setState(() {
       _fullname = _preferences.getString(FULLNAME_KEY);
@@ -100,6 +98,9 @@ class _MenuState extends State<Menu> {
 
   @override
   Widget build(BuildContext context) {
+    setState(() {
+      getUserDetails();
+    });
     return MaterialApp(
       home: Scaffold(
         appBar: PreferredSize(
@@ -187,18 +188,18 @@ class _MenuState extends State<Menu> {
                                                 margin: EdgeInsets.fromLTRB(
                                                     2.0, 0.0, 2.0, 0.0),
                                                 decoration: BoxDecoration(
-                                                    shape: BoxShape.circle,
-                                                    color: Colors.white
-                                                        .withOpacity(0.5),
-                                                    image: DecorationImage(
-                                                      image: _profilePictureLocal ==
-                                                              null
-                                                          ? NetworkImage(
-                                                              _profilePictureLocalFB)
-                                                          : NetworkImage(
-                                                              _profilePictureLocal),
-                                                      fit: BoxFit.cover,
-                                                    )),
+                                                  shape: BoxShape.circle,
+                                                  color: Colors.white
+                                                      .withOpacity(0.5),
+                                                  image: DecorationImage(
+                                                    image: (_profilePictureLocal == null)
+                                                        ? NetworkImage(_profilePictureLocalFB)
+                                                        : (_profilePictureLocalFB == null)
+                                                            ? NetworkImage(_profilePictureLocal)
+                                                            : NetworkImage('https://content-static.upwork.com/uploads/2014/10/01073427/profilephoto1.jpg'),
+                                                    fit: BoxFit.cover,
+                                                  ),
+                                                ),
                                               ),
                                             ),
                                           ),

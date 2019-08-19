@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_jaring_ummat/src/bloc/berita_bloc/berita_event.dart';
-import 'package:http/http.dart' as http;
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_jaring_ummat/src/bloc/berita_bloc/berita_bloc.dart';
+import 'package:flutter_jaring_ummat/src/bloc/beritaBloc.dart';
+import 'package:flutter_jaring_ummat/src/models/beritaModel.dart';
 
-import 'berita_container.dart';
-
-class BeritaPage extends StatelessWidget {
+class BeritaPage extends StatefulWidget {
   const BeritaPage({Key key}) : super(key: key);
 
+  @override
+  _BeritaPageState createState() => _BeritaPageState();
+}
+
+class _BeritaPageState extends State<BeritaPage> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -98,10 +99,23 @@ class BeritaPage extends StatelessWidget {
               ),
               SliverList(
                 delegate: SliverChildListDelegate([
-                  BlocProvider(
-                    builder: (context) => BeritaBloc(httpClient: http.Client())
-                      ..dispatch(Fetch()),
-                    child: BeritaContainer(),
+                  Column(
+                    children: <Widget>[
+                      StreamBuilder(
+                        stream: bloc.allBerita,
+                        builder: (context,
+                            AsyncSnapshot<List<BeritaModel>> snapshot) {
+                          if (snapshot.hasData) {
+                            return Text(snapshot.data[0].idUser);
+                          } else if (snapshot.hasError) {
+                            return Text(snapshot.error.toString());
+                          }
+                          return Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        },
+                      ),
+                    ],
                   ),
                 ]),
               )
@@ -110,5 +124,11 @@ class BeritaPage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  @override
+  void initState() { 
+    super.initState();
+    bloc.fetchAllBerita("Pendidikan");
   }
 }

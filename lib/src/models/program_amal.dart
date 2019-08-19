@@ -9,70 +9,74 @@ List<ProgramAmalModel> programAmalModelFromJson(String str) => new List<ProgramA
 String programAmalModelToJson(List<ProgramAmalModel> data) => json.encode(new List<dynamic>.from(data.map((x) => x.toJson())));
 
 class ProgramAmalModel {
-    String id;
     String idUser;
-    dynamic idUserLike;
+    String idProgram;
+    String username;
+    bool userLikeThis;
     String titleProgram;
-    String category;
-    String endDonasi;
-    double targetDonasi;
-    double totalDonasi;
     String descriptionProgram;
-    List<ImageContent> imageContent;
-    int createdDate;
-    String createdBy;
-    int totalComment;
+    String categoryProgram;
+    double totalDonation;
+    double targetDonation;
+    String endDate;
     int totalLikes;
+    int totalComments;
+    List<ImageContent> imageContent;
+    String createdBy;
+    int createdDate;
 
     ProgramAmalModel({
-        this.id,
         this.idUser,
-        this.idUserLike,
+        this.idProgram,
+        this.username,
+        this.userLikeThis,
         this.titleProgram,
-        this.category,
-        this.endDonasi,
-        this.targetDonasi,
-        this.totalDonasi,
         this.descriptionProgram,
-        this.imageContent,
-        this.createdDate,
-        this.createdBy,
-        this.totalComment,
+        this.categoryProgram,
+        this.totalDonation,
+        this.targetDonation,
+        this.endDate,
         this.totalLikes,
+        this.totalComments,
+        this.imageContent,
+        this.createdBy,
+        this.createdDate,
     });
 
     factory ProgramAmalModel.fromJson(Map<String, dynamic> json) => new ProgramAmalModel(
-        id: json["id"] == null ? null : json["id"],
         idUser: json["idUser"] == null ? null : json["idUser"],
-        idUserLike: json["idUserLike"],
+        idProgram: json["idProgram"] == null ? null : json["idProgram"],
+        username: json["username"] == null ? null : json["username"],
+        userLikeThis: json["userLikeThis"] == null ? null : json["userLikeThis"],
         titleProgram: json["titleProgram"] == null ? null : json["titleProgram"],
-        category: json["category"] == null ? null : json["category"],
-        endDonasi: json["endDonasi"] == null ? null : json["endDonasi"],
-        targetDonasi: json["targetDonasi"] == null ? null : json["targetDonasi"],
-        totalDonasi: json["totalDonasi"] == null ? null : json["totalDonasi"],
         descriptionProgram: json["descriptionProgram"] == null ? null : json["descriptionProgram"],
+        categoryProgram: json["categoryProgram"] == null ? null : json["categoryProgram"],
+        totalDonation: json["totalDonation"] == null ? null : json["totalDonation"],
+        targetDonation: json["targetDonation"] == null ? null : json["targetDonation"],
+        endDate: json["endDate"] == null ? null : json["endDate"],
+        totalLikes: json["totalLikes"] == null ? null : json["totalLikes"],
+        totalComments: json["totalComments"] == null ? null : json["totalComments"],
         imageContent: json["imageContent"] == null ? null : new List<ImageContent>.from(json["imageContent"].map((x) => ImageContent.fromJson(x))),
-        createdDate: json["createdDate"] == null ? null : json["createdDate"],
         createdBy: json["createdBy"] == null ? null : json["createdBy"],
-        totalComment: json["total_comment"] == null ? null : json["total_comment"],
-        totalLikes: json["total_likes"] == null ? null : json["total_likes"],
+        createdDate: json["createdDate"] == null ? null : json["createdDate"],
     );
 
     Map<String, dynamic> toJson() => {
-        "id": id == null ? null : id,
         "idUser": idUser == null ? null : idUser,
-        "idUserLike": idUserLike,
+        "idProgram": idProgram == null ? null : idProgram,
+        "username": username == null ? null : username,
+        "userLikeThis": userLikeThis == null ? null : userLikeThis,
         "titleProgram": titleProgram == null ? null : titleProgram,
-        "category": category == null ? null : category,
-        "endDonasi": endDonasi == null ? null : endDonasi,
-        "targetDonasi": targetDonasi == null ? null : targetDonasi,
-        "totalDonasi": totalDonasi == null ? null : totalDonasi,
         "descriptionProgram": descriptionProgram == null ? null : descriptionProgram,
+        "categoryProgram": categoryProgram == null ? null : categoryProgram,
+        "totalDonation": totalDonation == null ? null : totalDonation,
+        "targetDonation": targetDonation == null ? null : targetDonation,
+        "endDate": endDate == null ? null : endDate,
+        "totalLikes": totalLikes == null ? null : totalLikes,
+        "totalComments": totalComments == null ? null : totalComments,
         "imageContent": imageContent == null ? null : new List<dynamic>.from(imageContent.map((x) => x.toJson())),
-        "createdDate": createdDate == null ? null : createdDate,
         "createdBy": createdBy == null ? null : createdBy,
-        "total_comment": totalComment == null ? null : totalComment,
-        "total_likes": totalLikes == null ? null : totalLikes,
+        "createdDate": createdDate == null ? null : createdDate,
     };
 }
 

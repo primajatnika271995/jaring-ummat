@@ -13,7 +13,7 @@ import 'package:flutter_jaring_ummat/src/bloc/likesBloc.dart' as likesBloc;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class KomentarContainer extends StatefulWidget {
-  final Berita berita;
+  final BeritaModel berita;
 
   KomentarContainer({Key key, @required this.berita}) : super(key: key);
   @override
@@ -33,8 +33,8 @@ class _KomentarContainerState extends State<KomentarContainer>
   void initState() {
     getUserProfile();
     super.initState();
-    commentBloc.bloc.fetchNewsComment(widget.berita.id);
-    likesBloc.bloc.fetchAllLikesUserBerita(widget.berita.id);
+    commentBloc.bloc.fetchNewsComment(widget.berita.idBerita);
+    likesBloc.bloc.fetchAllLikesUserBerita(widget.berita.idBerita);
     _rubberAnimationController = RubberAnimationController(
         vsync: this,
         dismissable: true,
@@ -200,9 +200,9 @@ class _KomentarContainerState extends State<KomentarContainer>
                 color: Colors.black,
               ),
               onPressed: () async {
-                commentBloc.bloc.saveComment(widget.berita.id, "");
+                commentBloc.bloc.saveComment(widget.berita.idBerita, "");
                 await Future.delayed(Duration(milliseconds: 3));
-                commentBloc.bloc.fetchNewsComment(widget.berita.id);
+                commentBloc.bloc.fetchNewsComment(widget.berita.idBerita);
               },
             ),
           ],
@@ -375,7 +375,7 @@ class _KomentarContainerState extends State<KomentarContainer>
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      new Text(widget.berita.title,
+                      new Text(widget.berita.titleBerita,
                           style: TextStyle(
                               fontSize: 15.0,
                               fontWeight: FontWeight.bold,

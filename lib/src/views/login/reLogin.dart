@@ -17,7 +17,6 @@ import 'package:toast/toast.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 
 // COMPONENT
-import 'package:flutter_jaring_ummat/src/views/components/form_field_container.dart';
 import 'package:flutter_jaring_ummat/src/views/components/create_account_icons.dart';
 
 // CONFIG
@@ -31,7 +30,7 @@ import 'package:flutter_jaring_ummat/src/services/login_service.dart';
 // MODEL DATA
 import 'package:flutter_jaring_ummat/src/models/login_model.dart' as modelLogin;
 import 'package:flutter_jaring_ummat/src/models/postModel.dart';
-import 'package:flutter_jaring_ummat/src/models/UserDetails.dart';
+import 'package:flutter_jaring_ummat/src/models/userdetailsModel.dart';
 
 class ReLogin extends StatefulWidget {
   @override
@@ -274,27 +273,29 @@ class _ReLoginState extends State<ReLogin> {
       resizeToAvoidBottomPadding: true,
       resizeToAvoidBottomInset: true,
       body: Center(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            mainIcon,
-            SizedBox(height: 10.0),
-            titleName,
-            subtitleName,
-            SizedBox(height: 30.0),
-            emailField,
-            passwordField,
-            SizedBox(height: 15.0),
-            loginButton,
-            SizedBox(height: 10.0),
-            forgotPassword,
-            SizedBox(height: 90.0),
-            const Text('Atau masuk dengan'),
-            socialmediaButton,
-            SizedBox(height: 60.0),
-            registerButton,
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              mainIcon,
+              SizedBox(height: 10.0),
+              titleName,
+              subtitleName,
+              SizedBox(height: 30.0),
+              emailField,
+              passwordField,
+              SizedBox(height: 15.0),
+              loginButton,
+              SizedBox(height: 10.0),
+              forgotPassword,
+              SizedBox(height: 90.0),
+              const Text('Atau masuk dengan'),
+              socialmediaButton,
+              SizedBox(height: 60.0),
+              registerButton,
+            ],
+          ),
         ),
       ),
     );
@@ -315,9 +316,9 @@ class _ReLoginState extends State<ReLogin> {
       _isSubmit = true;
     });
 
-    _progressDialog = new ProgressDialog(context, ProgressDialogType.Normal);
-    _progressDialog.setMessage("Please Wait ...");
-    _progressDialog.show();
+    // _progressDialog = new ProgressDialog(context, ProgressDialogType.Normal);
+    // _progressDialog.setMessage("Please Wait ...");
+    // _progressDialog.show();
 
     await service.login(_emailTampung, _passwordTampung).then((response) async {
       print("INI RESPONSE CODE LOGIN ==>");
@@ -353,9 +354,9 @@ class _ReLoginState extends State<ReLogin> {
     _preferences = await SharedPreferences.getInstance();
     var _email = _preferences.getString(EMAIL_KEY);
 
-    _progressDialog = new ProgressDialog(context, ProgressDialogType.Normal);
-    _progressDialog.setMessage("Get User Details ...");
-    _progressDialog.show();
+    // _progressDialog = new ProgressDialog(context, ProgressDialogType.Normal);
+    // _progressDialog.setMessage("Get User Details ...");
+    // _progressDialog.show();
 
     _email != null
         ? userDetailsService.userDetails(_email).then(

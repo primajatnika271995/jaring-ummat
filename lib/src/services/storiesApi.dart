@@ -19,7 +19,6 @@ class StoriesApiProvider {
       if (response.statusCode == 400) {
         throw NotFoundException("NOT_FOUND");
       }
-      // throw NotFoundException("Unable to load ${response.toString()}");
     }
   }
 

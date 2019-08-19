@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_jaring_ummat/src/models/program_amal.dart';
 import 'package:flutter_jaring_ummat/src/views/components/galang_amal_container.dart';
-import '../models/programAmalModel.dart';
 
 // Component
 import '../services/currency_format_service.dart';
 
 class GalangAmalView extends StatefulWidget {
-
   final ProgramAmalModel programAmal;
-
   GalangAmalView({Key key, this.programAmal});
 
   @override
@@ -38,7 +35,7 @@ class _GalangAmalState extends State<GalangAmalView> {
       ),
       body: ListView(
         children: <Widget>[
-          GalangAmalContainer(programAmal: widget.programAmal,)
+          GalangAmalContainer(programAmal: widget.programAmal)
         ],
       ),
       bottomNavigationBar: BottomAppBar(
@@ -55,7 +52,6 @@ class _GalangAmalState extends State<GalangAmalView> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        // SizedBox(height: 3.0),
                         Text(
                           'Donasi terkumpul',
                           style: TextStyle(
@@ -66,9 +62,9 @@ class _GalangAmalState extends State<GalangAmalView> {
                         SizedBox(height: 3.0),
                         Text(
                           'Rp. ' +
-                              '${CurrencyFormat().currency(widget.programAmal.totalDonasi)}' +
+                              '${CurrencyFormat().currency(widget.programAmal.totalDonation)}' +
                               ' / ' +
-                              '${CurrencyFormat().currency(widget.programAmal.targetDonasi)}',
+                              '${CurrencyFormat().currency(widget.programAmal.targetDonation)}',
                           style: TextStyle(
                             fontSize: 16.0,
                             fontWeight: FontWeight.bold,
@@ -77,7 +73,7 @@ class _GalangAmalState extends State<GalangAmalView> {
                         ),
                         SizedBox(height: 3.0),
                         Text(
-                          'Batas waktu ' + widget.programAmal.endDonasi,
+                          'Batas waktu ' + widget.programAmal.endDate,
                           style: TextStyle(
                               fontSize: 11.0,
                               fontWeight: FontWeight.bold,
