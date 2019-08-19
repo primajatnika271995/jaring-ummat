@@ -4,6 +4,8 @@ import 'package:flutter_jaring_ummat/src/services/lembagaAmalApi.dart';
 class LembagaAmalRepository {
   final repository = LembagaAmalProvider();
 
-  Future<List<LembagaAmal>> fetchAllComment(String idUser) => repository.fetchAllLembagaAmal(idUser);
+  Future<List<LembagaAmalModel>> fetchAllComment(String idUser, String category, String offset, String limit) => repository.fetchAllLembagaAmal(idUser, category, offset, limit);
+  Future followAccount(String idUser, String idAccountAmil) => repository.followLembagaAmal(idUser, idAccountAmil);
+  Future unfollowAccount(String idUser, String idAccountAmil) => repository.unfollowLembagaAmal(idUser, idAccountAmil);
 
 }

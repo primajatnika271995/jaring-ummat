@@ -7,24 +7,37 @@ import '../config/preferences.dart';
 
 class LembagaAmalBloc {
   final _repository = LembagaAmalRepository();
-  final _lembagaAmalFetchAll = PublishSubject<List<LembagaAmal>>();
+  final _lembagaAmalFetcher = PublishSubject<List<LembagaAmalModel>>();
 
   SharedPreferences _preferences;
 
-  Observable<List<LembagaAmal>> get allLembagaAmalList =>
-      _lembagaAmalFetchAll.stream;
+  Observable<List<LembagaAmalModel>> get allLembagaAmalList => _lembagaAmalFetcher.stream;
 
-  fetchAllLembagaAmal() async {
+  fetchAllLembagaAmal(String category) async {
     _preferences = await SharedPreferences.getInstance();
     var idUser = _preferences.getString(USER_ID_KEY);
 
-    List<LembagaAmal> lembagaAmal = await _repository.fetchAllComment(idUser);
-    _lembagaAmalFetchAll.sink.add(lembagaAmal);
+    List<LembagaAmalModel> lembagaAmal = await _repository.fetchAllComment(idUser, category, "0", "10");
+    _lembagaAmalFetcher.sink.add(lembagaAmal);
+  }
+
+  followAccount(String idAccountAmil) async {
+    _preferences = await SharedPreferences.getInstance();
+    var idUser = _preferences.getString(USER_ID_KEY);
+
+    _repository.followAccount(idUser, idAccountAmil);
+  }
+
+  unfollow(String idAccountAmil) async {
+    _preferences = await SharedPreferences.getInstance();
+    var idUser = _preferences.getString(USER_ID_KEY);
+
+    _repository.unfollowAccount(idUser, idAccountAmil);
   }
 
   dispose() async {
-    await _lembagaAmalFetchAll.drain();
-    _lembagaAmalFetchAll.close();
+    await _lembagaAmalFetcher.drain();
+    _lembagaAmalFetcher.close();
   }
 }
 

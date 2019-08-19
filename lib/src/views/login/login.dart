@@ -454,7 +454,10 @@ class LoginState extends State<LoginView> {
                 _preferences.setString(CONTACT_KEY, userDetails.contact);
                 _preferences.setString(USER_ID_KEY, userDetails.userId);
                 _preferences.setString(
-                    PROFILE_PICTURE_KEY, userDetails.imgProfile[0].imgUrl);
+                    PROFILE_PICTURE_KEY,
+                    (userDetails.imgProfile == null)
+                        ? 'https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg-1024x683.jpg'
+                        : userDetails.imgProfile[0].imgUrl);
                 await Navigator.of(context).pushReplacementNamed('/home');
               }
             },

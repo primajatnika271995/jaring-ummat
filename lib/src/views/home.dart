@@ -5,7 +5,7 @@ import 'package:flutter_jaring_ummat/src/views/login/reLogin.dart';
 import 'package:toast/toast.dart';
 import 'package:flutter_jaring_ummat/src/views/portofilio.dart';
 import 'package:flutter_jaring_ummat/src/views/inbox.dart';
-import 'package:flutter_jaring_ummat/src/views/popular_account.dart';
+import 'package:flutter_jaring_ummat/src/views/lembaga_amal/popular_account.dart';
 import 'package:flutter_jaring_ummat/src/config/preferences.dart';
 import 'package:flutter_jaring_ummat/src/views/components/fab_bottom_app_bar.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_baru_icons.dart';

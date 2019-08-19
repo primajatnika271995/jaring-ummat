@@ -1,66 +1,70 @@
 // To parse this JSON data, do
 //
-//     final lembagaAmal = lembagaAmalFromJson(jsonString);
+//     final lembagaAmalModel = lembagaAmalModelFromJson(jsonString);
 
 import 'dart:convert';
 
-List<LembagaAmal> lembagaAmalFromJson(String str) => new List<LembagaAmal>.from(json.decode(str).map((x) => LembagaAmal.fromJson(x)));
+List<LembagaAmalModel> lembagaAmalModelFromJson(String str) => new List<LembagaAmalModel>.from(json.decode(str).map((x) => LembagaAmalModel.fromJson(x)));
 
-String lembagaAmalToJson(List<LembagaAmal> data) => json.encode(new List<dynamic>.from(data.map((x) => x.toJson())));
+String lembagaAmalModelToJson(List<LembagaAmalModel> data) => json.encode(new List<dynamic>.from(data.map((x) => x.toJson())));
 
-class LembagaAmal {
-    String id;
-    dynamic idFollowerLogin;
-    String namaLembaga;
-    String emailLembaga;
-    String categoryLembaga;
-    String alamatLembaga;
-    String contactLembaga;
-    int createdDate;
-    String totalFollow;
-    String totalPost;
+class LembagaAmalModel {
+    String idUser;
+    String idLembagaAmal;
+    String lembagaAmalName;
+    String lembagaAmalEmail;
+    String lembagaAmalAddress;
+    String lembagaAmalContact;
+    String lembagaAmalCategory;
     List<ImageContent> imageContent;
+    int totalFollowers;
+    int totalPostProgramAmal;
+    int totalPostBerita;
+    bool followThisAccount;
 
-    LembagaAmal({
-        this.id,
-        this.idFollowerLogin,
-        this.namaLembaga,
-        this.emailLembaga,
-        this.categoryLembaga,
-        this.alamatLembaga,
-        this.contactLembaga,
-        this.createdDate,
-        this.totalFollow,
-        this.totalPost,
+    LembagaAmalModel({
+        this.idUser,
+        this.idLembagaAmal,
+        this.lembagaAmalName,
+        this.lembagaAmalEmail,
+        this.lembagaAmalAddress,
+        this.lembagaAmalContact,
+        this.lembagaAmalCategory,
         this.imageContent,
+        this.totalFollowers,
+        this.totalPostProgramAmal,
+        this.totalPostBerita,
+        this.followThisAccount,
     });
 
-    factory LembagaAmal.fromJson(Map<String, dynamic> json) => new LembagaAmal(
-        id: json["id"] == null ? null : json["id"],
-        idFollowerLogin: json["idFollowerLogin"],
-        namaLembaga: json["namaLembaga"] == null ? null : json["namaLembaga"],
-        emailLembaga: json["emailLembaga"] == null ? null : json["emailLembaga"],
-        categoryLembaga: json["categoryLembaga"] == null ? null : json["categoryLembaga"],
-        alamatLembaga: json["alamatLembaga"] == null ? null : json["alamatLembaga"],
-        contactLembaga: json["contactLembaga"] == null ? null : json["contactLembaga"],
-        createdDate: json["createdDate"] == null ? null : json["createdDate"],
-        totalFollow: json["totalFollow"] == null ? null : json["totalFollow"],
-        totalPost: json["totalPost"] == null ? null : json["totalPost"],
+    factory LembagaAmalModel.fromJson(Map<String, dynamic> json) => new LembagaAmalModel(
+        idUser: json["idUser"] == null ? null : json["idUser"],
+        idLembagaAmal: json["idLembagaAmal"] == null ? null : json["idLembagaAmal"],
+        lembagaAmalName: json["lembagaAmalName"] == null ? null : json["lembagaAmalName"],
+        lembagaAmalEmail: json["lembagaAmalEmail"] == null ? null : json["lembagaAmalEmail"],
+        lembagaAmalAddress: json["lembagaAmalAddress"] == null ? null : json["lembagaAmalAddress"],
+        lembagaAmalContact: json["lembagaAmalContact"] == null ? null : json["lembagaAmalContact"],
+        lembagaAmalCategory: json["lembagaAmalCategory"] == null ? null : json["lembagaAmalCategory"],
         imageContent: json["imageContent"] == null ? null : new List<ImageContent>.from(json["imageContent"].map((x) => ImageContent.fromJson(x))),
+        totalFollowers: json["totalFollowers"] == null ? null : json["totalFollowers"],
+        totalPostProgramAmal: json["totalPostProgramAmal"] == null ? null : json["totalPostProgramAmal"],
+        totalPostBerita: json["totalPostBerita"] == null ? null : json["totalPostBerita"],
+        followThisAccount: json["followThisAccount"] == null ? null : json["followThisAccount"],
     );
 
     Map<String, dynamic> toJson() => {
-        "id": id == null ? null : id,
-        "idFollowerLogin": idFollowerLogin,
-        "namaLembaga": namaLembaga == null ? null : namaLembaga,
-        "emailLembaga": emailLembaga == null ? null : emailLembaga,
-        "categoryLembaga": categoryLembaga == null ? null : categoryLembaga,
-        "alamatLembaga": alamatLembaga == null ? null : alamatLembaga,
-        "contactLembaga": contactLembaga == null ? null : contactLembaga,
-        "createdDate": createdDate == null ? null : createdDate,
-        "totalFollow": totalFollow == null ? null : totalFollow,
-        "totalPost": totalPost == null ? null : totalPost,
+        "idUser": idUser == null ? null : idUser,
+        "idLembagaAmal": idLembagaAmal == null ? null : idLembagaAmal,
+        "lembagaAmalName": lembagaAmalName == null ? null : lembagaAmalName,
+        "lembagaAmalEmail": lembagaAmalEmail == null ? null : lembagaAmalEmail,
+        "lembagaAmalAddress": lembagaAmalAddress == null ? null : lembagaAmalAddress,
+        "lembagaAmalContact": lembagaAmalContact == null ? null : lembagaAmalContact,
+        "lembagaAmalCategory": lembagaAmalCategory == null ? null : lembagaAmalCategory,
         "imageContent": imageContent == null ? null : new List<dynamic>.from(imageContent.map((x) => x.toJson())),
+        "totalFollowers": totalFollowers == null ? null : totalFollowers,
+        "totalPostProgramAmal": totalPostProgramAmal == null ? null : totalPostProgramAmal,
+        "totalPostBerita": totalPostBerita == null ? null : totalPostBerita,
+        "followThisAccount": followThisAccount == null ? null : followThisAccount,
     };
 }
 
