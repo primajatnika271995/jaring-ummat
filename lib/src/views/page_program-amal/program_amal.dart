@@ -57,7 +57,9 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                 actions: <Widget>[
                   IconButton(
                       icon: Icon(Icons.chat, color: Colors.black),
-                      onPressed: () {}),
+                      onPressed: () {
+                        Navigator.of(context).pushNamed('/chats');
+                      },),
                 ],
               ),
               preferredSize: Size.fromHeight(47.0)),

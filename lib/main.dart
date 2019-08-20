@@ -27,13 +27,6 @@ class _LandingPageState extends State<LandingPage> {
   @override
   void initState() {
     checkIfAuthenticated().then((_) async {
-      // _preferences = await SharedPreferences.getInstance();
-      // var token = _preferences.getString(ACCESS_TOKEN_KEY);
-      // if (token == null) {
-      //   Navigator.of(context).pushReplacementNamed('/login');
-      // } else {
-      //   Navigator.of(context).pushReplacementNamed('/home');
-      // }
       Navigator.of(context).pushReplacementNamed('/home');
     });
     super.initState();

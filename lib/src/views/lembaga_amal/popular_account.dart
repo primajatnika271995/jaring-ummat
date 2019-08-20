@@ -236,31 +236,35 @@ class PopularAccountState extends State<PopularAccountView>
                     SizedBox(
                       width: 20.0,
                     ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Text(
-                          value.lembagaAmalName,
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 14.0),
-                        ),
-                        SizedBox(
-                          height: 3.0,
-                        ),
-                        Text(
-                          '${value.totalFollowers} Pengikut',
-                          style: TextStyle(fontSize: 11.0),
-                        ),
-                        Text(
-                          '${value.totalPostProgramAmal} Aksi Galang Amal',
-                          style: TextStyle(fontSize: 11.0),
-                        ),
-                        Text(
-                          '${value.totalPostBerita} Berita',
-                          style: TextStyle(fontSize: 11.0),
-                        ),
-                      ],
+                    Container(
+                      width: MediaQuery.of(context).size.width - 250,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text(
+                              value.lembagaAmalName,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 14.0),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          SizedBox(
+                            height: 3.0,
+                          ),
+                          Text(
+                            '${value.totalFollowers} Pengikut',
+                            style: TextStyle(fontSize: 11.0),
+                          ),
+                          Text(
+                            '${value.totalPostProgramAmal} Aksi Galang Amal',
+                            style: TextStyle(fontSize: 11.0),
+                          ),
+                          Text(
+                            '${value.totalPostBerita} Berita',
+                            style: TextStyle(fontSize: 11.0),
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
