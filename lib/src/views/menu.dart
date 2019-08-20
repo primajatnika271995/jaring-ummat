@@ -38,11 +38,7 @@ class _MenuState extends State<Menu> {
 
   void logout() async {
     _preferences = await SharedPreferences.getInstance();
-    _preferences.remove(ACCESS_TOKEN_KEY);
-    _preferences.remove(EMAIL_KEY);
-    _preferences.remove(PROFILE_FACEBOOK_KEY);
-    _preferences.remove(PROFILE_PICTURE_KEY);
-    _preferences.remove('news_store');
+    _preferences.clear();
     Navigator.of(context).pushReplacementNamed("/login");
   }
 
