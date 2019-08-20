@@ -265,62 +265,59 @@ class _GalangAmalContainerState extends State<GalangAmalContainer> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          Expanded(
-            flex: 2,
-            child: Container(
-              width: 53.0,
-              height: 53.0,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(30.0),
-                image: DecorationImage(
-                    image: NetworkImage(
-                        'https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg-1024x683.jpg'),
-                    fit: BoxFit.cover),
-              ),
-            ),
-          ),
-          SizedBox(
-            width: 20.0,
-          ),
-          Expanded(
-            flex: 5,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  'Soleh Indrawan',
-                  style: TextStyle(
-                      fontSize: 12.0,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Container(
+                width: 53.0,
+                height: 53.0,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(30.0),
+                  image: DecorationImage(
+                      image: NetworkImage(
+                          'https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg-1024x683.jpg'),
+                      fit: BoxFit.cover),
                 ),
-                SizedBox(height: 3.0),
-                Text(
-                  'Semoga bermanfaat untuk adek-adek...',
-                  style: TextStyle(
-                      fontSize: 11.0,
-                      fontWeight: FontWeight.bold,
-                      color: Color.fromRGBO(122, 122, 122, 1.0)),
-                ),
-                Text(
-                  '19 menit yang lalu',
-                  style: TextStyle(
-                      fontSize: 11.0,
-                      fontWeight: FontWeight.normal,
-                      color: Color.fromRGBO(122, 122, 122, 1.0)),
-                )
-              ],
-            ),
-          ),
-          Expanded(
-            flex: 3,
-            child: Text(
-              'Rp. ' + '120.930',
-              style: TextStyle(
-                fontSize: 16.0,
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
               ),
+              SizedBox(
+                width: 20.0,
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    'Soleh Indrawan',
+                    style: TextStyle(
+                        fontSize: 12.0,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black),
+                  ),
+                  SizedBox(height: 3.0),
+                  Text(
+                    'Semoga bermanfaat untuk adek-adek...',
+                    style: TextStyle(
+                        fontSize: 11.0,
+                        fontWeight: FontWeight.bold,
+                        color: Color.fromRGBO(122, 122, 122, 1.0)),
+                  ),
+                  Text(
+                    '19 menit yang lalu',
+                    style: TextStyle(
+                        fontSize: 11.0,
+                        fontWeight: FontWeight.normal,
+                        color: Color.fromRGBO(122, 122, 122, 1.0)),
+                  )
+                ],
+              ),
+            ],
+          ),
+          Text(
+            'Rp. ' + '120.930',
+            style: TextStyle(
+              fontSize: 16.0,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
             ),
           ),
         ],

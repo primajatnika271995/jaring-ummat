@@ -16,7 +16,7 @@ class BeritaModel {
     String titleBerita;
     String descriptionBerita;
     String categoryBerita;
-    dynamic imageContent;
+    List<ImageContent> imageContent;
     int createdDate;
     String createdBy;
     int totalLikes;
@@ -45,7 +45,7 @@ class BeritaModel {
         titleBerita: json["titleBerita"] == null ? null : json["titleBerita"],
         descriptionBerita: json["descriptionBerita"] == null ? null : json["descriptionBerita"],
         categoryBerita: json["categoryBerita"] == null ? null : json["categoryBerita"],
-        imageContent: json["imageContent"],
+        imageContent: json["imageContent"] == null ? null : new List<ImageContent>.from(json["imageContent"].map((x) => ImageContent.fromJson(x))),
         createdDate: json["createdDate"] == null ? null : json["createdDate"],
         createdBy: json["createdBy"] == null ? null : json["createdBy"],
         totalLikes: json["totalLikes"] == null ? null : json["totalLikes"],
@@ -60,10 +60,46 @@ class BeritaModel {
         "titleBerita": titleBerita == null ? null : titleBerita,
         "descriptionBerita": descriptionBerita == null ? null : descriptionBerita,
         "categoryBerita": categoryBerita == null ? null : categoryBerita,
-        "imageContent": imageContent,
+        "imageContent": imageContent == null ? null : new List<dynamic>.from(imageContent.map((x) => x.toJson())),
         "createdDate": createdDate == null ? null : createdDate,
         "createdBy": createdBy == null ? null : createdBy,
         "totalLikes": totalLikes == null ? null : totalLikes,
         "totalComment": totalComment == null ? null : totalComment,
+    };
+}
+
+class ImageContent {
+    String id;
+    dynamic thumbnailUrl;
+    dynamic videoUrl;
+    String imgUrl;
+    int createdDate;
+    dynamic createdBy;
+
+    ImageContent({
+        this.id,
+        this.thumbnailUrl,
+        this.videoUrl,
+        this.imgUrl,
+        this.createdDate,
+        this.createdBy,
+    });
+
+    factory ImageContent.fromJson(Map<String, dynamic> json) => new ImageContent(
+        id: json["id"] == null ? null : json["id"],
+        thumbnailUrl: json["thumbnailUrl"],
+        videoUrl: json["videoUrl"],
+        imgUrl: json["imgUrl"] == null ? null : json["imgUrl"],
+        createdDate: json["createdDate"] == null ? null : json["createdDate"],
+        createdBy: json["createdBy"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "id": id == null ? null : id,
+        "thumbnailUrl": thumbnailUrl,
+        "videoUrl": videoUrl,
+        "imgUrl": imgUrl == null ? null : imgUrl,
+        "createdDate": createdDate == null ? null : createdDate,
+        "createdBy": createdBy,
     };
 }

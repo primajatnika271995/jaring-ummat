@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_jaring_ummat/src/bloc/beritaBloc.dart';
 import 'package:flutter_jaring_ummat/src/models/beritaModel.dart';
 import 'package:flutter_jaring_ummat/src/views/page_berita/berita_content.dart';
+import 'package:flutter_svg/svg.dart';
 
 class BeritaPage extends StatefulWidget {
   const BeritaPage({Key key}) : super(key: key);
@@ -150,18 +151,56 @@ class _BeritaPageState extends State<BeritaPage> {
                     children: <Widget>[
                       StreamBuilder(
                         stream: bloc.allBerita,
-                        builder: (context, AsyncSnapshot<List<BeritaModel>> snapshot) {
-                          if (snapshot.hasData) {
-                            return buildList(snapshot);
-                          } else if (snapshot.hasError) {
-                            return Text(snapshot.error.toString());
+                        builder: (context,
+                            AsyncSnapshot<List<BeritaModel>> snapshot) {
+                          switch (snapshot.connectionState) {
+                            case ConnectionState.waiting:
+                              return Padding(
+                                padding: EdgeInsets.symmetric(vertical: 50.0),
+                                child: Center(
+                                  child: CircularProgressIndicator(),
+                                ),
+                              );
+                              break;
+                            default:
+                              if (snapshot.hasData) {
+                                return buildList(snapshot);
+                              } else if (snapshot.hasError) {
+                                return Text(snapshot.error.toString());
+                              }
+                              return Container(
+                                width: 500.0,
+                                margin: EdgeInsets.only(top: 30.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    SvgPicture.asset(
+                                      'assets/icon/no-content.svg',
+                                      height: 250.0,
+                                    ),
+                                    Text(
+                                      'Oops..',
+                                      style: TextStyle(
+                                        fontFamily: 'Proxima',
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16.0,
+                                      ),
+                                    ),
+                                    Text(
+                                      'There\'s nothing \'ere, yet.',
+                                      style: TextStyle(
+                                        fontFamily: 'Proxima',
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.grey,
+                                        fontSize: 15.0,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            break;
                           }
-                          return Padding(
-                            padding: EdgeInsets.symmetric(vertical: 50.0),
-                            child: Center(
-                              child: CircularProgressIndicator(),
-                            ),
-                          );
                         },
                       ),
                     ],

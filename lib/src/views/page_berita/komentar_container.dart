@@ -362,7 +362,7 @@ class _KomentarContainerState extends State<KomentarContainer>
                           image: DecorationImage(
                             fit: BoxFit.cover,
                             image: NetworkImage(
-                                widget.berita.imageContent[0]["imgUrl"]),
+                                widget.berita.imageContent[0].imgUrl),
                           ),
                         ),
                       ),

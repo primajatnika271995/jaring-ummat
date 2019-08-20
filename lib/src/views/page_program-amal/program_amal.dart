@@ -176,18 +176,57 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                       children: <Widget>[
                         StreamBuilder(
                           stream: bloc.allProgramAmal,
-                          builder: (context, AsyncSnapshot<List<ProgramAmalModel>> snapshot) {
-                            if (snapshot.hasData) {
-                              return buildList(snapshot);
-                            } else if (snapshot.hasError) {
-                              return Text(snapshot.error.toString());
+                          builder: (context,
+                              AsyncSnapshot<List<ProgramAmalModel>> snapshot) {
+                            switch (snapshot.connectionState) {
+                              case ConnectionState.waiting:
+                                return Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 50.0),
+                                  child: Center(
+                                    child: CircularProgressIndicator(),
+                                  ),
+                                );
+                                break;
+                              default:
+                                if (snapshot.hasData) {
+                                  return buildList(snapshot);
+                                } else if (snapshot.hasError) {
+                                  return Text(snapshot.error.toString());
+                                }
+                                return Container(
+                                  width: 500.0,
+                                  margin: EdgeInsets.only(top: 30.0),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
+                                      SvgPicture.asset(
+                                        'assets/icon/no-content.svg',
+                                        height: 250.0,
+                                      ),
+                                      Text(
+                                        'Oops..',
+                                        style: TextStyle(
+                                          fontFamily: 'Proxima',
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16.0,
+                                        ),
+                                      ),
+                                      Text(
+                                        'There\'s nothing \'ere, yet.',
+                                        style: TextStyle(
+                                          fontFamily: 'Proxima',
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.grey,
+                                          fontSize: 15.0,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              break;
                             }
-                            return Padding(
-                              padding: EdgeInsets.symmetric(vertical: 50.0),
-                              child: Center(
-                                child: CircularProgressIndicator(),
-                              ),
-                            );
                           },
                         )
                       ],

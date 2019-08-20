@@ -18,7 +18,7 @@ class BeritaBloc {
     idUser = _preferences.getString(USER_ID_KEY);
 
     if (idUser == null) {
-      idUser = "55da0bdf-dafe-4164-a731-eb47b8877412";
+      idUser = "4b724e9e-3cdb-4b2f-8c72-070646b45fdf";
     }
     
     List<BeritaModel> listAllBerita = await repository.fetchAllBerita(idUser, category, "0", "20");

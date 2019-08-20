@@ -117,9 +117,6 @@ class Step4State extends State<Step4View> {
     }
 
     return GestureDetector(
-//    onTap: () {
-//      Navigator.pushReplacementNamed(context, '/user/story');
-//    },
       child: Container(
         margin: EdgeInsets.only(top: 23.0),
         padding: EdgeInsets.only(left: 7.0, right: 7.0),

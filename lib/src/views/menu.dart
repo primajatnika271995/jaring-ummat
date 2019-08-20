@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_jaring_ummat/src/models/DTO/UserDetailPref.dart';
 import 'package:giffy_dialog/giffy_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_jaring_ummat/src/bloc/preferencesBloc.dart';
 
 // Component
 import '../views/components/icon_baru_icons.dart';
 import '../views/components/menu_icon_icons.dart';
 import '../views/components/float_icon_icons.dart';
 import '../views/components/menu_lain_icon_icons.dart';
-import '../config/preferences.dart';
 import '../views/components/create_account_icons.dart';
 
 class Menu extends StatefulWidget {
@@ -16,36 +17,11 @@ class Menu extends StatefulWidget {
 }
 
 class _MenuState extends State<Menu> {
-  SharedPreferences _preferences;
-  String _fullname = null;
-  String _email = null;
-  String _userId = null;
-  String _contact = null;
-  String _profilePictureLocal = 'https://content-static.upwork.com/uploads/2014/10/01073427/profilephoto1.jpg';
-  String _profilePictureLocalFB = 'https://content-static.upwork.com/uploads/2014/10/01073427/profilephoto1.jpg';
-
-  getUserDetails() async {
-    _preferences = await SharedPreferences.getInstance();
-    setState(() {
-      _fullname = _preferences.getString(FULLNAME_KEY);
-      _email = _preferences.getString(EMAIL_KEY);
-      _contact = _preferences.getString(CONTACT_KEY);
-      _userId = _preferences.getString(USER_ID_KEY);
-      _profilePictureLocal = _preferences.getString(PROFILE_PICTURE_KEY);
-      _profilePictureLocalFB = _preferences.getString(PROFILE_FACEBOOK_KEY);
-    });
-  }
-
-  void logout() async {
-    _preferences = await SharedPreferences.getInstance();
-    _preferences.clear();
-    Navigator.of(context).pushReplacementNamed("/login");
-  }
+  UserDetailPref _pref;
 
   Widget leftSection(Icon icon) {
     return new Container(
       child: new CircleAvatar(
-//      backgroundImage: new NetworkImage(url),
         backgroundColor: Colors.transparent,
         child: icon,
         radius: 24.0,
@@ -83,17 +59,7 @@ class _MenuState extends State<Menu> {
   }
 
   @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    getUserDetails();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    setState(() {
-      getUserDetails();
-    });
     return MaterialApp(
       home: Scaffold(
         appBar: PreferredSize(
@@ -146,8 +112,8 @@ class _MenuState extends State<Menu> {
           ),
           preferredSize: Size.fromHeight(47.0),
         ),
-        body: _fullname == null
-            ? new Center(child: CircularProgressIndicator())
+        body: _pref?.username == null
+            ? Center(child: CircularProgressIndicator())
             : ListView(
                 children: <Widget>[
                   Container(
@@ -185,11 +151,7 @@ class _MenuState extends State<Menu> {
                                                   color: Colors.white
                                                       .withOpacity(0.5),
                                                   image: DecorationImage(
-                                                    image: (_profilePictureLocal == null)
-                                                        ? NetworkImage(_profilePictureLocalFB)
-                                                        : (_profilePictureLocalFB == null)
-                                                            ? NetworkImage(_profilePictureLocal)
-                                                            : NetworkImage('https://content-static.upwork.com/uploads/2014/10/01073427/profilephoto1.jpg'),
+                                                    image: NetworkImage(_pref?.img_profile_db),
                                                     fit: BoxFit.cover,
                                                   ),
                                                 ),
@@ -228,14 +190,14 @@ class _MenuState extends State<Menu> {
                                         CrossAxisAlignment.start,
                                     children: <Widget>[
                                       new Text(
-                                        _fullname,
+                                        _pref?.username,
                                         style: TextStyle(
                                             fontWeight: FontWeight.bold,
                                             fontSize: 20.0,
                                             color: Colors.black),
                                       ),
                                       new Text(
-                                        "${_email} - ${_contact}",
+                                        '${_pref?.email} - ${_pref?.contact}',
                                         style: TextStyle(
                                           fontWeight: FontWeight.normal,
                                           fontSize: 11.0,
@@ -549,5 +511,27 @@ class _MenuState extends State<Menu> {
               ),
       ),
     );
+  }
+
+  @override
+  void initState() {
+    bloc.preferences.forEach((value) {
+      setState(() {
+        _pref = value;
+      });
+    });
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    bloc?.dispose();
+    super.dispose();
+  }
+
+  void logout() async {
+    SharedPreferences _preferences = await SharedPreferences.getInstance();
+    _preferences.clear();
+    Navigator.of(context).pushReplacementNamed("/login");
   }
 }

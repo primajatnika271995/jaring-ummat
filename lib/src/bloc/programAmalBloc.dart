@@ -17,11 +17,11 @@ class ProgramAmalBloc {
   fetchAllProgramAmal(String category) async {
     _preferences = await SharedPreferences.getInstance();
     idUser = _preferences.getString(USER_ID_KEY);
-
-    if (idUser == null) {
-      idUser = "55da0bdf-dafe-4164-a731-eb47b8877412";
-    }
     
+    if (idUser == null) {
+      idUser = "4b724e9e-3cdb-4b2f-8c72-070646b45fdf";
+    }
+
     List<ProgramAmalModel> listAllProgramAmal = await repository.fetchAllProgramAmal(idUser, category, "0", "20");
     programAmalFetcher.sink.add(listAllProgramAmal);
   }

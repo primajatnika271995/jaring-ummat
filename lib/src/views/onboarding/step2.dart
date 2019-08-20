@@ -486,7 +486,7 @@ class Step2State extends State<Step2View> {
       password: _passwordController.text,
       contact: _contactController.text,
       email: _emailController.text,
-      tipe_user: "Muzakki",
+      tipe_user: "MUZAKKI",
     );
 
     await _userDetailsService
