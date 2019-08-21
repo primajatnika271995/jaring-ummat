@@ -5,6 +5,7 @@ import 'package:bubble/bubble.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_jaring_ummat/src/config/urls.dart';
 import 'package:flutter_jaring_ummat/src/models/DTO/ChatsResponse.dart';
+import 'package:flutter_jaring_ummat/src/bloc/chatsBloc.dart';
 import 'package:jstomp/jstomp.dart';
 
 class ChatScreen extends StatefulWidget {
@@ -19,7 +20,7 @@ class _ChatScreenState extends State<ChatScreen> {
       new TextEditingController();
 
   final streamChats = StreamController<List<ChatsResponse>>();
-  List<ChatsResponse> logChats_tmp = [];
+  List<ChatsResponse> logChats_tmp = new List<ChatsResponse>();
 
   String fromId = "primajatnika271995@gmail.com";
   String toId = "admin";
@@ -95,7 +96,7 @@ class _ChatScreenState extends State<ChatScreen> {
     return Scaffold(
       appBar: new AppBar(
         titleSpacing: 0.0,
-        elevation: 1.0,
+        elevation: 0.0,
         leading: InkWell(
           onTap: () {
             Navigator.pop(context);
@@ -186,6 +187,15 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   void initState() {
+    bloc.fetchChatsHistory();
+    bloc.chatsBehavior.stream.forEach((value) {
+      if (mounted) {
+        setState(() {
+          logChats_tmp = value.reversed.toList();
+          streamChats.sink.add(logChats_tmp);
+        });
+      }
+    });
     initStomp();
     super.initState();
   }

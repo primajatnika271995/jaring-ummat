@@ -4,9 +4,9 @@
 
 import 'dart:convert';
 
-ChatsResponse chatsResponseFromJson(String str) => ChatsResponse.fromJson(json.decode(str));
+List<ChatsResponse> chatsResponseFromJson(String str) => new List<ChatsResponse>.from(json.decode(str).map((x) => ChatsResponse.fromJson(x)));
 
-String chatsResponseToJson(ChatsResponse data) => json.encode(data.toJson());
+String chatsResponseToJson(List<ChatsResponse> data) => json.encode(new List<dynamic>.from(data.map((x) => x.toJson())));
 
 class ChatsResponse {
     String id;
