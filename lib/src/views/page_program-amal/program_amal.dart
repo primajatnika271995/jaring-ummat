@@ -58,7 +58,7 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                   IconButton(
                       icon: Icon(Icons.chat, color: Colors.black),
                       onPressed: () {
-                        Navigator.of(context).pushNamed('/chats');
+                        Navigator.of(context).pushNamed('/list/account/chats');
                       },),
                 ],
               ),

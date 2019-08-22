@@ -8,10 +8,12 @@ import '../config/preferences.dart';
 class LembagaAmalBloc {
   final _repository = LembagaAmalRepository();
   final _lembagaAmalFetcher = PublishSubject<List<LembagaAmalModel>>();
+  final _lembagaAmalbyFollowedFetcher = PublishSubject<List<LembagaAmalModel>>();
 
   SharedPreferences _preferences;
 
   Observable<List<LembagaAmalModel>> get allLembagaAmalList => _lembagaAmalFetcher.stream;
+  Observable<List<LembagaAmalModel>> get allLembagaAmalListbyCategory => _lembagaAmalbyFollowedFetcher.stream;
 
   fetchAllLembagaAmal(String category) async {
     _preferences = await SharedPreferences.getInstance();
@@ -19,6 +21,14 @@ class LembagaAmalBloc {
 
     List<LembagaAmalModel> lembagaAmal = await _repository.fetchAllComment(idUser, category, "0", "10");
     _lembagaAmalFetcher.sink.add(lembagaAmal);
+  }
+
+  fetchAllLembagaAmalbyFollowed() async {
+    _preferences = await SharedPreferences.getInstance();
+    var idUser = _preferences.getString(USER_ID_KEY);
+
+    List<LembagaAmalModel> lembagaAmal = await _repository.fetchAllbyFollowed(idUser);
+    _lembagaAmalbyFollowedFetcher.sink.add(lembagaAmal);
   }
 
   followAccount(String idAccountAmil) async {
@@ -37,7 +47,9 @@ class LembagaAmalBloc {
 
   dispose() async {
     await _lembagaAmalFetcher.drain();
+    await _lembagaAmalbyFollowedFetcher.drain();
     _lembagaAmalFetcher.close();
+    _lembagaAmalbyFollowedFetcher.close();
   }
 }
 

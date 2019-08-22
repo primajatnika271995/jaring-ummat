@@ -3,12 +3,18 @@ import 'dart:convert';
 
 import 'package:bubble/bubble.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_jaring_ummat/src/config/preferences.dart';
 import 'package:flutter_jaring_ummat/src/config/urls.dart';
 import 'package:flutter_jaring_ummat/src/models/DTO/ChatsResponse.dart';
 import 'package:flutter_jaring_ummat/src/bloc/chatsBloc.dart';
 import 'package:jstomp/jstomp.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ChatScreen extends StatefulWidget {
+  final String emailLembaga;
+  final String name;
+  ChatScreen({this.emailLembaga, this.name});
+
   @override
   _ChatScreenState createState() => _ChatScreenState();
 }
@@ -22,8 +28,7 @@ class _ChatScreenState extends State<ChatScreen> {
   final streamChats = StreamController<List<ChatsResponse>>();
   List<ChatsResponse> logChats_tmp = new List<ChatsResponse>();
 
-  String fromId = "primajatnika271995@gmail.com";
-  String toId = "admin";
+  SharedPreferences _preferences;
 
   @override
   Widget build(BuildContext context) {
@@ -121,7 +126,7 @@ class _ChatScreenState extends State<ChatScreen> {
               width: 10.0,
             ),
             new Text(
-              'Admin Amil',
+              widget.name,
               style: TextStyle(fontSize: 15.0, color: Colors.grey[600]),
             ),
           ],
@@ -148,7 +153,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     itemCount: logChats_tmp.length,
                     padding: EdgeInsets.all(8.0),
                     itemBuilder: (context, index) {
-                      if (logChats_tmp[index].fromId != fromId) {
+                      if (logChats_tmp[index].toId != widget.emailLembaga) {
                         return Bubble(
                           style: styleSomebody,
                           nip: BubbleNip.no,
@@ -187,7 +192,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   void initState() {
-    bloc.fetchChatsHistory();
+    bloc.fetchChatsHistory(widget.emailLembaga);
     bloc.chatsBehavior.stream.forEach((value) {
       if (mounted) {
         setState(() {
@@ -224,19 +229,26 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   Future<String> sendMsg(String pesan) async {
+    _preferences = await SharedPreferences.getInstance();
+    var fromId = _preferences.getString(EMAIL_KEY);
+
     Map<String, dynamic> msg = {
       "fromId": fromId,
-      "toId": toId,
+      "toId": widget.emailLembaga,
       "message": pesan,
     };
 
-    var log = ChatsResponse(fromId: fromId, toId: toId, message: pesan);
+    var log = ChatsResponse(
+        fromId: fromId, toId: widget.emailLembaga, message: pesan);
 
     logChats_tmp.add(log);
     return await stomp.sendMessage(json.encode(msg));
   }
 
   Future<String> subscribeMsg() async {
+    _preferences = await SharedPreferences.getInstance();
+    var fromId = _preferences.getString(EMAIL_KEY);
+
     final String p2p = "/secure/user/$fromId/chat/send";
     await stomp.subscribP2P([p2p]);
     onMessageCallbacks();

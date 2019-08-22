@@ -12,7 +12,8 @@ class LembagaAmalProvider {
     'Content-type': 'application/json',
   };
 
-  Future<List<LembagaAmalModel>> fetchAllLembagaAmal(String idUser, String category, String offset, String limit) async {
+  Future<List<LembagaAmalModel>> fetchAllLembagaAmal(
+      String idUser, String category, String offset, String limit) async {
     var params;
     Uri _uri;
 
@@ -30,12 +31,29 @@ class LembagaAmalProvider {
         "offset": offset,
         "category": category
       };
-       _uri = Uri.parse(LIST_ALL_LEMBAGA_AMAL_BY_CATEGORY);
+      _uri = Uri.parse(LIST_ALL_LEMBAGA_AMAL_BY_CATEGORY);
     }
 
     final uriParams = _uri.replace(queryParameters: params);
     final response = await client.get(uriParams);
     print('--> response_lembaga_amal ${response.statusCode}');
+    if (response.statusCode == 200) {
+      return compute(lembagaAmalModelFromJson, response.body);
+    } else if (response.statusCode == 204) {
+      print('--> _no_content_');
+    }
+  }
+
+  Future<List<LembagaAmalModel>> fetchLembagaAmalbyFollowed(String idUser) async {
+    Uri _uri = Uri.parse(LIST_ALL_LEMBAGA_AMAL_BY_FOLLOWED);
+
+    var params = {
+      "idUser": idUser,
+    };
+
+    final uriParams = _uri.replace(queryParameters: params);
+    final response = await client.get(uriParams);
+    print('--> response_lembaga_amal_by_category ${response.statusCode}');
     if (response.statusCode == 200) {
       return compute(lembagaAmalModelFromJson, response.body);
     } else if (response.statusCode == 204) {

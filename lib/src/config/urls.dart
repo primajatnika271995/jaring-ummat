@@ -53,6 +53,7 @@ const LIST_ALL_COMMENT_PROGRAM_AMAL_URL = BASE_API_URL + '/api/comment/program/'
 // URL List Lembaga Amal
 const LIST_ALL_LEMBAGA_AMAL = BASE_API_URL + '/api/lembaga-amal/list/popular';
 const LIST_ALL_LEMBAGA_AMAL_BY_CATEGORY = BASE_API_URL + '/api/lembaga-amal/list/popular/category';
+const LIST_ALL_LEMBAGA_AMAL_BY_FOLLOWED = BASE_API_URL + '/api/lembaga-amal/list/popular/byFollowed';
 
 // Follow Lembaga Amal
 const FOLLOW_LEMBAGA_AMAL_URL = BASE_API_URL + '/api/account-amil/follow';

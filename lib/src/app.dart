@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_jaring_ummat/main.dart';
 import 'package:flutter_jaring_ummat/src/views/chats/chats_screen.dart';
+import 'package:flutter_jaring_ummat/src/views/chats/list_account.dart';
 import 'package:flutter_jaring_ummat/src/views/galang_amal.dart';
 import 'package:flutter_jaring_ummat/src/views/home.dart';
 import 'package:flutter_jaring_ummat/src/views/login/login.dart';
@@ -27,6 +28,7 @@ void App() {
         '/onboarding/step4': (context) => Step4View(),
         '/onboarding/success': (context) => SuccessRegisterView(avatarImage: null),
         '/user/story': (context) => UserStoryView(),
+        '/list/account/chats': (context) => ListAccountChat(),
         '/chats': (context) => ChatScreen(),
       },
     ),

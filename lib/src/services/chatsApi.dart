@@ -7,8 +7,8 @@ class ChatsProvider {
 
   Client client = Client();
 
-  Future<List<ChatsResponse>> fetchHistoryChats() async {
-    final response = await client.post(CHATS_HISTORY + '/admin/primajatnika271995@gmail.com/history');
+  Future<List<ChatsResponse>> fetchHistoryChats(String idLembaga, String idMuzakki) async {
+    final response = await client.post(CHATS_HISTORY + '/$idLembaga/$idMuzakki/history');
     
     print('--> response_status_chats : ${response.statusCode}');
     if (response.statusCode == 200) {
