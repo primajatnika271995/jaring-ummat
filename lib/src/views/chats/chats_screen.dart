@@ -205,6 +205,12 @@ class _ChatScreenState extends State<ChatScreen> {
     super.initState();
   }
 
+  @override
+  void dispose() { 
+    bloc.dispose();
+    super.dispose();
+  }
+
   Future initStomp() async {
     if (stomp == null) {
       stomp = JStomp.instance;

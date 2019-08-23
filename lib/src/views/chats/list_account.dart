@@ -65,7 +65,8 @@ class _ListAccountChatState extends State<ListAccountChat> {
   }
 
   Widget listBuilder(AsyncSnapshot<List<LembagaAmalModel>> snapshot) {
-    return ListView.builder(
+    return ListView.separated(
+      separatorBuilder: (context, index) => Divider(),
       itemCount: snapshot.data.length,
       itemBuilder: (context, index) {
         var value = snapshot.data[index];
@@ -93,7 +94,7 @@ class _ListAccountChatState extends State<ListAccountChat> {
               ),
             ),
           ),
-          trailing: Icon(Icons.message),
+          trailing: Icon(Icons.chat_bubble_outline),
         );
       },
     );
