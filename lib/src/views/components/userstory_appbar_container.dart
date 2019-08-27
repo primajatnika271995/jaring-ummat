@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:circular_profile_avatar/circular_profile_avatar.dart';
 import 'package:flutter_jaring_ummat/src/models/storiesModel.dart';
-import 'package:flutter_jaring_ummat/src/models/storyByUser.dart';
 import 'package:flutter_jaring_ummat/src/views/user_story.dart';
 import '../../bloc/storiesBloc.dart';
 
@@ -14,13 +13,6 @@ class UserStoryAppBar extends StatefulWidget {
 
 class UserStoryAppBarState extends State<UserStoryAppBar> {
   bool loading = false;
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    bloc.fetchAllStories();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -81,10 +73,10 @@ class UserStoryAppBarState extends State<UserStoryAppBar> {
             onTap: () async {
               Route route = MaterialPageRoute(
                 builder: (context) => UserStoryView(
-                      userId: data.userId,
-                      createdBy: data.createdBy,
-                      createdDate: data.storyList[0].createdDate,
-                    ),
+                  userId: data.userId,
+                  createdBy: data.createdBy,
+                  createdDate: data.storyList[0].createdDate,
+                ),
               );
               Navigator.push(context, route);
             },
@@ -145,17 +137,19 @@ class UserStoryAppBarState extends State<UserStoryAppBar> {
                       ),
                     ),
                     Positioned(
-                      left: 10.0,
-                      bottom: 10.0,
-                      child: new Text(
-                        snapshot[index].createdBy,
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                            fontSize: 12.0),
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
+                        left: 10.0,
+                        bottom: 10.0,
+                        child: Container(
+                          width: 70.0,
+                          child: new Text(
+                            snapshot[index].createdBy,
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                                fontSize: 12.0),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        )),
                   ],
                 ),
               ),
@@ -164,6 +158,12 @@ class UserStoryAppBarState extends State<UserStoryAppBar> {
         },
       ),
     );
+  }
+
+  @override
+  void initState() {
+    bloc.fetchAllStories();
+    super.initState();
   }
 
   @override

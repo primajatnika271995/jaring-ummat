@@ -59,7 +59,6 @@ class _GalangAmalState extends State<GalangAmalView> {
                               fontWeight: FontWeight.bold,
                               color: Color.fromRGBO(122, 122, 122, 1.0)),
                         ),
-                        SizedBox(height: 3.0),
                         Text(
                           'Rp. ' +
                               '${CurrencyFormat().currency(widget.programAmal.totalDonation)}' +
@@ -71,7 +70,6 @@ class _GalangAmalState extends State<GalangAmalView> {
                             color: Colors.black,
                           ),
                         ),
-                        SizedBox(height: 3.0),
                         Text(
                           'Batas waktu ' + widget.programAmal.endDate,
                           style: TextStyle(

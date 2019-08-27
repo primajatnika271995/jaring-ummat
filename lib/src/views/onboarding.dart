@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'onboarding/step2.dart';
-import 'onboarding/step3.dart';
-import 'onboarding/step4.dart';
 
 class OnboardingView extends StatefulWidget {
   @override

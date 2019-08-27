@@ -1,6 +1,11 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_jaring_ummat/src/bloc/beritaBloc.dart';
+import 'package:flutter_jaring_ummat/src/config/hexColor.dart';
 import 'package:flutter_jaring_ummat/src/models/beritaModel.dart';
+import 'package:flutter_jaring_ummat/src/views/components/icon_text/home_page_icons_icons.dart';
+import 'package:flutter_jaring_ummat/src/views/components/icon_text/new_icon_icons.dart';
+import 'package:flutter_jaring_ummat/src/views/components/loadingContainer.dart';
 import 'package:flutter_jaring_ummat/src/views/page_berita/berita_content.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -12,205 +17,284 @@ class BeritaPage extends StatefulWidget {
 }
 
 class _BeritaPageState extends State<BeritaPage> {
+  final String title = "Berita Ummat";
   String selectedCategory = "";
+
+  final List<String> imgList = [
+    'http://www.radar-palembang.com/wp-content/uploads/2017/06/BNI.jpg',
+    'https://cdn2.tstatic.net/sumsel/foto/bank/images/muhammad-adil-direktur-utama-bank-sumselbabel-berfoto-dengan-anak-panti_20150710_151920.jpg',
+    'http://informatika.narotama.ac.id/file/content/150730105606_bukber2014_2.jpg'
+  ];
+  int _current = 0;
+
+  bool _loadingVisible = false;
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: DefaultTabController(
-        length: 8,
-        child: Scaffold(
-          backgroundColor: Colors.grey[300],
-          appBar: PreferredSize(
-              child: AppBar(
-                titleSpacing: 10.0,
-                elevation: 0.0,
-                automaticallyImplyLeading: false,
-                centerTitle: true,
-                backgroundColor: Colors.white,
-                title: Container(
-                  child: TextFormField(
-                    textInputAction: TextInputAction.next,
-                    style: TextStyle(
-                      fontSize: 12.0,
-                      color: Colors.blueAccent,
-                    ),
-                    decoration: InputDecoration(
-                      contentPadding:
-                          EdgeInsets.only(top: 7.0, bottom: 7.0, left: -15.0),
-                      icon: Icon(Icons.search, size: 18.0),
-                      border: InputBorder.none,
-                      hintText: 'Cari lembaga amal atau produk lainnya',
-                    ),
-                  ),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(30.0)),
-                    color: Colors.grey[300],
-                  ),
-                  padding: EdgeInsets.fromLTRB(15.0, 0.5, 15.0, 0.5),
-                ),
-                actions: <Widget>[
-                  IconButton(
-                      icon: Icon(Icons.arrow_forward, color: Colors.black),
-                      onPressed: () {}),
-                ],
+    return LoadingScreen(
+      inAsyncCall: _loadingVisible,
+      child: Scaffold(
+        body: DefaultTabController(
+          length: 8,
+          child: Scaffold(
+            backgroundColor: whiteColor,
+            appBar: AppBar(
+              automaticallyImplyLeading: false,
+              backgroundColor: whiteColor,
+              elevation: 0.0,
+              title: Text(
+                title,
+                style: TextStyle(color: blackColor, fontSize: 18.0, fontFamily: 'Arab-Dances'),
               ),
-              preferredSize: Size.fromHeight(47.0)),
-          body: CustomScrollView(
-            slivers: <Widget>[
-              new SliverAppBar(
-                expandedHeight: 20.0,
-                backgroundColor: Colors.white,
-                elevation: 10.0,
-                automaticallyImplyLeading: true,
-                floating: true,
-                pinned: true,
-                bottom: TabBar(
-                  isScrollable: true,
-                  indicator: UnderlineTabIndicator(
-                    borderSide:
-                        BorderSide(width: 4.0, color: Colors.blueAccent),
-                  ),
-                  labelColor: Colors.black,
-                  unselectedLabelColor: Colors.grey,
-                  onTap: (int index) {
-                    switch (index) {
-                      case 1:
-                        setState(() {
-                          selectedCategory = "Pendidikan";
-                        });
-                        break;
-                      case 2:
-                        setState(() {
-                          selectedCategory = "Kemanusiaan";
-                        });
-                        break;
-                      case 3:
-                        setState(() {
-                          selectedCategory = "Amal";
-                        });
-                        break;
-                      case 4:
-                        setState(() {
-                          selectedCategory = "Pembangunan Mesjid";
-                        });
-                        break;
-                      case 5:
-                        setState(() {
-                          selectedCategory = "Zakat";
-                        });
-                        break;
-                      case 6:
-                        setState(() {
-                          selectedCategory = "Sosial";
-                        });
-                        break;
-                      case 7:
-                        setState(() {
-                          selectedCategory = "lain-lain";
-                        });
-                        break;
-                      default:
-                        setState(() {
-                          selectedCategory = "";
-                        });
-                    }
-                    bloc.fetchAllBerita(selectedCategory);
-                  },
-                  tabs: <Widget>[
-                    new Tab(
-                      text: 'Semua Kategori',
-                    ),
-                    new Tab(
-                      text: 'Pendidikan',
-                    ),
-                    new Tab(
-                      text: 'Kemanusiaan',
-                    ),
-                    new Tab(
-                      text: 'Amal',
-                    ),
-                    new Tab(
-                      text: 'Pembangunan Masjid',
-                    ),
-                    new Tab(
-                      text: 'Zakat',
-                    ),
-                    new Tab(
-                      text: 'Bakti Sosial',
-                    ),
-                    new Tab(
-                      text: 'lain-lain',
-                    ),
-                  ],
+              actions: <Widget>[
+                IconButton(
+                  onPressed: () {},
+                  icon: Icon(NewIcon.search_big_3x),
+                  color: greenColor,
                 ),
-              ),
-              SliverList(
-                delegate: SliverChildListDelegate([
-                  Column(
-                    children: <Widget>[
-                      StreamBuilder(
-                        stream: bloc.allBerita,
-                        builder: (context,
-                            AsyncSnapshot<List<BeritaModel>> snapshot) {
-                          switch (snapshot.connectionState) {
-                            case ConnectionState.waiting:
-                              return Padding(
-                                padding: EdgeInsets.symmetric(vertical: 50.0),
-                                child: Center(
-                                  child: CircularProgressIndicator(),
-                                ),
-                              );
-                              break;
-                            default:
-                              if (snapshot.hasData) {
-                                return buildList(snapshot);
-                              } else if (snapshot.hasError) {
-                                return Text(snapshot.error.toString());
-                              }
-                              return Container(
-                                width: 500.0,
-                                margin: EdgeInsets.only(top: 30.0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
-                                    SvgPicture.asset(
-                                      'assets/icon/no-content.svg',
-                                      height: 250.0,
-                                    ),
-                                    Text(
-                                      'Oops..',
-                                      style: TextStyle(
-                                        fontFamily: 'Proxima',
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 16.0,
-                                      ),
-                                    ),
-                                    Text(
-                                      'There\'s nothing \'ere, yet.',
-                                      style: TextStyle(
-                                        fontFamily: 'Proxima',
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.grey,
-                                        fontSize: 15.0,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              );
-                            break;
-                          }
-                        },
+              ],
+            ),
+            body: CustomScrollView(
+              slivers: <Widget>[
+                new SliverAppBar(
+                  backgroundColor: whiteColor,
+                  elevation: 1.0,
+                  automaticallyImplyLeading: false,
+                  floating: true,
+                  pinned: true,
+                  flexibleSpace: AppBar(
+                    backgroundColor: whiteColor,
+                    elevation: 2.0,
+                    automaticallyImplyLeading: false,
+                    bottom: TabBar(
+                      isScrollable: true,
+                      indicator: UnderlineTabIndicator(
+                        borderSide: BorderSide(width: 4.0, color: greenColor),
                       ),
-                    ],
+                      labelColor: blackColor,
+                      unselectedLabelColor: grayColor,
+                      onTap: (int index) {
+                        switch (index) {
+                          case 1:
+                            setState(() {
+                              selectedCategory = "Pendidikan";
+                            });
+                            break;
+                          case 2:
+                            setState(() {
+                              selectedCategory = "Kemanusiaan";
+                            });
+                            break;
+                          case 3:
+                            setState(() {
+                              selectedCategory = "Amal";
+                            });
+                            break;
+                          case 4:
+                            setState(() {
+                              selectedCategory = "Pembangunan Mesjid";
+                            });
+                            break;
+                          case 5:
+                            setState(() {
+                              selectedCategory = "Zakat";
+                            });
+                            break;
+                          case 6:
+                            setState(() {
+                              selectedCategory = "Sosial";
+                            });
+                            break;
+                          case 7:
+                            setState(() {
+                              selectedCategory = "lain-lain";
+                            });
+                            break;
+                          default:
+                            setState(() {
+                              selectedCategory = "";
+                            });
+                        }
+                        bloc.fetchAllBerita(selectedCategory);
+                      },
+                      tabs: <Widget>[
+                        new Tab(
+                          text: 'Semua Kategori',
+                        ),
+                        new Tab(
+                          text: 'Pendidikan',
+                        ),
+                        new Tab(
+                          text: 'Kemanusiaan',
+                        ),
+                        new Tab(
+                          text: 'Amal',
+                        ),
+                        new Tab(
+                          text: 'Pembangunan Masjid',
+                        ),
+                        new Tab(
+                          text: 'Zakat',
+                        ),
+                        new Tab(
+                          text: 'Bakti Sosial',
+                        ),
+                        new Tab(
+                          text: 'lain-lain',
+                        ),
+                      ],
+                    ),
                   ),
-                ]),
-              )
-            ],
+                ),
+                new SliverAppBar(
+                  backgroundColor: Colors.transparent,
+                  automaticallyImplyLeading: false,
+                  floating: true,
+                  bottom: PreferredSize(
+                    preferredSize: Size.fromHeight(220.0),
+                    child: Text(''),
+                  ),
+                  flexibleSpace: Container(
+                    child: Stack(
+                      children: <Widget>[
+                        getFullScreenCarousel(context),
+                        Align(
+                          alignment: Alignment.bottomCenter,
+                          child: Padding(
+                            padding: EdgeInsets.only(bottom: 40.0),
+                            child: Text(
+                              'Pelatihan Da\'i mandiri Se-Jawa di Yabni Sumedang ',
+                              style: TextStyle(color: whiteColor, fontSize: 17.0),
+                            ),
+                          ),
+                        ),
+                        Align(
+                          alignment: Alignment.bottomCenter,
+                          child: Padding(
+                            padding: EdgeInsets.only(bottom: 15.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: map<Widget>(
+                                imgList,
+                                (index, url) {
+                                  return Container(
+                                    width: 8.0,
+                                    height: 8.0,
+                                    margin: EdgeInsets.symmetric(
+                                        vertical: 10.0, horizontal: 2.0),
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: _current == index
+                                          ? greenColor
+                                          : whiteColor,
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                SliverList(
+                  delegate: SliverChildListDelegate([
+                    Column(
+                      children: <Widget>[
+                        StreamBuilder(
+                          stream: bloc.allBerita,
+                          builder: (context,
+                              AsyncSnapshot<List<BeritaModel>> snapshot) {
+                            switch (snapshot.connectionState) {
+                              case ConnectionState.waiting:
+                                _loadingVisible = true;
+                                return Text('');
+                                break;
+                              default:
+                                if (snapshot.hasData) {
+                                  _loadingVisible = false;
+                                  return buildList(snapshot);
+                                } else if (snapshot.hasError) {
+                                  return Text(snapshot.error.toString());
+                                }
+                                _loadingVisible = false;
+                                return Container(
+                                  width: 500.0,
+                                  margin: EdgeInsets.only(top: 30.0),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
+                                      SvgPicture.asset(
+                                        'assets/icon/no-content.svg',
+                                        height: 250.0,
+                                      ),
+                                      Text(
+                                        'Oops..',
+                                        style: TextStyle(
+                                          fontFamily: 'Proxima',
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16.0,
+                                        ),
+                                      ),
+                                      Text(
+                                        'There\'s nothing \'ere, yet.',
+                                        style: TextStyle(
+                                          fontFamily: 'Proxima',
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.grey,
+                                          fontSize: 15.0,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                                break;
+                            }
+                          },
+                        ),
+                      ],
+                    ),
+                  ]),
+                ),
+              ],
+            ),
           ),
         ),
       ),
+    );
+  }
+
+  List<T> map<T>(List list, Function handler) {
+    List<T> result = [];
+    for (var i = 0; i < list.length; i++) {
+      result.add(handler(i, list[i]));
+    }
+
+    return result;
+  }
+
+  CarouselSlider getFullScreenCarousel(BuildContext context) {
+    return CarouselSlider(
+      autoPlay: false,
+      viewportFraction: 3.0,
+      onPageChanged: (index) {
+        setState(() {
+          _current = index;
+        });
+      },
+      items: imgList.map(
+        (url) {
+          return Container(
+            child: Image.network(
+              url,
+              fit: BoxFit.cover,
+            ),
+          );
+        },
+      ).toList(),
     );
   }
 
@@ -226,6 +310,12 @@ class _BeritaPageState extends State<BeritaPage> {
         );
       },
     );
+  }
+
+  Future<void> changeLoadingVisible() async {
+    setState(() {
+      _loadingVisible = !_loadingVisible;
+    });
   }
 
   @override

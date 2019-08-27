@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_jaring_ummat/src/bloc/storiesBloc.dart';
+import 'package:flutter_jaring_ummat/src/config/hexColor.dart';
 import 'package:flutter_jaring_ummat/src/models/storyByUser.dart';
 import 'package:flutter_jaring_ummat/src/services/time_ago_service.dart';
-import 'package:flutter_jaring_ummat/src/views/components/video_player_container.dart';
 import 'package:flutter_jaring_ummat/src/views/page_stories/image_story.dart';
 
 class Story extends StatefulWidget {
@@ -45,12 +45,8 @@ class _StoryState extends State<Story> {
                         imageUri:
                             widget.contents.storyList[index].contents[0].imgUrl,
                       )
-                    : VideoStory(
-                        videoUri: widget
-                            .contents.storyList[index].contents[0].videoUrl,
-                        thumbnailUri: widget
-                            .contents.storyList[index].contents[0].thumbnailUrl,
-                      );
+                    : Text(widget.contents.storyList[index].contents[0].videoUrl
+                        .toString());
               },
             ),
             Positioned(
@@ -74,16 +70,11 @@ class _StoryState extends State<Story> {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  Container(
-                    width: 50.0,
-                    height: 50.0,
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: AssetImage(
-                            "assets/users/profile.png"),
-                        fit: BoxFit.contain,
-                      ),
-                    ),
+                  CircleAvatar(
+                    backgroundColor: greenColor,
+                    child: Text(widget.contents.createdBy
+                        .substring(0, 1)
+                        .toUpperCase()),
                   ),
                   SizedBox(
                     width: 10.0,

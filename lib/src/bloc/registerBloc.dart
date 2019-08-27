@@ -1,12 +1,24 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_jaring_ummat/src/models/DTO/RegisterResponse.dart';
 import 'package:flutter_jaring_ummat/src/models/postModel.dart';
+import 'package:rxdart/rxdart.dart';
 import '../repository/RegisterRepository.dart';
 
 class RegisterBloc {
   final _repository = RegisterRepository();
+  final registerRespFetcher = PublishSubject<RegisterResponseModel>();
 
-  saveUser(PostRegistration register) {
+  Observable<RegisterResponseModel> get streamResponse =>
+      registerRespFetcher.stream;
 
-    _repository.saveUser(register);
+  saveUser(BuildContext context, PostRegistration register) async {
+    _repository.saveUser(context, register);
+    RegisterResponseModel value = await _repository.saveUser(context, register);
+    registerRespFetcher.sink.add(value);
+
+    if (!value.id.isEmpty) {
+      Navigator.of(context).pushReplacementNamed('/login');
+    }
   }
 }
 

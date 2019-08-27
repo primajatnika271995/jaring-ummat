@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_jaring_ummat/src/models/program_amal.dart';
 import 'package:flutter_jaring_ummat/src/views/components/custom_fonts.dart';
-import 'package:flutter_jaring_ummat/src/views/components/show_alert_dialog.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 
@@ -77,7 +76,7 @@ class _GalangAmalContainerState extends State<GalangAmalContainer> {
         borderRadius: BorderRadius.circular(30.0),
         image: DecorationImage(
           image: NetworkImage(
-              'https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg-1024x683.jpg'),
+              'https://kempenfeltplayers.com/wp-content/uploads/2015/07/profile-icon-empty.png'),
           fit: BoxFit.cover,
         ),
       ),
@@ -275,7 +274,7 @@ class _GalangAmalContainerState extends State<GalangAmalContainer> {
                   borderRadius: BorderRadius.circular(30.0),
                   image: DecorationImage(
                       image: NetworkImage(
-                          'https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg-1024x683.jpg'),
+                          'https://kempenfeltplayers.com/wp-content/uploads/2015/07/profile-icon-empty.png'),
                       fit: BoxFit.cover),
                 ),
               ),
@@ -426,7 +425,6 @@ class _GalangAmalContainerState extends State<GalangAmalContainer> {
         ),
         GestureDetector(
           onTap: () {
-            showAlertDialog(context, 'This will show view with comments');
           },
           child: Row(
             children: <Widget>[
@@ -456,7 +454,6 @@ class _GalangAmalContainerState extends State<GalangAmalContainer> {
       children: <Widget>[
         GestureDetector(
           onTap: () {
-            showAlertDialog(context, 'This will save content');
           },
           child: Row(
             children: <Widget>[
@@ -472,7 +469,6 @@ class _GalangAmalContainerState extends State<GalangAmalContainer> {
         ),
         GestureDetector(
           onTap: () {
-            showAlertDialog(context, 'This will save content');
           },
           child: Row(
             children: <Widget>[

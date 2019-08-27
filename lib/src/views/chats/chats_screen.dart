@@ -3,12 +3,20 @@ import 'dart:convert';
 
 import 'package:bubble/bubble.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_jaring_ummat/src/config/hexColor.dart';
+import 'package:flutter_jaring_ummat/src/config/preferences.dart';
 import 'package:flutter_jaring_ummat/src/config/urls.dart';
 import 'package:flutter_jaring_ummat/src/models/DTO/ChatsResponse.dart';
 import 'package:flutter_jaring_ummat/src/bloc/chatsBloc.dart';
+import 'package:flutter_jaring_ummat/src/views/components/icon_text/new_icon_icons.dart';
 import 'package:jstomp/jstomp.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ChatScreen extends StatefulWidget {
+  final String idLembaga;
+  final String email;
+  ChatScreen({this.idLembaga, this.email});
+
   @override
   _ChatScreenState createState() => _ChatScreenState();
 }
@@ -22,8 +30,7 @@ class _ChatScreenState extends State<ChatScreen> {
   final streamChats = StreamController<List<ChatsResponse>>();
   List<ChatsResponse> logChats_tmp = new List<ChatsResponse>();
 
-  String fromId = "primajatnika271995@gmail.com";
-  String toId = "admin";
+  SharedPreferences _preferences;
 
   @override
   Widget build(BuildContext context) {
@@ -101,27 +108,21 @@ class _ChatScreenState extends State<ChatScreen> {
           onTap: () {
             Navigator.pop(context);
           },
-          child: Icon(Icons.arrow_back_ios, color: Colors.black),
+          child: Icon(NewIcon.back_big_3x, color: greenColor),
         ),
         title: new Row(
           children: <Widget>[
-            Container(
-              width: 40.0,
-              height: 40.0,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(50.0),
-                image: DecorationImage(
-                  fit: BoxFit.cover,
-                  image: NetworkImage(
-                      'https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg-1024x683.jpg'),
-                ),
+            CircleAvatar(
+              child: Text(
+                widget.email.substring(0, 1).toUpperCase(),
               ),
+              radius: 20.0,
             ),
             SizedBox(
               width: 10.0,
             ),
             new Text(
-              'Admin Amil',
+              widget.email,
               style: TextStyle(fontSize: 15.0, color: Colors.grey[600]),
             ),
           ],
@@ -144,29 +145,45 @@ class _ChatScreenState extends State<ChatScreen> {
               child: StreamBuilder(
                 stream: streamChats.stream,
                 builder: (context, snapshot) {
-                  return ListView.builder(
-                    itemCount: logChats_tmp.length,
-                    padding: EdgeInsets.all(8.0),
-                    itemBuilder: (context, index) {
-                      if (logChats_tmp[index].fromId != fromId) {
-                        return Bubble(
-                          style: styleSomebody,
-                          nip: BubbleNip.no,
-                          child: Text(snapshot.hasData
-                              ? '${logChats_tmp[index].message}'
-                              : ''),
-                        );
-                      } else {
-                        return Bubble(
-                          style: styleMe,
-                          nip: BubbleNip.no,
-                          child: Text(snapshot.hasData
-                              ? '${logChats_tmp[index].message}'
-                              : ''),
-                        );
-                      }
-                    },
-                  );
+                  switch (snapshot.connectionState) {
+                    case ConnectionState.waiting:
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                      break;
+                    default:
+                      return ListView.builder(
+                        itemCount: logChats_tmp.length,
+                        padding: EdgeInsets.all(8.0),
+                        itemBuilder: (context, index) {
+                          if (logChats_tmp[index].toId != widget.email) {
+                            return Bubble(
+                              style: styleSomebody,
+                              nip: BubbleNip.no,
+                              child: Text(snapshot.hasData
+                                  ? '${logChats_tmp[index].message}'
+                                  : ''),
+                            );
+                          } else if (logChats_tmp[0].fromId == 'Today') {
+                            return Bubble(
+                              color: Color.fromRGBO(212, 234, 244, 1.0),
+                              child: Text('TODAY',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(fontSize: 11.0)),
+                            );
+                          } else {
+                            return Bubble(
+                              style: styleMe,
+                              nip: BubbleNip.no,
+                              child: Text(snapshot.hasData
+                                  ? '${logChats_tmp[index].message}'
+                                  : ''),
+                            );
+                          }
+                        },
+                      );
+                      break;
+                  }
                 },
               ),
             ),
@@ -187,7 +204,14 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   void initState() {
-    bloc.fetchChatsHistory();
+    setState(() {
+      logChats_tmp.add(
+        ChatsResponse(
+          fromId: 'Today',
+        ),
+      );
+    });
+    bloc.fetchChatsHistory(widget.email);
     bloc.chatsBehavior.stream.forEach((value) {
       if (mounted) {
         setState(() {
@@ -224,20 +248,23 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   Future<String> sendMsg(String pesan) async {
+    _preferences = await SharedPreferences.getInstance();
+    var email = _preferences.getString(EMAIL_KEY);
+
     Map<String, dynamic> msg = {
-      "fromId": fromId,
-      "toId": toId,
+      "fromId": email,
+      "toId": widget.email,
       "message": pesan,
     };
 
-    var log = ChatsResponse(fromId: fromId, toId: toId, message: pesan);
+    // var log = ChatsResponse(fromId: email, toId: widget.email, message: pesan);
 
-    logChats_tmp.add(log);
+    // logChats_tmp.add(log);
     return await stomp.sendMessage(json.encode(msg));
   }
 
   Future<String> subscribeMsg() async {
-    final String p2p = "/secure/user/$fromId/chat/send";
+    final String p2p = "/secure/user/${widget.email}/chat/send";
     await stomp.subscribP2P([p2p]);
     onMessageCallbacks();
   }

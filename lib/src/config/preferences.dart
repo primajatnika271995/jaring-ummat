@@ -8,6 +8,9 @@ const CONTACT_KEY = 'CONTACT';
 const PROFILE_PICTURE_KEY = 'PROFILEPICTURE';
 const PROFILE_FACEBOOK_KEY = 'PROFILEFACEBOOK';
 
+
+const LEMABAGA_AMAL_ID = 'LEMBAGAAMALID';
+
 // LINKEDIN CONFIG
 
 const linkedInRedirectURI = 'https://api.linkedin.com/v2/';

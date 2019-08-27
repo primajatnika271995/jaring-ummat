@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_fab_dialer/flutter_fab_dialer.dart';
+import 'package:flutter_jaring_ummat/src/config/hexColor.dart';
 import 'package:toast/toast.dart';
 
 import '../views/components/icon_baru_icons.dart';
@@ -736,7 +737,7 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
                 new SliverAppBar(
                   automaticallyImplyLeading: false,
                   bottom: PreferredSize(
-                    preferredSize: Size.fromHeight(160.0),
+                    preferredSize: Size.fromHeight(169.0),
                     child: Text(''),
                   ),
                   flexibleSpace: AppBar(
@@ -1435,17 +1436,6 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
                 ),
               ],
             ),
-            floatingActionButton: new Stack(
-              children: <Widget>[
-                new Container(
-                  child: new FabDialer(
-                    _fabMiniMenuItemList,
-                    Colors.lightGreen,
-                    new Icon(IconBaru.add_donation_zakat_etc),
-                  ),
-                ),
-              ],
-            ),
           ),
         ),
       ),
@@ -1466,7 +1456,8 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
             Container(
               margin: EdgeInsets.only(top: 20.0),
               child: CircleAvatar(
-                child: Image.asset(img),
+                backgroundColor: whiteColor,
+                child: Image.network(img),
               ),
             ),
             Container(
@@ -1531,7 +1522,7 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
                   height: 40.0,
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: AssetImage(img),
+                      image: NetworkImage(img),
                     ),
                   ),
                 ),
@@ -1700,20 +1691,20 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     setParticipan(
-                      'assets/users/bamuis-bni.png',
+                      'https://pbs.twimg.com/profile_images/918689909904351233/inKzZinS.jpg',
                       'Bamuis BNI',
                       '24 Aktivitas',
                       '1.201.498',
                     ),
                     setParticipan(
-                      'assets/users/dewan-dakwah.png',
+                      'http://dewandakwah.or.id/wp-content/uploads/2016/06/logodd-300x300.png',
                       'Dewan Da\'wah',
                       '9 Aktivitas',
                       '1.019.024',
                     ),
                     setParticipan(
-                      'assets/users/logo yayasan.png',
-                      'Yayasan Hasanah',
+                      'https://baznas.go.id/application/views/assets/images/gallery/Baznas.png',
+                      'Baznas',
                       '21 Aktivitas',
                       '893.167',
                     ),
@@ -1738,7 +1729,7 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
                       IconBaru.donation_small,
                       color: Colors.purple,
                     ),
-                    'assets/users/bamuis-bni.png',
+                    'https://kempenfeltplayers.com/wp-content/uploads/2015/07/profile-icon-empty.png',
                     'Bamius BNI',
                     'Donasi - 11 menit yang lalu',
                     '100.000'),
@@ -1747,7 +1738,7 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
                 ),
                 setAktivitasAmal(
                     Icon(IconBaru.zakat_small, color: Colors.deepOrange),
-                    'assets/users/bamuis-bni.png',
+                    'https://kempenfeltplayers.com/wp-content/uploads/2015/07/profile-icon-empty.png',
                     'Inisiatif Zakat Indonesia',
                     'Zakat - 11 menit yang lalu',
                     '319.308'),
@@ -1756,7 +1747,7 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
                 ),
                 setAktivitasAmal(
                     Icon(IconBaru.infaq_small, color: Colors.blueAccent),
-                    'assets/users/bamuis-bni.png',
+                    'https://kempenfeltplayers.com/wp-content/uploads/2015/07/profile-icon-empty.png',
                     'Rumah Amal Salman',
                     'Infaq - 11 menit yang lalu',
                     '25.000'),

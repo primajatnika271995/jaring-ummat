@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:333641026841:android:5fcab067340c8177",
         "android_client_info": {
-          "package_name": "com.example.flutter_jaring_ummat"
+          "package_name": "com.example.amil"
         }
       },
       "oauth_client": [
@@ -18,7 +18,7 @@
           "client_id": "333641026841-pk1noidpvg2lgisui4f734v37k3eu7fs.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.flutter_jaring_ummat",
+            "package_name": "com.example.amil",
             "certificate_hash": "029df197ef45d6dfe9676e565d6994f1ec5aff9f"
           }
         },

@@ -22,7 +22,7 @@ class LembagaAmalProvider {
         "limit": limit,
         "offset": offset,
       };
-      _uri = Uri.parse(LIST_ALL_LEMBAGA_AMAL);
+      _uri = Uri.parse(LIST_ALL_LEMBAGA_AMAL_AMIL);
     } else {
       params = {
         "idUser": idUser,

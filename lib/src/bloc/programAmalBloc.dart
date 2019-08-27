@@ -1,4 +1,5 @@
 import 'package:flutter_jaring_ummat/src/config/preferences.dart';
+import 'package:flutter_jaring_ummat/src/models/postModel.dart';
 import 'package:flutter_jaring_ummat/src/models/program_amal.dart';
 import 'package:flutter_jaring_ummat/src/repository/ProgramAmalRepository.dart';
 import 'package:rxdart/rxdart.dart';
@@ -24,6 +25,14 @@ class ProgramAmalBloc {
 
     List<ProgramAmalModel> listAllProgramAmal = await repository.fetchAllProgramAmal(idUser, category, "0", "20");
     programAmalFetcher.sink.add(listAllProgramAmal);
+  }
+
+  save(PostProgramAmal value) async {
+    _preferences = await SharedPreferences.getInstance();
+    idUser = _preferences.getString(LEMABAGA_AMAL_ID);
+    var fullname = _preferences.getString(FULLNAME_KEY);
+    
+    await repository.save(value, idUser, fullname);
   }
 
   dispose() async {

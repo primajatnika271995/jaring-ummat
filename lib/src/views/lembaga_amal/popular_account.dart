@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_jaring_ummat/src/config/hexColor.dart';
 
 import 'package:flutter_jaring_ummat/src/models/lembagaAmalModel.dart';
 import 'package:flutter_jaring_ummat/src/views/components/appbar_custom_icons.dart';
 import 'package:flutter_jaring_ummat/src/bloc/lembagaAmalBloc.dart';
+import 'package:flutter_jaring_ummat/src/views/components/icon_text/home_page_icons_icons.dart';
+import 'package:flutter_jaring_ummat/src/views/components/icon_text/new_icon_icons.dart';
 
 const double _ITEM_HEIGHT = 70.0;
 
@@ -27,10 +30,10 @@ class PopularAccountState extends State<PopularAccountView>
       child: new TabBar(
         isScrollable: true,
         indicator: UnderlineTabIndicator(
-          borderSide: BorderSide(width: 4.0, color: Colors.blueAccent),
+          borderSide: BorderSide(width: 4.0, color: greenColor),
         ),
-        labelColor: Colors.black,
-        unselectedLabelColor: Colors.grey,
+        labelColor: blackColor,
+        unselectedLabelColor: grayColor,
         onTap: (int index) {
           switch (index) {
             case 1:
@@ -105,69 +108,29 @@ class PopularAccountState extends State<PopularAccountView>
       ),
     );
     return Scaffold(
-      appBar: PreferredSize(
-        child: AppBar(
-          elevation: 0.0,
-          backgroundColor: Colors.white,
-          leading: new Icon(Icons.arrow_back, color: Colors.grey[600]),
-          actions: <Widget>[
-            SizedBox(
-              width: 5.0,
-            ),
-            SizedBox(
-              width: 0.0,
-            ),
-            Icon(
-              AppBarIcons.ic_action,
-              color: Colors.white,
-            ),
-            SizedBox(
-              width: 5.0,
-            ),
-          ],
-          centerTitle: true,
-          automaticallyImplyLeading: true,
-          titleSpacing: 0.0,
-          title: Container(
-            child: TextFormField(
-              textInputAction: TextInputAction.next,
-              style: TextStyle(
-                fontSize: 12.0,
-                color: Colors.black,
-              ),
-              decoration: InputDecoration(
-                contentPadding: EdgeInsets.only(
-                  top: 7.0,
-                  bottom: 7.0,
-                  left: -15.0,
-                ),
-                icon: Icon(
-                  Icons.search,
-                  size: 18.0,
-                ),
-                border: InputBorder.none,
-                hintText: 'Cari lembaga amal atau produk lainnya',
-              ),
-            ),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(
-                Radius.circular(
-                  30.0,
-                ),
-              ),
-              color: Colors.grey[200],
-            ),
-            padding: EdgeInsets.fromLTRB(
-              15.0,
-              0.5,
-              15.0,
-              0.5,
-            ),
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        backgroundColor: whiteColor,
+        elevation: 0.0,
+        title: Text(
+          'Akun Amil',
+          style: TextStyle(
+              color: blackColor, fontSize: 18.0, fontFamily: 'Arab-Dances'),
+        ),
+        actions: <Widget>[
+          IconButton(
+            padding: EdgeInsets.only(left: 10.0),
+            onPressed: () {},
+            icon: Icon(NewIcon.search_big_3x),
+            color: greenColor,
           ),
-        ),
-        preferredSize: Size.fromHeight(
-          47.0,
-        ),
+          IconButton(
+            padding: EdgeInsets.only(right: 20.0),
+            onPressed: () {},
+            icon: Icon(NewIcon.account_following_3x),
+            color: greenColor,
+          ),
+        ],
       ),
       body: new Padding(
         padding: new EdgeInsets.symmetric(
@@ -243,11 +206,11 @@ class PopularAccountState extends State<PopularAccountView>
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           Text(
-                              value.lembagaAmalName,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 14.0),
-                              overflow: TextOverflow.ellipsis,
-                            ),
+                            value.lembagaAmalName,
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 14.0),
+                            overflow: TextOverflow.ellipsis,
+                          ),
                           SizedBox(
                             height: 3.0,
                           ),
@@ -291,7 +254,7 @@ class PopularAccountState extends State<PopularAccountView>
           await bloc.fetchAllLembagaAmal(selectedCategory);
         });
       },
-      color: Color.fromRGBO(21, 101, 192, 1.0),
+      color: greenColor,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20.0),
       ),
@@ -313,7 +276,7 @@ class PopularAccountState extends State<PopularAccountView>
           bloc.fetchAllLembagaAmal(selectedCategory);
         });
       },
-      color: Color.fromRGBO(165, 219, 98, 1.0),
+      color: blueColor,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20.0),
       ),

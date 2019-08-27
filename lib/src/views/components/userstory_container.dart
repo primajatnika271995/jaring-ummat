@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:flutter_jaring_ummat/src/config/hexColor.dart';
 import 'package:flutter_jaring_ummat/src/views/components/video_player_container.dart';
 import 'package:http/http.dart' as http;
 
@@ -88,15 +89,9 @@ class UserStoryContainerOldState extends State<UserStoryContainerOld> {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                Container(
-                  width: 50.0,
-                  height: 50.0,
-                  decoration: BoxDecoration(
-                      image: DecorationImage(
-                    image: AssetImage(
-                        "assets/users/profile.png"),
-                    fit: BoxFit.contain,
-                  )),
+                CircleAvatar(
+                  backgroundColor: greenColor,
+                  child: Text(widget.createdBy.substring(0, 1).toUpperCase(), style: TextStyle(color: whiteColor, fontSize: 18.0),),
                 ),
                 SizedBox(
                   width: 10.0,

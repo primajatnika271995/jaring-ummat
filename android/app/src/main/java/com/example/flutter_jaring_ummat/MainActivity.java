@@ -1,4 +1,4 @@
-package com.example.flutter_jaring_ummat;
+package com.example.amil;
 
 import android.os.Bundle;
 import io.flutter.app.FlutterActivity;
