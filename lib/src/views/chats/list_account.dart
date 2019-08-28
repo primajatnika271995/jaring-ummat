@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_jaring_ummat/src/bloc/lembagaAmalBloc.dart';
+import 'package:flutter_jaring_ummat/src/config/hexColor.dart';
 import 'package:flutter_jaring_ummat/src/models/lembagaAmalModel.dart';
 import 'package:flutter_jaring_ummat/src/views/chats/chats_screen.dart';
+import 'package:flutter_jaring_ummat/src/views/components/icon_text/new_icon_icons.dart';
 
 class ListAccountChat extends StatefulWidget {
   @override
@@ -20,19 +22,26 @@ class _ListAccountChatState extends State<ListAccountChat> {
           onTap: () {
             Navigator.pop(context);
           },
-          child: Icon(Icons.arrow_back_ios, color: Colors.black),
+          child: Icon(NewIcon.back_big_3x, color: greenColor),
         ),
         title: new Text(
-          'Chats',
+          'Obrolan Amil',
           style: TextStyle(fontSize: 15.0, color: Colors.grey[600]),
         ),
         centerTitle: false,
         backgroundColor: Colors.white,
         actions: <Widget>[
           IconButton(
+            padding: EdgeInsets.only(left: 10.0),
             onPressed: () {},
-            icon: Icon(Icons.more_vert),
-            color: Colors.grey,
+            icon: Icon(NewIcon.search_big_3x),
+            color: greenColor,
+          ),
+          IconButton(
+            padding: EdgeInsets.only(right: 20.0),
+            onPressed: () {},
+            icon: Icon(NewIcon.delete_3x),
+            color: greenColor,
           ),
         ],
       ),
@@ -90,11 +99,14 @@ class _ListAccountChatState extends State<ListAccountChat> {
               borderRadius: BorderRadius.circular(50.0),
               image: DecorationImage(
                 fit: BoxFit.cover,
-                image: NetworkImage(value?.imageContent[0].imgUrl),
+                image: value.imageContent == null
+                    ? NetworkImage(
+                        'https://kempenfeltplayers.com/wp-content/uploads/2015/07/profile-icon-empty.png')
+                    : NetworkImage(value?.imageContent[0].imgUrl),
               ),
             ),
           ),
-          trailing: Icon(Icons.chat_bubble_outline),
+          trailing: Icon(NewIcon.chat_3x, color: greenColor),
         );
       },
     );

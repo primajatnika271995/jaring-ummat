@@ -1,6 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_jaring_ummat/src/config/hexColor.dart';
+import 'package:flutter_jaring_ummat/src/models/DTO/UserDetailPref.dart';
+import 'package:flutter_jaring_ummat/src/views/components/icon_text/new_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/login/reLogin.dart';
+import 'package:flutter_jaring_ummat/src/bloc/preferencesBloc.dart';
 
 import 'package:toast/toast.dart';
 import 'package:flutter_jaring_ummat/src/views/portofilio.dart';
@@ -8,8 +12,6 @@ import 'package:flutter_jaring_ummat/src/views/inbox.dart';
 import 'package:flutter_jaring_ummat/src/views/lembaga_amal/popular_account.dart';
 import 'package:flutter_jaring_ummat/src/config/preferences.dart';
 import 'package:flutter_jaring_ummat/src/views/components/fab_bottom_app_bar.dart';
-import 'package:flutter_jaring_ummat/src/views/components/icon_baru_icons.dart';
-import 'package:flutter_jaring_ummat/src/views/components/navbar_custom_icon.dart';
 import 'package:flutter_jaring_ummat/src/views/page_berita/berita.dart';
 import 'package:flutter_jaring_ummat/src/views/page_program-amal/program_amal.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -28,6 +30,8 @@ class _HomeState extends State<HomeView> {
   SharedPreferences _preferences;
   String _token;
 
+  UserDetailPref _pref;
+
   static const snackBarDuration = Duration(seconds: 3);
   GlobalKey<ScaffoldState> _globalKey = GlobalKey<ScaffoldState>();
   DateTime backButtonPressTime;
@@ -43,7 +47,7 @@ class _HomeState extends State<HomeView> {
           children: <Widget>[
             BeritaPage(),
             mainView(),
-            (_token == null) ? ReLogin() : PopularAccountView(),
+            (_token == null) ? ReLogin() : PopularAccountView()
           ],
         ),
       ),
@@ -56,7 +60,7 @@ class _HomeState extends State<HomeView> {
 
     final List<Widget> _children = [
       ProgramAmalPage(),
-      Portofolio(),
+      (_token == null) ? ReLogin() : Portofolio(),
       Inbox(),
       (_token == null) ? ReLogin() : Menu()
     ];
@@ -65,22 +69,21 @@ class _HomeState extends State<HomeView> {
       body: _children[_currentIndex],
       floatingActionButton: new FloatingActionButton(
         onPressed: () {},
-        child: const Icon(IconBaru.scan_qr,),
-        backgroundColor: Colors.orange,
+        child: Icon(NewIcon.nav_scan_3x, size: 20.0),
+        backgroundColor: greenColor,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: FABBottomAppBar(
-        color: Colors.grey,
+        color: grayColor,
         height: 45.0,
-        selectedColor: Colors.black,
-        notchedShape: CircularNotchedRectangle(),
+        selectedColor: greenColor,
         onTabSelected: _selectedTab,
         iconSize: 25.0,
         items: [
-          FABBottomAppBarItem(iconData: (_currentIndex == 0) ? NavbarCustom.nav_home_active : NavbarCustom.nav_home_inactive, text: ''),
-          FABBottomAppBarItem(iconData: (_currentIndex == 1) ? NavbarCustom.nav_portfolio_active : NavbarCustom.nav_portfolio_inactive, text: ''),
-          FABBottomAppBarItem(iconData: (_currentIndex == 2) ? NavbarCustom.nav_inbox_active : NavbarCustom.nav_inbox_inactive, text: ''),
-          FABBottomAppBarItem(iconData: (_currentIndex == 3) ? NavbarCustom.nav_othersmenu_active : NavbarCustom.nav_othersmenu_inactive, text: ''),
+          FABBottomAppBarItem(iconData: (_currentIndex == 0) ? NewIcon.nav_home_active_3x : NewIcon.nav_home_inactive_3x, text: ''),
+          FABBottomAppBarItem(iconData: (_currentIndex == 1) ? NewIcon.nav_portfolio_3x : NewIcon.nav_portfolio_3x, text: ''),
+          FABBottomAppBarItem(iconData: (_currentIndex == 2) ? NewIcon.nav_inbox_3x : NewIcon.nav_inbox_3x, text: ''),
+          FABBottomAppBarItem(iconData: (_currentIndex == 3) ? NewIcon.nav_others_3x : NewIcon.nav_others_3x, text: ''),
         ],
       ),
     );
@@ -100,6 +103,16 @@ class _HomeState extends State<HomeView> {
       return false;
     }
     return true;
+  }
+
+  @override
+  void initState() {
+    bloc.preferences.forEach((value) {
+      setState(() {
+        _pref = value;
+      });
+    });
+    super.initState();
   }
 
   void checkToken() async {

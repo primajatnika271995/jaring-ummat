@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter_jaring_ummat/src/config/hexColor.dart';
 import 'package:flutter_jaring_ummat/src/models/program_amal.dart';
 import 'package:flutter_jaring_ummat/src/views/components/custom_fonts.dart';
-import 'package:flutter_jaring_ummat/src/views/components/show_alert_dialog.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dots_indicator/dots_indicator.dart';
+import 'package:flutter_jaring_ummat/src/views/components/icon_text/new_icon_icons.dart';
 
 // Component
 import '../../services/time_ago_service.dart';
@@ -77,7 +78,7 @@ class _GalangAmalContainerState extends State<GalangAmalContainer> {
         borderRadius: BorderRadius.circular(30.0),
         image: DecorationImage(
           image: NetworkImage(
-              'https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg-1024x683.jpg'),
+              'https://kempenfeltplayers.com/wp-content/uploads/2015/07/profile-icon-empty.png'),
           fit: BoxFit.cover,
         ),
       ),
@@ -275,7 +276,7 @@ class _GalangAmalContainerState extends State<GalangAmalContainer> {
                   borderRadius: BorderRadius.circular(30.0),
                   image: DecorationImage(
                       image: NetworkImage(
-                          'https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg-1024x683.jpg'),
+                          'https://kempenfeltplayers.com/wp-content/uploads/2015/07/profile-icon-empty.png'),
                       fit: BoxFit.cover),
                 ),
               ),
@@ -364,7 +365,7 @@ class _GalangAmalContainerState extends State<GalangAmalContainer> {
             onPressed: () {},
             textColor: Colors.white,
             padding: EdgeInsets.all(0.0),
-            color: Color.fromRGBO(21, 101, 192, 1.0),
+            color: greenColor,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20.0),
             ),
@@ -404,9 +405,9 @@ class _GalangAmalContainerState extends State<GalangAmalContainer> {
           child: Row(
             children: <Widget>[
               Icon(
-                (isLoved) ? CustomFonts.heart : CustomFonts.heart_empty,
-                size: 13.0,
-                color: (isLoved) ? Colors.red : null,
+                (isLoved) ? NewIcon.love_3x : NewIcon.love_3x,
+                size: 20.0,
+                color: (isLoved) ? Colors.red : greenColor,
               ),
               SizedBox(
                 width: 5.0,
@@ -426,13 +427,13 @@ class _GalangAmalContainerState extends State<GalangAmalContainer> {
         ),
         GestureDetector(
           onTap: () {
-            showAlertDialog(context, 'This will show view with comments');
           },
           child: Row(
             children: <Widget>[
               Icon(
-                CustomFonts.chat_bubble_outline,
-                size: 13.0,
+                NewIcon.comment_3x,
+                color: greenColor,
+                size: 20.0,
               ),
               SizedBox(
                 width: 5.0,
@@ -456,13 +457,13 @@ class _GalangAmalContainerState extends State<GalangAmalContainer> {
       children: <Widget>[
         GestureDetector(
           onTap: () {
-            showAlertDialog(context, 'This will save content');
           },
           child: Row(
             children: <Widget>[
               Icon(
-                CustomFonts.bookmark,
-                size: 17.0,
+                NewIcon.save_3x,
+                color: greenColor,
+                size: 20.0,
               ),
               SizedBox(
                 width: 5.0,
@@ -472,13 +473,13 @@ class _GalangAmalContainerState extends State<GalangAmalContainer> {
         ),
         GestureDetector(
           onTap: () {
-            showAlertDialog(context, 'This will save content');
           },
           child: Row(
             children: <Widget>[
               Icon(
-                Icons.share,
-                size: 17.0,
+                NewIcon.share_3x,
+                color: greenColor,
+                size: 20.0,
               ),
               SizedBox(
                 width: 5.0,

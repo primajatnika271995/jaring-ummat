@@ -1,10 +1,12 @@
 import 'package:circular_profile_avatar/circular_profile_avatar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_jaring_ummat/src/config/hexColor.dart';
 import 'package:flutter_jaring_ummat/src/config/preferences.dart';
 import 'package:flutter_jaring_ummat/src/models/commentModel.dart';
 import 'package:flutter_jaring_ummat/src/models/listUserLikes.dart';
 import 'package:flutter_jaring_ummat/src/models/program_amal.dart';
 import 'package:flutter_jaring_ummat/src/services/time_ago_service.dart';
+import 'package:flutter_jaring_ummat/src/views/components/icon_text/new_icon_icons.dart';
 import 'package:rubber/rubber.dart';
 
 import 'package:flutter_jaring_ummat/src/bloc/commentBloc.dart' as commentBloc;
@@ -119,7 +121,7 @@ class _KomentarContainerState extends State<KomentarContainer>
                         if (snapshot.data == null) {
                           return Container(
                             child: Center(
-                              child: Text('0 People like this'),
+                              child: Text('0 orang menyukai ini'),
                             ),
                           );
                         }
@@ -196,24 +198,23 @@ class _KomentarContainerState extends State<KomentarContainer>
             margin: EdgeInsets.all(10.0),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(30.0),
-              image: DecorationImage(
-                image: profilePictUrl == null
-                    ? NetworkImage(medsosPictUrl)
-                    : NetworkImage(profilePictUrl),
-                fit: BoxFit.cover,
-              ),
+            ),
+            child: CircleAvatar(
+              backgroundColor: grayColor,
+              child: Text('ME'),
             ),
           ),
           actions: <Widget>[
             IconButton(
               icon: Icon(
-                Icons.send,
-                color: Colors.black,
+                NewIcon.send_3x,
+                color: greenColor,
               ),
               onPressed: () async {
                 commentBloc.bloc.saveComment("", widget.programAmal.idProgram);
                 await Future.delayed(Duration(milliseconds: 3));
-                commentBloc.bloc.fetchProgramAmalComment(widget.programAmal.idProgram);
+                commentBloc.bloc
+                    .fetchProgramAmalComment(widget.programAmal.idProgram);
               },
             ),
           ],
@@ -280,60 +281,52 @@ class _KomentarContainerState extends State<KomentarContainer>
                   borderRadius: BorderRadius.circular(10.0)),
               padding: EdgeInsets.all(10.0),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
-                  Expanded(
-                    flex: 1,
+                  Padding(
+                    padding: const EdgeInsets.only(right: 20.0),
                     child: Container(
                       width: 50.0,
                       height: 50.0,
                       child: snapshot.data[index].contents == null
                           ? CircularProfileAvatar(
-                              medsosPictUrl,
-                            )
+                              'https://kempenfeltplayers.com/wp-content/uploads/2015/07/profile-icon-empty.png')
                           : CircularProfileAvatar(
                               snapshot.data[index].contents[0].imgUrl,
                             ),
                     ),
                   ),
-                  SizedBox(
-                    width: 10.0,
-                  ),
-                  Expanded(
-                    flex: 6,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        // SizedBox(height: 3.0),
-                        Text(
-                          snapshot.data[index].fullname,
-                          style: TextStyle(
-                            fontSize: 12.0,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
-                          ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        snapshot.data[index].fullname,
+                        style: TextStyle(
+                          fontSize: 12.0,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
                         ),
-                        SizedBox(height: 3.0),
-                        Container(
-                          width: 270.0,
-                          child: Text(
-                            snapshot.data[index].komentar,
-                            style: TextStyle(
-                                fontSize: 11.0,
-                                fontWeight: FontWeight.bold,
-                                color: Color.fromRGBO(122, 122, 122, 1.0)),
-                          ),
-                        ),
-                        Text(
-                          TimeAgoService().timeAgoFormatting(
-                              snapshot.data[index].createdDate),
+                      ),
+                      SizedBox(height: 3.0),
+                      Container(
+                        width: 270.0,
+                        child: Text(
+                          snapshot.data[index].komentar,
                           style: TextStyle(
                               fontSize: 11.0,
-                              fontWeight: FontWeight.normal,
+                              fontWeight: FontWeight.bold,
                               color: Color.fromRGBO(122, 122, 122, 1.0)),
-                        )
-                      ],
-                    ),
+                        ),
+                      ),
+                      Text(
+                        TimeAgoService().timeAgoFormatting(
+                            snapshot.data[index].createdDate),
+                        style: TextStyle(
+                            fontSize: 11.0,
+                            fontWeight: FontWeight.normal,
+                            color: Color.fromRGBO(122, 122, 122, 1.0)),
+                      )
+                    ],
                   ),
                 ],
               ),
@@ -359,58 +352,57 @@ class _KomentarContainerState extends State<KomentarContainer>
           header: Container(
             child: Row(
               children: <Widget>[
-                Expanded(
-                  flex: 2,
-                  child: new Column(
-                    children: <Widget>[
-                      Container(
+                SizedBox(
+                  width: 5.0,
+                ),
+                Column(
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.all(7.0),
+                      child: Container(
                         width: 50.0,
                         height: 50.0,
-                        margin: EdgeInsets.symmetric(
-                            horizontal: 5.0, vertical: 5.0),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(30.0),
-                          image: DecorationImage(
-                            fit: BoxFit.cover,
-                            image: NetworkImage(
-                                widget.programAmal.imageContent[0].imgUrl),
-                          ),
+                        child: CircleAvatar(
+                          backgroundColor: softGreyColor,
+                          child: Text(widget.programAmal.createdBy
+                              .substring(0, 1)
+                              .toUpperCase()),
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-                Expanded(
-                  flex: 8,
-                  child: new Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      new Text(widget.programAmal.titleProgram,
-                          style: TextStyle(
-                              fontSize: 15.0,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white)),
-                      new Text(
-                        'Oleh ' +
-                            widget.programAmal.createdBy +
-                            ' - ' +
-                            TimeAgoService().timeAgoFormatting(
-                                widget.programAmal.createdDate),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Container(
+                      width: MediaQuery.of(context).size.width - 100,
+                      child: Text(
+                        widget.programAmal.titleProgram,
                         style: TextStyle(
-                            fontSize: 11.0,
-                            fontWeight: FontWeight.normal,
-                            color: Colors.white),
-                      )
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  width: 10.0,
+                          fontSize: 15.0,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                    new Text(
+                      'Oleh ' +
+                          widget.programAmal.createdBy +
+                          ' - ' +
+                          TimeAgoService().timeAgoFormatting(
+                              widget.programAmal.createdDate),
+                      style: TextStyle(
+                          fontSize: 11.0,
+                          fontWeight: FontWeight.normal,
+                          color: Colors.white),
+                    )
+                  ],
                 ),
               ],
             ),
-            color: Colors.blue,
+            color: greenColor,
           ),
           headerHeight: 65,
           upperLayer: contentLayer(),

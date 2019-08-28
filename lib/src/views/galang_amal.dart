@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_jaring_ummat/src/config/hexColor.dart';
 import 'package:flutter_jaring_ummat/src/models/program_amal.dart';
 import 'package:flutter_jaring_ummat/src/views/components/galang_amal_container.dart';
+import 'package:flutter_jaring_ummat/src/views/components/icon_text/new_icon_icons.dart';
 
 // Component
 import '../services/currency_format_service.dart';
@@ -24,7 +26,7 @@ class _GalangAmalState extends State<GalangAmalView> {
           onTap: () {
             Navigator.pop(context);
           },
-          child: Icon(Icons.arrow_back_ios, color: Colors.black),
+          child: Icon(NewIcon.back_big_3x, color: greenColor),
         ),
         title: new Text(
           'Galang Amal',
@@ -59,7 +61,6 @@ class _GalangAmalState extends State<GalangAmalView> {
                               fontWeight: FontWeight.bold,
                               color: Color.fromRGBO(122, 122, 122, 1.0)),
                         ),
-                        SizedBox(height: 3.0),
                         Text(
                           'Rp. ' +
                               '${CurrencyFormat().currency(widget.programAmal.totalDonation)}' +
@@ -71,7 +72,6 @@ class _GalangAmalState extends State<GalangAmalView> {
                             color: Colors.black,
                           ),
                         ),
-                        SizedBox(height: 3.0),
                         Text(
                           'Batas waktu ' + widget.programAmal.endDate,
                           style: TextStyle(
@@ -85,7 +85,7 @@ class _GalangAmalState extends State<GalangAmalView> {
                       onPressed: () {},
                       textColor: Colors.white,
                       padding: EdgeInsets.all(0.0),
-                      color: Color.fromRGBO(21, 101, 192, 1.0),
+                      color: greenColor,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20.0),
                       ),

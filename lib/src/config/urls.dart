@@ -3,8 +3,8 @@
 
 const BASE_API_URL = 'http://139.162.15.91/jaring-ummat';
 const BASE_API_UPLOADER_URL = 'http://139.162.15.91/uploader';
-const BASE_API_CHATS = 'http://tabeldata.ip-dynamic.com/hcare-chat';
 
+const BASE_API_CHATS = 'http://tabeldata.ip-dynamic.com/hcare-chat';
 const WEBSOCKET_CHAT = 'ws://tabeldata.ip-dynamic.com:6061/hcare-chat/ws';
 
 const UPLOADER_MEDIA_IMAGE = BASE_API_UPLOADER_URL + '/api/media/upload/image';

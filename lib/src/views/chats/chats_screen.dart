@@ -3,10 +3,12 @@ import 'dart:convert';
 
 import 'package:bubble/bubble.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_jaring_ummat/src/config/hexColor.dart';
 import 'package:flutter_jaring_ummat/src/config/preferences.dart';
 import 'package:flutter_jaring_ummat/src/config/urls.dart';
 import 'package:flutter_jaring_ummat/src/models/DTO/ChatsResponse.dart';
 import 'package:flutter_jaring_ummat/src/bloc/chatsBloc.dart';
+import 'package:flutter_jaring_ummat/src/views/components/icon_text/new_icon_icons.dart';
 import 'package:jstomp/jstomp.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -66,7 +68,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   image: DecorationImage(
                     fit: BoxFit.cover,
                     image: NetworkImage(
-                        'https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg-1024x683.jpg'),
+                        'https://kempenfeltplayers.com/wp-content/uploads/2015/07/profile-icon-empty.png'),
                   ),
                 ),
               ),
@@ -84,8 +86,8 @@ class _ChatScreenState extends State<ChatScreen> {
               new Container(
                 margin: const EdgeInsets.symmetric(horizontal: 4.0),
                 child: new IconButton(
-                    icon: new Icon(Icons.send),
-                    color: Colors.lightBlue,
+                    icon: new Icon(NewIcon.send_3x),
+                    color: greenColor,
                     onPressed: () {
                       sendMsg(_textEditingControllerChatsMessage.text);
                       _textEditingControllerChatsMessage.clear();
@@ -106,7 +108,7 @@ class _ChatScreenState extends State<ChatScreen> {
           onTap: () {
             Navigator.pop(context);
           },
-          child: Icon(Icons.arrow_back_ios, color: Colors.black),
+          child: Icon(NewIcon.back_big_3x, color: greenColor),
         ),
         title: new Row(
           children: <Widget>[
@@ -118,7 +120,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 image: DecorationImage(
                   fit: BoxFit.cover,
                   image: NetworkImage(
-                      'https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg-1024x683.jpg'),
+                      'https://kempenfeltplayers.com/wp-content/uploads/2015/07/profile-icon-empty.png'),
                 ),
               ),
             ),
@@ -206,7 +208,7 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   @override
-  void dispose() { 
+  void dispose() {
     bloc.dispose();
     super.dispose();
   }
@@ -217,7 +219,7 @@ class _ChatScreenState extends State<ChatScreen> {
     }
 
     String url = WEBSOCKET_CHAT;
-    bool b = await stomp.init(url: url, sendUrl: '/chat/request');
+    bool b = await stomp.init(url: url, sendUrl: '/request/chat');
 
     print(b ? 'Initialization Succesfull' : 'Initialization Failed');
 
@@ -261,6 +263,11 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   void onSendCallback() async {
+    _preferences = await SharedPreferences.getInstance();
+    var fromId = _preferences.getString(EMAIL_KEY);
+
+    print('from $fromId');
+    print('to email ${widget.emailLembaga}');
     await stomp.onSendCallback((status, sendMsg) {
       print("Pesan Terkirim：$status :msg=" + sendMsg.toString());
       streamChats.sink.add(logChats_tmp);

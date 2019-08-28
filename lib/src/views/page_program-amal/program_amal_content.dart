@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
 import 'package:badges/badges.dart';
-import 'package:dots_indicator/dots_indicator.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter_jaring_ummat/src/config/hexColor.dart';
 import 'package:flutter_jaring_ummat/src/services/currency_format_service.dart';
+import 'package:flutter_jaring_ummat/src/views/components/icon_text/new_icon_icons.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_jaring_ummat/src/config/preferences.dart';
@@ -41,69 +42,51 @@ class _ProgramAmalContentState extends State<ProgramAmalContent> {
 
   LikeUnlikeProvider api = new LikeUnlikeProvider();
 
-  @override
-  void initState() {
-    super.initState();
-    // Untuk More Description or Less Description
-    if (widget.programAmal.descriptionProgram.length > 150) {
-      lessDesc = widget.programAmal.descriptionProgram.substring(0, 150);
-      moreDesc = widget.programAmal.descriptionProgram
-          .substring(150, widget.programAmal.descriptionProgram.length);
-    } else {
-      lessDesc = widget.programAmal.descriptionProgram;
-      moreDesc = "";
-    }
-    checkToken();
-  }
-
   Widget titleContent(BuildContext context) {
     return Container(
-      padding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 0.0),
       child: Column(
         children: <Widget>[
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              Container(
-                width: 40.0,
-                height: 40.0,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(50.0),
-                  image: DecorationImage(
-                    fit: BoxFit.cover,
-                    image: NetworkImage(
-                        'https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg-1024x683.jpg'),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 2.0),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                CircleAvatar(
+                  backgroundColor: greenColor,
+                  child: Text(
+                    widget.programAmal.createdBy.substring(0, 1),
+                    style: TextStyle(color: whiteColor),
                   ),
                 ),
-              ),
-              Container(
-                padding: EdgeInsets.only(left: 10.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Container(
-                      width: MediaQuery.of(context).size.width - 90.0,
-                      child: Text(
-                        widget.programAmal.titleProgram,
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 15.0),
+                Container(
+                  padding: EdgeInsets.only(left: 10.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Container(
+                        width: MediaQuery.of(context).size.width - 90.0,
+                        child: Text(
+                          widget.programAmal.titleProgram,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 14.0),
+                        ),
                       ),
-                    ),
-                    SizedBox(
-                      height: 3.0,
-                    ),
-                    Text(
-                      'oleh ' +
-                          widget.programAmal.createdBy +
-                          ' • ' +
-                          TimeAgoService().timeAgoFormatting(
-                              widget.programAmal.createdDate),
-                      style: TextStyle(fontSize: 12.0),
-                    )
-                  ],
+                      SizedBox(
+                        height: 1.0,
+                      ),
+                      Text(
+                        'oleh ' +
+                            widget.programAmal.createdBy +
+                            ' • ' +
+                            TimeAgoService().timeAgoFormatting(
+                                widget.programAmal.createdDate),
+                        style: TextStyle(fontSize: 12.0, color: grayColor),
+                      )
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
           dividerContent(context),
         ],
@@ -198,8 +181,8 @@ class _ProgramAmalContentState extends State<ProgramAmalContent> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: <Widget>[
                       new Text(
-                        flag ? "show more" : "show less",
-                        style: new TextStyle(color: Colors.blue),
+                        flag ? "Selengkapnya" : "Perkecil",
+                        style: new TextStyle(color: blueColor),
                       )
                     ],
                   ),
@@ -211,7 +194,7 @@ class _ProgramAmalContentState extends State<ProgramAmalContent> {
 
   Widget dividerContent(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 10.0),
+      padding: EdgeInsets.symmetric(horizontal: 0.0),
       child: Divider(
         color: Colors.grey,
       ),
@@ -227,15 +210,13 @@ class _ProgramAmalContentState extends State<ProgramAmalContent> {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              // SizedBox(height: 3.0),
               Text(
                 'Donasi terkumpul',
                 style: TextStyle(
                     fontSize: 11.0,
                     fontWeight: FontWeight.bold,
-                    color: Color.fromRGBO(122, 122, 122, 1.0)),
+                    color: grayColor),
               ),
-              SizedBox(height: 3.0),
               Text(
                 'Rp. ' +
                     '${CurrencyFormat().currency(widget.programAmal.totalDonation)}' +
@@ -250,10 +231,7 @@ class _ProgramAmalContentState extends State<ProgramAmalContent> {
               SizedBox(height: 3.0),
               Text(
                 'Batas waktu ' + widget.programAmal.endDate,
-                style: TextStyle(
-                    fontSize: 11.0,
-                    fontWeight: FontWeight.bold,
-                    color: Color.fromRGBO(122, 122, 122, 1.0)),
+                style: TextStyle(fontSize: 11.0, color: grayColor),
               )
             ],
           ),
@@ -272,7 +250,7 @@ class _ProgramAmalContentState extends State<ProgramAmalContent> {
             },
             textColor: Colors.white,
             padding: EdgeInsets.all(0.0),
-            color: Color.fromRGBO(21, 101, 192, 1.0),
+            color: greenColor,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20.0),
             ),
@@ -305,31 +283,35 @@ class _ProgramAmalContentState extends State<ProgramAmalContent> {
       children: <Widget>[
         GestureDetector(
           onTap: () {
-            setState(() {
+            if (token == null) {
+              Navigator.of(context).pushNamed('/login');
+            } else {
+              setState(() {
+                if (isLoved) {
+                  isLoved = false;
+                } else {
+                  isLoved = true;
+                }
+              });
               if (isLoved) {
-                isLoved = false;
-              } else {
-                isLoved = true;
+                likeProgram();
               }
-            });
-            if (isLoved) {
-              likeProgram();
-            }
 
-            if (!isLoved) {
-              unlikeProgram();
+              if (!isLoved) {
+                unlikeProgram();
+              }
             }
           },
           child: Row(
             children: <Widget>[
               Icon(
                 (widget.programAmal.userLikeThis)
-                    ? CustomFonts.heart
-                    : (isLoved) ? CustomFonts.heart : CustomFonts.heart_empty,
-                size: 18.0,
+                    ? NewIcon.love_3x
+                    : (isLoved) ? NewIcon.love_3x : NewIcon.love_3x,
+                size: 20.0,
                 color: (widget.programAmal.userLikeThis)
                     ? Colors.red
-                    : (isLoved) ? Colors.red : null,
+                    : (isLoved) ? Colors.red : greenColor,
               ),
               SizedBox(
                 width: 5.0,
@@ -350,19 +332,25 @@ class _ProgramAmalContentState extends State<ProgramAmalContent> {
         GestureDetector(
           onTap: () {
             print("ID Berita ${this.widget.programAmal.idProgram}");
-            showModalBottomSheet(
+            if (token == null) {
+              Navigator.of(context).pushNamed('/login');
+            } else {
+              showModalBottomSheet(
                 context: context,
                 builder: (context) {
                   return KomentarContainer(
                     programAmal: this.widget.programAmal,
                   );
-                });
+                },
+              );
+            }
           },
           child: Row(
             children: <Widget>[
               Icon(
-                CustomFonts.chat_bubble_outline,
-                size: 18.0,
+                NewIcon.comment_3x,
+                size: 20.0,
+                color: greenColor,
               ),
               SizedBox(
                 width: 5.0,
@@ -396,8 +384,9 @@ class _ProgramAmalContentState extends State<ProgramAmalContent> {
           child: Row(
             children: <Widget>[
               Icon(
-                Icons.share,
-                size: 17.0,
+                NewIcon.share_3x,
+                size: 20.0,
+                color: greenColor,
               ),
               SizedBox(
                 width: 5.0,
@@ -421,11 +410,28 @@ class _ProgramAmalContentState extends State<ProgramAmalContent> {
           descriptionContent(context),
           dividerContent(context),
           donationContent(context),
-          (token == null) ? Container() : bottomContent(context),
+          bottomContent(context),
         ],
       ),
     );
   }
+
+  @override
+  void initState() {
+    super.initState();
+    // Untuk More Description or Less Description
+    if (widget.programAmal.descriptionProgram.length > 150) {
+      lessDesc = widget.programAmal.descriptionProgram.substring(0, 150);
+      moreDesc = widget.programAmal.descriptionProgram
+          .substring(150, widget.programAmal.descriptionProgram.length);
+    } else {
+      lessDesc = widget.programAmal.descriptionProgram;
+      moreDesc = "";
+    }
+    checkToken();
+  }
+
+
 
   void likeProgram() async {
     SharedPreferences _preferences = await SharedPreferences.getInstance();

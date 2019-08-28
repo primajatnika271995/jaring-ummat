@@ -1,6 +1,7 @@
 import 'package:circular_profile_avatar/circular_profile_avatar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_jaring_ummat/src/config/hexColor.dart';
 import 'package:flutter_jaring_ummat/src/config/preferences.dart';
 import 'package:flutter_jaring_ummat/src/models/beritaModel.dart';
 import 'package:flutter_jaring_ummat/src/models/commentModel.dart';
@@ -82,7 +83,7 @@ class _KomentarContainerState extends State<KomentarContainer>
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Text(
-                              '${widget.berita.totalLikes} Muzakki menyukai akun ini',
+                              '${widget.berita.totalLikes} menyukai berira ini',
                               style: TextStyle(
                                   fontSize: 11.0,
                                   fontWeight: FontWeight.bold,
@@ -185,12 +186,10 @@ class _KomentarContainerState extends State<KomentarContainer>
             margin: EdgeInsets.all(10.0),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(30.0),
-              image: DecorationImage(
-                image: profilePictUrl == null
-                    ? NetworkImage(medsosPictUrl)
-                    : NetworkImage(profilePictUrl),
-                fit: BoxFit.cover,
-              ),
+            ),
+            child: CircleAvatar(
+              backgroundColor: grayColor,
+              child: Text('ME'),
             ),
           ),
           actions: <Widget>[
@@ -348,58 +347,57 @@ class _KomentarContainerState extends State<KomentarContainer>
           header: Container(
             child: Row(
               children: <Widget>[
-                Expanded(
-                  flex: 2,
-                  child: new Column(
-                    children: <Widget>[
-                      Container(
+                SizedBox(
+                  width: 5.0,
+                ),
+                Column(
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.all(7.0),
+                      child: Container(
                         width: 50.0,
                         height: 50.0,
-                        margin: EdgeInsets.symmetric(
-                            horizontal: 5.0, vertical: 5.0),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(30.0),
-                          image: DecorationImage(
-                            fit: BoxFit.cover,
-                            image: NetworkImage(
-                                widget.berita.imageContent[0].imgUrl),
-                          ),
+                        child: CircleAvatar(
+                          backgroundColor: softGreyColor,
+                          child: Text(widget.berita.createdBy
+                              .substring(0, 1)
+                              .toUpperCase()),
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-                Expanded(
-                  flex: 8,
-                  child: new Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      new Text(widget.berita.titleBerita,
-                          style: TextStyle(
-                              fontSize: 15.0,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white)),
-                      new Text(
-                        'Oleh ' +
-                            widget.berita.createdBy +
-                            ' - ' +
-                            TimeAgoService()
-                                .timeAgoFormatting(widget.berita.createdDate),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Container(
+                      width: MediaQuery.of(context).size.width - 100,
+                      child: Text(
+                        widget.berita.titleBerita,
                         style: TextStyle(
-                            fontSize: 11.0,
-                            fontWeight: FontWeight.normal,
-                            color: Colors.white),
-                      )
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  width: 10.0,
+                          fontSize: 15.0,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                    new Text(
+                      'Oleh ' +
+                          widget.berita.createdBy +
+                          ' - ' +
+                          TimeAgoService()
+                              .timeAgoFormatting(widget.berita.createdDate),
+                      style: TextStyle(
+                          fontSize: 11.0,
+                          fontWeight: FontWeight.normal,
+                          color: Colors.white),
+                    )
+                  ],
                 ),
               ],
             ),
-            color: Colors.blueAccent,
+            color: greenColor,
           ),
           headerHeight: 65,
           upperLayer: contentLayer(),

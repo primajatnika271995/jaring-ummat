@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_jaring_ummat/src/config/hexColor.dart';
 
 import 'package:flutter_jaring_ummat/src/models/lembagaAmalModel.dart';
 import 'package:flutter_jaring_ummat/src/views/components/appbar_custom_icons.dart';
 import 'package:flutter_jaring_ummat/src/bloc/lembagaAmalBloc.dart';
+import 'package:flutter_jaring_ummat/src/views/components/icon_text/new_icon_icons.dart';
 
 const double _ITEM_HEIGHT = 70.0;
 
@@ -19,6 +21,9 @@ class PopularAccountState extends State<PopularAccountView>
   TabController _tabController;
 
   String selectedCategory = "";
+
+  final String noImg =
+      "https://kempenfeltplayers.com/wp-content/uploads/2015/07/profile-icon-empty.png";
 
   @override
   Widget build(BuildContext context) {
@@ -77,7 +82,7 @@ class PopularAccountState extends State<PopularAccountView>
         },
         tabs: <Widget>[
           new Tab(
-            text: 'Semua Kategori',
+            text: 'Populer',
           ),
           new Tab(
             text: 'Pendidikan',
@@ -105,69 +110,24 @@ class PopularAccountState extends State<PopularAccountView>
       ),
     );
     return Scaffold(
-      appBar: PreferredSize(
-        child: AppBar(
-          elevation: 0.0,
-          backgroundColor: Colors.white,
-          leading: new Icon(Icons.arrow_back, color: Colors.grey[600]),
-          actions: <Widget>[
-            SizedBox(
-              width: 5.0,
-            ),
-            SizedBox(
-              width: 0.0,
-            ),
-            Icon(
-              AppBarIcons.ic_action,
-              color: Colors.white,
-            ),
-            SizedBox(
-              width: 5.0,
-            ),
-          ],
-          centerTitle: true,
-          automaticallyImplyLeading: true,
-          titleSpacing: 0.0,
-          title: Container(
-            child: TextFormField(
-              textInputAction: TextInputAction.next,
-              style: TextStyle(
-                fontSize: 12.0,
-                color: Colors.black,
-              ),
-              decoration: InputDecoration(
-                contentPadding: EdgeInsets.only(
-                  top: 7.0,
-                  bottom: 7.0,
-                  left: -15.0,
-                ),
-                icon: Icon(
-                  Icons.search,
-                  size: 18.0,
-                ),
-                border: InputBorder.none,
-                hintText: 'Cari lembaga amal atau produk lainnya',
-              ),
-            ),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(
-                Radius.circular(
-                  30.0,
-                ),
-              ),
-              color: Colors.grey[200],
-            ),
-            padding: EdgeInsets.fromLTRB(
-              15.0,
-              0.5,
-              15.0,
-              0.5,
-            ),
+      appBar: AppBar(
+        elevation: 0.0,
+        backgroundColor: whiteColor,
+        leading: new Icon(NewIcon.back_big_3x, color: greenColor),
+        title: const Text(
+          'Following Amil',
+          style: TextStyle(color: Colors.black, fontSize: 18.0),
+        ),
+        actions: <Widget>[
+          IconButton(
+            onPressed: () {},
+            icon: Icon(NewIcon.sort_3x),
+            color: greenColor,
           ),
-        ),
-        preferredSize: Size.fromHeight(
-          47.0,
-        ),
+        ],
+        centerTitle: false,
+        automaticallyImplyLeading: true,
+        titleSpacing: 0.0,
       ),
       body: new Padding(
         padding: new EdgeInsets.symmetric(
@@ -200,6 +160,62 @@ class PopularAccountState extends State<PopularAccountView>
   }
 
   Widget buildListLembagaAmal(AsyncSnapshot<List<LembagaAmalModel>> snapshot) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 10.0),
+      child: ListView.separated(
+        separatorBuilder: (context, position) {
+          return Padding(
+            padding: EdgeInsets.only(left: 80.0),
+            child: new SizedBox(
+              height: 10.0,
+              child: new Center(
+                child: new Container(
+                  margin: new EdgeInsetsDirectional.only(start: 1.0, end: 1.0),
+                  height: 5.0,
+                  color: softGreyColor
+                ),
+              ),
+            ),
+          );
+        },
+        itemCount: snapshot.data.length,
+        itemBuilder: (BuildContext context, int index) {
+          var value = snapshot.data[index];
+          var imgUrl = value.imageContent[0].imgUrl;
+          return ListTile(
+            leading: Container(
+              width: 50.0,
+              height: 50.0,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(30.0),
+                image: DecorationImage(
+                  image: (value.imageContent == null)
+                      ? NetworkImage(noImg)
+                      : NetworkImage(imgUrl),
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+            title: Text(
+              value.lembagaAmalName,
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            subtitle: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                Text('${value.totalFollowers} Pengikut'),
+                Text('${value.totalPostProgramAmal} Galang Amal'),
+              ],
+            ),
+            trailing: (value.followThisAccount)
+                ? buttonUnfollow(value.idLembagaAmal)
+                : buttonFollow(value.idLembagaAmal),
+          );
+        },
+      ),
+    );
+
     return ListView.builder(
       padding: EdgeInsets.only(top: 8.0),
       itemBuilder: (context, index) {
@@ -243,11 +259,11 @@ class PopularAccountState extends State<PopularAccountView>
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           Text(
-                              value.lembagaAmalName,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 14.0),
-                              overflow: TextOverflow.ellipsis,
-                            ),
+                            value.lembagaAmalName,
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 14.0),
+                            overflow: TextOverflow.ellipsis,
+                          ),
                           SizedBox(
                             height: 3.0,
                           ),
@@ -283,7 +299,7 @@ class PopularAccountState extends State<PopularAccountView>
   }
 
   Widget buttonFollow(String idAccount) {
-    return RaisedButton(
+    return OutlineButton(
       onPressed: () async {
         await bloc.followAccount(idAccount);
         await Future.delayed(Duration(milliseconds: 3));
@@ -291,21 +307,23 @@ class PopularAccountState extends State<PopularAccountView>
           await bloc.fetchAllLembagaAmal(selectedCategory);
         });
       },
-      color: Color.fromRGBO(21, 101, 192, 1.0),
+      color: whiteColor,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20.0),
       ),
       child: Container(
         child: Text(
           'Follow',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          style:
+              TextStyle(color: Colors.deepPurple, fontWeight: FontWeight.bold),
         ),
       ),
     );
   }
 
   Widget buttonUnfollow(String idAccountAmil) {
-    return RaisedButton(
+    return OutlineButton(
+      borderSide: BorderSide(color: greenColor),
       onPressed: () {
         setState(() async {
           bloc.unfollow(idAccountAmil);
@@ -313,15 +331,16 @@ class PopularAccountState extends State<PopularAccountView>
           bloc.fetchAllLembagaAmal(selectedCategory);
         });
       },
-      color: Color.fromRGBO(165, 219, 98, 1.0),
+      color: greenColor,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20.0),
       ),
       child: Container(
-          child: Icon(
-        Icons.check,
-        color: Colors.white,
-      )),
+        child: Text(
+          'Following',
+          style: TextStyle(color: greenColor, fontWeight: FontWeight.bold),
+        ),
+      ),
     );
   }
 
