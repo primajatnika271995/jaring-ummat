@@ -4,6 +4,7 @@ import 'package:badges/badges.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter_jaring_ummat/src/config/hexColor.dart';
 import 'package:flutter_jaring_ummat/src/services/currency_format_service.dart';
+import 'package:flutter_jaring_ummat/src/views/components/icon_text/active_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/new_icon_icons.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -235,30 +236,6 @@ class _ProgramAmalContentState extends State<ProgramAmalContent> {
               )
             ],
           ),
-          RaisedButton(
-            onPressed: () {
-              (token == null)
-                  ? Navigator.of(context).pushNamed('/login')
-                  : Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => GalangAmalView(
-                          programAmal: widget.programAmal,
-                        ),
-                      ),
-                    );
-            },
-            textColor: Colors.white,
-            padding: EdgeInsets.all(0.0),
-            color: greenColor,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20.0),
-            ),
-            child: Container(
-              padding: EdgeInsets.fromLTRB(15.0, 5.0, 15.0, 5.0),
-              child: Text('Kirim Donasi'),
-            ),
-          ),
         ],
       ),
     );
@@ -306,9 +283,9 @@ class _ProgramAmalContentState extends State<ProgramAmalContent> {
             children: <Widget>[
               Icon(
                 (widget.programAmal.userLikeThis)
-                    ? NewIcon.love_3x
-                    : (isLoved) ? NewIcon.love_3x : NewIcon.love_3x,
-                size: 18.0,
+                    ? ActiveIcon.love_active_3x
+                    : (isLoved) ? ActiveIcon.love_active_3x : NewIcon.love_3x,
+                size: 20.0,
                 color: (widget.programAmal.userLikeThis)
                     ? Colors.red
                     : (isLoved) ? Colors.red : greenColor,
@@ -349,7 +326,7 @@ class _ProgramAmalContentState extends State<ProgramAmalContent> {
             children: <Widget>[
               Icon(
                 NewIcon.comment_3x,
-                size: 18.0,
+                size: 20.0,
                 color: greenColor,
               ),
               SizedBox(
@@ -385,7 +362,7 @@ class _ProgramAmalContentState extends State<ProgramAmalContent> {
             children: <Widget>[
               Icon(
                 NewIcon.share_3x,
-                size: 17.0,
+                size: 20.0,
                 color: greenColor,
               ),
               SizedBox(

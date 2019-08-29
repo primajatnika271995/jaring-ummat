@@ -1,30 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_jaring_ummat/src/config/hexColor.dart';
+import 'package:flutter_jaring_ummat/src/models/beritaModel.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_baru_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/new_icon_icons.dart';
+import 'package:flutter_jaring_ummat/src/views/page_berita/komentar_container.dart';
 
 class BeritaViews extends StatefulWidget {
-  final String judulBerita;
-  final String createdBy;
-  final int createdDate;
-  final String mainImageUrl;
-  final String descriptionBerita;
-  final int totalLikesBerita;
-  final int totalCommentBerita;
-  BeritaViews(
-      {this.judulBerita,
-      this.createdBy,
-      this.createdDate,
-      this.mainImageUrl,
-      this.descriptionBerita,
-      this.totalLikesBerita,
-      this.totalCommentBerita});
+  final BeritaModel value;
+  BeritaViews({this.value});
 
   @override
   _BeritaViewsState createState() => _BeritaViewsState();
 }
 
 class _BeritaViewsState extends State<BeritaViews> {
+  final String noImg =
+      "http://www.sclance.com/pngs/no-image-png/no_image_png_935227.png";
   var titleBar = Text(
     'Berita',
     style: TextStyle(color: blackColor),
@@ -35,15 +26,15 @@ class _BeritaViewsState extends State<BeritaViews> {
     final title = Padding(
       padding: EdgeInsets.only(left: 20.0, right: 20.0, top: 20.0),
       child: Text(
-        widget.judulBerita,
-        style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+        widget.value.titleBerita,
+        style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
       ),
     );
 
     final createdBy = Padding(
       padding: EdgeInsets.only(left: 20.0, right: 20.0, top: 20.0),
       child: Text(
-        widget.createdBy,
+        widget.value.createdBy,
         style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
       ),
     );
@@ -51,44 +42,47 @@ class _BeritaViewsState extends State<BeritaViews> {
     final createdDate = Padding(
       padding: EdgeInsets.only(left: 20.0, right: 20.0, top: 3.0),
       child: Text(
-          'Diterbitkan pada ${DateTime.fromMicrosecondsSinceEpoch(widget.createdDate)}'),
+          'Diterbitkan pada ${DateTime.fromMicrosecondsSinceEpoch(widget.value.createdDate)}'),
     );
 
     final description = Padding(
       padding: EdgeInsets.only(left: 20.0, right: 20.0, top: 10.0),
-      child: Text(widget.descriptionBerita),
+      child: Text(widget.value.descriptionBerita),
     );
 
     final mainImage = Padding(
-      padding: EdgeInsets.only(top: 20.0),
+      padding: EdgeInsets.only(top: 10.0),
       child: Stack(
         children: <Widget>[
           Container(
             height: 250.0,
             width: MediaQuery.of(context).size.width,
-            child: Image.network(widget.mainImageUrl, fit: BoxFit.cover),
+            child: widget.value.imageContent == null
+                ? Image.network(noImg, fit: BoxFit.cover)
+                : Image.network(widget.value.imageContent[0].imgUrl,
+                    fit: BoxFit.cover),
           ),
           Positioned(
-            bottom: 20.0,
-            right: 80.0,
+            bottom: 0.0,
+            right: 45.0,
             child: IconButton(
               onPressed: () {},
               icon: Icon(
                 NewIcon.sound_on_3x,
                 color: whiteColor,
-                size: 30.0,
+                size: 25.0,
               ),
             ),
           ),
           Positioned(
-            bottom: 20.0,
-            right: 30.0,
+            bottom: 0.0,
+            right: 10.0,
             child: IconButton(
               onPressed: () {},
               icon: Icon(
                 NewIcon.full_screen_3x,
                 color: whiteColor,
-                size: 30.0,
+                size: 25.0,
               ),
             ),
           ),
@@ -97,7 +91,7 @@ class _BeritaViewsState extends State<BeritaViews> {
     );
 
     final postLocation = Padding(
-      padding: EdgeInsets.only(left: 20.0, right: 20.0, top: 20.0),
+      padding: EdgeInsets.only(left: 20.0, right: 20.0, top: 15.0),
       child: const Text(
         'Jakarta, 30 Agustus 2019',
         style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
@@ -120,20 +114,32 @@ class _BeritaViewsState extends State<BeritaViews> {
                       padding: EdgeInsets.only(right: 10.0),
                       child: Icon(NewIcon.love_3x, color: greenColor),
                     ),
-                    Text('${widget.totalLikesBerita} suka'),
+                    Text('${widget.value.totalLikes} suka'),
                   ],
                 ),
               ),
-              Padding(
-                padding: EdgeInsets.only(left: 0.0, right: 0.0),
-                child: Row(
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.only(right: 10.0),
-                      child: Icon(NewIcon.comment_3x, color: greenColor),
-                    ),
-                    Text('${widget.totalCommentBerita} komentar'),
-                  ],
+              InkWell(
+                onTap: () {
+                  showModalBottomSheet(
+                    context: context,
+                    builder: (context) {
+                      return KomentarContainer(
+                        berita: this.widget.value,
+                      );
+                    },
+                  );
+                },
+                child: Padding(
+                  padding: EdgeInsets.only(left: 0.0, right: 0.0),
+                  child: Row(
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.only(right: 10.0),
+                        child: Icon(NewIcon.comment_3x, color: greenColor),
+                      ),
+                      Text('${widget.value.totalComment} komentar'),
+                    ],
+                  ),
                 ),
               ),
             ],

@@ -10,7 +10,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final String appName = 'Mitra Jaring Ummat';
+  final String appName = 'Mitra Jejaring';
   final String logoUrl = 'assets/icon/main_logo.png';
   final String bgUrl = 'assets/backgrounds/accent_app_width_full_screen.png';
 
@@ -18,7 +18,6 @@ class _LoginPageState extends State<LoginPage> {
   final _passwordTextCtrl = new TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
-  bool validate = false;
   bool _loadingVisible = false;
 
   @override
@@ -39,17 +38,17 @@ class _LoginPageState extends State<LoginPage> {
     );
 
     final widgetContactName = Padding(
-      padding: EdgeInsets.only(top: 60),
+      padding: EdgeInsets.only(top: 40),
       child: const Text('Masukan akun anda'),
     );
 
     final widgetSocialLoginName = Padding(
-      padding: EdgeInsets.only(top: 50.0),
+      padding: EdgeInsets.only(top: 20.0),
       child: const Text('atau masuk dengan media sosial'),
     );
 
     final widgetRegisterBtn = Padding(
-      padding: EdgeInsets.only(top: 10.0),
+      padding: EdgeInsets.only(top: 5.0),
       child: OutlineButton(
         onPressed: () {
           Navigator.of(context).pushReplacementNamed('/register/step1');
@@ -60,38 +59,38 @@ class _LoginPageState extends State<LoginPage> {
     );
 
     final widgetSubmitBtn = Padding(
-      padding: EdgeInsets.only(top: 40.0),
+      padding: EdgeInsets.only(top: 20.0),
       child: FlatButton(
         onPressed: () {
           onSubmit();
         },
         child: const Text('Masuk', style: TextStyle(color: Colors.white)),
-        color: validate ? greenColor : grayColor,
+        color: greenColor,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(45)),
       ),
     );
 
     final widgetSocialMedia = Padding(
-      padding: EdgeInsets.only(top: 10.0),
+      padding: EdgeInsets.only(top: 5.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           IconButton(
             onPressed: () {},
             icon: Icon(SosialMedia.facebook),
-            iconSize: 60.0,
+            iconSize: 40.0,
             color: facebookColor,
           ),
           IconButton(
             onPressed: () {},
             icon: Icon(SosialMedia.google),
-            iconSize: 60.0,
+            iconSize: 40.0,
             color: googleColor,
           ),
           IconButton(
             onPressed: () {},
             icon: Icon(SosialMedia.linkedin),
-            iconSize: 60.0,
+            iconSize: 40.0,
             color: linkedInColor,
           ),
         ],
@@ -103,19 +102,13 @@ class _LoginPageState extends State<LoginPage> {
       child: TextFormField(
         controller: _emailTextCtrl,
         decoration: InputDecoration(
-          contentPadding:
-              EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-          border: new OutlineInputBorder(
-            borderRadius: const BorderRadius.all(const Radius.circular(30.0)),
-          ),
-          prefixIcon: Icon(Icons.mail_outline),
+          contentPadding: EdgeInsets.fromLTRB(10.0, 5.0, 20.0, 10.0),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
           hintText: "Alamat Email",
+          hintStyle: TextStyle(fontSize: 15.0),
         ),
         keyboardType: TextInputType.text,
         textInputAction: TextInputAction.done,
-        onEditingComplete: () {
-          checkValidate();
-        },
         validator: (value) {
           if (value.isEmpty) {
             return 'Email tidak boleh kosong';
@@ -130,20 +123,14 @@ class _LoginPageState extends State<LoginPage> {
       child: TextFormField(
         controller: _passwordTextCtrl,
         decoration: InputDecoration(
-          contentPadding:
-              EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-          border: new OutlineInputBorder(
-            borderRadius: const BorderRadius.all(const Radius.circular(30.0)),
-          ),
-          prefixIcon: Icon(Icons.lock_outline),
+          contentPadding: EdgeInsets.fromLTRB(10.0, 5.0, 20.0, 10.0),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
           hintText: "Password",
+          hintStyle: TextStyle(fontSize: 15.0),
         ),
         keyboardType: TextInputType.text,
         textInputAction: TextInputAction.done,
         obscureText: true,
-        onEditingComplete: () {
-          checkValidate();
-        },
         validator: (value) {
           if (value.isEmpty) {
             return 'Password tidak boleh kosong';
@@ -207,16 +194,6 @@ class _LoginPageState extends State<LoginPage> {
   Future<void> changeLoadingVisible() async {
     setState(() {
       _loadingVisible = !_loadingVisible;
-    });
-  }
-
-  void checkValidate() {
-    setState(() {
-      if (!_emailTextCtrl.text.isEmpty && !_passwordTextCtrl.text.isEmpty) {
-        validate = true;
-      } else {
-        validate = false;
-      }
     });
   }
 }

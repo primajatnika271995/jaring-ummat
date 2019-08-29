@@ -42,9 +42,9 @@ class _ProgramAmalPageState extends State<ProgramAmalPage>
   StoriesApiProvider _provider = new StoriesApiProvider();
 
   final titleText = Text(
-    'Jaring Ummat',
+    'Mitra Jejaring',
     style: TextStyle(
-        color: Colors.black, fontSize: 18.0, fontFamily: 'Arab-Dances'),
+        color: Colors.black, fontSize: 22.0, fontFamily: 'Arab-Dances'),
   );
 
   @override
@@ -67,18 +67,19 @@ class _ProgramAmalPageState extends State<ProgramAmalPage>
               title: titleText,
               actions: <Widget>[
                 IconButton(
+                  padding: EdgeInsets.only(left: 20.0),
                   icon: Icon(NewIcon.search_big_3x),
                   color: greenColor,
-                  iconSize: 25.0,
+                  iconSize: 20.0,
                   onPressed: () {
                     print('_search_');
                   },
                 ),
                 IconButton(
-                  padding: EdgeInsets.only(right: 25.0),
+                  padding: EdgeInsets.only(right: 10.0),
                   icon: Icon(NewIcon.chat_3x),
                   color: greenColor,
-                  iconSize: 25.0,
+                  iconSize: 20.0,
                   onPressed: () {
                     if (_token == null) {
                       Navigator.of(context).pushNamed('/login');
@@ -173,7 +174,7 @@ class _ProgramAmalPageState extends State<ProgramAmalPage>
                           },
                           tabs: <Widget>[
                             new Tab(
-                              text: 'Semua Kategori',
+                              text: 'Populer',
                             ),
                             new Tab(
                               text: 'Pendidikan',

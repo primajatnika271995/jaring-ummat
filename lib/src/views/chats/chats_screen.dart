@@ -57,20 +57,24 @@ class _ChatScreenState extends State<ChatScreen> {
       return IconTheme(
         data: new IconThemeData(color: Colors.blue),
         child: new Container(
-          margin: const EdgeInsets.symmetric(horizontal: 8.0),
+          margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 11.0),
           child: new Row(
             children: <Widget>[
               Container(
-                width: 30.0,
-                height: 30.0,
+                width: 40.0,
+                height: 40.0,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(50.0),
-                  image: DecorationImage(
-                    fit: BoxFit.cover,
-                    image: NetworkImage(
-                        'https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg-1024x683.jpg'),
-                  ),
+                  borderRadius: BorderRadius.circular(30.0),
                 ),
+                child: Icon(NewIcon.add_picture_camera_3x, color: greenColor),
+              ),
+              Container(
+                width: 40.0,
+                height: 40.0,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(30.0),
+                ),
+                child: Icon(NewIcon.add_picture_gallery_3x, color: greenColor),
               ),
               SizedBox(
                 width: 10.0,
@@ -78,16 +82,26 @@ class _ChatScreenState extends State<ChatScreen> {
               new Flexible(
                 child: new TextField(
                   controller: _textEditingControllerChatsMessage,
-                  decoration: new InputDecoration.collapsed(
-                      hintText: "Type a message",
-                      hintStyle: TextStyle(color: Colors.grey[400])),
+                  decoration: new InputDecoration(
+                    contentPadding: EdgeInsets.symmetric(
+                      vertical: 10.0,
+                      horizontal: 10.0,
+                    ),
+                    border: new OutlineInputBorder(
+                      borderRadius: const BorderRadius.all(
+                        const Radius.circular(30.0),
+                      ),
+                    ),
+                    hintText: "Type a message",
+                    hintStyle: TextStyle(color: Colors.grey[400]),
+                  ),
                 ),
               ),
               new Container(
                 margin: const EdgeInsets.symmetric(horizontal: 4.0),
                 child: new IconButton(
-                    icon: new Icon(Icons.send),
-                    color: Colors.lightBlue,
+                    icon: new Icon(NewIcon.send_3x),
+                    color: greenColor,
                     onPressed: () {
                       sendMsg(_textEditingControllerChatsMessage.text);
                       _textEditingControllerChatsMessage.clear();
@@ -110,30 +124,18 @@ class _ChatScreenState extends State<ChatScreen> {
           },
           child: Icon(NewIcon.back_big_3x, color: greenColor),
         ),
-        title: new Row(
-          children: <Widget>[
-            CircleAvatar(
-              child: Text(
-                widget.email.substring(0, 1).toUpperCase(),
-              ),
-              radius: 20.0,
-            ),
-            SizedBox(
-              width: 10.0,
-            ),
-            new Text(
-              widget.email,
-              style: TextStyle(fontSize: 15.0, color: Colors.grey[600]),
-            ),
-          ],
+        title: new Text(
+          widget.email,
+          style: TextStyle(fontSize: 15.0, color: Colors.grey[600]),
         ),
         centerTitle: false,
         backgroundColor: Colors.white,
         actions: <Widget>[
           IconButton(
             onPressed: () {},
-            icon: Icon(Icons.more_vert),
-            color: Colors.grey,
+            icon: Icon(NewIcon.delete_3x),
+            iconSize: 20.0,
+            color: greenColor,
           ),
         ],
       ),
@@ -230,7 +232,7 @@ class _ChatScreenState extends State<ChatScreen> {
     }
 
     String url = WEBSOCKET_CHAT;
-    bool b = await stomp.init(url: url, sendUrl: '/chat/request');
+    bool b = await stomp.init(url: url, sendUrl: '/request/chat');
 
     print(b ? 'Initialization Succesfull' : 'Initialization Failed');
 
@@ -270,6 +272,11 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   void onSendCallback() async {
+    _preferences = await SharedPreferences.getInstance();
+    var fromId = _preferences.getString(EMAIL_KEY);
+
+    print('from $fromId');
+    print('to email ${widget.email}');
     await stomp.onSendCallback((status, sendMsg) {
       print("Pesan Terkirim：$status :msg=" + sendMsg.toString());
       streamChats.sink.add(logChats_tmp);

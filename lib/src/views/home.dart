@@ -47,7 +47,7 @@ class _HomeState extends State<HomeView> {
           children: <Widget>[
             BeritaPage(),
             mainView(),
-            (_token == null) ? ReLogin() : PopularAccountView()
+            PopularAccountView(),
           ],
         ),
       ),
@@ -61,7 +61,7 @@ class _HomeState extends State<HomeView> {
     final List<Widget> _children = [
       ProgramAmalPage(),
       (_token == null) ? ReLogin() : Portofolio(),
-      Inbox(),
+      (_token == null) ? ReLogin() : Inbox(),
       (_token == null) ? ReLogin() : Menu()
     ];
 
@@ -69,7 +69,7 @@ class _HomeState extends State<HomeView> {
       body: _children[_currentIndex],
       floatingActionButton: new FloatingActionButton(
         onPressed: () {},
-        child: Icon(NewIcon.nav_scan_3x),
+        child: Icon(NewIcon.nav_scan_3x, size: 20.0),
         backgroundColor: greenColor,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -78,7 +78,7 @@ class _HomeState extends State<HomeView> {
         height: 45.0,
         selectedColor: greenColor,
         onTabSelected: _selectedTab,
-        iconSize: 25.0,
+        iconSize: 20.0,
         items: [
           FABBottomAppBarItem(iconData: (_currentIndex == 0) ? NewIcon.nav_home_active_3x : NewIcon.nav_home_inactive_3x, text: ''),
           FABBottomAppBarItem(iconData: (_currentIndex == 1) ? NewIcon.nav_portfolio_3x : NewIcon.nav_portfolio_3x, text: ''),

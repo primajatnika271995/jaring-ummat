@@ -100,11 +100,13 @@ class _ListAccountChatState extends State<ListAccountChat> {
             );
           },
           leading: CircleAvatar(
+            backgroundColor: greenColor,
+            foregroundColor: whiteColor,
             child: Text(
               value.email.substring(0, 1).toUpperCase(),
             ),
           ),
-          trailing: Icon(Icons.chat_bubble_outline),
+          trailing: Icon(NewIcon.chat_3x, color: greenColor),
         );
       },
     );

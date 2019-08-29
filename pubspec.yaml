@@ -101,6 +101,10 @@ flutter:
       fonts:
         - asset: assets/fonts/AddIconInAmil.ttf
 
+    - family:  ActiveIcon
+      fonts:
+        - asset: assets/fonts/ActiveIcon.ttf
+
 
     - family:  CustomFonts 
       fonts:

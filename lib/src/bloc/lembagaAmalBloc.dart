@@ -17,7 +17,7 @@ class LembagaAmalBloc {
     _preferences = await SharedPreferences.getInstance();
     var idUser = _preferences.getString(USER_ID_KEY);
 
-    List<LembagaAmalModel> lembagaAmal = await _repository.fetchAllComment(idUser, category, "0", "10");
+    List<LembagaAmalModel> lembagaAmal = await _repository.fetchAllComment(idUser, category, "0", "50");
     _lembagaAmalFetcher.sink.add(lembagaAmal);
   }
 

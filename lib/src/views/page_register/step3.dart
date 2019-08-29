@@ -487,7 +487,7 @@ class _StepThreeState extends State<StepThree> {
       await changeLoadingVisible();
       bloc.saveUser(context, value);
       await Future.delayed(Duration(seconds: 3));
-      changeLoadingVisible();
+      Navigator.of(context).pushReplacementNamed('/login');
     }
   }
 }

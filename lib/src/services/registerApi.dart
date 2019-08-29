@@ -33,7 +33,7 @@ class RegisterApiProvider {
     Map paramsLembaga = {
       "namaLembaga": data.fullname,
       "emailLembaga": data.email,
-      "categoryLembaga": "-",
+      "categoryLembaga": "Amal",
       "contactLembaga": "-",
       "alamatLembaga": "-"
     };

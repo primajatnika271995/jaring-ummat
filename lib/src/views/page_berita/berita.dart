@@ -17,7 +17,7 @@ class BeritaPage extends StatefulWidget {
 }
 
 class _BeritaPageState extends State<BeritaPage> {
-  final String title = "Berita Ummat";
+  final String title = "Berita Jejaring";
   String selectedCategory = "";
 
   final List<String> imgList = [
@@ -44,12 +44,14 @@ class _BeritaPageState extends State<BeritaPage> {
               elevation: 0.0,
               title: Text(
                 title,
-                style: TextStyle(color: blackColor, fontSize: 18.0, fontFamily: 'Arab-Dances'),
+                style: TextStyle(color: blackColor, fontSize: 18.0),
               ),
               actions: <Widget>[
                 IconButton(
                   onPressed: () {},
+                  padding: EdgeInsets.only(right: 10.0),
                   icon: Icon(NewIcon.search_big_3x),
+                  iconSize: 20.0,
                   color: greenColor,
                 ),
               ],
@@ -119,7 +121,7 @@ class _BeritaPageState extends State<BeritaPage> {
                       },
                       tabs: <Widget>[
                         new Tab(
-                          text: 'Semua Kategori',
+                          text: 'Populer',
                         ),
                         new Tab(
                           text: 'Pendidikan',
@@ -149,48 +151,74 @@ class _BeritaPageState extends State<BeritaPage> {
                 new SliverAppBar(
                   backgroundColor: Colors.transparent,
                   automaticallyImplyLeading: false,
-                  floating: true,
                   bottom: PreferredSize(
-                    preferredSize: Size.fromHeight(220.0),
+                    preferredSize: Size.fromHeight(314.0),
                     child: Text(''),
                   ),
                   flexibleSpace: Container(
-                    child: Stack(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         getFullScreenCarousel(context),
-                        Align(
-                          alignment: Alignment.bottomCenter,
-                          child: Padding(
-                            padding: EdgeInsets.only(bottom: 40.0),
-                            child: Text(
-                              'Pelatihan Da\'i mandiri Se-Jawa di Yabni Sumedang ',
-                              style: TextStyle(color: whiteColor, fontSize: 17.0),
-                            ),
+                        Padding(
+                          padding: EdgeInsets.only(
+                              left: 20.0, right: 20.0, top: 10.0),
+                          child: const Text(
+                            'Kegiatan',
+                            style: TextStyle(color: Colors.grey),
                           ),
                         ),
-                        Align(
-                          alignment: Alignment.bottomCenter,
-                          child: Padding(
-                            padding: EdgeInsets.only(bottom: 15.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: map<Widget>(
-                                imgList,
-                                (index, url) {
-                                  return Container(
-                                    width: 8.0,
-                                    height: 8.0,
-                                    margin: EdgeInsets.symmetric(
-                                        vertical: 10.0, horizontal: 2.0),
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: _current == index
-                                          ? greenColor
-                                          : whiteColor,
-                                    ),
-                                  );
-                                },
+                        Padding(
+                          padding: EdgeInsets.only(
+                              left: 20.0, right: 20.0, top: 5.0),
+                          child: const Text(
+                            'Pleatihan Da\'i Mandiri Se-Jawa Barat Di YABNI Sumedang',
+                            style: TextStyle(
+                                fontSize: 18.0, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(
+                              left: 20.0, right: 5.0, top: 5.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              const Text('Bamuis BNI | 08:56, 02 Januari 2019'),
+                              Row(
+                                children: <Widget>[
+                                  IconButton(
+                                    onPressed: () {},
+                                    padding: EdgeInsets.only(left: 20.0),
+                                    icon: Icon(NewIcon.love_3x),
+                                    color: greenColor,
+                                    iconSize: 20.0,
+                                  ),
+                                  IconButton(
+                                    onPressed: () {},
+                                    icon: Icon(NewIcon.comment_3x),
+                                    color: greenColor,
+                                    iconSize: 20.0,
+                                  ),
+                                  IconButton(
+                                    onPressed: () {},
+                                    padding: EdgeInsets.only(right: 20.0),
+                                    icon: Icon(NewIcon.save_3x),
+                                    color: greenColor,
+                                    iconSize: 20.0,
+                                  ),
+                                ],
                               ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          height: 10.0,
+                          child: new Center(
+                            child: new Container(
+                              margin: new EdgeInsetsDirectional.only(
+                                  start: 1.0, end: 1.0),
+                              height: 5.0,
+                              color: softGreyColor,
                             ),
                           ),
                         ),

@@ -11,13 +11,11 @@ class StepOne extends StatefulWidget {
 }
 
 class _StepOneState extends State<StepOne> {
-  final String appName = 'Jaring Ummat';
+  final String appName = 'Mitra Jejaring';
   final String logoUrl = 'assets/icon/main_logo.png';
 
   final _textEditingControllerContact = new TextEditingController();
   final _formKey = GlobalKey<FormState>();
-
-  bool nomorTeleponIsSubmited = false;
 
   final _otpServices = new OtpServices();
 
@@ -26,7 +24,7 @@ class _StepOneState extends State<StepOne> {
     final widgetLogo = Padding(
       padding: EdgeInsets.only(top: 80.0),
       child: Container(
-        child: Image.asset(logoUrl, scale: 20.0),
+        child: Image.asset(logoUrl, scale: 30.0),
       ),
     );
 
@@ -39,12 +37,12 @@ class _StepOneState extends State<StepOne> {
     );
 
     final widgetContactName = Padding(
-      padding: EdgeInsets.only(top: 80),
+      padding: EdgeInsets.only(top: 60),
       child: const Text('Masukan alamat email'),
     );
 
     final widgetSocialLoginName = Padding(
-      padding: EdgeInsets.only(top: 70.0),
+      padding: EdgeInsets.only(top: 50.0),
       child: const Text('atau buat akun dengan media sosial'),
     );
 
@@ -56,19 +54,19 @@ class _StepOneState extends State<StepOne> {
           IconButton(
             onPressed: () {},
             icon: Icon(SosialMedia.facebook),
-            iconSize: 60.0,
+            iconSize: 40.0,
             color: facebookColor,
           ),
           IconButton(
             onPressed: () {},
             icon: Icon(SosialMedia.google),
-            iconSize: 60.0,
+            iconSize: 40.0,
             color: googleColor,
           ),
           IconButton(
             onPressed: () {},
             icon: Icon(SosialMedia.linkedin),
-            iconSize: 60.0,
+            iconSize: 40.0,
             color: linkedInColor,
           ),
         ],
@@ -80,15 +78,14 @@ class _StepOneState extends State<StepOne> {
       child: TextFormField(
         controller: _textEditingControllerContact,
         decoration: InputDecoration(
-          contentPadding:
-              EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+          contentPadding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
           border: new OutlineInputBorder(
             borderRadius: const BorderRadius.all(
               const Radius.circular(30.0),
             ),
           ),
           prefixIcon: Icon(
-            Icons.mail,
+            Icons.mail_outline,
             color: grayColor,
           ),
           prefixStyle: TextStyle(fontWeight: FontWeight.bold),
@@ -98,7 +95,7 @@ class _StepOneState extends State<StepOne> {
               onSubmit();
             },
             icon: CircleAvatar(
-              backgroundColor: nomorTeleponIsSubmited ? greenColor : grayColor,
+              backgroundColor: greenColor,
               child: Icon(
                 NewIcon.next_small_2x,
                 size: 18.0,
@@ -109,9 +106,6 @@ class _StepOneState extends State<StepOne> {
         ),
         keyboardType: TextInputType.text,
         textInputAction: TextInputAction.go,
-        onEditingComplete: () {
-          nomorTeleponSubmit();
-        },
         validator: (value) {
           if (value.isEmpty) {
             return 'Isi alamat email terlebih dahulu';
@@ -125,16 +119,18 @@ class _StepOneState extends State<StepOne> {
       body: Form(
         key: _formKey,
         child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              widgetLogo,
-              widgetAppName,
-              widgetContactName,
-              widgetContactField,
-              widgetSocialLoginName,
-              widgetSocialMedia
-            ],
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                widgetLogo,
+                widgetAppName,
+                widgetContactName,
+                widgetContactField,
+                widgetSocialLoginName,
+                widgetSocialMedia
+              ],
+            ),
           ),
         ),
       ),
@@ -152,21 +148,12 @@ class _StepOneState extends State<StepOne> {
       _otpServices.emailOtp(_textEditingControllerContact.text, otp.toString());
 
       Navigator.of(context).push(
-        MaterialPageRoute(builder: (context) => StepTwo(
-          emailKey: _textEditingControllerContact.text,
-          otpKey: otp.toString(),
-        )),
+        MaterialPageRoute(
+            builder: (context) => StepTwo(
+                  emailKey: _textEditingControllerContact.text,
+                  otpKey: otp.toString(),
+                )),
       );
     }
-  }
-
-  void nomorTeleponSubmit() {
-    setState(() {
-      if (!_textEditingControllerContact.text.isEmpty) {
-        nomorTeleponIsSubmited = true;
-      } else {
-        nomorTeleponIsSubmited = false;
-      }
-    });
   }
 }
