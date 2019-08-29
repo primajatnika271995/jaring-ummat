@@ -157,6 +157,7 @@ class _ReLoginState extends State<ReLogin> {
                     widgetEmailField,
                     widgetPasswordField,
                     widgetSubmitBtn,
+                    widgetRegisterBtn,
                     widgetSocialLoginName,
                     widgetSocialMedia
                   ],

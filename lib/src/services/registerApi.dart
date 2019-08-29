@@ -38,14 +38,25 @@ class RegisterApiProvider {
       "alamatLembaga": "-"
     };
 
-    final response = await client.post(REGISTRATION_URL,
-        headers: headers, body: json.encode(params));
+    final response = await client.post(REGISTRATION_URL, headers: headers, body: json.encode(params));
     if (response.statusCode == 201) {
-      await client.post(CREATE_LEMBAGA_AMAL,
-          headers: headers, body: json.encode(paramsLembaga));
-      return compute(registerResponseModelFromJson, response.body);
+      final resp = await client.post(CREATE_LEMBAGA_AMAL, headers: headers, body: json.encode(paramsLembaga));
+
+      if (resp.statusCode == 201) {
+        Navigator.of(context).pushReplacementNamed('/login');
+      } else if (response.statusCode == 500) {
+        Flushbar(
+          flushbarPosition: FlushbarPosition.TOP,
+          margin: EdgeInsets.all(8.0),
+          borderRadius: 8.0,
+          message: "Akun tidak bisa di daftarkan ke Lembaga Amal",
+          leftBarIndicatorColor: Colors.redAccent,
+          duration: Duration(seconds: 3),
+        )..show(context);
+      }
     } else if (response.statusCode == 500) {
       Flushbar(
+        flushbarPosition: FlushbarPosition.TOP,
         margin: EdgeInsets.all(8.0),
         borderRadius: 8.0,
         message: "Akun anda sudah terdaftar sebelumnya",
