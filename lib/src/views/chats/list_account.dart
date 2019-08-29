@@ -28,11 +28,11 @@ class _ListAccountChatState extends State<ListAccountChat> {
             onTap: () {
               Navigator.pop(context);
             },
-            child: Icon(NewIcon.back_big_3x, color: greenColor),
+            child: Icon(NewIcon.back_big_3x, size: 20.0, color: greenColor),
           ),
           title: new Text(
             'Obrolan Amil',
-            style: TextStyle(fontSize: 15.0, color: Colors.grey[600]),
+            style: TextStyle(color: blackColor),
           ),
           centerTitle: false,
           backgroundColor: Colors.white,
@@ -40,12 +40,14 @@ class _ListAccountChatState extends State<ListAccountChat> {
             IconButton(
               padding: EdgeInsets.only(left: 10.0),
               onPressed: () {},
+              iconSize: 20.0,
               icon: Icon(NewIcon.search_big_3x),
               color: greenColor,
             ),
             IconButton(
               padding: EdgeInsets.only(right: 20.0),
               onPressed: () {},
+              iconSize: 20.0,
               icon: Icon(NewIcon.delete_3x),
               color: greenColor,
             ),
@@ -106,7 +108,7 @@ class _ListAccountChatState extends State<ListAccountChat> {
               value.email.substring(0, 1).toUpperCase(),
             ),
           ),
-          trailing: Icon(NewIcon.chat_3x, color: greenColor),
+          trailing: Icon(NewIcon.chat_3x, size: 20.0, color: greenColor),
         );
       },
     );

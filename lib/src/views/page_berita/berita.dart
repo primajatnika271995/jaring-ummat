@@ -177,7 +177,7 @@ class _BeritaPageState extends State<BeritaPage> {
                               ),
                               Padding(
                                 padding: EdgeInsets.only(
-                                    left: 10.0, right: 5.0, top: 5.0),
+                                    left: 10.0, right: 15.0, top: 5.0),
                                 child: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,

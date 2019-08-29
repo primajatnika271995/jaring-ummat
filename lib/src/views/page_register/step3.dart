@@ -70,12 +70,12 @@ class _StepThreeState extends State<StepThree> {
             inAsyncCall: _loadingVisible,
             child: Form(
               key: _keyForm,
-              child: Center(
-                child: SingleChildScrollView(
+              child: SingleChildScrollView(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
+                      SizedBox(height: 50),
                       Text(
                         "Lengkapi Akunmu!",
                         style: TextStyle(
@@ -205,7 +205,6 @@ class _StepThreeState extends State<StepThree> {
               ),
             ),
           ),
-        ),
         Align(
           alignment: Alignment.bottomCenter,
           child: Image.asset(

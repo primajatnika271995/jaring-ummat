@@ -259,14 +259,19 @@ class _ChatScreenState extends State<ChatScreen> {
       "message": pesan,
     };
 
-    // var log = ChatsResponse(fromId: email, toId: widget.email, message: pesan);
+    var log = ChatsResponse(fromId: email, toId: widget.email, message: pesan);
 
-    // logChats_tmp.add(log);
+    logChats_tmp.add(log);
     return await stomp.sendMessage(json.encode(msg));
   }
 
   Future<String> subscribeMsg() async {
-    final String p2p = "/secure/user/${widget.email}/chat/send";
+    _preferences = await SharedPreferences.getInstance();
+    var fromId = _preferences.getString(EMAIL_KEY);
+
+    print(fromId);
+
+    final String p2p = "/secure/user/$fromId/chat/send";
     await stomp.subscribP2P([p2p]);
     onMessageCallbacks();
   }

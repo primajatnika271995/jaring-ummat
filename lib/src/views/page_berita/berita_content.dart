@@ -32,7 +32,7 @@ class _BeritaContentState extends State<BeritaContent> {
     );
 
     final infoWidget = Padding(
-      padding: EdgeInsets.only(left: 15.0, top: 10.0),
+      padding: EdgeInsets.only(left: 15.0, top: 5.0),
       child: Center(
         child: Column(
           children: <Widget>[
@@ -89,13 +89,13 @@ class _BeritaContentState extends State<BeritaContent> {
         child: Row(
           children: [
             Expanded(
-              flex: 5,
+              flex: 4,
               child: Container(
                 child: imageWidget,
               ),
             ),
             Expanded(
-              flex: 5,
+              flex: 6,
               child: Container(
                 child: Padding(
                   padding: const EdgeInsets.only(left: 10.0, top: 10.0),
@@ -116,7 +116,7 @@ class _BeritaContentState extends State<BeritaContent> {
                         style: TextStyle(color: grayColor),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(top: 17.0, right: 10.0),
+                        padding: const EdgeInsets.only(top: 30.0, right: 20.0),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: <Widget>[

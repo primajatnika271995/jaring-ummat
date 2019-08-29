@@ -37,7 +37,7 @@ class _ProgramAmalPageState extends State<ProgramAmalPage>
   bool hidden = false;
   bool _loadingVisible = false;
 
-  final String appbarLogo = "assets/icon/main_logo.png";
+  final String appbarLogo = "assets/icon/logo_mitra_jejaring.png";
 
   StoriesApiProvider _provider = new StoriesApiProvider();
 
