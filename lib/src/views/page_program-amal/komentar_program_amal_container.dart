@@ -26,6 +26,8 @@ class _KomentarContainerState extends State<KomentarContainer>
   RubberAnimationController _rubberAnimationController;
   ScrollController _scrollController = ScrollController();
 
+  final messageCtrl = TextEditingController();
+
   SharedPreferences _preferences;
   String profilePictUrl;
   String medsosPictUrl;
@@ -76,6 +78,7 @@ class _KomentarContainerState extends State<KomentarContainer>
             ),
             new Flexible(
               child: new TextField(
+                controller: messageCtrl,
                 onChanged: commentBloc.bloc.updateComment,
                 decoration: new InputDecoration(
                   contentPadding: EdgeInsets.symmetric(
@@ -99,9 +102,9 @@ class _KomentarContainerState extends State<KomentarContainer>
                   color: greenColor,
                   onPressed: () async {
                     commentBloc.bloc.saveComment("", widget.programAmal.idProgram);
-                await Future.delayed(Duration(milliseconds: 3));
-                commentBloc.bloc
-                    .fetchProgramAmalComment(widget.programAmal.idProgram);
+                    messageCtrl.clear();
+                    await Future.delayed(Duration(milliseconds: 3));
+                    commentBloc.bloc.fetchProgramAmalComment(widget.programAmal.idProgram);
                   }),
             )
           ],
@@ -266,11 +269,13 @@ class _KomentarContainerState extends State<KomentarContainer>
           width: 40.0,
           height: 50.0,
           margin: EdgeInsets.symmetric(horizontal: 2.0),
-          child: (value.imageProfile == null) ? CircularProfileAvatar(
-            noImg,
-          ) : CircularProfileAvatar(
-            snapshot.data[index].imageProfile[0].imgUrl,
-          ),
+          child: (value.imageProfile == null)
+              ? CircularProfileAvatar(
+                  noImg,
+                )
+              : CircularProfileAvatar(
+                  snapshot.data[index].imageProfile[0].imgUrl,
+                ),
         );
       },
     );
@@ -384,7 +389,7 @@ class _KomentarContainerState extends State<KomentarContainer>
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Container(
-                      width: MediaQuery.of(context).size.width - 100,
+                      width: MediaQuery.of(context).size.width - 50,
                       child: Text(
                         widget.programAmal.titleProgram,
                         style: TextStyle(

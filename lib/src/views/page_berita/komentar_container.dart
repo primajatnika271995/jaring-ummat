@@ -27,23 +27,11 @@ class _KomentarContainerState extends State<KomentarContainer>
   RubberAnimationController _rubberAnimationController;
   ScrollController _scrollController = ScrollController();
 
+  final messageCtrl = TextEditingController();
+
   SharedPreferences _preferences;
   String profilePictUrl;
   String medsosPictUrl;
-
-  @override
-  void initState() {
-    getUserProfile();
-    super.initState();
-    commentBloc.bloc.fetchNewsComment(widget.berita.idBerita);
-    likesBloc.bloc.fetchAllLikesUserBerita(widget.berita.idBerita);
-    _rubberAnimationController = RubberAnimationController(
-        vsync: this,
-        dismissable: true,
-        lowerBoundValue: AnimationControllerValue(pixel: 750),
-        upperBoundValue: AnimationControllerValue(percentage: 4.5),
-        duration: Duration(milliseconds: 200));
-  }
 
   Widget _chatEnvironment() {
     return IconTheme(
@@ -73,6 +61,7 @@ class _KomentarContainerState extends State<KomentarContainer>
             ),
             new Flexible(
               child: new TextField(
+                controller: messageCtrl,
                 onChanged: commentBloc.bloc.updateComment,
                 decoration: new InputDecoration(
                   contentPadding: EdgeInsets.symmetric(
@@ -95,6 +84,7 @@ class _KomentarContainerState extends State<KomentarContainer>
                   icon: new Icon(NewIcon.send_3x),
                   color: greenColor,
                   onPressed: () async {
+                    messageCtrl.clear();
                     commentBloc.bloc.saveComment(widget.berita.idBerita, "");
                     await Future.delayed(Duration(milliseconds: 3));
                     commentBloc.bloc.fetchNewsComment(widget.berita.idBerita);
@@ -400,6 +390,20 @@ class _KomentarContainerState extends State<KomentarContainer>
         ),
       ),
     );
+  }
+
+  @override
+  void initState() {
+    getUserProfile();
+    super.initState();
+    commentBloc.bloc.fetchNewsComment(widget.berita.idBerita);
+    likesBloc.bloc.fetchAllLikesUserBerita(widget.berita.idBerita);
+    _rubberAnimationController = RubberAnimationController(
+        vsync: this,
+        dismissable: true,
+        lowerBoundValue: AnimationControllerValue(pixel: 750),
+        upperBoundValue: AnimationControllerValue(percentage: 4.5),
+        duration: Duration(milliseconds: 200));
   }
 
   void getUserProfile() async {

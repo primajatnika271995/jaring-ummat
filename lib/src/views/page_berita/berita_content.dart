@@ -18,32 +18,26 @@ class _BeritaContentState extends State<BeritaContent> {
   @override
   Widget build(BuildContext context) {
     final imageWidget = Padding(
-      padding: EdgeInsets.only(top: 10.0, left: 20.0),
+      padding: EdgeInsets.only(top: 10.0, left: 10.0),
       child: Container(
         height: 110.0,
         width: 150.0,
         child: (widget.berita.imageContent == null)
-            ? ClipRRect(
-                borderRadius: BorderRadius.circular(0.0),
-                child: Image.network(noImg, fit: BoxFit.cover),
-              )
-            : ClipRRect(
-                borderRadius: BorderRadius.circular(0.0),
-                child: Image.network(widget.berita.imageContent[0].imgUrl,
-                    fit: BoxFit.cover),
+            ? Image.network(noImg, fit: BoxFit.cover)
+            : Image.network(
+                widget.berita.imageContent[0].imgUrl,
+                fit: BoxFit.cover,
               ),
       ),
     );
 
     final infoWidget = Padding(
-      padding: EdgeInsets.only(left: 15.0),
+      padding: EdgeInsets.only(left: 15.0, top: 10.0),
       child: Center(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
             Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Text(
@@ -51,8 +45,8 @@ class _BeritaContentState extends State<BeritaContent> {
                   style: TextStyle(color: grayColor),
                 ),
                 Container(
-                  width: 200.0,
-                  child: new Text(
+                  width: MediaQuery.of(context).size.width - 185.0,
+                  child: Text(
                     widget.berita.titleBerita,
                     style: TextStyle(fontWeight: FontWeight.bold),
                     overflow: TextOverflow.ellipsis,
@@ -72,19 +66,8 @@ class _BeritaContentState extends State<BeritaContent> {
             Row(
               children: <Widget>[
                 Icon(NewIcon.love_3x, color: greenColor, size: 20.0),
-                IconButton(
-                  onPressed: () {},
-                  icon: Icon(NewIcon.comment_3x),
-                  color: greenColor,
-                  iconSize: 20.0,
-                ),
-                IconButton(
-                  padding: EdgeInsets.only(right: 25.0),
-                  onPressed: () {},
-                  icon: Icon(NewIcon.save_3x),
-                  color: greenColor,
-                  iconSize: 20.0,
-                ),
+                Icon(NewIcon.comment_3x, color: greenColor, size: 20.0),
+                Icon(NewIcon.save_3x, color: greenColor, size: 20.0),
               ],
             ),
           ],
@@ -104,9 +87,55 @@ class _BeritaContentState extends State<BeritaContent> {
           );
         },
         child: Row(
-          children: <Widget>[
-            imageWidget,
-            infoWidget,
+          children: [
+            Expanded(
+              flex: 5,
+              child: Container(
+                child: imageWidget,
+              ),
+            ),
+            Expanded(
+              flex: 5,
+              child: Container(
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 10.0, top: 10.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        widget.berita.categoryBerita,
+                        style: TextStyle(color: grayColor),
+                      ),
+                      Text(
+                        widget.berita.titleBerita,
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      Text(
+                        'oleh ${widget.berita.createdBy}',
+                        style: TextStyle(color: grayColor),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 17.0, right: 10.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: <Widget>[
+                            Icon(NewIcon.love_3x,
+                                color: greenColor, size: 20.0),
+                            SizedBox(width: 10.0),
+                            Icon(NewIcon.comment_3x,
+                                color: greenColor, size: 20.0),
+                            SizedBox(width: 10.0),
+                            Icon(NewIcon.save_3x,
+                                color: greenColor, size: 20.0),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       ),

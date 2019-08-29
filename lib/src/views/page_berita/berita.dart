@@ -148,88 +148,77 @@ class _BeritaPageState extends State<BeritaPage> {
                     ),
                   ),
                 ),
-                new SliverAppBar(
-                  backgroundColor: Colors.transparent,
-                  automaticallyImplyLeading: false,
-                  bottom: PreferredSize(
-                    preferredSize: Size.fromHeight(314.0),
-                    child: Text(''),
-                  ),
-                  flexibleSpace: Container(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        getFullScreenCarousel(context),
-                        Padding(
-                          padding: EdgeInsets.only(
-                              left: 20.0, right: 20.0, top: 10.0),
-                          child: const Text(
-                            'Kegiatan',
-                            style: TextStyle(color: Colors.grey),
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(
-                              left: 20.0, right: 20.0, top: 5.0),
-                          child: const Text(
-                            'Pleatihan Da\'i Mandiri Se-Jawa Barat Di YABNI Sumedang',
-                            style: TextStyle(
-                                fontSize: 18.0, fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(
-                              left: 20.0, right: 5.0, top: 5.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              const Text('Bamuis BNI | 08:56, 02 Januari 2019'),
-                              Row(
-                                children: <Widget>[
-                                  IconButton(
-                                    onPressed: () {},
-                                    padding: EdgeInsets.only(left: 20.0),
-                                    icon: Icon(NewIcon.love_3x),
-                                    color: greenColor,
-                                    iconSize: 20.0,
-                                  ),
-                                  IconButton(
-                                    onPressed: () {},
-                                    icon: Icon(NewIcon.comment_3x),
-                                    color: greenColor,
-                                    iconSize: 20.0,
-                                  ),
-                                  IconButton(
-                                    onPressed: () {},
-                                    padding: EdgeInsets.only(right: 20.0),
-                                    icon: Icon(NewIcon.save_3x),
-                                    color: greenColor,
-                                    iconSize: 20.0,
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(
-                          height: 10.0,
-                          child: new Center(
-                            child: new Container(
-                              margin: new EdgeInsetsDirectional.only(
-                                  start: 1.0, end: 1.0),
-                              height: 5.0,
-                              color: softGreyColor,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
                 SliverList(
                   delegate: SliverChildListDelegate([
                     Column(
                       children: <Widget>[
+                        Container(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              getFullScreenCarousel(context),
+                              Padding(
+                                padding: EdgeInsets.only(
+                                    left: 10.0, right: 20.0, top: 10.0),
+                                child: const Text(
+                                  'Kegiatan',
+                                  style: TextStyle(color: Colors.grey),
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(
+                                    left: 10.0, right: 20.0, top: 0.0),
+                                child: const Text(
+                                  'Pleatihan Da\'i Mandiri Se-Jawa Barat Di YABNI Sumedang',
+                                  style: TextStyle(
+                                      fontSize: 14.0,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(
+                                    left: 10.0, right: 5.0, top: 5.0),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    const Text(
+                                        'Bamuis BNI | 08:56, 02 Januari 2019'),
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          top: 20.0, right: 5.0),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        children: <Widget>[
+                                          Icon(NewIcon.love_3x,
+                                              color: greenColor, size: 20.0),
+                                          SizedBox(width: 10.0),
+                                          Icon(NewIcon.comment_3x,
+                                              color: greenColor, size: 20.0),
+                                          SizedBox(width: 10.0),
+                                          Icon(NewIcon.save_3x,
+                                              color: greenColor, size: 20.0),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(
+                                height: 10.0,
+                                child: new Center(
+                                  child: new Container(
+                                    margin: new EdgeInsetsDirectional.only(
+                                        start: 1.0, end: 1.0),
+                                    height: 5.0,
+                                    color: softGreyColor,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                         StreamBuilder(
                           stream: bloc.allBerita,
                           builder: (context,
