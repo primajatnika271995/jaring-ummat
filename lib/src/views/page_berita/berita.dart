@@ -148,62 +148,77 @@ class _BeritaPageState extends State<BeritaPage> {
                     ),
                   ),
                 ),
-                new SliverAppBar(
-                  backgroundColor: Colors.transparent,
-                  automaticallyImplyLeading: false,
-                  floating: true,
-                  bottom: PreferredSize(
-                    preferredSize: Size.fromHeight(220.0),
-                    child: Text(''),
-                  ),
-                  flexibleSpace: Container(
-                    child: Stack(
-                      children: <Widget>[
-                        getFullScreenCarousel(context),
-                        Align(
-                          alignment: Alignment.bottomCenter,
-                          child: Padding(
-                            padding: EdgeInsets.only(bottom: 40.0),
-                            child: Text(
-                              'Pelatihan Da\'i mandiri Se-Jawa di Yabni Sumedang ',
-                              style: TextStyle(color: whiteColor, fontSize: 17.0),
-                            ),
-                          ),
-                        ),
-                        Align(
-                          alignment: Alignment.bottomCenter,
-                          child: Padding(
-                            padding: EdgeInsets.only(bottom: 15.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: map<Widget>(
-                                imgList,
-                                (index, url) {
-                                  return Container(
-                                    width: 8.0,
-                                    height: 8.0,
-                                    margin: EdgeInsets.symmetric(
-                                        vertical: 10.0, horizontal: 2.0),
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: _current == index
-                                          ? greenColor
-                                          : whiteColor,
-                                    ),
-                                  );
-                                },
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
                 SliverList(
                   delegate: SliverChildListDelegate([
                     Column(
                       children: <Widget>[
+                        Container(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              getFullScreenCarousel(context),
+                              Padding(
+                                padding: EdgeInsets.only(
+                                    left: 10.0, right: 20.0, top: 10.0),
+                                child: const Text(
+                                  'Kegiatan',
+                                  style: TextStyle(color: Colors.grey),
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(
+                                    left: 10.0, right: 15.0, top: 5.0),
+                                child: const Text(
+                                  'Pleatihan Da\'i Mandiri Se-Jawa Barat Di YABNI Sumedang',
+                                  style: TextStyle(
+                                      fontSize: 14.0,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(
+                                    left: 10.0, right: 15.0, top: 5.0),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    const Text(
+                                        'Bamuis BNI | 08:56, 02 Januari 2019'),
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          top: 30.0, right: 5.0, bottom: 5.0),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        children: <Widget>[
+                                          Icon(NewIcon.love_3x,
+                                              color: greenColor, size: 20.0),
+                                          SizedBox(width: 10.0),
+                                          Icon(NewIcon.comment_3x,
+                                              color: greenColor, size: 20.0),
+                                          SizedBox(width: 10.0),
+                                          Icon(NewIcon.share_3x,
+                                              color: greenColor, size: 20.0),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(
+                                height: 10.0,
+                                child: new Center(
+                                  child: new Container(
+                                    margin: new EdgeInsetsDirectional.only(
+                                        start: 1.0, end: 1.0),
+                                    height: 5.0,
+                                    color: softGreyColor,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                         StreamBuilder(
                           stream: bloc.allBerita,
                           builder: (context,

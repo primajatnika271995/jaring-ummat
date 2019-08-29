@@ -26,9 +26,14 @@ class _KomentarContainerState extends State<KomentarContainer>
   RubberAnimationController _rubberAnimationController;
   ScrollController _scrollController = ScrollController();
 
+  final messageCtrl = TextEditingController();
+
   SharedPreferences _preferences;
   String profilePictUrl;
   String medsosPictUrl;
+
+  final String noImg =
+      "https://kempenfeltplayers.com/wp-content/uploads/2015/07/profile-icon-empty.png";
 
   @override
   void initState() {
@@ -45,6 +50,71 @@ class _KomentarContainerState extends State<KomentarContainer>
     super.initState();
   }
 
+  Widget _chatEnvironment() {
+    return IconTheme(
+      data: new IconThemeData(color: Colors.blue),
+      child: new Container(
+        margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 11.0),
+        child: new Row(
+          children: <Widget>[
+            Container(
+              width: 40.0,
+              height: 40.0,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(30.0),
+              ),
+              child: Icon(NewIcon.add_picture_camera_3x, color: greenColor),
+            ),
+            Container(
+              width: 40.0,
+              height: 40.0,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(30.0),
+              ),
+              child: Icon(NewIcon.add_picture_gallery_3x, color: greenColor),
+            ),
+            SizedBox(
+              width: 10.0,
+            ),
+            new Flexible(
+              child: new TextField(
+                controller: messageCtrl,
+                onChanged: commentBloc.bloc.updateComment,
+                decoration: new InputDecoration(
+                  contentPadding: EdgeInsets.symmetric(
+                    vertical: 10.0,
+                    horizontal: 10.0,
+                  ),
+                  border: new OutlineInputBorder(
+                    borderRadius: const BorderRadius.all(
+                      const Radius.circular(30.0),
+                    ),
+                  ),
+                  hintText: "Type a message",
+                  hintStyle: TextStyle(color: Colors.grey[400]),
+                ),
+              ),
+            ),
+            new Container(
+              margin: const EdgeInsets.symmetric(horizontal: 4.0),
+              child: new IconButton(
+                  icon: new Icon(NewIcon.send_3x),
+                  color: greenColor,
+                  onPressed: () async {
+                    messageCtrl.clear();
+                    commentBloc.bloc
+                        .saveComment("", widget.programAmal.idProgram);
+                    await Future.delayed(Duration(milliseconds: 3));
+                    commentBloc.bloc
+                        .fetchProgramAmalComment(widget.programAmal.idProgram);
+                  }),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
   Widget lowerLayer() {
     return Container(
       decoration: BoxDecoration(color: Colors.transparent),
@@ -59,7 +129,7 @@ class _KomentarContainerState extends State<KomentarContainer>
           SliverAppBar(
             pinned: false,
             floating: true,
-            elevation: 10.0,
+            elevation: 0.0,
             backgroundColor: Colors.white,
             automaticallyImplyLeading: false,
             bottom: PreferredSize(
@@ -84,7 +154,7 @@ class _KomentarContainerState extends State<KomentarContainer>
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Text(
-                              '${widget.programAmal.totalLikes} Muzakki menyukai akun ini',
+                              '${widget.programAmal.totalLikes} orang menyukai galang amal ini',
                               style: TextStyle(
                                   fontSize: 11.0,
                                   fontWeight: FontWeight.bold,
@@ -121,7 +191,7 @@ class _KomentarContainerState extends State<KomentarContainer>
                         if (snapshot.data == null) {
                           return Container(
                             child: Center(
-                              child: Text('0 orang menyukai ini'),
+                              child: Text('0 People like this'),
                             ),
                           );
                         }
@@ -146,7 +216,7 @@ class _KomentarContainerState extends State<KomentarContainer>
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Text(
-                              '${widget.programAmal.totalComments} Muzakki berkomentar pada aksi ini',
+                              '${widget.programAmal.totalComments} orang berkomentar pada aksi ini',
                               style: TextStyle(
                                   fontSize: 11.0,
                                   fontWeight: FontWeight.bold,
@@ -187,66 +257,7 @@ class _KomentarContainerState extends State<KomentarContainer>
 
   Widget buttonLayer() {
     return BottomAppBar(
-      child: new Container(
-        height: 50.0,
-        child: AppBar(
-          backgroundColor: Colors.white,
-          elevation: 0.0,
-          leading: Container(
-            width: 40.0,
-            height: 40.0,
-            margin: EdgeInsets.all(10.0),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(30.0),
-            ),
-            child: CircleAvatar(
-              backgroundColor: grayColor,
-              child: Text('ME'),
-            ),
-          ),
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(
-                NewIcon.send_3x,
-                color: greenColor,
-              ),
-              onPressed: () async {
-                commentBloc.bloc.saveComment("", widget.programAmal.idProgram);
-                await Future.delayed(Duration(milliseconds: 3));
-                commentBloc.bloc
-                    .fetchProgramAmalComment(widget.programAmal.idProgram);
-              },
-            ),
-          ],
-          centerTitle: true,
-          automaticallyImplyLeading: true,
-          titleSpacing: 0.0,
-          title: Container(
-            child: Padding(
-              padding: EdgeInsets.only(bottom: 0.0),
-              child: TextField(
-                onChanged: commentBloc.bloc.updateComment,
-                autocorrect: false,
-                textInputAction: TextInputAction.next,
-                style: TextStyle(
-                  fontSize: 12.0,
-                  color: Colors.black,
-                ),
-                decoration: InputDecoration(
-                  icon: Icon(Icons.search, size: 18.0),
-                  border: InputBorder.none,
-                  hintText: 'Tulis komentar anda disini...',
-                ),
-              ),
-            ),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(30.0)),
-              color: Colors.grey[200],
-            ),
-            padding: EdgeInsets.fromLTRB(15.0, 0.5, 15.0, 0.5),
-          ),
-        ),
-      ),
+      child: _chatEnvironment(),
     );
   }
 
@@ -255,13 +266,18 @@ class _KomentarContainerState extends State<KomentarContainer>
       itemCount: snapshot.data.length,
       scrollDirection: Axis.horizontal,
       itemBuilder: (BuildContext context, int index) {
+        var value = snapshot.data[index];
         return Container(
           width: 40.0,
           height: 50.0,
           margin: EdgeInsets.symmetric(horizontal: 2.0),
-          child: CircularProfileAvatar(
-            snapshot.data[index].imageProfile[0].imgUrl,
-          ),
+          child: (value.imageProfile == null)
+              ? CircularProfileAvatar(
+                  noImg,
+                )
+              : CircularProfileAvatar(
+                  snapshot.data[index].imageProfile[0].imgUrl,
+                ),
         );
       },
     );
@@ -343,8 +359,6 @@ class _KomentarContainerState extends State<KomentarContainer>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomPadding: false,
-      resizeToAvoidBottomInset: false,
       body: Container(
         child: RubberBottomSheet(
           scrollController: _scrollController,
@@ -360,8 +374,8 @@ class _KomentarContainerState extends State<KomentarContainer>
                     Padding(
                       padding: const EdgeInsets.all(7.0),
                       child: Container(
-                        width: 50.0,
-                        height: 50.0,
+                        width: 30.0,
+                        height: 30.0,
                         child: CircleAvatar(
                           backgroundColor: softGreyColor,
                           child: Text(widget.programAmal.createdBy
@@ -377,7 +391,7 @@ class _KomentarContainerState extends State<KomentarContainer>
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Container(
-                      width: MediaQuery.of(context).size.width - 100,
+                      width: MediaQuery.of(context).size.width - 50,
                       child: Text(
                         widget.programAmal.titleProgram,
                         style: TextStyle(

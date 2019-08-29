@@ -24,6 +24,9 @@ class _GalangAmalContainerState extends State<GalangAmalContainer> {
     "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/No_image_3x4.svg/1280px-No_image_3x4.svg.png"
   ];
 
+  final String noImg =
+      "https://kempenfeltplayers.com/wp-content/uploads/2015/07/profile-icon-empty.png";
+
   int _current = 0;
 
   bool isLoved = false;
@@ -42,28 +45,66 @@ class _GalangAmalContainerState extends State<GalangAmalContainer> {
           setTopContent(),
           setMainImage(),
           setDescription(),
-//          setContent(),
           new Divider(),
           setBottomContent(),
           new Divider(),
           setTitleParticipan(),
-          ListView(
+          ListView.separated(
+            separatorBuilder: (context, position) {
+              return Padding(
+                padding: EdgeInsets.only(left: 60.0),
+                child: new SizedBox(
+                  height: 10.0,
+                  child: new Center(
+                    child: new Container(
+                        margin: new EdgeInsetsDirectional.only(
+                            start: 1.0, end: 1.0),
+                        height: 5.0,
+                        color: softGreyColor),
+                  ),
+                ),
+              );
+            },
+            itemCount: 4,
+            scrollDirection: Axis.vertical,
             shrinkWrap: true,
-            children: <Widget>[
-              setParticipan(),
-              SizedBox(
-                height: 10.0,
-              ),
-              setParticipan(),
-              SizedBox(
-                height: 10.0,
-              ),
-              setParticipan(),
-              SizedBox(
-                height: 10.0,
-              ),
-              setParticipan(),
-            ],
+            itemBuilder: (context, index) {
+              return ListTile(
+                leading: Container(
+                  width: 35.0,
+                  height: 35.0,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(30.0),
+                    image: DecorationImage(
+                      image: NetworkImage(noImg),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+                title: Text(
+                  'Soleh Indrawan',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15.0),
+                ),
+                subtitle: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      'Semoga bermanfaat untuk adek-adek sekalian',
+                      style: TextStyle(fontSize: 12.0),
+                    ),
+                    Text(
+                      '19 menit yang lalu',
+                      style: TextStyle(fontSize: 12.0),
+                    ),
+                  ],
+                ),
+                trailing: Text(
+                  'Rp. 130.000',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+              );
+            },
           ),
         ],
       ),
@@ -237,7 +278,7 @@ class _GalangAmalContainerState extends State<GalangAmalContainer> {
               children: <Widget>[
                 SizedBox(height: 3.0),
                 Text(
-                  'Muzaki yang berpartisipasi dalam aksi ini',
+                  'Muzzaki yang berpartisipasi dalam aksi ini',
                   style: TextStyle(
                       fontSize: 11.0,
                       fontWeight: FontWeight.bold,
@@ -426,8 +467,7 @@ class _GalangAmalContainerState extends State<GalangAmalContainer> {
           width: 10.0,
         ),
         GestureDetector(
-          onTap: () {
-          },
+          onTap: () {},
           child: Row(
             children: <Widget>[
               Icon(
@@ -456,8 +496,7 @@ class _GalangAmalContainerState extends State<GalangAmalContainer> {
     return Row(
       children: <Widget>[
         GestureDetector(
-          onTap: () {
-          },
+          onTap: () {},
           child: Row(
             children: <Widget>[
               Icon(
@@ -472,8 +511,7 @@ class _GalangAmalContainerState extends State<GalangAmalContainer> {
           ),
         ),
         GestureDetector(
-          onTap: () {
-          },
+          onTap: () {},
           child: Row(
             children: <Widget>[
               Icon(

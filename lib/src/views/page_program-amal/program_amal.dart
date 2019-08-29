@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_jaring_ummat/src/bloc/programAmalBloc.dart';
 import 'package:flutter_jaring_ummat/src/config/hexColor.dart';
 import 'package:flutter_jaring_ummat/src/config/preferences.dart';
+import 'package:flutter_jaring_ummat/src/views/components/icon_text/app_bar_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/new_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/components/loadingContainer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -28,7 +29,7 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
 
   StoriesApiProvider _provider = new StoriesApiProvider();
 
-  final String appbarLogo = "assets/icon/main_logo.png";
+  final String appbarLogo = "assets/icon/logo_muzakki_jejaring.png";
 
   final titleText = Text(
     'Jejaring',
@@ -50,32 +51,39 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
               backgroundColor: whiteColor,
               elevation: 0.0,
               leading: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                padding: const EdgeInsets.symmetric(horizontal: 10.0),
                 child: Image.asset(appbarLogo),
               ),
               title: titleText,
               actions: <Widget>[
-                IconButton(
-                  padding: EdgeInsets.only(left: 20.0),
-                  icon: Icon(NewIcon.search_big_3x),
-                  color: greenColor,
-                  iconSize: 20.0,
-                  onPressed: () {
-                    print('_search_');
-                  },
+                Padding(
+                  padding: const EdgeInsets.only(right: 7.0),
+                  child: InkWell(
+                    onTap: () {},
+                    child: Icon(AppBarIcon.location_inactive,
+                        size: 20.0, color: greenColor),
+                  ),
                 ),
-                IconButton(
-                  padding: EdgeInsets.only(right: 10.0),
-                  icon: Icon(NewIcon.chat_3x),
-                  color: greenColor,
-                  iconSize: 20.0,
-                  onPressed: () {
-                    if (_token == null) {
-                      Navigator.of(context).pushNamed('/login');
-                    } else {
-                      Navigator.of(context).pushNamed('/list/account/chats');
-                    }
-                  },
+                Padding(
+                  padding: const EdgeInsets.only(right: 7.0),
+                  child: InkWell(
+                    onTap: () {},
+                    child: Icon(NewIcon.search_big_3x,
+                        size: 20.0, color: greenColor),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(right: 10.0),
+                  child: InkWell(
+                    onTap: () {
+                      if (_token == null) {
+                        Navigator.of(context).pushNamed('/login');
+                      } else {
+                        Navigator.of(context).pushNamed('/list/account/chats');
+                      }
+                    },
+                    child: Icon(NewIcon.chat_3x, size: 20.0, color: greenColor),
+                  ),
                 ),
               ],
             ),

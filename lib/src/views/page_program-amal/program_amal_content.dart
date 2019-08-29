@@ -4,6 +4,7 @@ import 'package:badges/badges.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter_jaring_ummat/src/config/hexColor.dart';
 import 'package:flutter_jaring_ummat/src/services/currency_format_service.dart';
+import 'package:flutter_jaring_ummat/src/views/components/icon_text/active_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/new_icon_icons.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -306,8 +307,8 @@ class _ProgramAmalContentState extends State<ProgramAmalContent> {
             children: <Widget>[
               Icon(
                 (widget.programAmal.userLikeThis)
-                    ? NewIcon.love_3x
-                    : (isLoved) ? NewIcon.love_3x : NewIcon.love_3x,
+                    ? ActiveIcon.love_active_3x
+                    : (isLoved) ? ActiveIcon.love_active_3x : NewIcon.love_3x,
                 size: 20.0,
                 color: (widget.programAmal.userLikeThis)
                     ? Colors.red

@@ -71,163 +71,161 @@ class _StepThreeState extends State<StepThree> {
             inAsyncCall: _loadingVisible,
             child: Form(
               key: _keyForm,
-              child: Center(
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text(
-                        "Lengkapi Akunmu!",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 23.0),
-                      ),
-                      SizedBox(height: 10),
-                      Text(
-                          "Unggah foto diri dan lengkapi nama Anda\nuntuk mulai berbagi kebaikan!",
-                          textAlign: TextAlign.center),
-                      Container(
-                        padding: EdgeInsets.symmetric(vertical: 30),
-                        width: double.infinity,
-                        child: Align(
-                          alignment: Alignment.center,
-                          child: Stack(
-                            alignment: Alignment.bottomRight,
-                            children: <Widget>[
-                              _selectedImage == null
-                                  ? _selectedDefaultPicture.isEmpty
-                                      ? emptyPicture()
-                                      : defaultPicture()
-                                  : selectedImage(),
-                              GestureDetector(
-                                onTap: () async {
-                                  print(context);
-                                  final ImageSource imageSource =
-                                      await _asyncImageSourceDialog(context);
-                                },
-                                child: Container(
-                                  height: 40,
-                                  width: 40,
-                                  decoration: BoxDecoration(
-                                      color: Colors.green,
-                                      shape: BoxShape.circle),
-                                  child: Icon(
-                                    NewIcon.upload_2x,
-                                    color: Colors.white,
-                                    size: 20,
-                                  ),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      "Lengkapi Akunmu!",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 23.0),
+                    ),
+                    SizedBox(height: 10),
+                    Text(
+                        "Unggah foto diri dan lengkapi nama Anda\nuntuk mulai berbagi kebaikan!",
+                        textAlign: TextAlign.center),
+                    Container(
+                      padding: EdgeInsets.symmetric(vertical: 30),
+                      width: double.infinity,
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: Stack(
+                          alignment: Alignment.bottomRight,
+                          children: <Widget>[
+                            _selectedImage == null
+                                ? _selectedDefaultPicture.isEmpty
+                                    ? emptyPicture()
+                                    : defaultPicture()
+                                : selectedImage(),
+                            GestureDetector(
+                              onTap: () async {
+                                print(context);
+                                final ImageSource imageSource =
+                                    await _asyncImageSourceDialog(context);
+                              },
+                              child: Container(
+                                height: 40,
+                                width: 40,
+                                decoration: BoxDecoration(
+                                    color: Colors.green,
+                                    shape: BoxShape.circle),
+                                child: Icon(
+                                  NewIcon.upload_2x,
+                                  color: Colors.white,
+                                  size: 20,
                                 ),
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 70.0),
-                        child: TextFormField(
-                          controller: usernameCtrl,
-                          decoration: InputDecoration(
-                              contentPadding: EdgeInsets.symmetric(
-                                vertical: 10.0,
-                                horizontal: 10.0,
-                              ),
-                              border: new OutlineInputBorder(
-                                borderRadius: const BorderRadius.all(
-                                    const Radius.circular(30.0)),
-                              ),
-                              prefixIcon: Icon(NewIcon.edittext_name_3x),
-                              hintText: "Nama Lengkap"),
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.go,
-                          validator: (value) {
-                            if (value.isEmpty) {
-                              return 'Username tidak boleh kosong';
-                            }
-                            return null;
-                          },
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 70.0),
+                      child: TextFormField(
+                        controller: usernameCtrl,
+                        decoration: InputDecoration(
+                            contentPadding: EdgeInsets.symmetric(
+                              vertical: 10.0,
+                              horizontal: 10.0,
+                            ),
+                            border: new OutlineInputBorder(
+                              borderRadius: const BorderRadius.all(
+                                  const Radius.circular(30.0)),
+                            ),
+                            prefixIcon: Icon(NewIcon.edittext_name_3x),
+                            hintText: "Nama Lengkap"),
+                        keyboardType: TextInputType.text,
+                        textInputAction: TextInputAction.go,
+                        validator: (value) {
+                          if (value.isEmpty) {
+                            return 'Username tidak boleh kosong';
+                          }
+                          return null;
+                        },
+                      ),
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 70.0),
+                      child: TextFormField(
+                        controller: passwordCtrl,
+                        decoration: InputDecoration(
+                            contentPadding: EdgeInsets.symmetric(
+                                vertical: 10.0, horizontal: 10.0),
+                            border: new OutlineInputBorder(
+                              borderRadius: const BorderRadius.all(
+                                  const Radius.circular(30.0)),
+                            ),
+                            prefixIcon: Icon(Icons.lock_outline),
+                            hintText: "Password"),
+                        obscureText: true,
+                        keyboardType: TextInputType.text,
+                        textInputAction: TextInputAction.go,
+                        validator: (value) {
+                          if (value.isEmpty) {
+                            return 'Password tidak boleh kosong';
+                          }
+                          return null;
+                        },
+                      ),
+                    ),
+                    SizedBox(
+                      height: 5.0,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 70.0),
+                      child: TextFormField(
+                        controller: contactCtrl,
+                        decoration: InputDecoration(
+                            contentPadding: EdgeInsets.symmetric(
+                                vertical: 10.0, horizontal: 10.0),
+                            border: new OutlineInputBorder(
+                              borderRadius: const BorderRadius.all(
+                                  const Radius.circular(30.0)),
+                            ),
+                            prefixIcon: Icon(NewIcon.edittext_phone_3x),
+                            hintText: "Nomer telepon"),
+                        keyboardType: TextInputType.number,
+                        textInputAction: TextInputAction.go,
+                        validator: (value) {
+                          if (value.isEmpty) {
+                            return 'Nomer telepon tidak boleh kosong';
+                          }
+                          return null;
+                        },
+                      ),
+                    ),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    Container(
+                      height: 35,
+                      width: double.infinity,
+                      margin: EdgeInsets.symmetric(horizontal: 70),
+                      decoration: BoxDecoration(
+                          color: Colors.amber,
+                          borderRadius: BorderRadius.circular(45)),
+                      child: FlatButton(
+                        onPressed: () {
+                          onSubmit();
+                        },
+                        child: Text(
+                          "Selesai",
+                          style: TextStyle(
+                              fontFamily: 'sofiapro-bold',
+                              fontSize: 18,
+                              color: Colors.white),
                         ),
-                      ),
-                      SizedBox(
-                        height: 15,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 70.0),
-                        child: TextFormField(
-                          controller: passwordCtrl,
-                          decoration: InputDecoration(
-                              contentPadding: EdgeInsets.symmetric(
-                                  vertical: 10.0, horizontal: 10.0),
-                              border: new OutlineInputBorder(
-                                borderRadius: const BorderRadius.all(
-                                    const Radius.circular(30.0)),
-                              ),
-                              prefixIcon: Icon(Icons.lock_outline),
-                              hintText: "Password"),
-                          obscureText: true,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.go,
-                          validator: (value) {
-                            if (value.isEmpty) {
-                              return 'Password tidak boleh kosong';
-                            }
-                            return null;
-                          },
-                        ),
-                      ),
-                      SizedBox(
-                        height: 15.0,
-                      ),
-                                            Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 70.0),
-                        child: TextFormField(
-                          controller: contactCtrl,
-                          decoration: InputDecoration(
-                              contentPadding: EdgeInsets.symmetric(
-                                  vertical: 10.0, horizontal: 10.0),
-                              border: new OutlineInputBorder(
-                                borderRadius: const BorderRadius.all(
-                                    const Radius.circular(30.0)),
-                              ),
-                              prefixIcon: Icon(NewIcon.edittext_phone_3x),
-                              hintText: "Nomer telepon"),
-                          keyboardType: TextInputType.number,
-                          textInputAction: TextInputAction.go,
-                          validator: (value) {
-                            if (value.isEmpty) {
-                              return 'Nomer telepon tidak boleh kosong';
-                            }
-                            return null;
-                          },
-                        ),
-                      ),
-                      SizedBox(
-                        height: 15,
-                      ),
-                      Container(
-                        height: 35,
-                        width: double.infinity,
-                        margin: EdgeInsets.symmetric(horizontal: 70),
-                        decoration: BoxDecoration(
-                            color: Colors.amber,
+                        color: Colors.green,
+                        shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(45)),
-                        child: FlatButton(
-                          onPressed: () {
-                            onSubmit();
-                          },
-                          child: Text(
-                            "Selesai",
-                            style: TextStyle(
-                                fontFamily: 'sofiapro-bold',
-                                fontSize: 18,
-                                color: Colors.white),
-                          ),
-                          color: Colors.green,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(45)),
-                        ),
-                      )
-                    ],
-                  ),
+                      ),
+                    )
+                  ],
                 ),
               ),
             ),

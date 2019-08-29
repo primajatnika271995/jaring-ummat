@@ -7,6 +7,7 @@ import 'package:flutter_jaring_ummat/src/models/beritaModel.dart';
 import 'package:flutter_jaring_ummat/src/models/commentModel.dart';
 import 'package:flutter_jaring_ummat/src/models/listUserLikes.dart';
 import 'package:flutter_jaring_ummat/src/services/time_ago_service.dart';
+import 'package:flutter_jaring_ummat/src/views/components/icon_text/new_icon_icons.dart';
 import 'package:rubber/rubber.dart';
 
 import 'package:flutter_jaring_ummat/src/bloc/commentBloc.dart' as commentBloc;
@@ -26,6 +27,8 @@ class _KomentarContainerState extends State<KomentarContainer>
   RubberAnimationController _rubberAnimationController;
   ScrollController _scrollController = ScrollController();
 
+  final messageCtrl = new TextEditingController();
+
   SharedPreferences _preferences;
   String profilePictUrl;
   String medsosPictUrl;
@@ -44,6 +47,69 @@ class _KomentarContainerState extends State<KomentarContainer>
         duration: Duration(milliseconds: 200));
   }
 
+  Widget _chatEnvironment() {
+    return IconTheme(
+      data: new IconThemeData(color: Colors.blue),
+      child: new Container(
+        margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 11.0),
+        child: new Row(
+          children: <Widget>[
+            Container(
+              width: 40.0,
+              height: 40.0,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(30.0),
+              ),
+              child: Icon(NewIcon.add_picture_camera_3x, color: greenColor),
+            ),
+            Container(
+              width: 40.0,
+              height: 40.0,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(30.0),
+              ),
+              child: Icon(NewIcon.add_picture_gallery_3x, color: greenColor),
+            ),
+            SizedBox(
+              width: 10.0,
+            ),
+            new Flexible(
+              child: new TextField(
+                controller: messageCtrl,
+                onChanged: commentBloc.bloc.updateComment,
+                decoration: new InputDecoration(
+                  contentPadding: EdgeInsets.symmetric(
+                    vertical: 10.0,
+                    horizontal: 10.0,
+                  ),
+                  border: new OutlineInputBorder(
+                    borderRadius: const BorderRadius.all(
+                      const Radius.circular(30.0),
+                    ),
+                  ),
+                  hintText: "Type a message",
+                  hintStyle: TextStyle(color: Colors.grey[400]),
+                ),
+              ),
+            ),
+            new Container(
+              margin: const EdgeInsets.symmetric(horizontal: 4.0),
+              child: new IconButton(
+                  icon: new Icon(NewIcon.send_3x),
+                  color: greenColor,
+                  onPressed: () async {
+                    messageCtrl.clear();
+                    commentBloc.bloc.saveComment(widget.berita.idBerita, "");
+                    await Future.delayed(Duration(milliseconds: 3));
+                    commentBloc.bloc.fetchNewsComment(widget.berita.idBerita);
+                  }),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
   Widget lowerLayer() {
     return Container(
       decoration: BoxDecoration(color: Colors.transparent),
@@ -58,7 +124,7 @@ class _KomentarContainerState extends State<KomentarContainer>
           SliverAppBar(
             pinned: false,
             floating: true,
-            elevation: 10.0,
+            elevation: 0.0,
             backgroundColor: Colors.white,
             automaticallyImplyLeading: false,
             bottom: PreferredSize(
@@ -175,65 +241,7 @@ class _KomentarContainerState extends State<KomentarContainer>
 
   Widget buttonLayer() {
     return BottomAppBar(
-      child: new Container(
-        height: 50.0,
-        child: AppBar(
-          backgroundColor: Colors.white,
-          elevation: 0.0,
-          leading: Container(
-            width: 40.0,
-            height: 40.0,
-            margin: EdgeInsets.all(10.0),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(30.0),
-            ),
-            child: CircleAvatar(
-              backgroundColor: grayColor,
-              child: Text('ME'),
-            ),
-          ),
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(
-                Icons.send,
-                color: Colors.black,
-              ),
-              onPressed: () async {
-                commentBloc.bloc.saveComment(widget.berita.idBerita, "");
-                await Future.delayed(Duration(milliseconds: 3));
-                commentBloc.bloc.fetchNewsComment(widget.berita.idBerita);
-              },
-            ),
-          ],
-          centerTitle: true,
-          automaticallyImplyLeading: true,
-          titleSpacing: 0.0,
-          title: Container(
-            child: Padding(
-              padding: EdgeInsets.only(bottom: 0.0),
-              child: TextField(
-                onChanged: commentBloc.bloc.updateComment,
-                autocorrect: false,
-                textInputAction: TextInputAction.next,
-                style: TextStyle(
-                  fontSize: 12.0,
-                  color: Colors.black,
-                ),
-                decoration: InputDecoration(
-                  icon: Icon(Icons.search, size: 18.0),
-                  border: InputBorder.none,
-                  hintText: 'Tulis komentar anda disini...',
-                ),
-              ),
-            ),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(30.0)),
-              color: Colors.grey[200],
-            ),
-            padding: EdgeInsets.fromLTRB(15.0, 0.5, 15.0, 0.5),
-          ),
-        ),
-      ),
+      child: _chatEnvironment(),
     );
   }
 
@@ -268,60 +276,52 @@ class _KomentarContainerState extends State<KomentarContainer>
                   borderRadius: BorderRadius.circular(10.0)),
               padding: EdgeInsets.all(10.0),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
-                  Expanded(
-                    flex: 2,
+                  Padding(
+                    padding: const EdgeInsets.only(right: 20.0),
                     child: Container(
                       width: 50.0,
                       height: 50.0,
                       child: snapshot.data[index].contents == null
                           ? CircularProfileAvatar(
-                              medsosPictUrl,
-                            )
+                              'https://kempenfeltplayers.com/wp-content/uploads/2015/07/profile-icon-empty.png')
                           : CircularProfileAvatar(
                               snapshot.data[index].contents[0].imgUrl,
                             ),
                     ),
                   ),
-                  SizedBox(
-                    width: 10.0,
-                  ),
-                  Expanded(
-                    flex: 12,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        // SizedBox(height: 3.0),
-                        Text(
-                          snapshot.data[index].fullname,
-                          style: TextStyle(
-                            fontSize: 12.0,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
-                          ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        snapshot.data[index].fullname,
+                        style: TextStyle(
+                          fontSize: 12.0,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
                         ),
-                        SizedBox(height: 3.0),
-                        Container(
-                          width: 270.0,
-                          child: Text(
-                            snapshot.data[index].komentar,
-                            style: TextStyle(
-                                fontSize: 11.0,
-                                fontWeight: FontWeight.bold,
-                                color: Color.fromRGBO(122, 122, 122, 1.0)),
-                          ),
-                        ),
-                        Text(
-                          TimeAgoService().timeAgoFormatting(
-                              snapshot.data[index].createdDate),
+                      ),
+                      SizedBox(height: 3.0),
+                      Container(
+                        width: 270.0,
+                        child: Text(
+                          snapshot.data[index].komentar,
                           style: TextStyle(
                               fontSize: 11.0,
-                              fontWeight: FontWeight.normal,
+                              fontWeight: FontWeight.bold,
                               color: Color.fromRGBO(122, 122, 122, 1.0)),
-                        )
-                      ],
-                    ),
+                        ),
+                      ),
+                      Text(
+                        TimeAgoService().timeAgoFormatting(
+                            snapshot.data[index].createdDate),
+                        style: TextStyle(
+                            fontSize: 11.0,
+                            fontWeight: FontWeight.normal,
+                            color: Color.fromRGBO(122, 122, 122, 1.0)),
+                      )
+                    ],
                   ),
                 ],
               ),
@@ -338,8 +338,6 @@ class _KomentarContainerState extends State<KomentarContainer>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomPadding: false,
-      resizeToAvoidBottomInset: false,
       body: Container(
         child: RubberBottomSheet(
           scrollController: _scrollController,
@@ -355,8 +353,8 @@ class _KomentarContainerState extends State<KomentarContainer>
                     Padding(
                       padding: const EdgeInsets.all(7.0),
                       child: Container(
-                        width: 50.0,
-                        height: 50.0,
+                        width: 30.0,
+                        height: 30.0,
                         child: CircleAvatar(
                           backgroundColor: softGreyColor,
                           child: Text(widget.berita.createdBy

@@ -11,8 +11,8 @@ class StepOne extends StatefulWidget {
 }
 
 class _StepOneState extends State<StepOne> {
-  final String appName = 'Jaring Ummat';
-  final String logoUrl = 'assets/icon/main_logo.png';
+  final String appName = 'Jejaring';
+  final String logoUrl = 'assets/icon/logo_muzakki_jejaring.png';
 
   final _textEditingControllerContact = new TextEditingController();
   final _formKey = GlobalKey<FormState>();
@@ -26,7 +26,7 @@ class _StepOneState extends State<StepOne> {
     final widgetLogo = Padding(
       padding: EdgeInsets.only(top: 80.0),
       child: Container(
-        child: Image.asset(logoUrl, scale: 20.0),
+        child: Image.asset(logoUrl, scale: 30.0),
       ),
     );
 
@@ -39,12 +39,12 @@ class _StepOneState extends State<StepOne> {
     );
 
     final widgetContactName = Padding(
-      padding: EdgeInsets.only(top: 80),
+      padding: EdgeInsets.only(top: 60),
       child: const Text('Masukan alamat email'),
     );
 
     final widgetSocialLoginName = Padding(
-      padding: EdgeInsets.only(top: 70.0),
+      padding: EdgeInsets.only(top: 50.0),
       child: const Text('atau buat akun dengan media sosial'),
     );
 
@@ -56,19 +56,19 @@ class _StepOneState extends State<StepOne> {
           IconButton(
             onPressed: () {},
             icon: Icon(SosialMedia.facebook),
-            iconSize: 60.0,
+            iconSize: 40.0,
             color: facebookColor,
           ),
           IconButton(
             onPressed: () {},
             icon: Icon(SosialMedia.google),
-            iconSize: 60.0,
+            iconSize: 40.0,
             color: googleColor,
           ),
           IconButton(
             onPressed: () {},
             icon: Icon(SosialMedia.linkedin),
-            iconSize: 60.0,
+            iconSize: 40.0,
             color: linkedInColor,
           ),
         ],
@@ -80,8 +80,7 @@ class _StepOneState extends State<StepOne> {
       child: TextFormField(
         controller: _textEditingControllerContact,
         decoration: InputDecoration(
-          contentPadding:
-              EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+          contentPadding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
           border: new OutlineInputBorder(
             borderRadius: const BorderRadius.all(
               const Radius.circular(30.0),
@@ -108,7 +107,7 @@ class _StepOneState extends State<StepOne> {
           ),
         ),
         keyboardType: TextInputType.text,
-        textInputAction: TextInputAction.done,
+        textInputAction: TextInputAction.go,
         validator: (value) {
           if (value.isEmpty) {
             return 'Isi alamat email terlebih dahulu';

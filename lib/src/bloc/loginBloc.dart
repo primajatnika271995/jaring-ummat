@@ -3,6 +3,7 @@ import 'package:flutter_jaring_ummat/src/config/preferences.dart';
 import 'package:flutter_jaring_ummat/src/models/DTO/LoginResponse.dart';
 import 'package:flutter_jaring_ummat/src/models/muzakkiUserDetails.dart';
 import 'package:flutter_jaring_ummat/src/repository/LoginRepository.dart';
+import 'package:flutter_jaring_ummat/src/views/home.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -43,7 +44,13 @@ class LoginBloc {
             PROFILE_PICTURE_KEY, response.imgProfile[0].imgUrl);
       }
 
-      Navigator.of(context).pushReplacementNamed('/home');
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => HomeView(
+            currentindex: 3,
+          ),
+        ),
+      );
     }
   }
 

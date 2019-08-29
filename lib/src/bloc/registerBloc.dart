@@ -12,7 +12,7 @@ class RegisterBloc {
       registerRespFetcher.stream;
 
   saveUser(BuildContext context, PostRegistration register) async {
-    _repository.saveUser(context, register);
+    // _repository.saveUser(context, register);
     RegisterResponseModel value = await _repository.saveUser(context, register);
     registerRespFetcher.sink.add(value);
 

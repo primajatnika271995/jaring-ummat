@@ -57,20 +57,24 @@ class _ChatScreenState extends State<ChatScreen> {
       return IconTheme(
         data: new IconThemeData(color: Colors.blue),
         child: new Container(
-          margin: const EdgeInsets.symmetric(horizontal: 8.0),
+          margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 11.0),
           child: new Row(
             children: <Widget>[
               Container(
-                width: 30.0,
-                height: 30.0,
+                width: 40.0,
+                height: 40.0,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(50.0),
-                  image: DecorationImage(
-                    fit: BoxFit.cover,
-                    image: NetworkImage(
-                        'https://kempenfeltplayers.com/wp-content/uploads/2015/07/profile-icon-empty.png'),
-                  ),
+                  borderRadius: BorderRadius.circular(30.0),
                 ),
+                child: Icon(NewIcon.add_picture_camera_3x, color: greenColor),
+              ),
+              Container(
+                width: 40.0,
+                height: 40.0,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(30.0),
+                ),
+                child: Icon(NewIcon.add_picture_gallery_3x, color: greenColor),
               ),
               SizedBox(
                 width: 10.0,
@@ -78,9 +82,19 @@ class _ChatScreenState extends State<ChatScreen> {
               new Flexible(
                 child: new TextField(
                   controller: _textEditingControllerChatsMessage,
-                  decoration: new InputDecoration.collapsed(
-                      hintText: "Type a message",
-                      hintStyle: TextStyle(color: Colors.grey[400])),
+                  decoration: new InputDecoration(
+                    contentPadding: EdgeInsets.symmetric(
+                      vertical: 10.0,
+                      horizontal: 10.0,
+                    ),
+                    border: new OutlineInputBorder(
+                      borderRadius: const BorderRadius.all(
+                        const Radius.circular(30.0),
+                      ),
+                    ),
+                    hintText: "Type a message",
+                    hintStyle: TextStyle(color: Colors.grey[400]),
+                  ),
                 ),
               ),
               new Container(

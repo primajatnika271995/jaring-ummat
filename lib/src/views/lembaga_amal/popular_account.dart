@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_jaring_ummat/src/config/hexColor.dart';
+import 'package:flutter_jaring_ummat/src/config/preferences.dart';
 
 import 'package:flutter_jaring_ummat/src/models/lembagaAmalModel.dart';
 import 'package:flutter_jaring_ummat/src/views/components/appbar_custom_icons.dart';
 import 'package:flutter_jaring_ummat/src/bloc/lembagaAmalBloc.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/new_icon_icons.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 const double _ITEM_HEIGHT = 70.0;
 
@@ -21,6 +23,11 @@ class PopularAccountState extends State<PopularAccountView>
   TabController _tabController;
 
   String selectedCategory = "";
+
+  bool isFollowed = false;
+
+  SharedPreferences _preferences;
+  String _token;
 
   final String noImg =
       "https://kempenfeltplayers.com/wp-content/uploads/2015/07/profile-icon-empty.png";
@@ -113,21 +120,31 @@ class PopularAccountState extends State<PopularAccountView>
       appBar: AppBar(
         elevation: 0.0,
         backgroundColor: whiteColor,
-        leading: new Icon(NewIcon.back_big_3x, color: greenColor),
+        // leading: new Icon(NewIcon.back_big_3x, color: greenColor),
         title: const Text(
-          'Following Amil',
+          'Amil Jejaring',
           style: TextStyle(color: Colors.black, fontSize: 18.0),
         ),
         actions: <Widget>[
           IconButton(
-            onPressed: () {},
-            icon: Icon(NewIcon.sort_3x),
+            padding: EdgeInsets.only(left: 30.0),
+            icon: Icon(NewIcon.search_big_3x),
             color: greenColor,
+            iconSize: 20.0,
+            onPressed: () {
+              print('_search_');
+            },
+          ),
+          IconButton(
+            padding: EdgeInsets.only(right: 10.0),
+            icon: Icon(NewIcon.account_following_3x),
+            color: greenColor,
+            iconSize: 20.0,
+            onPressed: () {},
           ),
         ],
         centerTitle: false,
-        automaticallyImplyLeading: true,
-        titleSpacing: 0.0,
+        automaticallyImplyLeading: false,
       ),
       body: new Padding(
         padding: new EdgeInsets.symmetric(
@@ -170,10 +187,10 @@ class PopularAccountState extends State<PopularAccountView>
               height: 10.0,
               child: new Center(
                 child: new Container(
-                  margin: new EdgeInsetsDirectional.only(start: 1.0, end: 1.0),
-                  height: 5.0,
-                  color: softGreyColor
-                ),
+                    margin:
+                        new EdgeInsetsDirectional.only(start: 1.0, end: 1.0),
+                    height: 5.0,
+                    color: softGreyColor),
               ),
             ),
           );
@@ -181,24 +198,23 @@ class PopularAccountState extends State<PopularAccountView>
         itemCount: snapshot.data.length,
         itemBuilder: (BuildContext context, int index) {
           var value = snapshot.data[index];
-          var imgUrl = value.imageContent[0].imgUrl;
           return ListTile(
             leading: Container(
-              width: 50.0,
-              height: 50.0,
+              width: 35.0,
+              height: 35.0,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(30.0),
                 image: DecorationImage(
                   image: (value.imageContent == null)
                       ? NetworkImage(noImg)
-                      : NetworkImage(imgUrl),
+                      : NetworkImage(value.imageContent[0].imgUrl),
                   fit: BoxFit.cover,
                 ),
               ),
             ),
             title: Text(
               value.lembagaAmalName,
-              style: TextStyle(fontWeight: FontWeight.bold),
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15.0),
             ),
             subtitle: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -215,97 +231,23 @@ class PopularAccountState extends State<PopularAccountView>
         },
       ),
     );
-
-    return ListView.builder(
-      padding: EdgeInsets.only(top: 8.0),
-      itemBuilder: (context, index) {
-        var value = snapshot.data[index];
-        return Container(
-          margin: EdgeInsets.fromLTRB(2.0, 5.0, 2.0, 0.0),
-          decoration: BoxDecoration(
-              color: Colors.grey[200],
-              borderRadius: BorderRadius.circular(10.0)),
-          padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
-          child: Padding(
-            padding: EdgeInsets.fromLTRB(2.0, 10.0, 10.0, 10.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Container(
-                      width: 50.0,
-                      height: 50.0,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(30.0),
-                        image: DecorationImage(
-                          image: (value.imageContent == null)
-                              ? NetworkImage(
-                                  'https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg-1024x683.jpg')
-                              : NetworkImage(value.imageContent[0].imgUrl),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      width: 20.0,
-                    ),
-                    Container(
-                      width: MediaQuery.of(context).size.width - 250,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Text(
-                            value.lembagaAmalName,
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 14.0),
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          SizedBox(
-                            height: 3.0,
-                          ),
-                          Text(
-                            '${value.totalFollowers} Pengikut',
-                            style: TextStyle(fontSize: 11.0),
-                          ),
-                          Text(
-                            '${value.totalPostProgramAmal} Aksi Galang Amal',
-                            style: TextStyle(fontSize: 11.0),
-                          ),
-                          Text(
-                            '${value.totalPostBerita} Berita',
-                            style: TextStyle(fontSize: 11.0),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-                (value.followThisAccount)
-                    ? buttonUnfollow(value.idLembagaAmal)
-                    : buttonFollow(value.idLembagaAmal),
-              ],
-            ),
-          ),
-        );
-      },
-      itemCount: snapshot.data.length,
-      shrinkWrap: true,
-      physics: ClampingScrollPhysics(),
-    );
   }
 
   Widget buttonFollow(String idAccount) {
     return OutlineButton(
       onPressed: () async {
-        await bloc.followAccount(idAccount);
-        await Future.delayed(Duration(milliseconds: 3));
-        setState(() async {
-          await bloc.fetchAllLembagaAmal(selectedCategory);
-        });
+        if (_token == null) {
+          Navigator.of(context).pushNamed('/login');
+        } else {
+          setState(() {
+            this.isFollowed = true;
+          });
+          await bloc.followAccount(idAccount);
+          await Future.delayed(Duration(milliseconds: 3));
+          setState(() async {
+            await bloc.fetchAllLembagaAmal(selectedCategory);
+          });
+        }
       },
       color: whiteColor,
       shape: RoundedRectangleBorder(
@@ -326,9 +268,16 @@ class PopularAccountState extends State<PopularAccountView>
       borderSide: BorderSide(color: greenColor),
       onPressed: () {
         setState(() async {
-          bloc.unfollow(idAccountAmil);
-          await Future.delayed(Duration(milliseconds: 3));
-          bloc.fetchAllLembagaAmal(selectedCategory);
+          if (_token == null) {
+            Navigator.of(context).pushNamed('/login');
+          } else {
+            setState(() {
+              this.isFollowed = true;
+            });
+            bloc.unfollow(idAccountAmil);
+            await Future.delayed(Duration(milliseconds: 3));
+            bloc.fetchAllLembagaAmal(selectedCategory);
+          }
         });
       },
       color: greenColor,
@@ -349,7 +298,16 @@ class PopularAccountState extends State<PopularAccountView>
     bloc.fetchAllLembagaAmal(selectedCategory);
     _scrollController = new ScrollController();
     _tabController = new TabController(vsync: this, length: 8);
+
+    checkToken();
     super.initState();
+  }
+
+  void checkToken() async {
+    _preferences = await SharedPreferences.getInstance();
+    setState(() {
+      _token = _preferences.getString(ACCESS_TOKEN_KEY);
+    });
   }
 
   @override

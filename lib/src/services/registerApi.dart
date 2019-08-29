@@ -36,6 +36,7 @@ class RegisterApiProvider {
       return compute(registerResponseModelFromJson, response.body);
     } else if (response.statusCode == 500) {
       Flushbar(
+        flushbarPosition: FlushbarPosition.TOP,
         margin: EdgeInsets.all(8.0),
         borderRadius: 8.0,
         message: "Akun anda sudah terdaftar sebelumnya",

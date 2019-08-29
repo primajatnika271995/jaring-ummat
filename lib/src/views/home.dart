@@ -18,6 +18,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_jaring_ummat/src/views/menu.dart';
 
 class HomeView extends StatefulWidget {
+  final int currentindex;
+  HomeView({this.currentindex});
+
   @override
   State<StatefulWidget> createState() {
     return _HomeState();
@@ -25,7 +28,6 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeState extends State<HomeView> {
-
   int _currentIndex = 0;
   SharedPreferences _preferences;
   String _token;
@@ -47,7 +49,7 @@ class _HomeState extends State<HomeView> {
           children: <Widget>[
             BeritaPage(),
             mainView(),
-            (_token == null) ? ReLogin() : PopularAccountView()
+            PopularAccountView(),
           ],
         ),
       ),
@@ -61,7 +63,7 @@ class _HomeState extends State<HomeView> {
     final List<Widget> _children = [
       ProgramAmalPage(),
       (_token == null) ? ReLogin() : Portofolio(),
-      Inbox(),
+      (_token == null) ? ReLogin() : Inbox(),
       (_token == null) ? ReLogin() : Menu()
     ];
 
@@ -78,12 +80,28 @@ class _HomeState extends State<HomeView> {
         height: 45.0,
         selectedColor: greenColor,
         onTabSelected: _selectedTab,
-        iconSize: 25.0,
+        iconSize: 20.0,
         items: [
-          FABBottomAppBarItem(iconData: (_currentIndex == 0) ? NewIcon.nav_home_active_3x : NewIcon.nav_home_inactive_3x, text: ''),
-          FABBottomAppBarItem(iconData: (_currentIndex == 1) ? NewIcon.nav_portfolio_3x : NewIcon.nav_portfolio_3x, text: ''),
-          FABBottomAppBarItem(iconData: (_currentIndex == 2) ? NewIcon.nav_inbox_3x : NewIcon.nav_inbox_3x, text: ''),
-          FABBottomAppBarItem(iconData: (_currentIndex == 3) ? NewIcon.nav_others_3x : NewIcon.nav_others_3x, text: ''),
+          FABBottomAppBarItem(
+              iconData: (_currentIndex == 0)
+                  ? NewIcon.nav_home_active_3x
+                  : NewIcon.nav_home_inactive_3x,
+              text: ''),
+          FABBottomAppBarItem(
+              iconData: (_currentIndex == 1)
+                  ? NewIcon.nav_portfolio_3x
+                  : NewIcon.nav_portfolio_3x,
+              text: ''),
+          FABBottomAppBarItem(
+              iconData: (_currentIndex == 2)
+                  ? NewIcon.nav_inbox_3x
+                  : NewIcon.nav_inbox_3x,
+              text: ''),
+          FABBottomAppBarItem(
+              iconData: (_currentIndex == 3)
+                  ? NewIcon.nav_others_3x
+                  : NewIcon.nav_others_3x,
+              text: ''),
         ],
       ),
     );
@@ -107,6 +125,13 @@ class _HomeState extends State<HomeView> {
 
   @override
   void initState() {
+    setState(() {
+      if (widget.currentindex == null) {
+        _currentIndex = 0;
+      } else {
+        _currentIndex = widget.currentindex;
+      }
+    });
     bloc.preferences.forEach((value) {
       setState(() {
         _pref = value;

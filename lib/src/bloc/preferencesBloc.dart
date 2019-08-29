@@ -16,8 +16,8 @@ class PreferencesBloc {
     final uname  = _preferences.getString(FULLNAME_KEY) ?? 'Not Found';
     final email  = _preferences.getString(EMAIL_KEY) ?? 'Not Found';
     final contact = _preferences.getString(CONTACT_KEY) ?? 'Not Found';
-    final img_profile_db = _preferences.getString(PROFILE_PICTURE_KEY) ?? 'https://content-static.upwork.com/uploads/2014/10/01073427/profilephoto1.jpg';
-    final img_profile_social = _preferences.getString(PROFILE_FACEBOOK_KEY) ?? 'https://content-static.upwork.com/uploads/2014/10/01073427/profilephoto1.jpg';
+    final img_profile_db = _preferences.getString(PROFILE_PICTURE_KEY) ?? 'https://kempenfeltplayers.com/wp-content/uploads/2015/07/profile-icon-empty.png';
+    final img_profile_social = _preferences.getString(PROFILE_FACEBOOK_KEY) ?? 'https://kempenfeltplayers.com/wp-content/uploads/2015/07/profile-icon-empty.png';
 
     _userDetailPreferences.add(UserDetailPref(idUser, uname, email, contact, img_profile_db, img_profile_social));
   }
