@@ -88,6 +88,10 @@ flutter:
     - family:  Navigation
       fonts:
         - asset: assets/fonts/Navigation.ttf
+      
+    - family:  AppBarIcon
+      fonts:
+        - asset: assets/fonts/AppBarIcon.ttf
     
     - family:  SosialMedia
       fonts:

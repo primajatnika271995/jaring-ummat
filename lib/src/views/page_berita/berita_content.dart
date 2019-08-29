@@ -106,10 +106,14 @@ class _BeritaContentState extends State<BeritaContent> {
                         widget.berita.categoryBerita,
                         style: TextStyle(color: grayColor),
                       ),
-                      Text(
-                        widget.berita.titleBerita,
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                        overflow: TextOverflow.ellipsis,
+                      Container(
+                        width: MediaQuery.of(context).size.width - 180,
+                        child: Text(
+                          widget.berita.titleBerita,
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 2,
+                        ),
                       ),
                       Text(
                         'oleh ${widget.berita.createdBy}',
@@ -126,7 +130,7 @@ class _BeritaContentState extends State<BeritaContent> {
                             Icon(NewIcon.comment_3x,
                                 color: greenColor, size: 20.0),
                             SizedBox(width: 10.0),
-                            Icon(NewIcon.save_3x,
+                            Icon(NewIcon.share_3x,
                                 color: greenColor, size: 20.0),
                           ],
                         ),

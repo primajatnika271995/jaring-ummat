@@ -66,7 +66,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(30.0),
                 ),
-                child: Icon(NewIcon.add_picture_camera_3x, color: greenColor),
+                child: Icon(NewIcon.add_picture_camera_3x, size: 20.0, color: greenColor),
               ),
               Container(
                 width: 40.0,

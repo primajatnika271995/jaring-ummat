@@ -3,6 +3,7 @@ import 'package:flutter_jaring_ummat/src/config/preferences.dart';
 import 'package:flutter_jaring_ummat/src/models/DTO/LoginResponse.dart';
 import 'package:flutter_jaring_ummat/src/models/amilDetailsModel.dart';
 import 'package:flutter_jaring_ummat/src/repository/LoginRepository.dart';
+import 'package:flutter_jaring_ummat/src/views/home.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -36,7 +37,11 @@ class LoginBloc {
       _preferences.setString(FULLNAME_KEY, response.namaLembaga);
       _preferences.setString(CONTACT_KEY, response.contactLembaga);
 
-      Navigator.of(context).pushReplacementNamed('/home');
+      Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => HomeView(
+          currentindex: 3,
+        )
+      ));
     }
   }
 

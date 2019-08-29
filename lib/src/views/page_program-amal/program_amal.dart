@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_baru_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/add_icons.dart';
+import 'package:flutter_jaring_ummat/src/views/components/icon_text/app_bar_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/new_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/page_story/createStory.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -66,27 +67,35 @@ class _ProgramAmalPageState extends State<ProgramAmalPage>
               ),
               title: titleText,
               actions: <Widget>[
-                IconButton(
-                  padding: EdgeInsets.only(left: 20.0),
-                  icon: Icon(NewIcon.search_big_3x),
-                  color: greenColor,
-                  iconSize: 20.0,
-                  onPressed: () {
-                    print('_search_');
-                  },
+                Padding(
+                  padding: const EdgeInsets.only(right: 7.0),
+                  child: InkWell(
+                    onTap: () {},
+                    child: Icon(AppBarIcon.location_inactive,
+                        size: 20.0, color: greenColor),
+                  ),
                 ),
-                IconButton(
-                  padding: EdgeInsets.only(right: 10.0),
-                  icon: Icon(NewIcon.chat_3x),
-                  color: greenColor,
-                  iconSize: 20.0,
-                  onPressed: () {
-                    if (_token == null) {
-                      Navigator.of(context).pushNamed('/login');
-                    } else {
-                      Navigator.of(context).pushNamed('/list/account/chats');
-                    }
-                  },
+                Padding(
+                  padding: const EdgeInsets.only(right: 7.0),
+                  child: InkWell(
+                    onTap: () {},
+                    child: Icon(NewIcon.search_big_3x,
+                        size: 20.0, color: greenColor),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(right: 10.0),
+                  child: InkWell(
+                    onTap: () {
+                      if (_token == null) {
+                        Navigator.of(context).pushNamed('/login');
+                      } else {
+                        Navigator.of(context).pushNamed('/list/account/chats');
+                      }
+                    },
+                    child: Icon(NewIcon.chat_3x,
+                        size: 20.0, color: greenColor),
+                  ),
                 ),
               ],
             ),
@@ -282,7 +291,7 @@ class _ProgramAmalPageState extends State<ProgramAmalPage>
                           child: new Container(
                             margin: new EdgeInsets.only(right: 16.0),
                             child: new Text(
-                              'Galang Amal',
+                              '',
                               style: new TextStyle(
                                 fontSize: 13.0,
                                 color: blackColor,
@@ -341,7 +350,7 @@ class _ProgramAmalPageState extends State<ProgramAmalPage>
                           child: new Container(
                             margin: new EdgeInsets.only(right: 16.0),
                             child: new Text(
-                              'Buat Berita',
+                              '',
                               style: new TextStyle(
                                 fontSize: 13.0,
                                 color: blackColor,
@@ -392,7 +401,7 @@ class _ProgramAmalPageState extends State<ProgramAmalPage>
                           child: new Container(
                             margin: new EdgeInsets.only(right: 16.0),
                             child: new Text(
-                              'Buat Stories',
+                              '',
                               style: new TextStyle(
                                 fontSize: 13.0,
                                 color: blackColor,

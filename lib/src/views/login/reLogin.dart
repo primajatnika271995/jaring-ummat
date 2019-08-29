@@ -11,7 +11,7 @@ class ReLogin extends StatefulWidget {
 
 class _ReLoginState extends State<ReLogin> {
   final String appName = 'Mitra Jejaring';
-  final String logoUrl = 'assets/icon/main_logo.png';
+  final String logoUrl = 'assets/icon/logo_mitra_jejaring.png';
   final String bgUrl = 'assets/backgrounds/accent_app_width_full_screen.png';
 
   final _emailTextCtrl = new TextEditingController();

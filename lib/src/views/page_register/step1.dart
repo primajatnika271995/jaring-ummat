@@ -12,7 +12,7 @@ class StepOne extends StatefulWidget {
 
 class _StepOneState extends State<StepOne> {
   final String appName = 'Mitra Jejaring';
-  final String logoUrl = 'assets/icon/main_logo.png';
+  final String logoUrl = 'assets/icon/logo_mitra_jejaring.png';
 
   final _textEditingControllerContact = new TextEditingController();
   final _formKey = GlobalKey<FormState>();

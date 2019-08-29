@@ -186,7 +186,7 @@ class _BeritaPageState extends State<BeritaPage> {
                                         'Bamuis BNI | 08:56, 02 Januari 2019'),
                                     Padding(
                                       padding: const EdgeInsets.only(
-                                          top: 20.0, right: 5.0),
+                                          top: 30.0, right: 5.0, bottom: 5.0),
                                       child: Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.end,
@@ -197,7 +197,7 @@ class _BeritaPageState extends State<BeritaPage> {
                                           Icon(NewIcon.comment_3x,
                                               color: greenColor, size: 20.0),
                                           SizedBox(width: 10.0),
-                                          Icon(NewIcon.save_3x,
+                                          Icon(NewIcon.share_3x,
                                               color: greenColor, size: 20.0),
                                         ],
                                       ),

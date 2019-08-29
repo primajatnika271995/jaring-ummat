@@ -814,15 +814,6 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
                                     ),
                                     Indicator(
                                       color: Color(0xff0293ee),
-                                      text: "Donasi",
-                                      size: 10.0,
-                                      isSquare: false,
-                                    ),
-                                    SizedBox(
-                                      height: 4,
-                                    ),
-                                    Indicator(
-                                      color: Color(0xfff8b250),
                                       text: "Zakat",
                                       size: 10.0,
                                       isSquare: false,
@@ -831,8 +822,17 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
                                       height: 4,
                                     ),
                                     Indicator(
+                                      color: Color(0xfff8b250),
+                                      text: "Infaq",
+                                      size: 10.0,
+                                      isSquare: false,
+                                    ),
+                                    SizedBox(
+                                      height: 4,
+                                    ),
+                                    Indicator(
                                       color: Color(0xFFDEDE71),
-                                      text: "Wakaf",
+                                      text: "Sodaqoh",
                                       size: 10.0,
                                       isSquare: false,
                                     ),
@@ -841,7 +841,7 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
                                     ),
                                     Indicator(
                                       color: Color(0xFFDB4B1F),
-                                      text: "Shodaqoh",
+                                      text: "Wakaf",
                                       size: 10.0,
                                       isSquare: false,
                                     ),
@@ -850,7 +850,7 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
                                     ),
                                     Indicator(
                                       color: Color(0xFF2938C2),
-                                      text: "Infaq",
+                                      text: "Donasi",
                                       size: 10.0,
                                       isSquare: false,
                                     ),
@@ -1432,6 +1432,17 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
                         children: <Widget>[_buildListItem()],
                       ),
                     ],
+                  ),
+                ),
+              ],
+            ),
+            floatingActionButton: new Stack(
+              children: <Widget>[
+                new Container(
+                  child: new FabDialer(
+                    _fabMiniMenuItemList,
+                    Colors.lightGreen,
+                    new Icon(IconBaru.add_donation_zakat_etc),
                   ),
                 ),
               ],
