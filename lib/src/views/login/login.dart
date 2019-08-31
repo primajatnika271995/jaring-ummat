@@ -23,9 +23,9 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     final widgetLogo = Padding(
-      padding: EdgeInsets.only(top: 60.0),
+      padding: EdgeInsets.only(top: 10.0),
       child: Container(
-        child: Image.asset(logoUrl, scale: 30.0),
+        child: Image.asset(logoUrl, scale: 40.0),
       ),
     );
 
@@ -48,7 +48,7 @@ class _LoginPageState extends State<LoginPage> {
     );
 
     final widgetRegisterBtn = Padding(
-      padding: EdgeInsets.only(top: 5.0),
+      padding: EdgeInsets.only(top: 0.0),
       child: OutlineButton(
         onPressed: () {
           Navigator.of(context).pushReplacementNamed('/register/step1');
@@ -98,7 +98,7 @@ class _LoginPageState extends State<LoginPage> {
     );
 
     final widgetEmailField = Padding(
-      padding: EdgeInsets.only(top: 10.0, left: 80.0, right: 80.0),
+      padding: EdgeInsets.only(top: 10.0, left: 60.0, right: 60.0),
       child: TextFormField(
         controller: _emailTextCtrl,
         decoration: InputDecoration(
@@ -119,7 +119,7 @@ class _LoginPageState extends State<LoginPage> {
     );
 
     final widgetPasswordField = Padding(
-      padding: EdgeInsets.only(top: 10.0, left: 80.0, right: 80.0),
+      padding: EdgeInsets.only(top: 5.0, left: 60.0, right: 60.0),
       child: TextFormField(
         controller: _passwordTextCtrl,
         decoration: InputDecoration(

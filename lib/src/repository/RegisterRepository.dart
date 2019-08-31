@@ -6,5 +6,5 @@ import '../models/RegistrationModel.dart';
 
 class RegisterRepository {
   final repository = RegisterApiProvider();
-  Future<RegisterResponseModel> saveUser(BuildContext context, PostRegistration register) => repository.saveUser(context, register);
+  Future<RegisterResponseModel> saveUser(BuildContext context, PostRegistration register, String content) => repository.saveUser(context, register, content);
 }

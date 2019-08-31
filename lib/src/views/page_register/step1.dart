@@ -22,9 +22,9 @@ class _StepOneState extends State<StepOne> {
   @override
   Widget build(BuildContext context) {
     final widgetLogo = Padding(
-      padding: EdgeInsets.only(top: 80.0),
+      padding: EdgeInsets.only(top: 10.0),
       child: Container(
-        child: Image.asset(logoUrl, scale: 30.0),
+        child: Image.asset(logoUrl, scale: 40.0),
       ),
     );
 
@@ -74,22 +74,19 @@ class _StepOneState extends State<StepOne> {
     );
 
     final widgetContactField = Padding(
-      padding: EdgeInsets.only(top: 10.0, left: 80.0, right: 80.0),
+      padding: EdgeInsets.only(top: 10.0, left: 60.0, right: 60.0),
       child: TextFormField(
         controller: _textEditingControllerContact,
         decoration: InputDecoration(
-          contentPadding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
+          contentPadding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 10.0),
           border: new OutlineInputBorder(
             borderRadius: const BorderRadius.all(
               const Radius.circular(30.0),
             ),
           ),
-          prefixIcon: Icon(
-            Icons.mail_outline,
-            color: grayColor,
-          ),
           prefixStyle: TextStyle(fontWeight: FontWeight.bold),
           hintText: "Alamat Email",
+          
           suffixIcon: IconButton(
             onPressed: () {
               onSubmit();
@@ -149,10 +146,11 @@ class _StepOneState extends State<StepOne> {
 
       Navigator.of(context).push(
         MaterialPageRoute(
-            builder: (context) => StepTwo(
-                  emailKey: _textEditingControllerContact.text,
-                  otpKey: otp.toString(),
-                )),
+          builder: (context) => StepTwo(
+            emailKey: _textEditingControllerContact.text,
+            otpKey: otp.toString(),
+          ),
+        ),
       );
     }
   }

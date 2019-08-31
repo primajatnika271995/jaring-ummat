@@ -23,6 +23,7 @@ class _MenuState extends State<Menu> {
   String emailKey;
   String fullnameKey;
   String contactKey;
+  String profileKey;
 
   Widget leftSection(Icon icon) {
     return new Container(
@@ -155,8 +156,11 @@ class _MenuState extends State<Menu> {
                                                 color: Colors.white
                                                     .withOpacity(0.5),
                                                 image: DecorationImage(
-                                                  image: NetworkImage(
-                                                      _pref?.img_profile_db),
+                                                  image: (profileKey == null)
+                                                      ? NetworkImage(
+                                                          _pref?.img_profile_db)
+                                                      : NetworkImage(
+                                                          profileKey),
                                                   fit: BoxFit.cover,
                                                 ),
                                               ),
@@ -533,11 +537,13 @@ class _MenuState extends State<Menu> {
     var id = _preferences.getString(LEMABAGA_AMAL_ID);
     var contact = _preferences.getString(CONTACT_KEY);
     var fullname = _preferences.getString(FULLNAME_KEY);
+    var profile = _preferences.getString(PROFILE_PICTURE_KEY);
 
     setState(() {
       this.emailKey = email;
       this.fullnameKey = fullname;
       this.contactKey = contact;
+      this.profileKey = profile;
     });
     print('--> email $email');
     print(id);

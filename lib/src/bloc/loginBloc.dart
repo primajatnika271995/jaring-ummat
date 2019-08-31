@@ -36,6 +36,7 @@ class LoginBloc {
       _preferences.setString(EMAIL_KEY, response.emailLembaga);
       _preferences.setString(FULLNAME_KEY, response.namaLembaga);
       _preferences.setString(CONTACT_KEY, response.contactLembaga);
+      _preferences.setString(PROFILE_PICTURE_KEY, response.imgProfile[0].imgUrl);
 
       Navigator.of(context).push(MaterialPageRoute(
         builder: (context) => HomeView(

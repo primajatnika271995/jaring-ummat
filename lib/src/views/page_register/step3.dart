@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_jaring_ummat/src/models/postModel.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/navigation_icons.dart';
@@ -59,7 +60,7 @@ class _StepThreeState extends State<StepThree> {
             title: Text(
               "Data Diri",
               style: TextStyle(
-                  fontSize: 22,
+                  fontSize: 20,
                   fontFamily: 'sofiapro-bold',
                   color: Colors.black),
             ),
@@ -71,153 +72,144 @@ class _StepThreeState extends State<StepThree> {
             child: Form(
               key: _keyForm,
               child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      SizedBox(height: 50),
-                      Text(
-                        "Lengkapi Akunmu!",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 23.0),
-                      ),
-                      SizedBox(height: 10),
-                      Text(
-                          "Unggah foto diri dan lengkapi nama Anda\nuntuk mulai berbagi kebaikan!",
-                          textAlign: TextAlign.center),
-                      Container(
-                        padding: EdgeInsets.symmetric(vertical: 30),
-                        width: double.infinity,
-                        child: Align(
-                          alignment: Alignment.center,
-                          child: Stack(
-                            alignment: Alignment.bottomRight,
-                            children: <Widget>[
-                              _selectedImage == null
-                                  ? _selectedDefaultPicture.isEmpty
-                                      ? emptyPicture()
-                                      : defaultPicture()
-                                  : selectedImage(),
-                              GestureDetector(
-                                onTap: () async {
-                                  print(context);
-                                  final ImageSource imageSource =
-                                      await _asyncImageSourceDialog(context);
-                                },
-                                child: Container(
-                                  height: 40,
-                                  width: 40,
-                                  decoration: BoxDecoration(
-                                      color: Colors.green,
-                                      shape: BoxShape.circle),
-                                  child: Icon(
-                                    NewIcon.upload_2x,
-                                    color: Colors.white,
-                                    size: 20,
-                                  ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    SizedBox(height: 20),
+                    Text(
+                      "Lengkapi Akunmu!",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 18.0),
+                    ),
+                    SizedBox(height: 10),
+                    Text(
+                        "Unggah foto diri dan lengkapi nama Anda\nuntuk mulai berbagi kebaikan!",
+                        textAlign: TextAlign.center),
+                    Container(
+                      padding: EdgeInsets.symmetric(vertical: 30),
+                      width: double.infinity,
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: Stack(
+                          alignment: Alignment.bottomRight,
+                          children: <Widget>[
+                            _selectedImage == null
+                                ? _selectedDefaultPicture.isEmpty
+                                    ? emptyPicture()
+                                    : defaultPicture()
+                                : selectedImage(),
+                            GestureDetector(
+                              onTap: () async {
+                                print(context);
+                                final ImageSource imageSource =
+                                    await _asyncImageSourceDialog(context);
+                                print('--> $imageSource');
+                              },
+                              child: Container(
+                                height: 40,
+                                width: 40,
+                                decoration: BoxDecoration(
+                                    color: Colors.green,
+                                    shape: BoxShape.circle),
+                                child: Icon(
+                                  NewIcon.upload_2x,
+                                  color: Colors.white,
+                                  size: 20,
                                 ),
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 70.0),
-                        child: TextFormField(
-                          controller: usernameCtrl,
-                          decoration: InputDecoration(
-                              contentPadding: EdgeInsets.symmetric(
-                                vertical: 10.0,
-                                horizontal: 10.0,
-                              ),
-                              border: new OutlineInputBorder(
-                                borderRadius: const BorderRadius.all(
-                                    const Radius.circular(30.0)),
-                              ),
-                              prefixIcon: Icon(NewIcon.edittext_name_3x),
-                              hintText: "Nama Lengkap"),
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.go,
-                          validator: (value) {
-                            if (value.isEmpty) {
-                              return 'Username tidak boleh kosong';
-                            }
-                            return null;
-                          },
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 70.0),
+                      child: TextFormField(
+                        controller: usernameCtrl,
+                        decoration: InputDecoration(
+                            contentPadding: EdgeInsets.symmetric(
+                              vertical: 10.0,
+                              horizontal: 10.0,
+                            ),
+                            border: new OutlineInputBorder(
+                              borderRadius: const BorderRadius.all(
+                                  const Radius.circular(30.0)),
+                            ),
+                            hintText: "Nama Lengkap"),
+                        keyboardType: TextInputType.text,
+                        textInputAction: TextInputAction.go,
+                        validator: (value) {
+                          if (value.isEmpty) {
+                            return 'Username tidak boleh kosong';
+                          }
+                          return null;
+                        },
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 70.0),
+                      child: TextFormField(
+                        controller: passwordCtrl,
+                        decoration: InputDecoration(
+                            contentPadding: EdgeInsets.symmetric(
+                                vertical: 10.0, horizontal: 10.0),
+                            border: new OutlineInputBorder(
+                              borderRadius: const BorderRadius.all(
+                                  const Radius.circular(30.0)),
+                            ),
+                            hintText: "Password"),
+                        obscureText: true,
+                        keyboardType: TextInputType.text,
+                        textInputAction: TextInputAction.go,
+                        validator: (value) {
+                          if (value.isEmpty) {
+                            return 'Password tidak boleh kosong';
+                          }
+                          return null;
+                        },
+                      ),
+                    ),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    Container(
+                      height: 35,
+                      width: double.infinity,
+                      margin: EdgeInsets.symmetric(horizontal: 70),
+                      decoration: BoxDecoration(
+                          color: Colors.amber,
+                          borderRadius: BorderRadius.circular(45)),
+                      child: FlatButton(
+                        onPressed: () {
+                          onSubmit();
+                        },
+                        child: Text(
+                          "Selesai",
+                          style: TextStyle(
+                              fontFamily: 'sofiapro-bold',
+                              fontSize: 18,
+                              color: Colors.white),
                         ),
-                      ),
-                      SizedBox(
-                        height: 15,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 70.0),
-                        child: TextFormField(
-                          controller: passwordCtrl,
-                          decoration: InputDecoration(
-                              contentPadding: EdgeInsets.symmetric(
-                                  vertical: 10.0, horizontal: 10.0),
-                              border: new OutlineInputBorder(
-                                borderRadius: const BorderRadius.all(
-                                    const Radius.circular(30.0)),
-                              ),
-                              prefixIcon: Icon(Icons.lock_outline),
-                              hintText: "Password"),
-                          obscureText: true,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.go,
-                          validator: (value) {
-                            if (value.isEmpty) {
-                              return 'Password tidak boleh kosong';
-                            }
-                            return null;
-                          },
-                        ),
-                      ),
-                      SizedBox(
-                        height: 15,
-                      ),
-                      Container(
-                        height: 35,
-                        width: double.infinity,
-                        margin: EdgeInsets.symmetric(horizontal: 70),
-                        decoration: BoxDecoration(
-                            color: Colors.amber,
+                        color: Colors.green,
+                        shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(45)),
-                        child: FlatButton(
-                          onPressed: () {
-                            onSubmit();
-                          },
-                          child: Text(
-                            "Selesai",
-                            style: TextStyle(
-                                fontFamily: 'sofiapro-bold',
-                                fontSize: 18,
-                                color: Colors.white),
-                          ),
-                          color: Colors.green,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(45)),
-                        ),
-                      )
-                    ],
-                  ),
+                      ),
+                    )
+                  ],
                 ),
               ),
             ),
-          ),
-        Align(
-          alignment: Alignment.bottomCenter,
-          child: Image.asset(
-            bgUrl,
-            fit: BoxFit.fitWidth,
-            alignment: Alignment.bottomLeft,
           ),
         ),
       ],
     );
   }
 
-  // DIALOG
+  /// SimpleDialogOption
   dialogContent(BuildContext context) {
     return Container(
         height: 450,
@@ -256,7 +248,7 @@ class _StepThreeState extends State<StepThree> {
                   Padding(
                     padding: const EdgeInsets.only(top: 30),
                     child: Icon(
-                      Navigation.empty_picture,
+                      NewIcon.empty_pp_big_12x,
                       size: 90,
                       color: Colors.grey,
                     ),
@@ -265,19 +257,24 @@ class _StepThreeState extends State<StepThree> {
                     height: 10,
                   ),
                   SimpleDialogOption(
-                    onPressed: () {
+                    onPressed: () async {
                       Navigator.of(context).pop(ImageSource.gallery);
-                      var image =
-                          ImagePicker.pickImage(source: ImageSource.gallery);
+                      var image = await ImagePicker.pickImage(
+                          source: ImageSource.gallery);
+                      print('Select Galery!');
                       setState(() {
-                        _selectedImage = image as File;
+                        _selectedImage = image;
                       });
+                      print('--> ${_selectedImage.path}');
                     },
-                    child: const Text('Unggah foto dari galeri',
-                        style: TextStyle(
-                            fontSize: 20,
-                            fontFamily: 'sofiapro-bold',
-                            color: Colors.blueAccent)),
+                    child: const Text(
+                      'Unggah foto dari galeri',
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontFamily: 'sofiapro-bold',
+                        color: Colors.blueAccent,
+                      ),
+                    ),
                   ),
                   Container(
                     height: 3.5,
@@ -285,14 +282,23 @@ class _StepThreeState extends State<StepThree> {
                     color: Colors.grey[200],
                   ),
                   SimpleDialogOption(
-                    onPressed: () {
+                    onPressed: () async {
                       Navigator.of(context).pop(ImageSource.camera);
+                      var image = await ImagePicker.pickImage(
+                          source: ImageSource.camera);
+                      print('Select Camera!');
+                      setState(() {
+                        _selectedImage = image;
+                      });
                     },
-                    child: const Text('Ambil foto dari kamera',
-                        style: TextStyle(
-                            fontSize: 20,
-                            fontFamily: 'sofiapro-bold',
-                            color: Colors.blueAccent)),
+                    child: const Text(
+                      'Ambil foto dari kamera',
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontFamily: 'sofiapro-bold',
+                        color: Colors.blueAccent,
+                      ),
+                    ),
                   ),
                   Container(
                     height: 3.5,
@@ -455,16 +461,17 @@ class _StepThreeState extends State<StepThree> {
 
   Widget selectedImage() {
     return Container(
-        width: 120,
-        height: 120,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: Colors.white.withOpacity(0.5),
-          image: DecorationImage(
-            image: FileImage(_selectedImage),
-            fit: BoxFit.cover,
-          ),
-        ));
+      width: 120,
+      height: 120,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: Colors.white.withOpacity(0.5),
+        image: DecorationImage(
+          image: FileImage(_selectedImage),
+          fit: BoxFit.cover,
+        ),
+      ),
+    );
   }
 
   Future<void> changeLoadingVisible() async {
@@ -474,17 +481,29 @@ class _StepThreeState extends State<StepThree> {
   }
 
   void onSubmit() async {
-    if (_keyForm.currentState.validate()) {
-      final value = PostRegistration(
-          contact: "-",
-          email: widget.emailKey,
-          fullname: usernameCtrl.text,
-          password: passwordCtrl.text,
-          tipe_user: "AMIL",
-          username: widget.emailKey);
+    if (_selectedImage == null) {
+      Flushbar(
+        flushbarPosition: FlushbarPosition.TOP,
+        margin: EdgeInsets.all(8.0),
+        borderRadius: 8.0,
+        message: "Gambar profile tidak boleh kosong",
+        leftBarIndicatorColor: Colors.redAccent,
+        duration: Duration(seconds: 3),
+      )..show(context);
+    } else {
+      if (_keyForm.currentState.validate()) {
+        final value = PostRegistration(
+            contact: "-",
+            email: widget.emailKey,
+            fullname: usernameCtrl.text,
+            password: passwordCtrl.text,
+            tipe_user: "AMIL",
+            username: widget.emailKey);
 
-      await changeLoadingVisible();
-      bloc.saveUser(context, value);
+        await changeLoadingVisible();
+        bloc.saveUser(context, value, _selectedImage.path);
+        await changeLoadingVisible();
+      }
     }
   }
 
