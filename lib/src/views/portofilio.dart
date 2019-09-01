@@ -1436,17 +1436,6 @@ class _PortofolioState extends State<Portofolio> with TickerProviderStateMixin {
                 ),
               ],
             ),
-            floatingActionButton: new Stack(
-              children: <Widget>[
-                new Container(
-                  child: new FabDialer(
-                    _fabMiniMenuItemList,
-                    Colors.lightGreen,
-                    new Icon(IconBaru.add_donation_zakat_etc),
-                  ),
-                ),
-              ],
-            ),
           ),
         ),
       ),

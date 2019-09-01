@@ -5,8 +5,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:camera_utils/camera_utils.dart';
 import 'package:circular_profile_avatar/circular_profile_avatar.dart';
+import 'package:flutter_jaring_ummat/src/config/hexColor.dart';
 import 'package:flutter_jaring_ummat/src/config/preferences.dart';
 import 'package:flutter_jaring_ummat/src/services/storiesApi.dart';
+import 'package:flutter_jaring_ummat/src/views/components/icon_text/new_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/components/loadingContainer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
@@ -77,15 +79,16 @@ class _CreateStoryState extends State<CreateStory> {
   Widget _cancelContent() {
     return Positioned(
       top: 30.0,
-      right: 20.0,
-      child: InkWell(
-        onTap: () {
-          setState(() {
-            this._path = null;
-          });
-        },
-        child: CircleAvatar(
-          child: Icon(Icons.cancel),
+      right: 10.0,
+      child: CircleAvatar(
+        backgroundColor: greenColor,
+        child: IconButton(
+          onPressed: () {
+            setState(() {
+              this._path = null;
+            });
+          },
+          icon: Icon(Icons.close, color: whiteColor),
         ),
       ),
     );
@@ -96,13 +99,13 @@ class _CreateStoryState extends State<CreateStory> {
       bottom: 5.0,
       left: 27.0,
       child: CircularProfileAvatar(
-        'https://avatars0.githubusercontent.com/u/8264639?s=460&v=4',
+        'https://kempenfeltplayers.com/wp-content/uploads/2015/07/profile-icon-empty.png',
         borderWidth: 3.0,
         radius: 25.0,
         elevation: 15.0,
         cacheImage: true,
-        borderColor: Colors.blue,
-        backgroundColor: Colors.transparent,
+        borderColor: greenColor,
+        backgroundColor: whiteColor,
       ),
     );
   }
@@ -120,7 +123,7 @@ class _CreateStoryState extends State<CreateStory> {
         disabledTextColor: Colors.white,
         textColor: Colors.white,
         padding: EdgeInsets.all(0.0),
-        color: Colors.blue,
+        color: greenColor,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(30.0),
         ),
@@ -254,7 +257,7 @@ class _CreateStoryState extends State<CreateStory> {
             child: Container(
               width: double.infinity,
               height: 105.0,
-              padding: EdgeInsets.all(20.0),
+              padding: EdgeInsets.all(5.0),
               color: Color.fromRGBO(00, 00, 00, 0.7),
               child: Text(
                 'PATH: $_path',

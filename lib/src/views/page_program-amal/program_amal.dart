@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_jaring_ummat/src/views/components/icon_baru_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/add_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/app_bar_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/new_icon_icons.dart';
@@ -8,7 +7,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_jaring_ummat/src/bloc/programAmalBloc.dart';
 import 'package:flutter_jaring_ummat/src/config/hexColor.dart';
 import 'package:flutter_jaring_ummat/src/config/preferences.dart';
-import 'package:flutter_jaring_ummat/src/views/components/icon_text/home_page_icons_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/components/loadingContainer.dart';
 import 'package:flutter_jaring_ummat/src/models/program_amal.dart';
 import 'package:flutter_jaring_ummat/src/services/storiesApi.dart';
@@ -93,8 +91,7 @@ class _ProgramAmalPageState extends State<ProgramAmalPage>
                         Navigator.of(context).pushNamed('/list/account/chats');
                       }
                     },
-                    child: Icon(NewIcon.chat_3x,
-                        size: 20.0, color: greenColor),
+                    child: Icon(NewIcon.chat_3x, size: 20.0, color: greenColor),
                   ),
                 ),
               ],
@@ -372,7 +369,15 @@ class _ProgramAmalPageState extends State<ProgramAmalPage>
                                 height: 40.0,
                                 child: new InkWell(
                                   onTap: () {
-                                    if (_angle == 45.0) {}
+                                    if (_angle == 45.0) {
+                                      if (_token == null) {
+                                        Navigator.of(context)
+                                            .pushNamed('/login');
+                                      } else {
+                                        Navigator.of(context)
+                                            .pushNamed('/create/berita');
+                                      }
+                                    }
                                   },
                                   child: new Center(
                                     child: new Icon(

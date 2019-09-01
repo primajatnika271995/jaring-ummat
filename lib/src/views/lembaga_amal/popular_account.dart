@@ -19,6 +19,9 @@ class PopularAccountView extends StatefulWidget {
 
 class PopularAccountState extends State<PopularAccountView>
     with TickerProviderStateMixin {
+  final String noImg =
+      "https://kempenfeltplayers.com/wp-content/uploads/2015/07/profile-icon-empty.png";
+
   ScrollController scrollController;
   TabController _tabController;
 
@@ -26,9 +29,7 @@ class PopularAccountState extends State<PopularAccountView>
   String _token;
 
   String selectedCategory = "";
-
-  final String noImg =
-      "https://kempenfeltplayers.com/wp-content/uploads/2015/07/profile-icon-empty.png";
+  bool isFollowed = false;
 
   @override
   Widget build(BuildContext context) {
@@ -196,6 +197,7 @@ class PopularAccountState extends State<PopularAccountView>
         itemCount: snapshot.data.length,
         itemBuilder: (BuildContext context, int index) {
           var value = snapshot.data[index];
+          isFollowed = snapshot.data[index].followThisAccount;
           return ListTile(
             leading: Container(
               width: 35.0,
@@ -222,7 +224,7 @@ class PopularAccountState extends State<PopularAccountView>
                 Text('${value.totalPostProgramAmal} Galang Amal'),
               ],
             ),
-            trailing: (value.followThisAccount)
+            trailing: (isFollowed)
                 ? buttonUnfollow(value.idLembagaAmal)
                 : buttonFollow(value.idLembagaAmal),
           );
@@ -238,9 +240,10 @@ class PopularAccountState extends State<PopularAccountView>
           Navigator.of(context).pushNamed('/login');
         } else {
           bloc.followAccount(idAccount);
-          await Future.delayed(Duration(milliseconds: 3));
+          await Future.delayed(Duration(milliseconds: 1));
+          bloc.fetchAllLembagaAmal(selectedCategory);
           setState(() {
-            bloc.fetchAllLembagaAmal(selectedCategory);
+            isFollowed = true;
           });
         }
       },
@@ -267,8 +270,11 @@ class PopularAccountState extends State<PopularAccountView>
             Navigator.of(context).pushNamed('/login');
           } else {
             bloc.unfollow(idAccountAmil);
-            await Future.delayed(Duration(milliseconds: 3));
+            await Future.delayed(Duration(milliseconds: 1));
             bloc.fetchAllLembagaAmal(selectedCategory);
+            setState(() {
+             isFollowed = false; 
+            });
           }
         });
       },

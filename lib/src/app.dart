@@ -6,6 +6,7 @@ import 'package:flutter_jaring_ummat/src/views/galang_amal.dart';
 import 'package:flutter_jaring_ummat/src/views/home.dart';
 import 'package:flutter_jaring_ummat/src/views/login/login.dart';
 import 'package:flutter_jaring_ummat/src/views/onboarding.dart';
+import 'package:flutter_jaring_ummat/src/views/page_berita/create_berita.dart';
 import 'package:flutter_jaring_ummat/src/views/page_program-amal/create_program_amal.dart';
 import 'package:flutter_jaring_ummat/src/views/page_register/step1.dart';
 import 'package:flutter_jaring_ummat/src/views/user_story.dart';
@@ -23,6 +24,7 @@ void App() {
         '/home': (context) => HomeView(),
         '/galang-amal': (context) => GalangAmalView(),
         '/create/galang-amal': (context) => CreateProgramAmal(),
+        '/create/berita': (context) => CreateBerita(),
         '/onboarding': (context) => OnboardingView(),
         '/user/story': (context) => UserStoryView(),
         '/list/account/chats': (context) => ListAccountChat(),

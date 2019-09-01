@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter_jaring_ummat/src/config/hexColor.dart';
 import 'package:flutter_jaring_ummat/src/config/preferences.dart';
 import 'package:flutter_jaring_ummat/src/services/storiesApi.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -72,13 +73,13 @@ class _PreviewsStoriesState extends State<PreviewsStories> {
                   bottom: 40.0,
                   left: 27.0,
                   child: CircularProfileAvatar(
-                    'https://avatars0.githubusercontent.com/u/8264639?s=460&v=4',
+                    'https://kempenfeltplayers.com/wp-content/uploads/2015/07/profile-icon-empty.png',
                     borderWidth: 3.0,
                     radius: 25.0,
                     elevation: 15.0,
                     cacheImage: true,
-                    borderColor: Colors.blue,
-                    backgroundColor: Colors.transparent,
+                    borderColor: greenColor,
+                    backgroundColor: whiteColor,
                   ),
                 ),
                 Positioned(
@@ -179,13 +180,13 @@ class _PreviewsStoriesState extends State<PreviewsStories> {
                   bottom: 40.0,
                   left: 27.0,
                   child: CircularProfileAvatar(
-                    'https://avatars0.githubusercontent.com/u/8264639?s=460&v=4',
+                    'https://kempenfeltplayers.com/wp-content/uploads/2015/07/profile-icon-empty.png',
                     borderWidth: 3.0,
                     radius: 25.0,
                     elevation: 15.0,
                     cacheImage: true,
-                    borderColor: Colors.blue,
-                    backgroundColor: Colors.transparent,
+                    borderColor: greenColor,
+                    backgroundColor: whiteColor,
                   ),
                 ),
                 Positioned(
