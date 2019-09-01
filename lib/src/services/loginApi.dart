@@ -35,6 +35,7 @@ class LoginApiProvider {
         borderRadius: 8.0,
         message: "Email atau Password tidak cocok",
         leftBarIndicatorColor: Colors.redAccent,
+        flushbarPosition: FlushbarPosition.TOP,
         duration: Duration(seconds: 3),
       )..show(context);
     }

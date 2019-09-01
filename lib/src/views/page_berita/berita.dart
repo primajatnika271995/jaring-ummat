@@ -25,7 +25,7 @@ class _BeritaPageState extends State<BeritaPage> {
     'https://cdn2.tstatic.net/sumsel/foto/bank/images/muhammad-adil-direktur-utama-bank-sumselbabel-berfoto-dengan-anak-panti_20150710_151920.jpg',
     'http://informatika.narotama.ac.id/file/content/150730105606_bukber2014_2.jpg'
   ];
-  int _current = 0;
+  int current = 0;
 
   bool _loadingVisible = false;
 
@@ -186,7 +186,7 @@ class _BeritaPageState extends State<BeritaPage> {
                                         'Bamuis BNI | 08:56, 02 Januari 2019'),
                                     Padding(
                                       padding: const EdgeInsets.only(
-                                          top: 30.0, right: 5.0, bottom: 5.0),
+                                          top: 5.0, right: 5.0, bottom: 5.0),
                                       child: Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.end,
@@ -299,7 +299,7 @@ class _BeritaPageState extends State<BeritaPage> {
       viewportFraction: 3.0,
       onPageChanged: (index) {
         setState(() {
-          _current = index;
+          current = index;
         });
       },
       items: imgList.map(

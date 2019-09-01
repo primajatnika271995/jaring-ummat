@@ -98,43 +98,46 @@ class RegisterApiProvider {
                 borderRadius: BorderRadius.all(Radius.circular(10.0))),
             elevation: 0.0,
             backgroundColor: Colors.white,
-            child: Center(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10.0),
-                    child: Text(
-                      'Buat Akun Sukses',
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 18.0),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(top: 10.0),
-                    child: Center(
+            child: Container(
+              height: 500.0,
+              child: Center(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10.0),
                       child: Text(
-                        'Selamat! Pembuatan akun Anda berhasil.\n Mari Mulai lakukan kebaikan untuk sesama!',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(color: grayColor),
+                        'Buat Akun Sukses',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 18.0),
                       ),
                     ),
-                  ),
-                  Padding(
-                    padding:
-                        EdgeInsets.only(top: 10.0, left: 20.0, right: 20.0),
-                    child: OutlineButton(
-                      onPressed: () {
-                        Navigator.of(context).pushReplacementNamed('/login');
-                      },
-                      color: greenColor,
-                      child: const Text('Bismillah'),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(45)),
+                    Padding(
+                      padding: EdgeInsets.only(top: 10.0),
+                      child: Center(
+                        child: Text(
+                          'Selamat! Pembuatan akun Anda berhasil.\n Mari Mulai lakukan kebaikan untuk sesama!',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(color: grayColor),
+                        ),
+                      ),
                     ),
-                  ),
-                ],
+                    Padding(
+                      padding:
+                          EdgeInsets.only(top: 10.0, left: 20.0, right: 20.0),
+                      child: OutlineButton(
+                        onPressed: () {
+                          Navigator.of(context).pushReplacementNamed('/login');
+                        },
+                        color: greenColor,
+                        child: const Text('Bismillah'),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(45)),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           );

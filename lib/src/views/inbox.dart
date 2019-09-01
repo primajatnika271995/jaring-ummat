@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_jaring_ummat/src/config/hexColor.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_baru_icons.dart';
+import 'package:flutter_jaring_ummat/src/views/components/icon_text/app_bar_icon_icons.dart';
 import 'package:toast/toast.dart';
 
 // Component
@@ -81,7 +83,7 @@ class _InboxState extends State<Inbox> with SingleTickerProviderStateMixin {
               elevation: 0.0,
               title: new Text(
                 'Kotak Masuk',
-                style: TextStyle(fontSize: 16.0, color: Colors.grey[600]),
+                style: TextStyle(color: blackColor),
               ),
               centerTitle: false,
               backgroundColor: Colors.white,
@@ -94,8 +96,8 @@ class _InboxState extends State<Inbox> with SingleTickerProviderStateMixin {
                     ));
                   },
                   icon: Icon(
-                    CreateAccount.setting_2,
-                    color: Colors.grey[600],
+                    AppBarIcon.setting,
+                    color: blackColor,
                   ),
                 )
               ],

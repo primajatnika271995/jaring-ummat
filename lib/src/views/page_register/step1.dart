@@ -78,7 +78,7 @@ class _StepOneState extends State<StepOne> {
       child: TextFormField(
         controller: _textEditingControllerContact,
         decoration: InputDecoration(
-          contentPadding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 10.0),
+          contentPadding: EdgeInsets.fromLTRB(10.0, 5.0, 20.0, 10.0),
           border: new OutlineInputBorder(
             borderRadius: const BorderRadius.all(
               const Radius.circular(30.0),

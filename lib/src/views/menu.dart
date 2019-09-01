@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_jaring_ummat/src/config/hexColor.dart';
 import 'package:flutter_jaring_ummat/src/config/preferences.dart';
 import 'package:flutter_jaring_ummat/src/models/DTO/UserDetailPref.dart';
+import 'package:flutter_jaring_ummat/src/views/components/icon_baru_icons.dart';
+import 'package:flutter_jaring_ummat/src/views/components/icon_text/app_bar_icon_icons.dart';
+import 'package:flutter_jaring_ummat/src/views/components/icon_text/new_icon_icons.dart';
+import 'package:flutter_jaring_ummat/src/views/components/menu_icon_icons.dart';
+import 'package:flutter_jaring_ummat/src/views/components/menu_lain_icon_icons.dart';
 import 'package:giffy_dialog/giffy_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_jaring_ummat/src/bloc/preferencesBloc.dart';
-
-// Component
-import '../views/components/icon_baru_icons.dart';
-import '../views/components/menu_icon_icons.dart';
-import '../views/components/float_icon_icons.dart';
-import '../views/components/menu_lain_icon_icons.dart';
-import '../views/components/create_account_icons.dart';
 
 class Menu extends StatefulWidget {
   @override
@@ -37,7 +36,7 @@ class _MenuState extends State<Menu> {
 
   Widget rightSection() {
     return new Container(
-        child: new IconButton(icon: Icon(FloatIcon.next), onPressed: () {}));
+        child: new IconButton(icon: Icon(NewIcon.next_small_2x), onPressed: () {}));
   }
 
   Widget middleSection(String title, String desc) {
@@ -69,9 +68,10 @@ class _MenuState extends State<Menu> {
     return Scaffold(
       appBar: PreferredSize(
         child: new AppBar(
+          elevation: 1.0,
           title: new Text(
-            'Akun dan menu lain',
-            style: TextStyle(fontSize: 16.0, color: Colors.grey[600]),
+            'Profile',
+            style: TextStyle(color: blackColor),
           ),
           centerTitle: false,
           backgroundColor: Colors.white,
@@ -86,7 +86,7 @@ class _MenuState extends State<Menu> {
                       'assets/404.gif',
                     ),
                     title: Text(
-                      'Logout Message',
+                      'Logout Akun !',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 22.0,
@@ -94,7 +94,7 @@ class _MenuState extends State<Menu> {
                       ),
                     ),
                     description: Text(
-                      'Apakah anda ingin keluar dari Aplikasi Jaring Ummat ?',
+                      'Apakah anda ingin keluar dari Aplikasi Mitra Jejaring ?',
                       textAlign: TextAlign.center,
                     ),
                     buttonOkColor: Colors.redAccent,
@@ -109,8 +109,8 @@ class _MenuState extends State<Menu> {
                 );
               },
               icon: Icon(
-                CreateAccount.logout,
-                color: Colors.grey[600],
+                AppBarIcon.logout,
+                color: blackColor,
               ),
             ),
           ],
@@ -197,12 +197,16 @@ class _MenuState extends State<Menu> {
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
-                                    new Text(
-                                      fullnameKey,
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 20.0,
-                                          color: Colors.black),
+                                    Container(
+                                      width: MediaQuery.of(context).size.width - 120,
+                                      child: new Text(
+                                        fullnameKey,
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 18.0,
+                                            color: Colors.black),
+                                            maxLines: 2,
+                                      ),
                                     ),
                                     new Text(
                                       '$emailKey - $contactKey',
@@ -244,12 +248,12 @@ class _MenuState extends State<Menu> {
                                                       2.0, 0.0, 2.0, 0.0),
                                                   decoration: BoxDecoration(
                                                     shape: BoxShape.circle,
-                                                    color: Colors.lightGreen,
+                                                    color: greenColor,
                                                   ),
                                                 ),
                                                 Container(
                                                   child: Icon(
-                                                    CreateAccount.upload,
+                                                    NewIcon.upload_2x,
                                                     color: Colors.white,
                                                     size: 15.0,
                                                   ),
@@ -275,12 +279,12 @@ class _MenuState extends State<Menu> {
                                                       2.0, 0.0, 2.0, 0.0),
                                                   decoration: BoxDecoration(
                                                     shape: BoxShape.circle,
-                                                    color: Colors.lightGreen,
+                                                    color: greenColor,
                                                   ),
                                                 ),
                                                 Container(
                                                   child: Icon(
-                                                    CreateAccount.edit,
+                                                    NewIcon.update_2x,
                                                     color: Colors.white,
                                                     size: 15.0,
                                                   ),

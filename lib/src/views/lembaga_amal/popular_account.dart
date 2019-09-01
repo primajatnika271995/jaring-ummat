@@ -237,10 +237,10 @@ class PopularAccountState extends State<PopularAccountView>
         if (_token == null) {
           Navigator.of(context).pushNamed('/login');
         } else {
-          await bloc.followAccount(idAccount);
+          bloc.followAccount(idAccount);
           await Future.delayed(Duration(milliseconds: 3));
-          setState(() async {
-            await bloc.fetchAllLembagaAmal(selectedCategory);
+          setState(() {
+            bloc.fetchAllLembagaAmal(selectedCategory);
           });
         }
       },

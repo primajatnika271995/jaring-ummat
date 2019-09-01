@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_jaring_ummat/src/config/hexColor.dart';
 import 'package:flutter_jaring_ummat/src/models/postModel.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/navigation_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/new_icon_icons.dart';
@@ -23,7 +24,8 @@ class _StepThreeState extends State<StepThree> {
   final usernameCtrl = new TextEditingController();
   final passwordCtrl = new TextEditingController();
 
-  final _keyForm = GlobalKey<FormState>();
+  final FocusNode usernameFocusNode = new FocusNode();
+  final FocusNode passwordFocusNode = new FocusNode();
 
   File _selectedImage;
   String _selectedDefaultPicture = "";
@@ -69,14 +71,12 @@ class _StepThreeState extends State<StepThree> {
           ),
           body: LoadingScreen(
             inAsyncCall: _loadingVisible,
-            child: Form(
-              key: _keyForm,
+            child: Center(
               child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    SizedBox(height: 20),
                     Text(
                       "Lengkapi Akunmu!",
                       style: TextStyle(
@@ -125,53 +125,59 @@ class _StepThreeState extends State<StepThree> {
                     ),
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 70.0),
-                      child: TextFormField(
-                        controller: usernameCtrl,
-                        decoration: InputDecoration(
-                            contentPadding: EdgeInsets.symmetric(
-                              vertical: 10.0,
-                              horizontal: 10.0,
-                            ),
-                            border: new OutlineInputBorder(
-                              borderRadius: const BorderRadius.all(
-                                  const Radius.circular(30.0)),
-                            ),
-                            hintText: "Nama Lengkap"),
-                        keyboardType: TextInputType.text,
-                        textInputAction: TextInputAction.go,
-                        validator: (value) {
-                          if (value.isEmpty) {
-                            return 'Username tidak boleh kosong';
-                          }
-                          return null;
-                        },
-                      ),
+                      child: StreamBuilder<Object>(
+                          stream: bloc.username,
+                          builder: (context, snapshot) {
+                            return TextField(
+                              decoration: InputDecoration(
+                                contentPadding:
+                                    EdgeInsets.fromLTRB(10.0, 5.0, 20.0, 10.0),
+                                border: new OutlineInputBorder(
+                                  borderRadius: const BorderRadius.all(
+                                      const Radius.circular(30.0)),
+                                ),
+                                errorText: snapshot.error,
+                                hintText: "Nama Lengkap",
+                              ),
+                              controller: usernameCtrl,
+                              focusNode: usernameFocusNode,
+                              keyboardType: TextInputType.text,
+                              textInputAction: TextInputAction.next,
+                              onEditingComplete: () {
+                                FocusScope.of(context)
+                                    .requestFocus(passwordFocusNode);
+                              },
+                              onChanged: bloc.changeUsername,
+                            );
+                          }),
                     ),
                     SizedBox(
                       height: 10,
                     ),
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 70.0),
-                      child: TextFormField(
-                        controller: passwordCtrl,
-                        decoration: InputDecoration(
-                            contentPadding: EdgeInsets.symmetric(
-                                vertical: 10.0, horizontal: 10.0),
-                            border: new OutlineInputBorder(
-                              borderRadius: const BorderRadius.all(
-                                  const Radius.circular(30.0)),
-                            ),
-                            hintText: "Password"),
-                        obscureText: true,
-                        keyboardType: TextInputType.text,
-                        textInputAction: TextInputAction.go,
-                        validator: (value) {
-                          if (value.isEmpty) {
-                            return 'Password tidak boleh kosong';
-                          }
-                          return null;
-                        },
-                      ),
+                      child: StreamBuilder<Object>(
+                          stream: bloc.password,
+                          builder: (context, snapshot) {
+                            return TextField(
+                              decoration: InputDecoration(
+                                contentPadding:
+                                    EdgeInsets.fromLTRB(10.0, 5.0, 20.0, 10.0),
+                                border: new OutlineInputBorder(
+                                  borderRadius: const BorderRadius.all(
+                                      const Radius.circular(30.0)),
+                                ),
+                                errorText: snapshot.error,
+                                hintText: "Password",
+                              ),
+                              controller: passwordCtrl,
+                              focusNode: passwordFocusNode,
+                              obscureText: true,
+                              keyboardType: TextInputType.text,
+                              textInputAction: TextInputAction.done,
+                              onChanged: bloc.changePassword,
+                            );
+                          }),
                     ),
                     SizedBox(
                       height: 15,
@@ -183,20 +189,24 @@ class _StepThreeState extends State<StepThree> {
                       decoration: BoxDecoration(
                           color: Colors.amber,
                           borderRadius: BorderRadius.circular(45)),
-                      child: FlatButton(
-                        onPressed: () {
-                          onSubmit();
-                        },
-                        child: Text(
-                          "Selesai",
-                          style: TextStyle(
+                      child: StreamBuilder<Object>(
+                        stream: bloc.submitValid,
+                        builder: (context, snapshot) => FlatButton(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(45)),
+                          onPressed: snapshot.hasData ? () => onSubmit() : null,
+                          child: Text(
+                            "Selesai",
+                            style: TextStyle(
                               fontFamily: 'sofiapro-bold',
                               fontSize: 18,
-                              color: Colors.white),
+                              color: Colors.white,
+                            ),
+                          ),
+                          color: greenColor,
+                          disabledColor: grayColor,
+                          disabledTextColor: whiteColor,
                         ),
-                        color: Colors.green,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(45)),
                       ),
                     )
                   ],
@@ -265,7 +275,6 @@ class _StepThreeState extends State<StepThree> {
                       setState(() {
                         _selectedImage = image;
                       });
-                      print('--> ${_selectedImage.path}');
                     },
                     child: const Text(
                       'Unggah foto dari galeri',
@@ -491,19 +500,17 @@ class _StepThreeState extends State<StepThree> {
         duration: Duration(seconds: 3),
       )..show(context);
     } else {
-      if (_keyForm.currentState.validate()) {
-        final value = PostRegistration(
-            contact: "-",
-            email: widget.emailKey,
-            fullname: usernameCtrl.text,
-            password: passwordCtrl.text,
-            tipe_user: "AMIL",
-            username: widget.emailKey);
+      final value = PostRegistration(
+          contact: "-",
+          email: widget.emailKey,
+          fullname: usernameCtrl.text,
+          password: passwordCtrl.text,
+          tipe_user: "AMIL",
+          username: widget.emailKey);
 
-        await changeLoadingVisible();
-        bloc.saveUser(context, value, _selectedImage.path);
-        await changeLoadingVisible();
-      }
+      await changeLoadingVisible();
+      bloc.saveUser(context, value, _selectedImage.path);
+      await changeLoadingVisible();
     }
   }
 
