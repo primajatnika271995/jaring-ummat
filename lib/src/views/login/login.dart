@@ -193,6 +193,7 @@ class _LoginPageState extends State<LoginPage> {
   onSubmit(BuildContext context) async {
     await changeLoadingVisible();
     bloc.login(context, emailController.text, passwordController.text);
+    await Future.delayed(Duration(seconds: 5));
     await changeLoadingVisible();
   }
 

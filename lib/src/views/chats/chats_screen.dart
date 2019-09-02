@@ -66,7 +66,8 @@ class _ChatScreenState extends State<ChatScreen> {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(30.0),
                 ),
-                child: Icon(NewIcon.add_picture_camera_3x, size: 20.0, color: greenColor),
+                child: Icon(NewIcon.add_picture_camera_3x,
+                    size: 20.0, color: greenColor),
               ),
               Container(
                 width: 40.0,
@@ -298,5 +299,20 @@ class _ChatScreenState extends State<ChatScreen> {
       logChats_tmp.add(log);
       streamChats.sink.add(logChats_tmp);
     });
+  }
+
+  Future<bool> _destroyStomp() async {
+    if (stomp == null) {
+      return true;
+    }
+    bool b = await stomp.destroy();
+    stomp = null;
+    return b;
+  }
+
+  @override
+  void dispose() {
+    _destroyStomp();
+    super.dispose();
   }
 }

@@ -38,6 +38,7 @@ const PROGRAM_AMAL_LIST_BY_CATEGORY_URL = BASE_API_URL + '/api/program-amal/list
 const PROGRAM_AMAL_FINDBYID_URL = BASE_API_URL + '/api/program-amal/';
 
 // For Service Berita API
+const BERITA_SAVE_URL = BASE_API_URL + '/api/berita/save';
 const BERITA_LIST_ALL_URL =  BASE_API_URL + '/api/berita/list';
 const BERITA_LIST_ALL_BY_CATEGORY_URL = BASE_API_URL + '/api/berita/list/category';
 

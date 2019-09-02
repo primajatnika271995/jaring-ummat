@@ -23,8 +23,7 @@ class RegisterApiProvider {
     'Content-type': 'application/json',
   };
 
-  Future<RegisterResponseModel> saveUser(
-      BuildContext context, PostRegistration data, String content) async {
+  Future<RegisterResponseModel> saveUser(BuildContext context, PostRegistration data, String content) async {
     Map params = {
       "tipe_user": data.tipe_user,
       "password": data.password,

@@ -21,3 +21,13 @@ class PostProgramAmal {
 
   PostProgramAmal({this.idUser, this.titleProgram, this.category, this.descriptionProgram, this.totalDonasi, this.targetDonasi, this.endDonasi, this.createdBy});
 }
+
+class PostBerita {
+  String idUser;
+  String titleBerita;
+  String category;
+  String descriptionBerita;
+  String createdBy;
+
+  PostBerita({this.idUser, this.titleBerita, this.category, this.descriptionBerita, this.createdBy});
+}

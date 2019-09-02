@@ -1,12 +1,15 @@
 import 'dart:io';
 
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_jaring_ummat/src/config/hexColor.dart';
+import 'package:flutter_jaring_ummat/src/models/postModel.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/add_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/new_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/components/loadingContainer.dart';
 import 'package:intl/intl.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:flutter_jaring_ummat/src/bloc/beritaBloc.dart';
 
 class CreateBerita extends StatefulWidget {
   @override
@@ -51,7 +54,7 @@ class _CreateBeritaState extends State<CreateBerita> {
     final imageContent = Container(
       height: 250.0,
       width: MediaQuery.of(context).size.width,
-      color: Colors.blueAccent,
+      color: grayColor,
       child: Stack(
         children: <Widget>[
           imgSelected == null
@@ -80,13 +83,17 @@ class _CreateBeritaState extends State<CreateBerita> {
 
     final titleField = Padding(
       padding: EdgeInsets.symmetric(horizontal: 10.0),
-      child: TextField(
-        decoration: InputDecoration(
-          hintText: 'Nama Aksi Amal',
-          hasFloatingPlaceholder: true,
-          labelText: 'Nama Aksi',
+      child: StreamBuilder<String>(
+        stream: bloc.title,
+        builder: (context, snapshot) => TextField(
+          decoration: InputDecoration(
+              hintText: 'Isi judul berita',
+              hasFloatingPlaceholder: true,
+              labelText: 'Nama Berita',
+              errorText: snapshot.error),
+          controller: _titleController,
+          onChanged: bloc.changeTitle,
         ),
-        controller: _titleController,
       ),
     );
 
@@ -119,14 +126,21 @@ class _CreateBeritaState extends State<CreateBerita> {
 
     final descriptionField = Padding(
       padding: EdgeInsets.symmetric(horizontal: 10.0),
-      child: TextField(
-        decoration: InputDecoration(
-          hintText: 'Deskripsi Berita',
-          hasFloatingPlaceholder: true,
-          labelText: 'Deskripsi',
-        ),
-        controller: _descriptionController,
-        maxLines: 4,
+      child: StreamBuilder<String>(
+        stream: bloc.description,
+        builder: (context, snapshot) {
+          return TextField(
+            decoration: InputDecoration(
+              hintText: 'Deskripsi Berita',
+              hasFloatingPlaceholder: true,
+              labelText: 'Deskripsi',
+              errorText: snapshot.error
+            ),
+            controller: _descriptionController,
+            maxLines: 4,
+            onChanged: bloc.changeDescription,
+          );
+        }
       ),
     );
 
@@ -170,16 +184,21 @@ class _CreateBeritaState extends State<CreateBerita> {
       ),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 60.0),
-        child: RaisedButton(
-          onPressed: save,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(45),
-          ),
-          child: const Text(
-            'Buat Aksi Amal',
-            style: TextStyle(color: Colors.white),
-          ),
-          color: greenColor,
+        child: StreamBuilder<bool>(
+          stream: bloc.submitValid,
+          builder: (context, snapshot) {
+            return RaisedButton(
+              onPressed: snapshot.hasData ? () => save() : null,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(45),
+              ),
+              child: const Text(
+                'Buat Berita',
+                style: TextStyle(color: Colors.white),
+              ),
+              color: greenColor,
+            );
+          }
         ),
       ),
     );
@@ -192,6 +211,7 @@ class _CreateBeritaState extends State<CreateBerita> {
   }
 
   Future getImage() async {
+    Navigator.of(context).pop(ImageSource.camera);
     var image = await ImagePicker.pickImage(source: ImageSource.camera);
     setState(() {
       imgSelected = image;
@@ -234,8 +254,24 @@ class _CreateBeritaState extends State<CreateBerita> {
   }
 
   void save() async {
+    final value = PostBerita(
+      titleBerita: _titleController.text,
+      descriptionBerita: _descriptionController.text,
+      category: categorySelected,
+    );
+
+    if (imgSelected == null) {
+      Flushbar(
+        flushbarPosition: FlushbarPosition.TOP,
+        margin: EdgeInsets.all(8.0),
+        borderRadius: 8.0,
+        message: "Image tidak boleh kosong",
+        leftBarIndicatorColor: Colors.redAccent,
+        duration: Duration(seconds: 3),
+      )..show(context);
+    } else {
     await changeLoadingVisible();
-    await Future.delayed(Duration(seconds: 3));
-    await changeLoadingVisible();
+    bloc.save(context, value, imgSelected.path);
+    }
   }
 }

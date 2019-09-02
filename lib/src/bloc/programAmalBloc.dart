@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_jaring_ummat/src/config/preferences.dart';
 import 'package:flutter_jaring_ummat/src/models/postModel.dart';
 import 'package:flutter_jaring_ummat/src/models/program_amal.dart';
@@ -47,12 +48,12 @@ class ProgramAmalBloc with Validators {
     programAmalFetcher.sink.add(listAllProgramAmal);
   }
 
-  save(PostProgramAmal value) async {
+  save(BuildContext context, PostProgramAmal value, String content) async {
     _preferences = await SharedPreferences.getInstance();
     idUser = _preferences.getString(LEMABAGA_AMAL_ID);
     var fullname = _preferences.getString(FULLNAME_KEY);
 
-    await repository.save(value, idUser, fullname);
+    await repository.save(context, value, idUser, fullname, content);
   }
 
   dispose() async {

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_jaring_ummat/src/config/hexColor.dart';
 import 'package:flutter_jaring_ummat/src/models/postModel.dart';
@@ -56,7 +57,7 @@ class _CreateProgramAmalState extends State<CreateProgramAmal> {
     final imageContent = Container(
       height: 250.0,
       width: MediaQuery.of(context).size.width,
-      color: Colors.blueAccent,
+      color: grayColor,
       child: Stack(
         children: <Widget>[
           imgSelected == null
@@ -309,10 +310,18 @@ class _CreateProgramAmalState extends State<CreateProgramAmal> {
       endDonasi: _timesDonation.text,
     );
 
-    await changeLoadingVisible();
-    // bloc.save(value);
-    await Future.delayed(Duration(seconds: 3));
-    await changeLoadingVisible();
-    // Navigator.of(context).pushReplacementNamed('/home');
+    if (imgSelected == null) {
+      Flushbar(
+        flushbarPosition: FlushbarPosition.TOP,
+        margin: EdgeInsets.all(8.0),
+        borderRadius: 8.0,
+        message: "Image tidak boleh kosong",
+        leftBarIndicatorColor: Colors.redAccent,
+        duration: Duration(seconds: 3),
+      )..show(context);
+    } else {
+      await changeLoadingVisible();
+      bloc.save(context, value, imgSelected.path);
+    }
   }
 }
