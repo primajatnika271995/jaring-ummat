@@ -23,9 +23,9 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     final widgetLogo = Padding(
-      padding: EdgeInsets.only(top: 60.0),
+      padding: EdgeInsets.only(top: 10.0),
       child: Container(
-        child: Image.asset(logoUrl, scale: 30.0),
+        child: Image.asset(logoUrl, scale: 40.0),
       ),
     );
 

@@ -3,19 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_jaring_ummat/src/config/hexColor.dart';
 import 'package:flutter_jaring_ummat/src/models/DTO/UserDetailPref.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/new_icon_icons.dart';
+import 'package:flutter_jaring_ummat/src/views/components/navbar_custom_icon.dart';
 import 'package:flutter_jaring_ummat/src/views/login/reLogin.dart';
 import 'package:flutter_jaring_ummat/src/bloc/preferencesBloc.dart';
+import 'package:flutter_jaring_ummat/src/views/page_inbox/inbox.dart';
+import 'package:flutter_jaring_ummat/src/views/page_portofolio/portofoilio.dart';
+import 'package:flutter_jaring_ummat/src/views/page_profile/profile_menu.dart';
 
 import 'package:toast/toast.dart';
-import 'package:flutter_jaring_ummat/src/views/portofilio.dart';
-import 'package:flutter_jaring_ummat/src/views/inbox.dart';
 import 'package:flutter_jaring_ummat/src/views/lembaga_amal/popular_account.dart';
 import 'package:flutter_jaring_ummat/src/config/preferences.dart';
-import 'package:flutter_jaring_ummat/src/views/components/fab_bottom_app_bar.dart';
 import 'package:flutter_jaring_ummat/src/views/page_berita/berita.dart';
 import 'package:flutter_jaring_ummat/src/views/page_program-amal/program_amal.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter_jaring_ummat/src/views/menu.dart';
 
 class HomeView extends StatefulWidget {
   final int currentindex;
@@ -64,7 +64,7 @@ class _HomeState extends State<HomeView> {
       ProgramAmalPage(),
       (_token == null) ? ReLogin() : Portofolio(),
       (_token == null) ? ReLogin() : Inbox(),
-      (_token == null) ? ReLogin() : Menu()
+      (_token == null) ? ReLogin() : ProfileMenu()
     ];
 
     return Scaffold(
@@ -75,34 +75,94 @@ class _HomeState extends State<HomeView> {
         backgroundColor: greenColor,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: FABBottomAppBar(
-        color: grayColor,
-        height: 45.0,
-        selectedColor: greenColor,
-        onTabSelected: _selectedTab,
-        iconSize: 20.0,
-        items: [
-          FABBottomAppBarItem(
-              iconData: (_currentIndex == 0)
-                  ? NewIcon.nav_home_active_3x
-                  : NewIcon.nav_home_inactive_3x,
-              text: ''),
-          FABBottomAppBarItem(
-              iconData: (_currentIndex == 1)
-                  ? NewIcon.nav_portfolio_3x
-                  : NewIcon.nav_portfolio_3x,
-              text: ''),
-          FABBottomAppBarItem(
-              iconData: (_currentIndex == 2)
-                  ? NewIcon.nav_inbox_3x
-                  : NewIcon.nav_inbox_3x,
-              text: ''),
-          FABBottomAppBarItem(
-              iconData: (_currentIndex == 3)
-                  ? NewIcon.nav_others_3x
-                  : NewIcon.nav_others_3x,
-              text: ''),
-        ],
+      bottomNavigationBar: SizedBox(
+        height: 50,
+        child: BottomNavigationBar(
+          type: BottomNavigationBarType.fixed,
+          currentIndex: _currentIndex,
+          onTap: _selectedTab,
+          items: [
+            BottomNavigationBarItem(
+              icon: new Icon(
+                NavbarCustom.nav_home_inactive,
+                size: 20.0,
+              ),
+              activeIcon: new Icon(NavbarCustom.nav_home_active,
+                  color: greenColor, size: 20.0),
+              title: Padding(padding: EdgeInsets.all(0)),
+            ),
+            BottomNavigationBarItem(
+              icon: new Icon(NavbarCustom.nav_portfolio_inactive, size: 20.0),
+              activeIcon: new Icon(NavbarCustom.nav_portfolio_active,
+                  color: greenColor, size: 20.0),
+              title: Padding(padding: EdgeInsets.all(0)),
+            ),
+            BottomNavigationBarItem(
+              icon: new Stack(
+                children: <Widget>[
+                  new Icon(NavbarCustom.nav_inbox_inactive, size: 20.0),
+                  new Positioned(
+                    right: 0,
+                    child: new Container(
+                      padding: EdgeInsets.all(1),
+                      decoration: new BoxDecoration(
+                        color: Colors.red,
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                      constraints: BoxConstraints(
+                        minWidth: 12,
+                        minHeight: 12,
+                      ),
+                      child: new Text(
+                        '12',
+                        style: new TextStyle(
+                          color: Colors.white,
+                          fontSize: 8,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  )
+                ],
+              ),
+              activeIcon: new Stack(
+                children: <Widget>[
+                  new Icon(NavbarCustom.nav_inbox_active,
+                      color: greenColor, size: 20.0),
+                  new Positioned(
+                    right: 0,
+                    child: new Container(
+                      padding: EdgeInsets.all(1),
+                      decoration: new BoxDecoration(
+                        color: Colors.red,
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                      constraints: BoxConstraints(
+                        minWidth: 12,
+                        minHeight: 12,
+                      ),
+                      child: new Text(
+                        '12',
+                        style: new TextStyle(
+                          color: Colors.white,
+                          fontSize: 8,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  )
+                ],
+              ),
+              title: Padding(padding: EdgeInsets.all(0)),
+            ),
+            BottomNavigationBarItem(
+              icon: new Icon(NavbarCustom.nav_othersmenu_inactive, size: 20.0),
+              activeIcon: new Icon(NavbarCustom.nav_othersmenu_active,
+                  color: greenColor, size: 20.0),
+              title: Padding(padding: EdgeInsets.all(0)),
+            ),
+          ],
+        ),
       ),
     );
   }

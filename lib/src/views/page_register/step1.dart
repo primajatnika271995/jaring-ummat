@@ -24,9 +24,9 @@ class _StepOneState extends State<StepOne> {
   @override
   Widget build(BuildContext context) {
     final widgetLogo = Padding(
-      padding: EdgeInsets.only(top: 80.0),
+      padding: EdgeInsets.only(top: 30.0),
       child: Container(
-        child: Image.asset(logoUrl, scale: 30.0),
+        child: Image.asset(logoUrl, scale: 40.0),
       ),
     );
 

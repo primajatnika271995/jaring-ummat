@@ -107,7 +107,7 @@ class _StepTwoState extends State<StepTwo> with TickerProviderStateMixin {
                             maxLength: 1,
                             textAlign: TextAlign.center,
                             decoration: InputDecoration(
-                              contentPadding: EdgeInsets.only(top: 5),
+                              contentPadding: EdgeInsets.only(top: 10),
                               border: InputBorder.none,
                               counterText: '',
                               hintText: '-',
@@ -131,7 +131,7 @@ class _StepTwoState extends State<StepTwo> with TickerProviderStateMixin {
                             maxLength: 1,
                             textAlign: TextAlign.center,
                             decoration: InputDecoration(
-                              contentPadding: EdgeInsets.only(top: 5),
+                              contentPadding: EdgeInsets.only(top: 10),
                               border: InputBorder.none,
                               counterText: '',
                               hintText: '-',
@@ -155,7 +155,7 @@ class _StepTwoState extends State<StepTwo> with TickerProviderStateMixin {
                             maxLength: 1,
                             textAlign: TextAlign.center,
                             decoration: InputDecoration(
-                              contentPadding: EdgeInsets.only(top: 5),
+                              contentPadding: EdgeInsets.only(top: 10),
                               border: InputBorder.none,
                               counterText: '',
                               hintText: '-',
@@ -179,7 +179,7 @@ class _StepTwoState extends State<StepTwo> with TickerProviderStateMixin {
                             maxLength: 1,
                             textAlign: TextAlign.center,
                             decoration: InputDecoration(
-                              contentPadding: EdgeInsets.only(top: 5),
+                              contentPadding: EdgeInsets.only(top: 10),
                               border: InputBorder.none,
                               counterText: '',
                               hintText: '-',
@@ -203,7 +203,7 @@ class _StepTwoState extends State<StepTwo> with TickerProviderStateMixin {
                             maxLength: 1,
                             textAlign: TextAlign.center,
                             decoration: InputDecoration(
-                              contentPadding: EdgeInsets.only(top: 5),
+                              contentPadding: EdgeInsets.only(top: 10),
                               border: InputBorder.none,
                               counterText: '',
                               hintText: '-',
@@ -227,7 +227,7 @@ class _StepTwoState extends State<StepTwo> with TickerProviderStateMixin {
                             maxLength: 1,
                             textAlign: TextAlign.center,
                             decoration: InputDecoration(
-                              contentPadding: EdgeInsets.only(top: 5),
+                              contentPadding: EdgeInsets.only(top: 10),
                               border: InputBorder.none,
                               counterText: '',
                               hintText: '-',

@@ -11,9 +11,9 @@ class RegisterBloc {
   Observable<RegisterResponseModel> get streamResponse =>
       registerRespFetcher.stream;
 
-  saveUser(BuildContext context, PostRegistration register) async {
+  saveUser(BuildContext context, PostRegistration register, String content) async {
     // _repository.saveUser(context, register);
-    RegisterResponseModel value = await _repository.saveUser(context, register);
+    RegisterResponseModel value = await _repository.saveUser(context, register, content);
     registerRespFetcher.sink.add(value);
 
     if (value.id != null) {
