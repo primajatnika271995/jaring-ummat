@@ -6,6 +6,7 @@ import 'package:flutter_jaring_ummat/src/config/hexColor.dart';
 import 'package:flutter_jaring_ummat/src/config/preferences.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/new_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/profile_inbox_icon_icons.dart';
+import 'package:flutter_jaring_ummat/src/views/components/loadingContainer.dart';
 import 'package:flutter_jaring_ummat/src/views/page_portofolio/portofolio_text_data.dart';
 import 'package:flutter_jaring_ummat/src/views/page_virtual_account/request_va.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
@@ -59,6 +60,11 @@ class _PortofolioState extends State<Portofolio> {
   double valueWakaf = 40;
   double valueDonasi = 50;
 
+  /*
+   * Boolen for Loading
+   */
+  bool _loadingVisible = false;
+
   @override
   Widget build(BuildContext context) {
     /*
@@ -108,7 +114,8 @@ class _PortofolioState extends State<Portofolio> {
               children: <Widget>[
                 CircleAvatar(
                   backgroundColor: Colors.deepPurple,
-                  child: Icon(ProfileInboxIcon.balance_2x, color: whiteColor, size: 20),
+                  child: Icon(ProfileInboxIcon.balance_2x,
+                      color: whiteColor, size: 20),
                 ),
                 SizedBox(
                   width: 7,
@@ -152,7 +159,8 @@ class _PortofolioState extends State<Portofolio> {
               children: <Widget>[
                 CircleAvatar(
                   backgroundColor: Colors.yellow,
-                  child: Icon(ProfileInboxIcon.point_2x, color: whiteColor, size: 20),
+                  child: Icon(ProfileInboxIcon.point_2x,
+                      color: whiteColor, size: 20),
                 ),
                 SizedBox(
                   width: 7,
@@ -348,252 +356,255 @@ class _PortofolioState extends State<Portofolio> {
           ),
         ],
       ),
-      body: DefaultTabController(
-        length: 6,
-        initialIndex: indexTab,
-        child: CustomScrollView(
-          slivers: <Widget>[
-            SliverAppBar(
-              elevation: 0,
-              automaticallyImplyLeading: false,
-              backgroundColor: Colors.transparent,
-              bottom: PreferredSize(
-                preferredSize: Size.fromHeight(370),
-                child: Container(
-                  child: Column(
-                    children: <Widget>[
-                      mySaldoGrid,
-                      sebaranAktifitas,
+      body: LoadingScreen(
+        inAsyncCall: _loadingVisible,
+        child: DefaultTabController(
+          length: 6,
+          initialIndex: indexTab,
+          child: CustomScrollView(
+            slivers: <Widget>[
+              SliverAppBar(
+                elevation: 0,
+                automaticallyImplyLeading: false,
+                backgroundColor: Colors.transparent,
+                bottom: PreferredSize(
+                  preferredSize: Size.fromHeight(370),
+                  child: Container(
+                    child: Column(
+                      children: <Widget>[
+                        mySaldoGrid,
+                        sebaranAktifitas,
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              SliverAppBar(
+                backgroundColor: whiteColor,
+                automaticallyImplyLeading: false,
+                floating: true,
+                pinned: true,
+                flexibleSpace: AppBar(
+                  elevation: 1,
+                  backgroundColor: whiteColor,
+                  automaticallyImplyLeading: false,
+                  bottom: TabBar(
+                    isScrollable: true,
+                    indicator: UnderlineTabIndicator(
+                      borderSide:
+                          BorderSide(width: 4.0, color: Colors.blueAccent),
+                    ),
+                    labelColor: blackColor,
+                    onTap: (index) {
+                      switch (index) {
+                        case 1:
+                          print('Zakat Data');
+                          var items = [
+                            PieChartSectionData(
+                                color: Color(0xFF3A5F99),
+                                value: 80,
+                                title: "40%",
+                                radius: 35,
+                                titleStyle:
+                                    TextStyle(fontSize: 14, color: whiteColor)),
+                          ];
+                          setState(() {
+                            pieChartRawSections = items;
+                            showingSections = pieChartRawSections;
+                          });
+                          break;
+                        default:
+                      }
+                    },
+                    tabs: <Widget>[
+                      new Tab(
+                        child: Column(
+                          children: <Widget>[
+                            const Text(
+                              'Total',
+                              style: TextStyle(
+                                color: Color(0xFF3A5F99),
+                              ),
+                            ),
+                            new Row(
+                              children: <Widget>[
+                                const Text(
+                                  'Rp',
+                                  style: TextStyle(
+                                    fontSize: 11.0,
+                                  ),
+                                ),
+                                const Text(
+                                  '8.950.420',
+                                  style: TextStyle(
+                                    fontSize: 13.0,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                      new Tab(
+                        child: Column(
+                          children: <Widget>[
+                            const Text(
+                              'Zakat',
+                              style: TextStyle(
+                                color: Color(0xFF3A5F99),
+                              ),
+                            ),
+                            new Row(
+                              children: <Widget>[
+                                const Text(
+                                  'Rp',
+                                  style: TextStyle(
+                                    fontSize: 11.0,
+                                  ),
+                                ),
+                                const Text(
+                                  '2.506.116',
+                                  style: TextStyle(
+                                    fontSize: 13.0,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                      new Tab(
+                        child: Column(
+                          children: <Widget>[
+                            const Text(
+                              'Infaq',
+                              style: TextStyle(
+                                color: Color(0xFFDB7E27),
+                              ),
+                            ),
+                            new Row(
+                              children: <Widget>[
+                                const Text(
+                                  'Rp',
+                                  style: TextStyle(
+                                    fontSize: 11.0,
+                                  ),
+                                ),
+                                const Text(
+                                  '2.506.116',
+                                  style: TextStyle(
+                                    fontSize: 13.0,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                      new Tab(
+                        child: Column(
+                          children: <Widget>[
+                            const Text(
+                              'Sodaqoh',
+                              style: TextStyle(
+                                color: Color(0xFFDEDE71),
+                              ),
+                            ),
+                            new Row(
+                              children: <Widget>[
+                                const Text(
+                                  'Rp',
+                                  style: TextStyle(fontSize: 11.0),
+                                ),
+                                const Text(
+                                  '2.506.116',
+                                  style: TextStyle(fontSize: 13.0),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                      new Tab(
+                        child: Column(
+                          children: <Widget>[
+                            const Text(
+                              'Wakaf',
+                              style: TextStyle(
+                                color: Color(0xFFDB4B1F),
+                              ),
+                            ),
+                            new Row(
+                              children: <Widget>[
+                                const Text(
+                                  'Rp',
+                                  style: TextStyle(fontSize: 11.0),
+                                ),
+                                const Text(
+                                  '2.506.116',
+                                  style: TextStyle(fontSize: 13.0),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                      new Tab(
+                        child: Column(
+                          children: <Widget>[
+                            const Text(
+                              'Infaq',
+                              style: TextStyle(
+                                color: Color(0xFF2938C2),
+                              ),
+                            ),
+                            new Row(
+                              children: <Widget>[
+                                const Text(
+                                  'Rp',
+                                  style: TextStyle(fontSize: 11.0),
+                                ),
+                                const Text(
+                                  '2.506.116',
+                                  style: TextStyle(fontSize: 13.0),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
                     ],
                   ),
                 ),
               ),
-            ),
-            SliverAppBar(
-              backgroundColor: whiteColor,
-              automaticallyImplyLeading: false,
-              floating: true,
-              pinned: true,
-              flexibleSpace: AppBar(
-                elevation: 1,
-                backgroundColor: whiteColor,
+              SliverAppBar(
+                elevation: 0,
                 automaticallyImplyLeading: false,
-                bottom: TabBar(
-                  isScrollable: true,
-                  indicator: UnderlineTabIndicator(
-                    borderSide:
-                        BorderSide(width: 4.0, color: Colors.blueAccent),
-                  ),
-                  labelColor: blackColor,
-                  onTap: (index) {
-                    switch (index) {
-                      case 1:
-                        print('Zakat Data');
-                        var items = [
-                          PieChartSectionData(
-                              color: Color(0xFF3A5F99),
-                              value: 80,
-                              title: "40%",
-                              radius: 35,
-                              titleStyle:
-                                  TextStyle(fontSize: 14, color: whiteColor)),
-                        ];
-                        setState(() {
-                          pieChartRawSections = items;
-                          showingSections = pieChartRawSections;
-                        });
-                        break;
-                      default:
-                    }
-                  },
-                  tabs: <Widget>[
-                    new Tab(
-                      child: Column(
-                        children: <Widget>[
-                          const Text(
-                            'Total',
-                            style: TextStyle(
-                              color: Color(0xFF3A5F99),
-                            ),
-                          ),
-                          new Row(
-                            children: <Widget>[
-                              const Text(
-                                'Rp',
-                                style: TextStyle(
-                                  fontSize: 11.0,
-                                ),
-                              ),
-                              const Text(
-                                '8.950.420',
-                                style: TextStyle(
-                                  fontSize: 13.0,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
+                backgroundColor: Colors.transparent,
+                bottom: PreferredSize(
+                  preferredSize: Size.fromHeight(180),
+                  child: Container(
+                    child: Column(
+                      children: <Widget>[aktivitasTerbesar],
                     ),
-                    new Tab(
-                      child: Column(
-                        children: <Widget>[
-                          const Text(
-                            'Zakat',
-                            style: TextStyle(
-                              color: Color(0xFF3A5F99),
-                            ),
-                          ),
-                          new Row(
-                            children: <Widget>[
-                              const Text(
-                                'Rp',
-                                style: TextStyle(
-                                  fontSize: 11.0,
-                                ),
-                              ),
-                              const Text(
-                                '2.506.116',
-                                style: TextStyle(
-                                  fontSize: 13.0,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                    new Tab(
-                      child: Column(
-                        children: <Widget>[
-                          const Text(
-                            'Infaq',
-                            style: TextStyle(
-                              color: Color(0xFFDB7E27),
-                            ),
-                          ),
-                          new Row(
-                            children: <Widget>[
-                              const Text(
-                                'Rp',
-                                style: TextStyle(
-                                  fontSize: 11.0,
-                                ),
-                              ),
-                              const Text(
-                                '2.506.116',
-                                style: TextStyle(
-                                  fontSize: 13.0,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                    new Tab(
-                      child: Column(
-                        children: <Widget>[
-                          const Text(
-                            'Sodaqoh',
-                            style: TextStyle(
-                              color: Color(0xFFDEDE71),
-                            ),
-                          ),
-                          new Row(
-                            children: <Widget>[
-                              const Text(
-                                'Rp',
-                                style: TextStyle(fontSize: 11.0),
-                              ),
-                              const Text(
-                                '2.506.116',
-                                style: TextStyle(fontSize: 13.0),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                    new Tab(
-                      child: Column(
-                        children: <Widget>[
-                          const Text(
-                            'Wakaf',
-                            style: TextStyle(
-                              color: Color(0xFFDB4B1F),
-                            ),
-                          ),
-                          new Row(
-                            children: <Widget>[
-                              const Text(
-                                'Rp',
-                                style: TextStyle(fontSize: 11.0),
-                              ),
-                              const Text(
-                                '2.506.116',
-                                style: TextStyle(fontSize: 13.0),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                    new Tab(
-                      child: Column(
-                        children: <Widget>[
-                          const Text(
-                            'Infaq',
-                            style: TextStyle(
-                              color: Color(0xFF2938C2),
-                            ),
-                          ),
-                          new Row(
-                            children: <Widget>[
-                              const Text(
-                                'Rp',
-                                style: TextStyle(fontSize: 11.0),
-                              ),
-                              const Text(
-                                '2.506.116',
-                                style: TextStyle(fontSize: 13.0),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            SliverAppBar(
-              elevation: 0,
-              automaticallyImplyLeading: false,
-              backgroundColor: Colors.transparent,
-              bottom: PreferredSize(
-                preferredSize: Size.fromHeight(180),
-                child: Container(
-                  child: Column(
-                    children: <Widget>[aktivitasTerbesar],
                   ),
                 ),
               ),
-            ),
-            SliverAppBar(
-              elevation: 0,
-              automaticallyImplyLeading: false,
-              backgroundColor: Colors.transparent,
-              bottom: PreferredSize(
-                preferredSize: Size.fromHeight(20),
-                child: Container(
-                  child: Column(
-                    children: <Widget>[aktivitasTerbaru],
+              SliverAppBar(
+                elevation: 0,
+                automaticallyImplyLeading: false,
+                backgroundColor: Colors.transparent,
+                bottom: PreferredSize(
+                  preferredSize: Size.fromHeight(20),
+                  child: Container(
+                    child: Column(
+                      children: <Widget>[aktivitasTerbaru],
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
       floatingActionButton: new Stack(

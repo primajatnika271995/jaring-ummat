@@ -20,10 +20,20 @@ class ProgramAmalPage extends StatefulWidget {
 }
 
 class _ProgramAmalPageState extends State<ProgramAmalPage> {
+  /*
+   * Shared Preferences Variable
+   */
   SharedPreferences _preferences;
   String _token;
+
+  /*
+   * Selected Category
+   */
   String selectedCategory = "";
 
+  /*
+   * Variable for Boolean
+   */
   bool hidden = false;
   bool _loadingVisible = false;
 
@@ -47,43 +57,74 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
           child: Scaffold(
             backgroundColor: softGreyColor,
             appBar: AppBar(
-              titleSpacing: 0.0,
+              titleSpacing: 0,
               backgroundColor: whiteColor,
-              elevation: 0.0,
+              elevation: 0,
               leading: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: Image.asset(appbarLogo),
               ),
               title: titleText,
               actions: <Widget>[
                 Padding(
-                  padding: const EdgeInsets.only(right: 7.0),
+                  padding: const EdgeInsets.only(right: 7),
+                  child: InkWell(
+                    onTap: () {},
+                    child: Icon(NewIcon.search_small_2x,
+                        size: 20, color: blackColor),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(right: 7),
                   child: InkWell(
                     onTap: () {},
                     child: Icon(AppBarIcon.location_inactive,
-                        size: 20.0, color: greenColor),
+                        size: 20, color: blackColor),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(right: 7.0),
-                  child: InkWell(
-                    onTap: () {},
-                    child: Icon(NewIcon.search_big_3x,
-                        size: 20.0, color: greenColor),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(right: 10.0),
-                  child: InkWell(
-                    onTap: () {
-                      if (_token == null) {
-                        Navigator.of(context).pushNamed('/login');
-                      } else {
-                        Navigator.of(context).pushNamed('/list/account/chats');
-                      }
-                    },
-                    child: Icon(NewIcon.chat_3x, size: 20.0, color: greenColor),
-                  ),
+                Stack(
+                  children: <Widget>[
+                    Center(
+                                          child: Padding(
+                        padding: const EdgeInsets.only(right: 10),
+                        child: InkWell(
+                          onTap: () {
+                            if (_token == null) {
+                              Navigator.of(context).pushNamed('/login');
+                            } else {
+                              Navigator.of(context)
+                                  .pushNamed('/list/account/chats');
+                            }
+                          },
+                          child:
+                              Icon(NewIcon.chat_3x, size: 20, color: blackColor),
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                      right: 5,
+                      top: 13,
+                      child: Container(
+                        padding: EdgeInsets.all(1),
+                        decoration: new BoxDecoration(
+                          color: Colors.red,
+                          borderRadius: BorderRadius.circular(6),
+                        ),
+                        constraints: BoxConstraints(
+                          minWidth: 12,
+                          minHeight: 12,
+                        ),
+                        child: const Text(
+                          '3',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 8,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),

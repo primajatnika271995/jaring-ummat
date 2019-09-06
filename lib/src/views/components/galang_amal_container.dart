@@ -3,13 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_jaring_ummat/src/config/hexColor.dart';
 import 'package:flutter_jaring_ummat/src/models/program_amal.dart';
-import 'package:flutter_jaring_ummat/src/views/components/custom_fonts.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dots_indicator/dots_indicator.dart';
+import 'package:flutter_jaring_ummat/src/services/time_ago_service.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/new_icon_icons.dart';
-
-// Component
-import '../../services/time_ago_service.dart';
 
 class GalangAmalContainer extends StatefulWidget {
   final ProgramAmalModel programAmal;
@@ -48,63 +45,49 @@ class _GalangAmalContainerState extends State<GalangAmalContainer> {
           new Divider(),
           setBottomContent(),
           new Divider(),
-          setTitleParticipan(),
-          ListView.separated(
-            separatorBuilder: (context, position) {
-              return Padding(
-                padding: EdgeInsets.only(left: 60.0),
-                child: new SizedBox(
-                  height: 10.0,
-                  child: new Center(
-                    child: new Container(
-                        margin: new EdgeInsetsDirectional.only(
-                            start: 1.0, end: 1.0),
-                        height: 5.0,
-                        color: softGreyColor),
-                  ),
-                ),
-              );
-            },
-            itemCount: 4,
-            scrollDirection: Axis.vertical,
+          ListTile(
+            title: const Text('Donatur Terbaru',
+                style: TextStyle(fontWeight: FontWeight.bold)),
+            subtitle: const Text(
+              '3 donatur terbaru pada galang amal ini. Yuk ikut berdonasi bersama mereka agar target donasinya segera tercapai',
+              style: TextStyle(fontSize: 12),
+            ),
+            trailing: IconButton(
+              onPressed: null,
+              icon: Icon(NewIcon.next_small_2x, color: blackColor),
+              iconSize: 20,
+            ),
+          ),
+          ListView.builder(
+            itemCount: 3,
             shrinkWrap: true,
-            itemBuilder: (context, index) {
-              return ListTile(
-                leading: Container(
-                  width: 35.0,
-                  height: 35.0,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(30.0),
-                    image: DecorationImage(
-                      image: NetworkImage(noImg),
-                      fit: BoxFit.cover,
+            itemBuilder: (context, index) => Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 7),
+              child: Container(
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.grey[200], width: 3),
+                  borderRadius: BorderRadius.circular(13),
+                ),
+                child: ListTile(
+                  title: Text('Soleh Indrawan', style: TextStyle(fontWeight: FontWeight.bold)),
+                  subtitle: Text('19 menit yang lalu', style: TextStyle(fontSize: 11)),
+                  trailing: Text('Rp 120.000',
+                      style: TextStyle(fontWeight: FontWeight.bold)),
+                  leading: Container(
+                    width: 53.0,
+                    height: 53.0,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(30.0),
+                      image: DecorationImage(
+                        image: NetworkImage(
+                            'https://kempenfeltplayers.com/wp-content/uploads/2015/07/profile-icon-empty.png'),
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
                 ),
-                title: Text(
-                  'Soleh Indrawan',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15.0),
-                ),
-                subtitle: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      'Semoga bermanfaat untuk adek-adek sekalian',
-                      style: TextStyle(fontSize: 12.0),
-                    ),
-                    Text(
-                      '19 menit yang lalu',
-                      style: TextStyle(fontSize: 12.0),
-                    ),
-                  ],
-                ),
-                trailing: Text(
-                  'Rp. 130.000',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-              );
-            },
+              ),
+            ),
           ),
         ],
       ),
@@ -150,12 +133,6 @@ class _GalangAmalContainerState extends State<GalangAmalContainer> {
               fontSize: 11.0,
             ),
           ),
-          // Text(
-          //   widget.postedAt,
-          //   style: TextStyle(
-          //     fontSize: 11.0,
-          //   ),
-          // ),
         ],
       ),
     );
@@ -264,106 +241,6 @@ class _GalangAmalContainerState extends State<GalangAmalContainer> {
                 )
               ],
             ),
-    );
-  }
-
-  Widget setTitleParticipan() {
-    return Container(
-        padding: EdgeInsets.only(left: 10.0, bottom: 10.0, right: 10.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                SizedBox(height: 3.0),
-                Text(
-                  'Muzzaki yang berpartisipasi dalam aksi ini',
-                  style: TextStyle(
-                      fontSize: 11.0,
-                      fontWeight: FontWeight.bold,
-                      color: Color.fromRGBO(122, 122, 122, 1.0)),
-                ),
-                SizedBox(height: 5.0),
-              ],
-            ),
-          ],
-        ));
-  }
-
-  Widget setParticipan() {
-    return Container(
-      decoration: BoxDecoration(
-          color: Colors.grey[200], borderRadius: BorderRadius.circular(10.0)),
-      padding:
-          EdgeInsets.only(left: 10.0, bottom: 10.0, right: 10.0, top: 10.0),
-      child: setDonatur(),
-    );
-  }
-
-  Widget setDonatur() {
-    return Container(
-      padding: EdgeInsets.only(left: 10.0, bottom: 0.0, right: 10.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Container(
-                width: 53.0,
-                height: 53.0,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(30.0),
-                  image: DecorationImage(
-                      image: NetworkImage(
-                          'https://kempenfeltplayers.com/wp-content/uploads/2015/07/profile-icon-empty.png'),
-                      fit: BoxFit.cover),
-                ),
-              ),
-              SizedBox(
-                width: 20.0,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Text(
-                    'Soleh Indrawan',
-                    style: TextStyle(
-                        fontSize: 12.0,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black),
-                  ),
-                  SizedBox(height: 3.0),
-                  Text(
-                    'Semoga bermanfaat untuk adek-adek...',
-                    style: TextStyle(
-                        fontSize: 11.0,
-                        fontWeight: FontWeight.bold,
-                        color: Color.fromRGBO(122, 122, 122, 1.0)),
-                  ),
-                  Text(
-                    '19 menit yang lalu',
-                    style: TextStyle(
-                        fontSize: 11.0,
-                        fontWeight: FontWeight.normal,
-                        color: Color.fromRGBO(122, 122, 122, 1.0)),
-                  )
-                ],
-              ),
-            ],
-          ),
-          Text(
-            'Rp. ' + '120.930',
-            style: TextStyle(
-              fontSize: 16.0,
-              fontWeight: FontWeight.bold,
-              color: Colors.black,
-            ),
-          ),
-        ],
-      ),
     );
   }
 

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_jaring_ummat/src/config/hexColor.dart';
 import 'package:flutter_jaring_ummat/src/models/DTO/UserDetailPref.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/new_icon_icons.dart';
+import 'package:flutter_jaring_ummat/src/views/components/icon_text/profile_inbox_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/components/navbar_custom_icon.dart';
 import 'package:flutter_jaring_ummat/src/views/login/reLogin.dart';
 import 'package:flutter_jaring_ummat/src/bloc/preferencesBloc.dart';
@@ -64,6 +65,7 @@ class _HomeState extends State<HomeView> {
       ProgramAmalPage(),
       (_token == null) ? ReLogin() : Portofolio(),
       (_token == null) ? ReLogin() : Inbox(),
+      (_token == null) ? ReLogin() : Inbox(),
       (_token == null) ? ReLogin() : ProfileMenu()
     ];
 
@@ -83,27 +85,28 @@ class _HomeState extends State<HomeView> {
           onTap: _selectedTab,
           items: [
             BottomNavigationBarItem(
-              icon: new Icon(
-                NavbarCustom.nav_home_inactive,
-                size: 20.0,
-              ),
-              activeIcon: new Icon(NavbarCustom.nav_home_active,
-                  color: greenColor, size: 20.0),
+              icon: Icon(NewIcon.nav_home_inactive_3x, size: 20),
+              activeIcon:
+                  Icon(NewIcon.nav_home_active_3x, color: greenColor, size: 20),
               title: Padding(padding: EdgeInsets.all(0)),
             ),
             BottomNavigationBarItem(
-              icon: new Icon(NavbarCustom.nav_portfolio_inactive, size: 20.0),
-              activeIcon: new Icon(NavbarCustom.nav_portfolio_active,
-                  color: greenColor, size: 20.0),
+              icon: Icon(NewIcon.nav_portfolio_3x, size: 20),
+              activeIcon: Icon(ProfileInboxIcon.nav_portfolio_active_3x,
+                  color: greenColor, size: 20),
               title: Padding(padding: EdgeInsets.all(0)),
             ),
             BottomNavigationBarItem(
-              icon: new Stack(
+              icon: Icon(NewIcon.nav_portfolio_3x, size: 0, color: Colors.white),
+              title: Padding(padding: EdgeInsets.all(0)),
+            ),
+            BottomNavigationBarItem(
+              icon: Stack(
                 children: <Widget>[
-                  new Icon(NavbarCustom.nav_inbox_inactive, size: 20.0),
-                  new Positioned(
+                  Icon(NewIcon.nav_inbox_3x, size: 20),
+                  Positioned(
                     right: 0,
-                    child: new Container(
+                    child: Container(
                       padding: EdgeInsets.all(1),
                       decoration: new BoxDecoration(
                         color: Colors.red,
@@ -113,9 +116,9 @@ class _HomeState extends State<HomeView> {
                         minWidth: 12,
                         minHeight: 12,
                       ),
-                      child: new Text(
+                      child: const Text(
                         '12',
-                        style: new TextStyle(
+                        style: TextStyle(
                           color: Colors.white,
                           fontSize: 8,
                         ),
@@ -125,15 +128,15 @@ class _HomeState extends State<HomeView> {
                   )
                 ],
               ),
-              activeIcon: new Stack(
+              activeIcon: Stack(
                 children: <Widget>[
-                  new Icon(NavbarCustom.nav_inbox_active,
-                      color: greenColor, size: 20.0),
-                  new Positioned(
+                  Icon(ProfileInboxIcon.nav_inbox_active_3x,
+                      color: greenColor, size: 20),
+                  Positioned(
                     right: 0,
-                    child: new Container(
+                    child: Container(
                       padding: EdgeInsets.all(1),
-                      decoration: new BoxDecoration(
+                      decoration: BoxDecoration(
                         color: Colors.red,
                         borderRadius: BorderRadius.circular(6),
                       ),
@@ -141,9 +144,9 @@ class _HomeState extends State<HomeView> {
                         minWidth: 12,
                         minHeight: 12,
                       ),
-                      child: new Text(
+                      child: const Text(
                         '12',
-                        style: new TextStyle(
+                        style: TextStyle(
                           color: Colors.white,
                           fontSize: 8,
                         ),
@@ -156,9 +159,9 @@ class _HomeState extends State<HomeView> {
               title: Padding(padding: EdgeInsets.all(0)),
             ),
             BottomNavigationBarItem(
-              icon: new Icon(NavbarCustom.nav_othersmenu_inactive, size: 20.0),
-              activeIcon: new Icon(NavbarCustom.nav_othersmenu_active,
-                  color: greenColor, size: 20.0),
+              icon: Icon(NewIcon.nav_others_3x, size: 20),
+              activeIcon: Icon(ProfileInboxIcon.nav_others_active_3x,
+                  color: greenColor, size: 20),
               title: Padding(padding: EdgeInsets.all(0)),
             ),
           ],
