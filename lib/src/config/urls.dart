@@ -12,11 +12,13 @@ const BASE_API_CHATS = 'http://20.184.15.66:6061/hcare-chat';
 // Web socket For Production Cloud
 const WEBSOCKET_CHAT = 'ws://20.184.15.66:6061/hcare-chat/ws';
 
-
-
 const UPLOADER_MEDIA_IMAGE = BASE_API_UPLOADER_URL + '/api/media/upload/image';
 
 const CHATS_HISTORY = BASE_API_CHATS + '/api/chat/messages'; 
+
+// VIRTUAL ACCOUNT
+const REQUEST_VA_ANONIMOUS = 'http://tabeldata.ip-dynamic.com/jaring-ummat-bni-request/api/bni/virtual-account/anonymous/request';
+const REQUEST_VA_OAUTH = 'http://tabeldata.ip-dynamic.com/jaring-ummat-bni-request/api/bni/virtual-account/secured/request';
 
 // BASE REGISTER AND LOGIN_URL
 const REGISTRATION_URL = BASE_API_URL + '/api/user/';

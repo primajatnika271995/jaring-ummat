@@ -34,11 +34,20 @@ class InboxTextData {
     "3 jam yang lalu"
   ];
 
+  /*
+   * Data List Color
+   */
+
   static const List listColor = [
     Colors.yellow,
     Colors.red,
     Colors.yellow,
     Colors.blue
+  ];
+
+  static const List<String> listTransaksi = [
+    "Menunggu Pembayaran",
+    "Menunggu Konfirmasi",
   ];
 
 

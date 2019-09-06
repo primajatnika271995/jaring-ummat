@@ -1,3 +1,4 @@
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_jaring_ummat/src/config/hexColor.dart';
 import 'package:flutter_jaring_ummat/src/services/currency_format_service.dart';
@@ -5,7 +6,8 @@ import 'package:flutter_jaring_ummat/src/views/components/icon_text/profile_inbo
 
 class RequestVA extends StatefulWidget {
   final double nominal;
-  RequestVA({@required this.nominal});
+  final String virtualNumber;
+  RequestVA({@required this.nominal, this.virtualNumber});
 
   @override
   _RequestVAState createState() => _RequestVAState();
@@ -15,55 +17,51 @@ class _RequestVAState extends State<RequestVA> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-        child: AppBar(
-          backgroundColor: greenColor,
-          title: Text(
-            'Pembayaran Virtual Account BNI',
-          ),
-          titleSpacing: 0,
-          centerTitle: false,
-          bottom: PreferredSize(
-              child: new Container(
-                child: Column(
-                  children: <Widget>[
-                    Icon(
-                      ProfileInboxIcon.donation_3x,
-                      size: 45.0,
-                      color: Colors.white,
-                    ),
-                    SizedBox(
-                      height: 15.0,
-                    ),
-                    Text(
-                      'Total Nominal Pembayaran',
-                      style: TextStyle(
-                        color: whiteColor,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 13.0,
-                      ),
-                    ),
-                    Text(
-                      'Rp ${CurrencyFormat().currency(widget.nominal)}',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 30.0,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 20.0,
-                    ),
-                  ],
-                ),
-              ),
-              preferredSize: null),
-        ),
-        preferredSize: Size.fromHeight(170.0),
+      appBar: AppBar(
+        backgroundColor: greenColor,
+        title: Text('Pembayaran Virtual Account BNI'),
+        titleSpacing: 0,
+        elevation: 0,
+        centerTitle: false,
       ),
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
+            Container(
+              width: MediaQuery.of(context).size.width,
+              color: greenColor,
+              child: Column(
+                children: <Widget>[
+                  Icon(
+                    ProfileInboxIcon.donation_3x,
+                    size: 45.0,
+                    color: Colors.white,
+                  ),
+                  SizedBox(
+                    height: 15.0,
+                  ),
+                  Text(
+                    'Total Nominal Pembayaran',
+                    style: TextStyle(
+                      color: whiteColor,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 13.0,
+                    ),
+                  ),
+                  Text(
+                    'Rp ${CurrencyFormat().currency(widget.nominal)}',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 30.0,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20.0,
+                  ),
+                ],
+              ),
+            ),
             SizedBox(
               height: 10.0,
             ),
@@ -73,13 +71,6 @@ class _RequestVAState extends State<RequestVA> {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(7.0)),
                 color: Colors.white,
-                boxShadow: [
-                  new BoxShadow(
-                      color: Colors.grey,
-                      offset: new Offset(1.0, 1.0),
-                      blurRadius: 5.0,
-                      spreadRadius: 1.0)
-                ],
               ),
               child: Row(
                 children: <Widget>[
@@ -93,27 +84,27 @@ class _RequestVAState extends State<RequestVA> {
                           child: Text(
                             'Kode Virtual Account',
                             style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 12.0,
-                                color: Colors.grey[400]),
+                              fontSize: 12.0,
+                              color: grayColor,
+                            ),
                           ),
                         ),
                         Container(
                           padding: EdgeInsets.fromLTRB(20.0, 0.0, 0.0, 2.0),
                           child: Text(
-                            '8277081585940606',
+                            '${widget.virtualNumber}',
                             style: TextStyle(
-                                fontSize: 19.0, fontWeight: FontWeight.bold),
+                                fontSize: 22, fontWeight: FontWeight.bold),
                           ),
                         ),
                         Container(
                           padding: EdgeInsets.fromLTRB(20.0, 0.0, 0.0, 15.0),
                           child: Text(
-                            'BNI Syariah Virtual Account',
+                            'BNI Virtual Account',
                             style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 12.0,
-                                color: Colors.grey[400]),
+                              fontSize: 12.0,
+                              color: grayColor,
+                            ),
                           ),
                         ),
                       ],
@@ -124,7 +115,13 @@ class _RequestVAState extends State<RequestVA> {
                       child: Container(
                         padding: EdgeInsets.only(right: 10.0),
                         child: RaisedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Flushbar(
+                              flushbarPosition: FlushbarPosition.TOP,
+                              message: 'Code Virtual Account Copy',
+                              duration: Duration(seconds: 3),
+                            )..show(context);
+                          },
                           color: greenColor,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20.0),
@@ -148,13 +145,6 @@ class _RequestVAState extends State<RequestVA> {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.all(Radius.circular(7.0)),
                   color: Colors.white,
-                  boxShadow: [
-                    new BoxShadow(
-                        color: Colors.grey,
-                        offset: new Offset(1.0, 1.0),
-                        blurRadius: 5.0,
-                        spreadRadius: 1.0)
-                  ],
                 ),
                 child: new Container(
                   padding: EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 5.0),
@@ -177,9 +167,9 @@ class _RequestVAState extends State<RequestVA> {
                             child: new Text(
                               'Selesaikan pembayaran zakat Anda sebelum tanggal 09 Januari 2018 pukul 10.19 WIB.',
                               style: TextStyle(
-                                  fontSize: 12.0,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.grey),
+                                fontSize: 12.0,
+                                color: grayColor,
+                              ),
                               textAlign: TextAlign.justify,
                             ),
                           ),
@@ -202,9 +192,9 @@ class _RequestVAState extends State<RequestVA> {
                             child: new Text(
                               'Pembayaran Zakat ini akan otomatis terbatalkan apabila Anda tidak melakukan pembayaran sebelum waktu yang ditentukan tersebut.',
                               style: TextStyle(
-                                  fontSize: 12.0,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.grey),
+                                fontSize: 12.0,
+                                color: grayColor,
+                              ),
                               textAlign: TextAlign.justify,
                             ),
                           ),
@@ -222,13 +212,6 @@ class _RequestVAState extends State<RequestVA> {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(7.0)),
                 color: Colors.white,
-                boxShadow: [
-                  new BoxShadow(
-                      color: Colors.grey,
-                      offset: new Offset(1.0, 1.0),
-                      blurRadius: 5.0,
-                      spreadRadius: 1.0)
-                ],
               ),
               child: new Container(
                 padding: EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 5.0),
@@ -256,9 +239,9 @@ class _RequestVAState extends State<RequestVA> {
                       child: Text(
                         'Pilih Cara pembayaran dan lakukan pembayaran sesuai kode Virtual Account',
                         style: TextStyle(
-                            fontSize: 12.0,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.grey),
+                          fontSize: 12.0,
+                          color: grayColor,
+                        ),
                         textAlign: TextAlign.justify,
                       ),
                     ),
@@ -463,14 +446,21 @@ class _RequestVAState extends State<RequestVA> {
             Padding(
               padding: EdgeInsets.only(top: 30),
               child: Center(
-                child: Text('Jika sudah melakukan pembayar melalui VA diatas, silahkan untuk mengkonfirm status anda.', textAlign: TextAlign.center,),
+                child: Text(
+                  'Jika sudah melakukan pembayar melalui VA diatas, silahkan untuk mengkonfirm status anda.',
+                  textAlign: TextAlign.center,
+                ),
               ),
             ),
             Container(
               child: RaisedButton(
                 onPressed: () {},
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(45)),
-                child: Text('Confirm', style: TextStyle(color: whiteColor),),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(45)),
+                child: Text(
+                  'Confirm',
+                  style: TextStyle(color: whiteColor),
+                ),
                 color: blueColor,
               ),
             ),

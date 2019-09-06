@@ -100,7 +100,7 @@ class UserStoryAppBarState extends State<UserStoryAppBar> {
                       height: 140.0,
                       child: thumbnail[0] == null
                           ? Image.network(
-                              "https://cdn.shopify.com/s/files/1/0882/1686/products/lastolite-grey-vinyl-background-275x6m-018_a36fc2d2-5860-48f1-8ec7-4b0ed98e2cf4.jpg?v=1490271176",
+                              snapshot[0].storyList[0].contents[0].imgUrl,
                               fit: BoxFit.cover,
                             )
                           : Image.network(

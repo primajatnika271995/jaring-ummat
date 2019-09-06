@@ -7,6 +7,7 @@ import 'package:flutter_jaring_ummat/src/views/components/icon_text/app_bar_icon
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/new_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/sosial_media_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/page_profile/menu_text_data.dart';
+import 'package:giffy_dialog/giffy_dialog.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -133,26 +134,31 @@ class _ProfileMenuState extends State<ProfileMenu> {
     return Scaffold(
       appBar: AppBar(
         elevation: 1.0,
+        automaticallyImplyLeading: false,
         backgroundColor: whiteColor,
         title: titleBar,
         actions: <Widget>[
           IconButton(
             icon: Icon(AppBarIcon.logout),
             color: blackColor,
-            onPressed: null,
+            onPressed: _onlogout,
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        child: Container(
-          child: Column(
-            children: <Widget>[
+      body: CustomScrollView(
+        slivers: <Widget>[
+          SliverList(
+            delegate: SliverChildListDelegate([
               profileIcon,
               userProfile,
               editProfile,
               SizedBox(
                 height: 20,
               ),
+            ]),
+          ),
+          SliverList(
+            delegate: SliverChildListDelegate([
               ListView.separated(
                 itemCount: 5,
                 shrinkWrap: true,
@@ -183,14 +189,20 @@ class _ProfileMenuState extends State<ProfileMenu> {
                   trailing: Icon(NewIcon.next_small_2x, color: blackColor),
                 ),
               ),
+            ]),
+          ),
+          SliverList(
+            delegate: SliverChildListDelegate([
               infoBottom,
               socialMedia,
-            ],
+            ]),
           ),
-        ),
+        ],
       ),
     );
   }
+
+  /// Future call PopUp Dialog Image Source
 
   Future<ImageSource> _asyncImageSourceDialog() {
     return showDialog<ImageSource>(
@@ -213,6 +225,37 @@ class _ProfileMenuState extends State<ProfileMenu> {
           ],
         );
       },
+    );
+  }
+
+  Future _onlogout() {
+    return showDialog(
+      context: (context),
+      builder: (_) => NetworkGiffyDialog(
+        image: Image.asset(
+          'assets/404.gif',
+        ),
+        title: Text(
+          'Logout Akun !',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: 22.0,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        description: Text(
+          'Apakah anda ingin keluar dari Aplikasi Mitra Jejaring ?',
+          textAlign: TextAlign.center,
+        ),
+        buttonOkColor: Colors.redAccent,
+        buttonOkText: Text(
+          'Logout',
+          style: TextStyle(color: Colors.white),
+        ),
+        onOkButtonPressed: () {
+          logout();
+        },
+      ),
     );
   }
 
@@ -255,5 +298,13 @@ class _ProfileMenuState extends State<ProfileMenu> {
       fullnameKey = _preferences.getString(FULLNAME_KEY);
       phoneNumberKey = _preferences.getString(phoneNumberKey);
     });
+  }
+
+  /// Call Function to Logout and Clear Preferences
+
+  void logout() async {
+    SharedPreferences _preferences = await SharedPreferences.getInstance();
+    _preferences.clear();
+    Navigator.of(context).pushReplacementNamed("/login");
   }
 }

@@ -3,14 +3,16 @@ import 'dart:async';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter_fab_dialer/flutter_fab_dialer.dart';
 import 'package:flutter_jaring_ummat/src/config/hexColor.dart';
+import 'package:flutter_jaring_ummat/src/config/preferences.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/new_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/profile_inbox_icon_icons.dart';
-import 'package:flutter_jaring_ummat/src/views/components/indicator_container.dart';
 import 'package:flutter_jaring_ummat/src/views/page_portofolio/portofolio_text_data.dart';
 import 'package:flutter_jaring_ummat/src/views/page_virtual_account/request_va.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_jaring_ummat/src/bloc/requestVABloc.dart';
 
 class Portofolio extends StatefulWidget {
   @override
@@ -39,8 +41,23 @@ class _PortofolioState extends State<Portofolio> {
   /*
    * Text Field Money Formatter
    */
-
   var nominalCtrl = new MoneyMaskedTextController(leftSymbol: 'Rp ');
+
+  /*
+   * Variable Temp
+   */
+  String emailCustomer;
+  String customerName;
+  String customerPhone;
+
+  /*
+   * Variable Temp Pie Chart
+   */
+  double valueZakat = 10;
+  double valueInfaq = 20;
+  double valueShodqoh = 30;
+  double valueWakaf = 40;
+  double valueDonasi = 50;
 
   @override
   Widget build(BuildContext context) {
@@ -49,15 +66,20 @@ class _PortofolioState extends State<Portofolio> {
    */
     var fabMenuList = [
       FabMiniMenuItem.noText(Icon(ProfileInboxIcon.zakat_3x), Colors.yellow, 0,
-          "Zakat", showPayment, true),
+          "Zakat", () => showPayment('zakat'), true),
       FabMiniMenuItem.noText(Icon(ProfileInboxIcon.infaq_3x), Colors.redAccent,
-          0, "Infaq", showPayment, true),
-      FabMiniMenuItem.noText(Icon(ProfileInboxIcon.sodaqoh_3x),
-          Colors.deepPurple, 0, "Shodaqoh", showPayment, true),
+          0, "Infaq", () => showPayment('infaq'), true),
+      FabMiniMenuItem.noText(
+          Icon(ProfileInboxIcon.sodaqoh_3x),
+          Colors.deepPurple,
+          0,
+          "shodaqoh",
+          () => showPayment('shodaqoh'),
+          true),
       FabMiniMenuItem.noText(Icon(ProfileInboxIcon.wakaf_3x), Colors.green, 0,
-          "Wakaf", showPayment, true),
+          "Wakaf", () => showPayment('wakaf'), true),
       FabMiniMenuItem.noText(Icon(ProfileInboxIcon.donation_3x), Colors.blue, 0,
-          "Donasi", showPayment, true),
+          "Donasi", () => showPayment('donasi'), true),
     ];
 
     // Title Bar Widget
@@ -86,7 +108,7 @@ class _PortofolioState extends State<Portofolio> {
               children: <Widget>[
                 CircleAvatar(
                   backgroundColor: Colors.deepPurple,
-                  child: Icon(ProfileInboxIcon.balance_2x, color: whiteColor),
+                  child: Icon(ProfileInboxIcon.balance_2x, color: whiteColor, size: 20),
                 ),
                 SizedBox(
                   width: 7,
@@ -97,16 +119,16 @@ class _PortofolioState extends State<Portofolio> {
                   children: <Widget>[
                     Text(
                       'Saldo Jejaring',
-                      style: TextStyle(fontSize: 16, color: grayColor),
+                      style: TextStyle(fontSize: 14, color: grayColor),
                     ),
                     RichText(
                       text: TextSpan(children: <TextSpan>[
                         TextSpan(
                             text: 'Rp', style: TextStyle(color: grayColor)),
                         TextSpan(
-                          text: '1.209.397',
+                          text: '1.250',
                           style: TextStyle(
-                              fontSize: 21,
+                              fontSize: 17,
                               fontWeight: FontWeight.bold,
                               color: blackColor),
                         ),
@@ -130,7 +152,7 @@ class _PortofolioState extends State<Portofolio> {
               children: <Widget>[
                 CircleAvatar(
                   backgroundColor: Colors.yellow,
-                  child: Icon(ProfileInboxIcon.point_2x, color: whiteColor),
+                  child: Icon(ProfileInboxIcon.point_2x, color: whiteColor, size: 20),
                 ),
                 SizedBox(
                   width: 7,
@@ -141,16 +163,16 @@ class _PortofolioState extends State<Portofolio> {
                   children: <Widget>[
                     Text(
                       'Point Amal',
-                      style: TextStyle(fontSize: 16, color: grayColor),
+                      style: TextStyle(fontSize: 14, color: grayColor),
                     ),
                     RichText(
                       text: TextSpan(children: <TextSpan>[
                         TextSpan(
                             text: 'Rp', style: TextStyle(color: grayColor)),
                         TextSpan(
-                          text: '59.340',
+                          text: '75',
                           style: TextStyle(
-                              fontSize: 21,
+                              fontSize: 17,
                               fontWeight: FontWeight.bold,
                               color: blackColor),
                         ),
@@ -175,10 +197,14 @@ class _PortofolioState extends State<Portofolio> {
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
           subtitle: Text(
-              'Hey Ridwan, terimakasih telah berpartisipasi pada beberapa aktivitas amal dan berikut ini sebaran aktivitasmu pada periode berjalan.'),
+              'Hey $customerName, terimakasih telah berpartisipasi pada beberapa aktivitas amal dan berikut ini sebaran aktivitasmu pada periode berjalan.'),
           trailing: IconButton(
             onPressed: null,
-            icon: Icon(NewIcon.next_small_2x, color: blackColor),
+            icon: Icon(
+              NewIcon.next_small_2x,
+              color: blackColor,
+              size: 20,
+            ),
           ),
         ),
         Row(
@@ -186,8 +212,8 @@ class _PortofolioState extends State<Portofolio> {
             Expanded(
               flex: 5,
               child: Container(
-                height: 250,
-                width: 250,
+                height: 200,
+                width: 200,
                 child: FlChart(
                   chart: PieChart(
                     PieChartData(
@@ -209,7 +235,7 @@ class _PortofolioState extends State<Portofolio> {
                   children: <Widget>[
                     Text(
                       'Total pada periode berjalan',
-                      style: TextStyle(fontSize: 16, color: grayColor),
+                      style: TextStyle(fontSize: 13, color: grayColor),
                     ),
                     RichText(
                       text: TextSpan(children: <TextSpan>[
@@ -218,7 +244,7 @@ class _PortofolioState extends State<Portofolio> {
                         TextSpan(
                           text: '1.800.301',
                           style: TextStyle(
-                              fontSize: 25,
+                              fontSize: 20,
                               fontWeight: FontWeight.bold,
                               color: blackColor),
                         ),
@@ -226,7 +252,7 @@ class _PortofolioState extends State<Portofolio> {
                     ),
                     Text(
                       '/ 34 Aktivitas Amal',
-                      style: TextStyle(color: grayColor, fontSize: 16),
+                      style: TextStyle(color: grayColor, fontSize: 13),
                     )
                   ],
                 ),
@@ -252,6 +278,7 @@ class _PortofolioState extends State<Portofolio> {
             onPressed: null,
             icon: Icon(NewIcon.next_small_2x),
             color: blackColor,
+            iconSize: 20,
           ),
         ),
         Padding(
@@ -300,6 +327,7 @@ class _PortofolioState extends State<Portofolio> {
             onPressed: null,
             icon: Icon(NewIcon.next_small_2x),
             color: blackColor,
+            iconSize: 20,
           ),
         ),
       ],
@@ -308,6 +336,7 @@ class _PortofolioState extends State<Portofolio> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: whiteColor,
+        automaticallyImplyLeading: false,
         elevation: 0,
         title: titleBar,
         actions: <Widget>[
@@ -329,7 +358,7 @@ class _PortofolioState extends State<Portofolio> {
               automaticallyImplyLeading: false,
               backgroundColor: Colors.transparent,
               bottom: PreferredSize(
-                preferredSize: Size.fromHeight(420),
+                preferredSize: Size.fromHeight(370),
                 child: Container(
                   child: Column(
                     children: <Widget>[
@@ -356,6 +385,27 @@ class _PortofolioState extends State<Portofolio> {
                         BorderSide(width: 4.0, color: Colors.blueAccent),
                   ),
                   labelColor: blackColor,
+                  onTap: (index) {
+                    switch (index) {
+                      case 1:
+                        print('Zakat Data');
+                        var items = [
+                          PieChartSectionData(
+                              color: Color(0xFF3A5F99),
+                              value: 80,
+                              title: "40%",
+                              radius: 35,
+                              titleStyle:
+                                  TextStyle(fontSize: 14, color: whiteColor)),
+                        ];
+                        setState(() {
+                          pieChartRawSections = items;
+                          showingSections = pieChartRawSections;
+                        });
+                        break;
+                      default:
+                    }
+                  },
                   tabs: <Widget>[
                     new Tab(
                       child: Column(
@@ -522,7 +572,7 @@ class _PortofolioState extends State<Portofolio> {
               automaticallyImplyLeading: false,
               backgroundColor: Colors.transparent,
               bottom: PreferredSize(
-                preferredSize: Size.fromHeight(175),
+                preferredSize: Size.fromHeight(180),
                 child: Container(
                   child: Column(
                     children: <Widget>[aktivitasTerbesar],
@@ -560,8 +610,8 @@ class _PortofolioState extends State<Portofolio> {
     );
   }
 
-  Future showPayment() {
-    return showDialog(
+  void showPayment(String type) {
+    showDialog(
       context: context,
       builder: (context) => AlertDialog(
         shape: RoundedRectangleBorder(
@@ -569,7 +619,8 @@ class _PortofolioState extends State<Portofolio> {
             Radius.circular(15.0),
           ),
         ),
-        title: Text('Masukan nominal yang akan dikirimkan'),
+        title: Text('Masukan nominal $type yang akan dikirimkan',
+            textAlign: TextAlign.center),
         content: Container(
           height: 200,
           child: Column(
@@ -584,24 +635,29 @@ class _PortofolioState extends State<Portofolio> {
               SizedBox(
                 height: 20,
               ),
-              RaisedButton(
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => RequestVA(
-                        nominal: nominalCtrl.numberValue,
+              StreamBuilder(
+                  stream: bloc.streamRequest,
+                  builder: (context, snapshot) {
+                    return RaisedButton(
+                      onPressed: () {
+                        bloc.requestVA(
+                            context,
+                            nominalCtrl.numberValue,
+                            emailCustomer,
+                            customerName,
+                            customerPhone,
+                            null,
+                            type);
+                      },
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(45)),
+                      child: Text(
+                        'Request',
+                        style: TextStyle(color: whiteColor),
                       ),
-                    ),
-                  );
-                },
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(45)),
-                child: Text(
-                  'Request',
-                  style: TextStyle(color: whiteColor),
-                ),
-                color: greenColor,
-              ),
+                      color: greenColor,
+                    );
+                  }),
             ],
           ),
         ),
@@ -613,43 +669,54 @@ class _PortofolioState extends State<Portofolio> {
   void initState() {
     super.initState();
 
+    getUser();
+
     final zakatData = PieChartSectionData(
-        color: Color(0xFF3A5F99),
-        value: 40,
-        title: "40%",
+        color: Colors.orangeAccent,
+        value: valueZakat,
+        title: "$valueZakat%",
         radius: 35,
-        titleStyle: TextStyle(fontSize: 14, color: whiteColor));
+        titleStyle: TextStyle(fontSize: 12, color: whiteColor));
 
     final infaqData = PieChartSectionData(
-        color: Color(0xFFDB7E27),
-        value: 20,
-        title: "60%",
+        color: Colors.red,
+        value: valueInfaq,
+        title: "$valueInfaq%",
         radius: 35,
-        titleStyle: TextStyle(fontSize: 14, color: whiteColor));
+        titleStyle: TextStyle(fontSize: 12, color: whiteColor));
 
     final sodaqohData = PieChartSectionData(
-        color: Color(0xFFDEDE71),
-        value: 20,
-        title: "20%",
+        color: Colors.purpleAccent,
+        value: valueShodqoh,
+        title: "$valueShodqoh%",
         radius: 35,
-        titleStyle: TextStyle(fontSize: 14, color: whiteColor));
+        titleStyle: TextStyle(fontSize: 12, color: whiteColor));
 
     final wakafData = PieChartSectionData(
-        color: Color(0xFFDB4B1F),
-        value: 13,
-        title: "13%",
+        color: Colors.green,
+        value: valueWakaf,
+        title: "$valueZakat%",
         radius: 35,
-        titleStyle: TextStyle(fontSize: 14, color: whiteColor));
+        titleStyle: TextStyle(fontSize: 12, color: whiteColor));
 
     final donasiData = PieChartSectionData(
-        color: Color(0xFF2938C2),
-        value: 10,
-        title: "10%",
+        color: blueColor,
+        value: valueDonasi,
+        title: "$valueDonasi%",
         radius: 35,
-        titleStyle: TextStyle(fontSize: 14, color: whiteColor));
+        titleStyle: TextStyle(fontSize: 12, color: whiteColor));
 
     final items = [zakatData, infaqData, sodaqohData, wakafData, donasiData];
     pieChartRawSections = items;
     showingSections = pieChartRawSections;
+  }
+
+  void getUser() async {
+    SharedPreferences _pref = await SharedPreferences.getInstance();
+    setState(() {
+      emailCustomer = _pref.getString(EMAIL_KEY);
+      customerName = _pref.getString(FULLNAME_KEY);
+      customerPhone = _pref.getString(CONTACT_KEY);
+    });
   }
 }
