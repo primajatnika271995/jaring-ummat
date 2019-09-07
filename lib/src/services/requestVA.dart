@@ -76,6 +76,7 @@ class RequestVAProvider {
         headers: head, body: json.encode(params));
     print('--> Request VA OAuth :${response.statusCode}');
     if (response.statusCode == 200) {
+      print(response.body);
       return compute(requestVaModelFromJson, response.body);
     }
   }

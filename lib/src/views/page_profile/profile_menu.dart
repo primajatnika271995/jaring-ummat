@@ -296,7 +296,7 @@ class _ProfileMenuState extends State<ProfileMenu> {
     setState(() {
       emailKey = _preferences.getString(EMAIL_KEY);
       fullnameKey = _preferences.getString(FULLNAME_KEY);
-      phoneNumberKey = _preferences.getString(phoneNumberKey);
+      phoneNumberKey = _preferences.getString(CONTACT_KEY);
     });
   }
 

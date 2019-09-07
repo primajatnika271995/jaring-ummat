@@ -19,6 +19,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_speed_dial: ^1.2.1
   flushbar: ^1.8.2
   jstomp: ^1.1.3
   bubble: ^1.1.9+1
@@ -36,7 +37,6 @@ dependencies:
   mailer: ^3.0.1
   otp: ^1.0.1
   toast: ^0.1.4
-  flutter_fab_dialer: ^0.1.1
   dio: ^2.1.13
   timeago: ^2.0.14
   flutter_money_formatter: ^0.8.0

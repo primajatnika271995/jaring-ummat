@@ -1,7 +1,9 @@
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_jaring_ummat/src/models/requestVAModel.dart';
 import 'package:flutter_jaring_ummat/src/repository/RequestVARepository.dart';
+import 'package:flutter_jaring_ummat/src/views/page_virtual_account/input_bill.dart';
 import 'package:flutter_jaring_ummat/src/views/page_virtual_account/request_va.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:rxdart/subjects.dart';
@@ -33,9 +35,10 @@ class RequestVABloc {
         transactionType);
     requestFetcher.sink.add(value);
 
-    if (value.data.id != null) {
+    print('Request Status : ${value.status}');
+    if (value.status == "000") {
       print('Data OK!');
-      Navigator.of(context).push(
+      Navigator.of(context).pushReplacement(
         MaterialPageRoute(
           builder: (context) => RequestVA(
             nominal: amount,
@@ -44,6 +47,28 @@ class RequestVABloc {
           ),
         ),
       );
+    } else {
+      if (transactionId == null) {
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
+          builder: (context) => InputBill(
+            customerEmail: customerEmail,
+            customerName: customerName,
+            customerPhone: customerPhone,
+            type: transactionType,
+          ),
+        ));
+      } else {
+        Navigator.of(context).pushReplacementNamed('/home');
+      }
+
+      Flushbar(
+        margin: EdgeInsets.all(8.0),
+        flushbarPosition: FlushbarPosition.TOP,
+        borderRadius: 8.0,
+        message: "Ada gangguan pada Service Virtual Account",
+        leftBarIndicatorColor: Colors.redAccent,
+        duration: Duration(seconds: 3),
+      )..show(context);
     }
   }
 }

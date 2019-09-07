@@ -40,7 +40,9 @@ class _HistoriTransaksiViewState extends State<HistoriTransaksiView> {
               if (snapshot.hasData) {
                 return listBuilder(snapshot.data);
               }
-              return Text('NO HISTORY DATA');
+              return Center(
+                child: Text('NO HISTORY DATA'),
+              );
           }
         },
       ),

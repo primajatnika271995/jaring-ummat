@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:fl_chart/fl_chart.dart';
-import 'package:flutter_fab_dialer/flutter_fab_dialer.dart';
 import 'package:flutter_jaring_ummat/src/config/hexColor.dart';
 import 'package:flutter_jaring_ummat/src/config/preferences.dart';
 import 'package:flutter_jaring_ummat/src/models/sebaranAktifitasAmalModel.dart';
@@ -10,10 +9,11 @@ import 'package:flutter_jaring_ummat/src/views/components/icon_text/new_icon_ico
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/profile_inbox_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/components/loadingContainer.dart';
 import 'package:flutter_jaring_ummat/src/views/page_portofolio/portofolio_text_data.dart';
-import 'package:flutter_jaring_ummat/src/views/page_virtual_account/request_va.dart';
+import 'package:flutter_jaring_ummat/src/views/page_virtual_account/input_bill.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_jaring_ummat/src/bloc/requestVABloc.dart';
 import 'package:flutter_jaring_ummat/src/bloc/portofolioBloc.dart'
@@ -42,11 +42,6 @@ class _PortofolioState extends State<Portofolio> {
    * Tab Index
    */
   int indexTab = 0;
-
-  /*
-   * Text Field Money Formatter
-   */
-  var nominalCtrl = new MoneyMaskedTextController(leftSymbol: 'Rp ');
 
   /*
    * Variable Temp
@@ -85,23 +80,67 @@ class _PortofolioState extends State<Portofolio> {
     /*
    * FabMenu List
    */
-    var fabMenuList = [
-      FabMiniMenuItem.noText(Icon(ProfileInboxIcon.zakat_3x), Colors.yellow, 0,
-          "Zakat", () => showPayment('zakat'), true),
-      FabMiniMenuItem.noText(Icon(ProfileInboxIcon.infaq_3x), Colors.redAccent,
-          0, "Infaq", () => showPayment('infaq'), true),
-      FabMiniMenuItem.noText(
-          Icon(ProfileInboxIcon.sodaqoh_3x),
-          Colors.deepPurple,
-          0,
-          "shodaqoh",
-          () => showPayment('sodaqoh'),
-          true),
-      FabMiniMenuItem.noText(Icon(ProfileInboxIcon.wakaf_3x), Colors.green, 0,
-          "Wakaf", () => showPayment('wakaf'), true),
-      FabMiniMenuItem.noText(Icon(ProfileInboxIcon.donation_3x), Colors.blue, 0,
-          "Donasi", () => showPayment('donasi'), true),
-    ];
+    // var childButtons = List<UnicornButton>();
+    // childButtons.add(UnicornButton(
+    //   hasLabel: false,
+    //   currentButton: FloatingActionButton(
+    //     heroTag: 'Zakat',
+    //     backgroundColor: Colors.yellowAccent,
+    //     mini: true,
+    //     child: Icon(ProfileInboxIcon.zakat_3x, color: whiteColor, size: 20),
+    //     onPressed: () {
+    //       requestBill("zakat");
+    //     },
+    //   ),
+    // ));
+    // childButtons.add(UnicornButton(
+    //   hasLabel: false,
+    //   currentButton: FloatingActionButton(
+    //     heroTag: 'Infaq',
+    //     backgroundColor: Colors.redAccent,
+    //     mini: true,
+    //     child: Icon(ProfileInboxIcon.infaq_3x, color: whiteColor, size: 20),
+    //     onPressed: () {
+    //       requestBill("infaq");
+    //     },
+    //   ),
+    // ));
+    // childButtons.add(UnicornButton(
+    //   hasLabel: false,
+    //   currentButton: FloatingActionButton(
+    //     heroTag: 'Sodaqoh',
+    //     backgroundColor: Colors.deepPurpleAccent,
+    //     mini: true,
+    //     child: Icon(ProfileInboxIcon.sodaqoh_3x, color: whiteColor, size: 20),
+    //     onPressed: () {
+    //       requestBill("sodaqoh");
+    //     },
+    //   ),
+    // ));
+    // childButtons.add(UnicornButton(
+    //   hasLabel: false,
+    //   currentButton: FloatingActionButton(
+    //     heroTag: 'Wakaf',
+    //     backgroundColor: Colors.greenAccent,
+    //     mini: true,
+    //     child: Icon(ProfileInboxIcon.wakaf_3x, color: whiteColor, size: 20),
+    //     onPressed: () {
+    //       requestBill("wakaf");
+    //     },
+    //   ),
+    // ));
+    // childButtons.add(UnicornButton(
+    //   hasLabel: false,
+    //   currentButton: FloatingActionButton(
+    //     heroTag: 'Donasi',
+    //     backgroundColor: Colors.yellowAccent,
+    //     mini: true,
+    //     child: Icon(ProfileInboxIcon.donation_3x, color: whiteColor, size: 20),
+    //     onPressed: () {
+    //       requestBill("donasi");
+    //     },
+    //   ),
+    // ));
 
     // Title Bar Widget
 
@@ -118,7 +157,7 @@ class _PortofolioState extends State<Portofolio> {
       padding: EdgeInsets.only(left: 15, right: 15, bottom: 20),
       children: <Widget>[
         Container(
-          margin: EdgeInsets.only(right: 10),
+          margin: EdgeInsets.only(right: 6),
           decoration: BoxDecoration(
             border: Border.all(color: Colors.grey[200], width: 3),
             borderRadius: BorderRadius.circular(13),
@@ -163,7 +202,7 @@ class _PortofolioState extends State<Portofolio> {
           ),
         ),
         Container(
-          margin: EdgeInsets.only(left: 10),
+          margin: EdgeInsets.only(left: 6),
           decoration: BoxDecoration(
             border: Border.all(color: Colors.grey[200], width: 3),
             borderRadius: BorderRadius.circular(13),
@@ -261,7 +300,7 @@ class _PortofolioState extends State<Portofolio> {
                         color: Colors.orangeAccent,
                         value: data.totalZakatPercent,
                         title:
-                            "${data.totalZakatPercent.toString().substring(0, 1)}%",
+                            "${data.totalZakatPercent.toString().substring(0, 2)}%",
                         radius: 26,
                         titleStyle: TextStyle(fontSize: 12, color: whiteColor));
 
@@ -269,7 +308,7 @@ class _PortofolioState extends State<Portofolio> {
                         color: Colors.red,
                         value: data.totalInfaqPercent,
                         title:
-                            "${data.totalInfaqPercent.toString().substring(0, 1)}%",
+                            "${data.totalInfaqPercent.toString().substring(0, 2)}%",
                         radius: 26,
                         titleStyle: TextStyle(fontSize: 12, color: whiteColor));
 
@@ -277,14 +316,14 @@ class _PortofolioState extends State<Portofolio> {
                         color: Colors.purpleAccent,
                         value: data.totalSodaqohPercent,
                         title:
-                            "${data.totalSemuaPercent.toString().substring(0, 1)}%",
+                            "${data.totalSemuaPercent.toString().substring(0, 2)}%",
                         radius: 26,
                         titleStyle: TextStyle(fontSize: 12, color: whiteColor));
 
                     final wakafData = PieChartSectionData(
                         color: Colors.green,
                         value: data.totalWakafPercent,
-                        title: "${data.totalWakafPercent.toString()}%",
+                        title: "${data.totalWakafPercent.toString().substring(0, 2)}%",
                         radius: 26,
                         titleStyle: TextStyle(fontSize: 12, color: whiteColor));
 
@@ -292,7 +331,7 @@ class _PortofolioState extends State<Portofolio> {
                         color: blueColor,
                         value: data.totalDonasiPercent,
                         title:
-                            "${data.totalDonasiPercent.toString().substring(0, 1)}%",
+                            "${data.totalDonasiPercent.toString().substring(0, 2)}%",
                         radius: 26,
                         titleStyle: TextStyle(fontSize: 12, color: whiteColor));
 
@@ -308,7 +347,7 @@ class _PortofolioState extends State<Portofolio> {
                     return Row(
                       children: <Widget>[
                         Expanded(
-                          flex: 5,
+                          flex: 6,
                           child: Container(
                             height: 190,
                             width: 190,
@@ -316,7 +355,7 @@ class _PortofolioState extends State<Portofolio> {
                               chart: PieChart(
                                 PieChartData(
                                     borderData: FlBorderData(show: false),
-                                    sectionsSpace: 0,
+                                    sectionsSpace: 5,
                                     centerSpaceRadius: 65,
                                     sections: showingSections),
                               ),
@@ -324,7 +363,7 @@ class _PortofolioState extends State<Portofolio> {
                           ),
                         ),
                         Expanded(
-                          flex: 5,
+                          flex: 4,
                           child: Padding(
                             padding: const EdgeInsets.only(right: 5),
                             child: Column(
@@ -441,34 +480,36 @@ class _PortofolioState extends State<Portofolio> {
     );
 
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: whiteColor,
-        automaticallyImplyLeading: false,
-        elevation: 0,
-        title: titleBar,
-        actions: <Widget>[
-          IconButton(
-            onPressed: null,
-            icon: Icon(NewIcon.refresh_2x),
-            color: blackColor,
-            iconSize: 20,
-          ),
-        ],
-      ),
-      body: LoadingScreen(
-        inAsyncCall: _loadingVisible,
-        child: DefaultTabController(
-          length: 6,
-          initialIndex: indexTab,
-          child: CustomScrollView(
-            slivers: <Widget>[
-              SliverAppBar(
-                elevation: 0,
-                automaticallyImplyLeading: false,
-                backgroundColor: Colors.transparent,
-                bottom: PreferredSize(
-                  preferredSize: Size.fromHeight(340),
-                  child: Container(
+        appBar: AppBar(
+          backgroundColor: whiteColor,
+          automaticallyImplyLeading: false,
+          elevation: 0,
+          title: titleBar,
+          actions: <Widget>[
+            IconButton(
+              onPressed: null,
+              icon: Icon(NewIcon.refresh_2x),
+              color: blackColor,
+              iconSize: 20,
+            ),
+          ],
+        ),
+        body: LoadingScreen(
+          inAsyncCall: _loadingVisible,
+          child: DefaultTabController(
+            length: 6,
+            initialIndex: indexTab,
+            child: CustomScrollView(
+              slivers: <Widget>[
+                SliverAppBar(
+                  elevation: 0,
+                  automaticallyImplyLeading: false,
+                  backgroundColor: Colors.transparent,
+                  bottom: PreferredSize(
+                    preferredSize: Size.fromHeight(341),
+                    child: Text(''),
+                  ),
+                  flexibleSpace: Container(
                     child: Column(
                       children: <Widget>[
                         mySaldoGrid,
@@ -477,302 +518,338 @@ class _PortofolioState extends State<Portofolio> {
                     ),
                   ),
                 ),
-              ),
-              SliverAppBar(
-                backgroundColor: whiteColor,
-                automaticallyImplyLeading: false,
-                floating: true,
-                pinned: true,
-                flexibleSpace: AppBar(
-                  elevation: 1,
+                SliverAppBar(
                   backgroundColor: whiteColor,
                   automaticallyImplyLeading: false,
-                  bottom: TabBar(
-                    isScrollable: true,
-                    indicator: UnderlineTabIndicator(
-                      borderSide:
-                          BorderSide(width: 4.0, color: Colors.blueAccent),
-                    ),
-                    labelColor: blackColor,
-                    onTap: (index) {
-                      switch (index) {
-                        case 1:
-                          print('Zakat Data');
-                          var items = [
-                            PieChartSectionData(
-                                color: Color(0xFF3A5F99),
-                                value: valueZakat,
-                                title: "40%",
-                                radius: 35,
-                                titleStyle:
-                                    TextStyle(fontSize: 14, color: whiteColor)),
-                          ];
-                          setState(() {
-                            pieChartRawSections = items;
-                            showingSections = pieChartRawSections;
-                          });
-                          break;
-                        default:
-                      }
-                    },
-                    tabs: <Widget>[
-                      new Tab(
-                        child: Column(
-                          children: <Widget>[
-                            const Text(
-                              'Total',
-                              style: TextStyle(
-                                color: Color(0xFF3A5F99),
-                              ),
-                            ),
-                            new Row(
-                              children: <Widget>[
-                                const Text(
-                                  'Rp',
-                                  style: TextStyle(
-                                    fontSize: 11.0,
-                                  ),
-                                ),
-                                Text(
-                                  '${CurrencyFormat().currency(valueTotal)}',
-                                  style: TextStyle(
-                                    fontSize: 13.0,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
+                  floating: true,
+                  pinned: true,
+                  flexibleSpace: AppBar(
+                    elevation: 1,
+                    backgroundColor: whiteColor,
+                    automaticallyImplyLeading: false,
+                    bottom: TabBar(
+                      isScrollable: true,
+                      indicator: UnderlineTabIndicator(
+                        borderSide:
+                            BorderSide(width: 4.0, color: Colors.blueAccent),
                       ),
-                      new Tab(
-                        child: Column(
-                          children: <Widget>[
-                            const Text(
-                              'Zakat',
-                              style: TextStyle(
-                                color: Color(0xFF3A5F99),
+                      labelColor: blackColor,
+                      onTap: (index) {
+                        switch (index) {
+                          case 1:
+                            print('Zakat Data');
+                            var items = [
+                              PieChartSectionData(
+                                  color: Color(0xFF3A5F99),
+                                  value: valueZakat,
+                                  title: "40%",
+                                  radius: 35,
+                                  titleStyle: TextStyle(
+                                      fontSize: 14, color: whiteColor)),
+                            ];
+                            setState(() {
+                              pieChartRawSections = items;
+                              showingSections = pieChartRawSections;
+                            });
+                            break;
+                          default:
+                        }
+                      },
+                      tabs: <Widget>[
+                        new Tab(
+                          child: Column(
+                            children: <Widget>[
+                              const Text(
+                                'Total',
+                                style: TextStyle(
+                                  color: Color(0xFF3A5F99),
+                                ),
                               ),
-                            ),
-                            new Row(
-                              children: <Widget>[
-                                const Text(
-                                  'Rp',
-                                  style: TextStyle(
-                                    fontSize: 11.0,
+                              new Row(
+                                children: <Widget>[
+                                  const Text(
+                                    'Rp',
+                                    style: TextStyle(
+                                      fontSize: 11.0,
+                                    ),
                                   ),
-                                ),
-                                Text(
-                                  '${CurrencyFormat().currency(valueZakat)}',
-                                  style: TextStyle(
-                                    fontSize: 13.0,
+                                  Text(
+                                    '${CurrencyFormat().currency(valueTotal)}',
+                                    style: TextStyle(
+                                      fontSize: 13.0,
+                                    ),
                                   ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                      new Tab(
-                        child: Column(
-                          children: <Widget>[
-                            const Text(
-                              'Infaq',
-                              style: TextStyle(
-                                color: Color(0xFFDB7E27),
+                                ],
                               ),
-                            ),
-                            new Row(
-                              children: <Widget>[
-                                const Text(
-                                  'Rp',
-                                  style: TextStyle(
-                                    fontSize: 11.0,
+                            ],
+                          ),
+                        ),
+                        new Tab(
+                          child: Column(
+                            children: <Widget>[
+                              const Text(
+                                'Zakat',
+                                style: TextStyle(
+                                  color: Color(0xFF3A5F99),
+                                ),
+                              ),
+                              new Row(
+                                children: <Widget>[
+                                  const Text(
+                                    'Rp',
+                                    style: TextStyle(
+                                      fontSize: 11.0,
+                                    ),
                                   ),
-                                ),
-                                Text(
-                                  '${CurrencyFormat().currency(valueInfaq)}',
-                                  style: TextStyle(
-                                    fontSize: 13.0,
+                                  Text(
+                                    '${CurrencyFormat().currency(valueZakat)}',
+                                    style: TextStyle(
+                                      fontSize: 13.0,
+                                    ),
                                   ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                      new Tab(
-                        child: Column(
-                          children: <Widget>[
-                            const Text(
-                              'Sodaqoh',
-                              style: TextStyle(
-                                color: Color(0xFFDEDE71),
+                                ],
                               ),
-                            ),
-                            new Row(
-                              children: <Widget>[
-                                const Text(
-                                  'Rp',
-                                  style: TextStyle(fontSize: 11.0),
-                                ),
-                                Text(
-                                  '${CurrencyFormat().currency(valueShodqoh)}',
-                                  style: TextStyle(fontSize: 13.0),
-                                ),
-                              ],
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
-                      new Tab(
-                        child: Column(
-                          children: <Widget>[
-                            const Text(
-                              'Wakaf',
-                              style: TextStyle(
-                                color: Color(0xFFDB4B1F),
+                        new Tab(
+                          child: Column(
+                            children: <Widget>[
+                              const Text(
+                                'Infaq',
+                                style: TextStyle(
+                                  color: Color(0xFFDB7E27),
+                                ),
                               ),
-                            ),
-                            new Row(
-                              children: <Widget>[
-                                const Text(
-                                  'Rp',
-                                  style: TextStyle(fontSize: 11.0),
-                                ),
-                                Text(
-                                  '${CurrencyFormat().currency(valueWakaf)}',
-                                  style: TextStyle(fontSize: 13.0),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                      new Tab(
-                        child: Column(
-                          children: <Widget>[
-                            const Text(
-                              'Donasi',
-                              style: TextStyle(
-                                color: Color(0xFF2938C2),
+                              new Row(
+                                children: <Widget>[
+                                  const Text(
+                                    'Rp',
+                                    style: TextStyle(
+                                      fontSize: 11.0,
+                                    ),
+                                  ),
+                                  Text(
+                                    '${CurrencyFormat().currency(valueInfaq)}',
+                                    style: TextStyle(
+                                      fontSize: 13.0,
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ),
-                            new Row(
-                              children: <Widget>[
-                                const Text(
-                                  'Rp',
-                                  style: TextStyle(fontSize: 11.0),
-                                ),
-                                Text(
-                                  '${CurrencyFormat().currency(valueDonasi)}',
-                                  style: TextStyle(fontSize: 13.0),
-                                ),
-                              ],
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              SliverAppBar(
-                elevation: 0,
-                automaticallyImplyLeading: false,
-                backgroundColor: Colors.transparent,
-                bottom: PreferredSize(
-                  preferredSize: Size.fromHeight(180),
-                  child: Container(
-                    child: Column(
-                      children: <Widget>[aktivitasTerbesar],
+                        new Tab(
+                          child: Column(
+                            children: <Widget>[
+                              const Text(
+                                'Sodaqoh',
+                                style: TextStyle(
+                                  color: Color(0xFFDEDE71),
+                                ),
+                              ),
+                              new Row(
+                                children: <Widget>[
+                                  const Text(
+                                    'Rp',
+                                    style: TextStyle(fontSize: 11.0),
+                                  ),
+                                  Text(
+                                    '${CurrencyFormat().currency(valueShodqoh)}',
+                                    style: TextStyle(fontSize: 13.0),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                        new Tab(
+                          child: Column(
+                            children: <Widget>[
+                              const Text(
+                                'Wakaf',
+                                style: TextStyle(
+                                  color: Color(0xFFDB4B1F),
+                                ),
+                              ),
+                              new Row(
+                                children: <Widget>[
+                                  const Text(
+                                    'Rp',
+                                    style: TextStyle(fontSize: 11.0),
+                                  ),
+                                  Text(
+                                    '${CurrencyFormat().currency(valueWakaf)}',
+                                    style: TextStyle(fontSize: 13.0),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                        new Tab(
+                          child: Column(
+                            children: <Widget>[
+                              const Text(
+                                'Donasi',
+                                style: TextStyle(
+                                  color: Color(0xFF2938C2),
+                                ),
+                              ),
+                              new Row(
+                                children: <Widget>[
+                                  const Text(
+                                    'Rp',
+                                    style: TextStyle(fontSize: 11.0),
+                                  ),
+                                  Text(
+                                    '${CurrencyFormat().currency(valueDonasi)}',
+                                    style: TextStyle(fontSize: 13.0),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
-              ),
-              SliverAppBar(
-                elevation: 0,
-                automaticallyImplyLeading: false,
-                backgroundColor: Colors.transparent,
-                bottom: PreferredSize(
-                  preferredSize: Size.fromHeight(20),
-                  child: Container(
-                    child: Column(
-                      children: <Widget>[aktivitasTerbaru],
+                SliverAppBar(
+                  elevation: 0,
+                  automaticallyImplyLeading: false,
+                  backgroundColor: Colors.transparent,
+                  bottom: PreferredSize(
+                    preferredSize: Size.fromHeight(180),
+                    child: Container(
+                      child: Column(
+                        children: <Widget>[aktivitasTerbesar],
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
-          ),
-        ),
-      ),
-      floatingActionButton: new Stack(
-        children: <Widget>[
-          new Container(
-            child: new FabDialer(
-              fabMenuList,
-              greenColor,
-              new Icon(NewIcon.close_2x),
+                SliverAppBar(
+                  elevation: 0,
+                  automaticallyImplyLeading: false,
+                  backgroundColor: Colors.transparent,
+                  bottom: PreferredSize(
+                    preferredSize: Size.fromHeight(20),
+                    child: Container(
+                      child: Column(
+                        children: <Widget>[aktivitasTerbaru],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
-        ],
-      ),
-    );
+        ),
+        floatingActionButton: SpeedDial(
+          heroTag: 'Dial',
+          animatedIcon: AnimatedIcons.menu_close,
+          backgroundColor: greenColor,
+          children: [
+            SpeedDialChild(
+                child: Icon(ProfileInboxIcon.donation_3x),
+                backgroundColor: Colors.blueAccent,
+                onTap: () {
+                  requestBill("donasi");
+                }),
+            SpeedDialChild(
+                child: Icon(ProfileInboxIcon.wakaf_3x),
+                backgroundColor: Colors.green,
+                onTap: () {
+                  requestBill("wakaf");
+                }),
+            SpeedDialChild(
+                child: Icon(ProfileInboxIcon.sodaqoh_3x),
+                backgroundColor: Colors.deepPurpleAccent,
+                onTap: () {
+                  requestBill("sodaqoh");
+                }),
+            SpeedDialChild(
+                child: Icon(ProfileInboxIcon.infaq_3x),
+                backgroundColor: Colors.redAccent,
+                onTap: () {
+                  requestBill("infaq");
+                }),
+            SpeedDialChild(
+                child: Icon(ProfileInboxIcon.zakat_3x),
+                backgroundColor: Colors.yellow,
+                onTap: () {
+                  requestBill("zakat");
+                }),
+          ],
+        ));
   }
 
-  void showPayment(String type) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(
-            Radius.circular(15.0),
-          ),
-        ),
-        title: Text('Masukan nominal $type yang akan dikirimkan',
-            textAlign: TextAlign.center),
-        content: Container(
-          height: 200,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              TextField(
-                controller: nominalCtrl,
-                keyboardType: TextInputType.number,
-                decoration: InputDecoration(hintText: 'Silahkan isi nominal'),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              StreamBuilder(
-                  stream: bloc.streamRequest,
-                  builder: (context, snapshot) {
-                    return RaisedButton(
-                      onPressed: () {
-                        bloc.requestVA(
-                            context,
-                            nominalCtrl.numberValue,
-                            emailCustomer,
-                            customerName,
-                            customerPhone,
-                            null,
-                            type);
-                      },
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(45)),
-                      child: Text(
-                        'Request',
-                        style: TextStyle(color: whiteColor),
-                      ),
-                      color: greenColor,
-                    );
-                  }),
-            ],
-          ),
-        ),
+  // void showPayment(String type) {
+  //   showDialog(
+  //     context: context,
+  //     builder: (context) => AlertDialog(
+  //       shape: RoundedRectangleBorder(
+  //         borderRadius: BorderRadius.all(
+  //           Radius.circular(15.0),
+  //         ),
+  //       ),
+  //       title: Text('Masukan nominal $type yang akan dikirimkan',
+  //           textAlign: TextAlign.center),
+  //       content: Container(
+  //         height: 200,
+  //         child: Column(
+  //           crossAxisAlignment: CrossAxisAlignment.center,
+  //           mainAxisAlignment: MainAxisAlignment.center,
+  //           children: <Widget>[
+  //             TextField(
+  //               controller: nominalCtrl,
+  //               keyboardType: TextInputType.number,
+  //               decoration: InputDecoration(hintText: 'Silahkan isi nominal'),
+  //             ),
+  //             SizedBox(
+  //               height: 20,
+  //             ),
+  //             StreamBuilder(
+  //                 stream: bloc.streamRequest,
+  //                 builder: (context, snapshot) {
+  //                   return RaisedButton(
+  //                     onPressed: () {
+  //                       bloc.requestVA(
+  //                           context,
+  //                           nominalCtrl.numberValue,
+  //                           emailCustomer,
+  //                           customerName,
+  //                           customerPhone,
+  //                           null,
+  //                           type);
+  //                     },
+  //                     shape: RoundedRectangleBorder(
+  //                         borderRadius: BorderRadius.circular(45)),
+  //                     child: Text(
+  //                       'Request',
+  //                       style: TextStyle(color: whiteColor),
+  //                     ),
+  //                     color: greenColor,
+  //                   );
+  //                 }),
+  //           ],
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
+
+  void requestBill(String type) {
+    Navigator.of(context).push(MaterialPageRoute(
+      builder: (context) => InputBill(
+        type: type,
+        customerName: customerName,
+        customerEmail: emailCustomer,
+        customerPhone: customerPhone,
+        programName: null,
       ),
-    );
+    ));
   }
 
   @override

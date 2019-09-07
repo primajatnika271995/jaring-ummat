@@ -7,6 +7,7 @@ import 'package:flutter_jaring_ummat/src/views/components/galang_amal_container.
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/new_icon_icons.dart';
 
 import 'package:flutter_jaring_ummat/src/bloc/requestVABloc.dart';
+import 'package:flutter_jaring_ummat/src/views/page_virtual_account/input_bill.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -94,7 +95,9 @@ class _GalangAmalState extends State<GalangAmalView> {
                       ],
                     ),
                     RaisedButton(
-                      onPressed: showPayment,
+                      onPressed: () {
+                        requestBill("donasi");
+                      },
                       textColor: Colors.white,
                       padding: EdgeInsets.all(0.0),
                       color: greenColor,
@@ -116,66 +119,17 @@ class _GalangAmalState extends State<GalangAmalView> {
     );
   }
 
-  void showPayment() {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(
-            Radius.circular(15.0),
-          ),
-        ),
-        title: Text('Masukan nominal Donasi yang akan dikirimkan',
-            textAlign: TextAlign.center),
-        content: Container(
-          height: 200,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              TextField(
-                controller: nominalCtrl,
-                keyboardType: TextInputType.number,
-                decoration: InputDecoration(hintText: 'Silahkan isi nominal'),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              StreamBuilder(
-                  stream: bloc.streamRequest,
-                  builder: (context, snapshot) {
-                    return RaisedButton(
-                      onPressed: () {
-                        print("============== DATA DONASI =================");
-                        print("Nominal   : ${nominalCtrl.numberValue}");
-                        print("Email     : $emailCustomer");
-                        print("Name      : $customerName");
-                        print("Phone     : $customerPhone");
-                        print("Donasi ke : ${widget.programAmal.idProgram}");
-
-                        bloc.requestVA(
-                            context,
-                            nominalCtrl.numberValue,
-                            emailCustomer,
-                            customerName,
-                            customerPhone,
-                            widget.programAmal.idProgram,
-                            'donasi');
-                      },
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(45)),
-                      child: Text(
-                        'Request',
-                        style: TextStyle(color: whiteColor),
-                      ),
-                      color: greenColor,
-                    );
-                  }),
-            ],
-          ),
-        ),
+    void requestBill(String type) {
+    Navigator.of(context).push(MaterialPageRoute(
+      builder: (context) => InputBill(
+        type: type,
+        customerName: customerName,
+        customerEmail: emailCustomer,
+        customerPhone: customerPhone,
+        programId: widget.programAmal.idProgram,
+        programName: widget.programAmal.titleProgram,
       ),
-    );
+    ));
   }
 
   @override
