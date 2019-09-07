@@ -47,7 +47,7 @@ class LoginBloc {
       Navigator.of(context).push(
         MaterialPageRoute(
           builder: (context) => HomeView(
-            currentindex: 3,
+            currentindex: 4,
           ),
         ),
       );

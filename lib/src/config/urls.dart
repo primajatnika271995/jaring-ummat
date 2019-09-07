@@ -1,14 +1,15 @@
-const BASE_API_URL = 'http://tabeldata.ip-dynamic.com/jaring-ummat';
-const BASE_API_UPLOADER_URL = 'http://tabeldata.ip-dynamic.com/jaring-ummat-uploader';
+// const BASE_API_URL = 'http://tabeldata.ip-dynamic.com/jaring-ummat';
+// const BASE_API_UPLOADER_URL = 'http://tabeldata.ip-dynamic.com/jaring-ummat-uploader';
 
-// const BASE_API_URL = 'http://139.162.15.91/jaring-ummat';
-// const BASE_API_UPLOADER_URL = 'http://139.162.15.91/uploader';
+const BASE_API_URL = 'http://139.162.15.91/jaring-ummat';
+const BASE_API_UPLOADER_URL = 'http://139.162.15.91/uploader';
 
 // const BASE_API_CHATS = 'http://tabeldata.ip-dynamic.com/hcare-chat';
 // const WEBSOCKET_CHAT = 'ws://tabeldata.ip-dynamic.com:6061/hcare-chat/ws';
 
 // Chat Api For Server Production Cloud
 const BASE_API_CHATS = 'http://20.184.15.66:6061/hcare-chat';
+
 // Web socket For Production Cloud
 const WEBSOCKET_CHAT = 'ws://20.184.15.66:6061/hcare-chat/ws';
 
@@ -18,7 +19,10 @@ const CHATS_HISTORY = BASE_API_CHATS + '/api/chat/messages';
 
 // VIRTUAL ACCOUNT
 const REQUEST_VA_ANONIMOUS = 'http://tabeldata.ip-dynamic.com/jaring-ummat-bni-request/api/bni/virtual-account/anonymous/request';
-const REQUEST_VA_OAUTH = 'http://tabeldata.ip-dynamic.com/jaring-ummat-bni-request/api/bni/virtual-account/secured/request';
+const REQUEST_VA_OAUTH = 'http://20.184.15.66:8000/bni-request/api/bni/virtual-account/secured/request';
+
+// PEMBAYARAN
+const PEMBAYARAN_URL = 'http://20.184.15.66:8000/bni-request/api/transaksi/customer/confirm';
 
 // BASE REGISTER AND LOGIN_URL
 const REGISTRATION_URL = BASE_API_URL + '/api/user/';
@@ -67,3 +71,12 @@ const LIST_ALL_LEMBAGA_AMAL_BY_FOLLOWED = BASE_API_URL + '/api/lembaga-amal/list
 // Follow Lembaga Amal
 const FOLLOW_LEMBAGA_AMAL_URL = BASE_API_URL + '/api/account-amil/follow';
 const UNFOLLOW_LEMBAGA_AMAL_URL = BASE_API_URL + '/api/account-amil/unfollow';
+
+// POTOFOLIO
+const PORTOFOLIO_PIE_CHART = BASE_API_URL + '/api/transaksi/zakat-sodaqoh/chart/pie';
+
+// HISTORY TRANSACTION
+const HISTORY_TRANSACTION = BASE_API_URL + '/api/transaksi/history/detail';
+
+// GALANG AMAL DONATION LIST
+const GALANG_AMAL_DONATION_LIST = BASE_API_URL + '/api/transaksi/donasi/detail';

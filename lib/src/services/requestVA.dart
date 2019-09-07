@@ -79,4 +79,27 @@ class RequestVAProvider {
       return compute(requestVaModelFromJson, response.body);
     }
   }
+
+  Future pembayaran(String transaksiId, String va) async {
+      SharedPreferences _pref = await SharedPreferences.getInstance();
+      var token = _pref.getString(ACCESS_TOKEN_KEY);
+
+      Map<String, String> header = {
+        'Content-type': 'application/json',
+        'Authorization': 'Bearer $token'
+      };
+
+      Uri uri = Uri.parse(PEMBAYARAN_URL);
+      var params = {"transactionId": transaksiId, "virtualNumber": va};
+
+      final uriParse = uri.replace(queryParameters: params);
+      final response = await client.post(uriParse, headers: header);
+      print(response.statusCode);
+
+      if (response.statusCode == 201) {
+        return response;
+      } else {
+        print('Err :${response.statusCode}');
+      }
+    }
 }

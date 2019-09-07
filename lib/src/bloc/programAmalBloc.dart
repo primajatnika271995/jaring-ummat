@@ -1,4 +1,5 @@
 import 'package:flutter_jaring_ummat/src/config/preferences.dart';
+import 'package:flutter_jaring_ummat/src/models/galangAmalListDonationModel.dart';
 import 'package:flutter_jaring_ummat/src/models/program_amal.dart';
 import 'package:flutter_jaring_ummat/src/repository/ProgramAmalRepository.dart';
 import 'package:rxdart/rxdart.dart';
@@ -10,9 +11,12 @@ class ProgramAmalBloc {
 
   final repository = ProgramAmalRepository();
   final programAmalFetcher = PublishSubject<List<ProgramAmalModel>>();
+  final galangAmalDonationFetch = PublishSubject<List<GalangAmalListDonation>>();
 
   Observable<List<ProgramAmalModel>> get allProgramAmal =>
       programAmalFetcher.stream;
+
+  Observable<List<GalangAmalListDonation>> get galangAmalDonationStream => galangAmalDonationFetch.stream;
 
   fetchAllProgramAmal(String category) async {
     _preferences = await SharedPreferences.getInstance();
@@ -26,9 +30,16 @@ class ProgramAmalBloc {
     programAmalFetcher.sink.add(listAllProgramAmal);
   }
 
+  fetchGalangAmalDonation(String idProgram) async {
+    List<GalangAmalListDonation> value = await repository.galangAmalDOnation(idProgram);
+    galangAmalDonationFetch.sink.add(value);
+  }
+
   dispose() async {
     await programAmalFetcher.drain();
+    await galangAmalDonationFetch.drain();
     programAmalFetcher.close();
+    galangAmalDonationFetch.close();
   }
 }
 

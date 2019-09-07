@@ -12,6 +12,10 @@ class RequestVABloc {
 
   Observable<RequestVaModel> get streamRequest => requestFetcher.stream;
 
+  pembayaran(String transaksiId, String va) async {
+    repository.pembayaran(transaksiId, va);
+  }
+
   requestVA(
       BuildContext context,
       double amount,
@@ -35,6 +39,7 @@ class RequestVABloc {
         MaterialPageRoute(
           builder: (context) => RequestVA(
             nominal: amount,
+            transaksiId: value.data.transactionId,
             virtualNumber: value.data.virtualNumber,
           ),
         ),

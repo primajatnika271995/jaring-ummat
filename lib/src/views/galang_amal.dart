@@ -34,7 +34,7 @@ class _GalangAmalState extends State<GalangAmalView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: new AppBar(
+      appBar: AppBar(
         titleSpacing: 0.0,
         elevation: 1.0,
         leading: InkWell(
@@ -75,9 +75,9 @@ class _GalangAmalState extends State<GalangAmalView> {
                         ),
                         Text(
                           'Rp. ' +
-                              '${CurrencyFormat().currency(widget.programAmal.totalDonation)}' +
+                              '${CurrencyFormat().currency(widget.programAmal.totalDonation.toDouble())}' +
                               ' / ' +
-                              '${CurrencyFormat().currency(widget.programAmal.targetDonation)}',
+                              '${CurrencyFormat().currency(widget.programAmal.targetDonation.toDouble())}',
                           style: TextStyle(
                             fontSize: 16.0,
                             fontWeight: FontWeight.bold,

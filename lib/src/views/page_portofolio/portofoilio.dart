@@ -4,6 +4,8 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter_fab_dialer/flutter_fab_dialer.dart';
 import 'package:flutter_jaring_ummat/src/config/hexColor.dart';
 import 'package:flutter_jaring_ummat/src/config/preferences.dart';
+import 'package:flutter_jaring_ummat/src/models/sebaranAktifitasAmalModel.dart';
+import 'package:flutter_jaring_ummat/src/services/currency_format_service.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/new_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/profile_inbox_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/components/loadingContainer.dart';
@@ -14,6 +16,8 @@ import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_jaring_ummat/src/bloc/requestVABloc.dart';
+import 'package:flutter_jaring_ummat/src/bloc/portofolioBloc.dart'
+    as blocPotofolio;
 
 class Portofolio extends StatefulWidget {
   @override
@@ -54,11 +58,22 @@ class _PortofolioState extends State<Portofolio> {
   /*
    * Variable Temp Pie Chart
    */
-  double valueZakat = 10;
-  double valueInfaq = 20;
-  double valueShodqoh = 30;
-  double valueWakaf = 40;
-  double valueDonasi = 50;
+  double valueZakat = 0;
+  double valueInfaq = 0;
+  double valueShodqoh = 0;
+  double valueWakaf = 0;
+  double valueDonasi = 0;
+  double valueTotal = 0;
+
+  /*
+   * Variable Temp Percent
+   */
+
+  double zakatPercent = 0;
+  double infaqPercent = 0;
+  double wakafPercent = 0;
+  double shodaqohPercent = 0;
+  double donasiPercent = 0;
 
   /*
    * Boolen for Loading
@@ -80,7 +95,7 @@ class _PortofolioState extends State<Portofolio> {
           Colors.deepPurple,
           0,
           "shodaqoh",
-          () => showPayment('shodaqoh'),
+          () => showPayment('sodaqoh'),
           true),
       FabMiniMenuItem.noText(Icon(ProfileInboxIcon.wakaf_3x), Colors.green, 0,
           "Wakaf", () => showPayment('wakaf'), true),
@@ -215,59 +230,143 @@ class _PortofolioState extends State<Portofolio> {
             ),
           ),
         ),
-        Row(
-          children: <Widget>[
-            Expanded(
-              flex: 5,
-              child: Container(
-                height: 200,
-                width: 200,
-                child: FlChart(
-                  chart: PieChart(
-                    PieChartData(
-                        borderData: FlBorderData(show: false),
-                        sectionsSpace: 0,
-                        centerSpaceRadius: 65,
-                        sections: showingSections),
-                  ),
-                ),
-              ),
-            ),
-            Expanded(
-              flex: 4,
-              child: Padding(
-                padding: const EdgeInsets.only(right: 5),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      'Total pada periode berjalan',
-                      style: TextStyle(fontSize: 13, color: grayColor),
-                    ),
-                    RichText(
-                      text: TextSpan(children: <TextSpan>[
-                        TextSpan(
-                            text: 'Rp', style: TextStyle(color: grayColor)),
-                        TextSpan(
-                          text: '1.800.301',
-                          style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              color: blackColor),
+        StreamBuilder(
+            stream: blocPotofolio.bloc.sebaranAktifitasAmal,
+            builder:
+                (context, AsyncSnapshot<SebaranAktifitasAmalModel> snapshot) {
+              switch (snapshot.connectionState) {
+                case ConnectionState.waiting:
+                  _loadingVisible = true;
+                  return Text('');
+                  break;
+                default:
+                  if (snapshot.hasData) {
+                    _loadingVisible = false;
+                    var data = snapshot.data;
+
+                    valueDonasi = data.totalDonasi.toDouble();
+                    valueInfaq = data.totalInfaq.toDouble();
+                    valueShodqoh = data.totalSodaqoh.toDouble();
+                    valueWakaf = data.totalWakaf.toDouble();
+                    valueZakat = data.totalZakat.toDouble();
+                    valueTotal = data.totalSemua.toDouble();
+
+                    zakatPercent = data.totalZakatPercent;
+                    infaqPercent = data.totalInfaqPercent;
+                    shodaqohPercent = data.totalSodaqohPercent;
+                    wakafPercent = data.totalWakafPercent;
+                    donasiPercent = data.totalDonasiPercent;
+
+                    final zakatData = PieChartSectionData(
+                        color: Colors.orangeAccent,
+                        value: data.totalZakatPercent,
+                        title:
+                            "${data.totalZakatPercent.toString().substring(0, 1)}%",
+                        radius: 26,
+                        titleStyle: TextStyle(fontSize: 12, color: whiteColor));
+
+                    final infaqData = PieChartSectionData(
+                        color: Colors.red,
+                        value: data.totalInfaqPercent,
+                        title:
+                            "${data.totalInfaqPercent.toString().substring(0, 1)}%",
+                        radius: 26,
+                        titleStyle: TextStyle(fontSize: 12, color: whiteColor));
+
+                    final sodaqohData = PieChartSectionData(
+                        color: Colors.purpleAccent,
+                        value: data.totalSodaqohPercent,
+                        title:
+                            "${data.totalSemuaPercent.toString().substring(0, 1)}%",
+                        radius: 26,
+                        titleStyle: TextStyle(fontSize: 12, color: whiteColor));
+
+                    final wakafData = PieChartSectionData(
+                        color: Colors.green,
+                        value: data.totalWakafPercent,
+                        title: "${data.totalWakafPercent.toString()}%",
+                        radius: 26,
+                        titleStyle: TextStyle(fontSize: 12, color: whiteColor));
+
+                    final donasiData = PieChartSectionData(
+                        color: blueColor,
+                        value: data.totalDonasiPercent,
+                        title:
+                            "${data.totalDonasiPercent.toString().substring(0, 1)}%",
+                        radius: 26,
+                        titleStyle: TextStyle(fontSize: 12, color: whiteColor));
+
+                    final items = [
+                      zakatData,
+                      infaqData,
+                      sodaqohData,
+                      wakafData,
+                      donasiData
+                    ];
+                    pieChartRawSections = items;
+                    showingSections = pieChartRawSections;
+                    return Row(
+                      children: <Widget>[
+                        Expanded(
+                          flex: 5,
+                          child: Container(
+                            height: 190,
+                            width: 190,
+                            child: FlChart(
+                              chart: PieChart(
+                                PieChartData(
+                                    borderData: FlBorderData(show: false),
+                                    sectionsSpace: 0,
+                                    centerSpaceRadius: 65,
+                                    sections: showingSections),
+                              ),
+                            ),
+                          ),
                         ),
-                      ]),
-                    ),
-                    Text(
-                      '/ 34 Aktivitas Amal',
-                      style: TextStyle(color: grayColor, fontSize: 13),
-                    )
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
+                        Expanded(
+                          flex: 5,
+                          child: Padding(
+                            padding: const EdgeInsets.only(right: 5),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                  'Total pada periode berjalan',
+                                  style:
+                                      TextStyle(fontSize: 13, color: grayColor),
+                                ),
+                                RichText(
+                                  text: TextSpan(children: <TextSpan>[
+                                    TextSpan(
+                                        text: 'Rp',
+                                        style: TextStyle(color: grayColor)),
+                                    TextSpan(
+                                      text:
+                                          '${CurrencyFormat().currency(data.totalSemua.toDouble())}',
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                          color: blackColor),
+                                    ),
+                                  ]),
+                                ),
+                                Text(
+                                  '/ 34 Aktivitas Amal',
+                                  style:
+                                      TextStyle(color: grayColor, fontSize: 13),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  }
+                  _loadingVisible = false;
+                  return Text('NO RESULT DATA');
+              }
+            }),
       ],
     );
 
@@ -368,7 +467,7 @@ class _PortofolioState extends State<Portofolio> {
                 automaticallyImplyLeading: false,
                 backgroundColor: Colors.transparent,
                 bottom: PreferredSize(
-                  preferredSize: Size.fromHeight(370),
+                  preferredSize: Size.fromHeight(340),
                   child: Container(
                     child: Column(
                       children: <Widget>[
@@ -402,7 +501,7 @@ class _PortofolioState extends State<Portofolio> {
                           var items = [
                             PieChartSectionData(
                                 color: Color(0xFF3A5F99),
-                                value: 80,
+                                value: valueZakat,
                                 title: "40%",
                                 radius: 35,
                                 titleStyle:
@@ -434,8 +533,8 @@ class _PortofolioState extends State<Portofolio> {
                                     fontSize: 11.0,
                                   ),
                                 ),
-                                const Text(
-                                  '8.950.420',
+                                Text(
+                                  '${CurrencyFormat().currency(valueTotal)}',
                                   style: TextStyle(
                                     fontSize: 13.0,
                                   ),
@@ -462,8 +561,8 @@ class _PortofolioState extends State<Portofolio> {
                                     fontSize: 11.0,
                                   ),
                                 ),
-                                const Text(
-                                  '2.506.116',
+                                Text(
+                                  '${CurrencyFormat().currency(valueZakat)}',
                                   style: TextStyle(
                                     fontSize: 13.0,
                                   ),
@@ -490,8 +589,8 @@ class _PortofolioState extends State<Portofolio> {
                                     fontSize: 11.0,
                                   ),
                                 ),
-                                const Text(
-                                  '2.506.116',
+                                Text(
+                                  '${CurrencyFormat().currency(valueInfaq)}',
                                   style: TextStyle(
                                     fontSize: 13.0,
                                   ),
@@ -516,8 +615,8 @@ class _PortofolioState extends State<Portofolio> {
                                   'Rp',
                                   style: TextStyle(fontSize: 11.0),
                                 ),
-                                const Text(
-                                  '2.506.116',
+                                Text(
+                                  '${CurrencyFormat().currency(valueShodqoh)}',
                                   style: TextStyle(fontSize: 13.0),
                                 ),
                               ],
@@ -540,8 +639,8 @@ class _PortofolioState extends State<Portofolio> {
                                   'Rp',
                                   style: TextStyle(fontSize: 11.0),
                                 ),
-                                const Text(
-                                  '2.506.116',
+                                Text(
+                                  '${CurrencyFormat().currency(valueWakaf)}',
                                   style: TextStyle(fontSize: 13.0),
                                 ),
                               ],
@@ -553,7 +652,7 @@ class _PortofolioState extends State<Portofolio> {
                         child: Column(
                           children: <Widget>[
                             const Text(
-                              'Infaq',
+                              'Donasi',
                               style: TextStyle(
                                 color: Color(0xFF2938C2),
                               ),
@@ -564,8 +663,8 @@ class _PortofolioState extends State<Portofolio> {
                                   'Rp',
                                   style: TextStyle(fontSize: 11.0),
                                 ),
-                                const Text(
-                                  '2.506.116',
+                                Text(
+                                  '${CurrencyFormat().currency(valueDonasi)}',
                                   style: TextStyle(fontSize: 13.0),
                                 ),
                               ],
@@ -680,46 +779,8 @@ class _PortofolioState extends State<Portofolio> {
   void initState() {
     super.initState();
 
+    blocPotofolio.bloc.fetchSebaranAktifitasAmal();
     getUser();
-
-    final zakatData = PieChartSectionData(
-        color: Colors.orangeAccent,
-        value: valueZakat,
-        title: "$valueZakat%",
-        radius: 35,
-        titleStyle: TextStyle(fontSize: 12, color: whiteColor));
-
-    final infaqData = PieChartSectionData(
-        color: Colors.red,
-        value: valueInfaq,
-        title: "$valueInfaq%",
-        radius: 35,
-        titleStyle: TextStyle(fontSize: 12, color: whiteColor));
-
-    final sodaqohData = PieChartSectionData(
-        color: Colors.purpleAccent,
-        value: valueShodqoh,
-        title: "$valueShodqoh%",
-        radius: 35,
-        titleStyle: TextStyle(fontSize: 12, color: whiteColor));
-
-    final wakafData = PieChartSectionData(
-        color: Colors.green,
-        value: valueWakaf,
-        title: "$valueZakat%",
-        radius: 35,
-        titleStyle: TextStyle(fontSize: 12, color: whiteColor));
-
-    final donasiData = PieChartSectionData(
-        color: blueColor,
-        value: valueDonasi,
-        title: "$valueDonasi%",
-        radius: 35,
-        titleStyle: TextStyle(fontSize: 12, color: whiteColor));
-
-    final items = [zakatData, infaqData, sodaqohData, wakafData, donasiData];
-    pieChartRawSections = items;
-    showingSections = pieChartRawSections;
   }
 
   void getUser() async {

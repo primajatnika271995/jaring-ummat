@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_jaring_ummat/src/config/hexColor.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/new_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/profile_inbox_icon_icons.dart';
+import 'package:flutter_jaring_ummat/src/views/page_inbox/histori_transaksi.dart';
 import 'package:flutter_jaring_ummat/src/views/page_inbox/inbox_text_data.dart';
 
 class Inbox extends StatefulWidget {
@@ -84,6 +85,16 @@ class _InboxState extends State<Inbox> {
             );
           },
           itemBuilder: (context, index) => ListTile(
+            onTap: () {
+              print(index);
+              if (index == 0) {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => HistoriTransaksiView(),
+                  ),
+                );
+              }
+            },
             title: Text(InboxTextData.listTransaksi[index]),
             trailing: Icon(NewIcon.next_small_2x, color: blackColor, size: 20),
           ),

@@ -16,4 +16,6 @@ class RequestVARepository {
       String customerPhone,
       String transactionId,
       String transactionType) => provider.requestVirtualAccountOAuth(amount, customerEmail, customerName, customerPhone, transactionId, transactionType);
+
+  Future pembayaran(String transaksiId, String va) => provider.pembayaran(transaksiId, va);
 }

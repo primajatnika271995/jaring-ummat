@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_jaring_ummat/src/config/hexColor.dart';
+import 'package:flutter_jaring_ummat/src/models/galangAmalListDonationModel.dart';
 import 'package:flutter_jaring_ummat/src/models/program_amal.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dots_indicator/dots_indicator.dart';
+import 'package:flutter_jaring_ummat/src/services/currency_format_service.dart';
 import 'package:flutter_jaring_ummat/src/services/time_ago_service.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/new_icon_icons.dart';
+import 'package:flutter_jaring_ummat/src/bloc/programAmalBloc.dart';
 
 class GalangAmalContainer extends StatefulWidget {
   final ProgramAmalModel programAmal;
@@ -36,6 +39,7 @@ class _GalangAmalContainerState extends State<GalangAmalContainer> {
   Widget build(BuildContext context) {
     return Container(
       color: Colors.white,
+      height: MediaQuery.of(context).size.height,
       margin: EdgeInsets.only(bottom: 5.0),
       child: Column(
         children: <Widget>[
@@ -45,49 +49,21 @@ class _GalangAmalContainerState extends State<GalangAmalContainer> {
           new Divider(),
           setBottomContent(),
           new Divider(),
-          ListTile(
-            title: const Text('Donatur Terbaru',
-                style: TextStyle(fontWeight: FontWeight.bold)),
-            subtitle: const Text(
-              '3 donatur terbaru pada galang amal ini. Yuk ikut berdonasi bersama mereka agar target donasinya segera tercapai',
-              style: TextStyle(fontSize: 12),
-            ),
-            trailing: IconButton(
-              onPressed: null,
-              icon: Icon(NewIcon.next_small_2x, color: blackColor),
-              iconSize: 20,
-            ),
-          ),
-          ListView.builder(
-            itemCount: 3,
-            shrinkWrap: true,
-            itemBuilder: (context, index) => Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 7),
-              child: Container(
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey[200], width: 3),
-                  borderRadius: BorderRadius.circular(13),
-                ),
-                child: ListTile(
-                  title: Text('Soleh Indrawan', style: TextStyle(fontWeight: FontWeight.bold)),
-                  subtitle: Text('19 menit yang lalu', style: TextStyle(fontSize: 11)),
-                  trailing: Text('Rp 120.000',
-                      style: TextStyle(fontWeight: FontWeight.bold)),
-                  leading: Container(
-                    width: 53.0,
-                    height: 53.0,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(30.0),
-                      image: DecorationImage(
-                        image: NetworkImage(
-                            'https://kempenfeltplayers.com/wp-content/uploads/2015/07/profile-icon-empty.png'),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
+          StreamBuilder(
+            stream: bloc.galangAmalDonationStream,
+            builder: (context,
+                AsyncSnapshot<List<GalangAmalListDonation>> snapshot) {
+              switch (snapshot.connectionState) {
+                case ConnectionState.waiting:
+                  return Text('');
+                  break;
+                default:
+                  if (snapshot.hasData) {
+                    return listDonation(snapshot.data);
+                  }
+                  return Text('NO DATA');
+              }
+            },
           ),
         ],
       ),
@@ -406,6 +382,44 @@ class _GalangAmalContainerState extends State<GalangAmalContainer> {
     );
   }
 
+  Widget listDonation(List<GalangAmalListDonation> snapshot) {
+    return ListView.builder(
+        itemCount: snapshot.length,
+        shrinkWrap: true,
+        itemBuilder: (context, index) {
+          var data = snapshot[index];
+          return Padding(
+            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 7),
+            child: Container(
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.grey[200], width: 3),
+                borderRadius: BorderRadius.circular(13),
+              ),
+              child: ListTile(
+                title: Text('${data.customerName}',
+                    style: TextStyle(fontWeight: FontWeight.bold)),
+                subtitle:
+                    Text('${data.donasiDate}', style: TextStyle(fontSize: 11)),
+                trailing: Text('Rp ${CurrencyFormat().currency(data.nominalDibayar.toDouble())}',
+                    style: TextStyle(fontWeight: FontWeight.bold)),
+                leading: Container(
+                  width: 53.0,
+                  height: 53.0,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(30.0),
+                    image: DecorationImage(
+                      image: NetworkImage(
+                          'https://kempenfeltplayers.com/wp-content/uploads/2015/07/profile-icon-empty.png'),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          );
+        });
+  }
+
   @override
   void initState() {
     super.initState();
@@ -417,5 +431,7 @@ class _GalangAmalContainerState extends State<GalangAmalContainer> {
       lessDesc = widget.programAmal.descriptionProgram;
       moreDesc = "";
     }
+
+    bloc.fetchGalangAmalDonation(widget.programAmal.idProgram);
   }
 }

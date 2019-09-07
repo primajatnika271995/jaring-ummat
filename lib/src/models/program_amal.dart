@@ -16,7 +16,7 @@ class ProgramAmalModel {
     String titleProgram;
     String descriptionProgram;
     String categoryProgram;
-    double totalDonation;
+    int totalDonation;
     double targetDonation;
     String endDate;
     int totalLikes;

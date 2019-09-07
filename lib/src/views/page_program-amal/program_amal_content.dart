@@ -220,9 +220,9 @@ class _ProgramAmalContentState extends State<ProgramAmalContent> {
               ),
               Text(
                 'Rp. ' +
-                    '${CurrencyFormat().currency(widget.programAmal.totalDonation)}' +
+                    '${CurrencyFormat().currency(widget.programAmal.totalDonation.toDouble())}' +
                     ' / ' +
-                    '${CurrencyFormat().currency(widget.programAmal.targetDonation)}',
+                    '${CurrencyFormat().currency(widget.programAmal.targetDonation.toDouble())}',
                 style: TextStyle(
                   fontSize: 16.0,
                   fontWeight: FontWeight.bold,
