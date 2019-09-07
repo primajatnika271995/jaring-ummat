@@ -9,15 +9,15 @@ List<ProgramAmalModel> programAmalModelFromJson(String str) => new List<ProgramA
 String programAmalModelToJson(List<ProgramAmalModel> data) => json.encode(new List<dynamic>.from(data.map((x) => x.toJson())));
 
 class ProgramAmalModel {
-    String idUser;
-    String idProgram;
+    User user;
     String username;
+    String idProgram;
     bool userLikeThis;
     String titleProgram;
     String descriptionProgram;
     String categoryProgram;
-    int totalDonation;
-    double targetDonation;
+    dynamic totalDonation;
+    dynamic targetDonation;
     String endDate;
     int totalLikes;
     int totalComments;
@@ -26,9 +26,9 @@ class ProgramAmalModel {
     int createdDate;
 
     ProgramAmalModel({
-        this.idUser,
-        this.idProgram,
+        this.user,
         this.username,
+        this.idProgram,
         this.userLikeThis,
         this.titleProgram,
         this.descriptionProgram,
@@ -44,9 +44,9 @@ class ProgramAmalModel {
     });
 
     factory ProgramAmalModel.fromJson(Map<String, dynamic> json) => new ProgramAmalModel(
-        idUser: json["idUser"] == null ? null : json["idUser"],
-        idProgram: json["idProgram"] == null ? null : json["idProgram"],
+        user: json["user"] == null ? null : User.fromJson(json["user"]),
         username: json["username"] == null ? null : json["username"],
+        idProgram: json["idProgram"] == null ? null : json["idProgram"],
         userLikeThis: json["userLikeThis"] == null ? null : json["userLikeThis"],
         titleProgram: json["titleProgram"] == null ? null : json["titleProgram"],
         descriptionProgram: json["descriptionProgram"] == null ? null : json["descriptionProgram"],
@@ -62,9 +62,9 @@ class ProgramAmalModel {
     );
 
     Map<String, dynamic> toJson() => {
-        "idUser": idUser == null ? null : idUser,
-        "idProgram": idProgram == null ? null : idProgram,
+        "user": user == null ? null : user.toJson(),
         "username": username == null ? null : username,
+        "idProgram": idProgram == null ? null : idProgram,
         "userLikeThis": userLikeThis == null ? null : userLikeThis,
         "titleProgram": titleProgram == null ? null : titleProgram,
         "descriptionProgram": descriptionProgram == null ? null : descriptionProgram,
@@ -113,5 +113,37 @@ class ImageContent {
         "imgUrl": imgUrl == null ? null : imgUrl,
         "createdDate": createdDate == null ? null : createdDate,
         "createdBy": createdBy,
+    };
+}
+
+class User {
+    String userId;
+    String email;
+    String fullname;
+    String contact;
+    List<ImageContent> imgProfile;
+
+    User({
+        this.userId,
+        this.email,
+        this.fullname,
+        this.contact,
+        this.imgProfile,
+    });
+
+    factory User.fromJson(Map<String, dynamic> json) => new User(
+        userId: json["userId"] == null ? null : json["userId"],
+        email: json["email"] == null ? null : json["email"],
+        fullname: json["fullname"] == null ? null : json["fullname"],
+        contact: json["contact"] == null ? null : json["contact"],
+        imgProfile: json["imgProfile"] == null ? null : new List<ImageContent>.from(json["imgProfile"].map((x) => ImageContent.fromJson(x))),
+    );
+
+    Map<String, dynamic> toJson() => {
+        "userId": userId == null ? null : userId,
+        "email": email == null ? null : email,
+        "fullname": fullname == null ? null : fullname,
+        "contact": contact == null ? null : contact,
+        "imgProfile": imgProfile == null ? null : new List<dynamic>.from(imgProfile.map((x) => x.toJson())),
     };
 }

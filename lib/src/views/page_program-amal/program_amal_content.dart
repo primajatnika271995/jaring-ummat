@@ -1,3 +1,4 @@
+import 'package:circular_profile_avatar/circular_profile_avatar.dart';
 import 'package:flutter/material.dart';
 
 import 'package:badges/badges.dart';
@@ -13,7 +14,6 @@ import 'package:flutter_jaring_ummat/src/models/program_amal.dart';
 import 'package:flutter_jaring_ummat/src/services/likeUnlikeApi.dart';
 import 'package:flutter_jaring_ummat/src/services/time_ago_service.dart';
 import 'package:flutter_jaring_ummat/src/views/galang_amal.dart';
-import 'package:flutter_jaring_ummat/src/views/components/custom_fonts.dart';
 import 'package:flutter_jaring_ummat/src/views/page_program-amal/share_program_amal_container.dart';
 import 'package:flutter_jaring_ummat/src/views/page_program-amal/komentar_program_amal_container.dart';
 
@@ -48,16 +48,20 @@ class _ProgramAmalContentState extends State<ProgramAmalContent> {
       child: Column(
         children: <Widget>[
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 2.0),
+            padding:
+                const EdgeInsets.symmetric(horizontal: 20.0, vertical: 2.0),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 CircleAvatar(
                   backgroundColor: greenColor,
-                  child: Text(
-                    widget.programAmal.createdBy.substring(0, 1),
-                    style: TextStyle(color: whiteColor),
-                  ),
+                  child: widget.programAmal.user.imgProfile == null
+                      ? Text(
+                          widget.programAmal.createdBy.substring(0, 1),
+                          style: TextStyle(color: whiteColor),
+                        )
+                      : CircularProfileAvatar(
+                          widget.programAmal.user.imgProfile[0].imgUrl),
                 ),
                 Container(
                   padding: EdgeInsets.only(left: 10.0),
@@ -71,9 +75,6 @@ class _ProgramAmalContentState extends State<ProgramAmalContent> {
                           style: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 14.0),
                         ),
-                      ),
-                      SizedBox(
-                        height: 1.0,
                       ),
                       Text(
                         'oleh ' +
@@ -89,7 +90,9 @@ class _ProgramAmalContentState extends State<ProgramAmalContent> {
               ],
             ),
           ),
-          dividerContent(context),
+          SizedBox(
+            height: 4,
+          ),
         ],
       ),
     );
@@ -136,19 +139,19 @@ class _ProgramAmalContentState extends State<ProgramAmalContent> {
           right: 20.0,
           top: 10.0,
           child: Badge(
-            badgeColor: Colors.white,
+            badgeColor: blackColor,
             elevation: 0.0,
             shape: BadgeShape.square,
-            borderRadius: 20,
+            borderRadius: 10,
             toAnimate: false,
             badgeContent: (widget.programAmal.imageContent == null)
                 ? Text(
-                    '${_currentImage} / ${imgNoContent.length}',
-                    style: TextStyle(color: Colors.grey),
+                    '$_currentImage / ${imgNoContent.length}',
+                    style: TextStyle(color: whiteColor),
                   )
                 : Text(
-                    '${_currentImage} / ${widget.programAmal.imageContent.length}',
-                    style: TextStyle(color: Colors.grey),
+                    '$_currentImage / ${widget.programAmal.imageContent.length}',
+                    style: TextStyle(color: whiteColor),
                   ),
           ),
         ),
@@ -213,10 +216,7 @@ class _ProgramAmalContentState extends State<ProgramAmalContent> {
             children: <Widget>[
               Text(
                 'Donasi terkumpul',
-                style: TextStyle(
-                    fontSize: 11.0,
-                    fontWeight: FontWeight.bold,
-                    color: grayColor),
+                style: TextStyle(fontSize: 13.0, color: grayColor),
               ),
               Text(
                 'Rp. ' +
@@ -232,7 +232,7 @@ class _ProgramAmalContentState extends State<ProgramAmalContent> {
               SizedBox(height: 3.0),
               Text(
                 'Batas waktu ' + widget.programAmal.endDate,
-                style: TextStyle(fontSize: 11.0, color: grayColor),
+                style: TextStyle(fontSize: 13.0, color: grayColor),
               )
             ],
           ),
@@ -312,7 +312,7 @@ class _ProgramAmalContentState extends State<ProgramAmalContent> {
                 size: 20.0,
                 color: (widget.programAmal.userLikeThis)
                     ? Colors.red
-                    : (isLoved) ? Colors.red : greenColor,
+                    : (isLoved) ? Colors.red : blackColor,
               ),
               SizedBox(
                 width: 5.0,
@@ -320,7 +320,6 @@ class _ProgramAmalContentState extends State<ProgramAmalContent> {
               Text(
                 ' ${widget.programAmal.totalLikes} Likes',
                 style: TextStyle(
-                  fontWeight: FontWeight.bold,
                   fontSize: 13.0,
                 ),
               )
@@ -351,7 +350,7 @@ class _ProgramAmalContentState extends State<ProgramAmalContent> {
               Icon(
                 NewIcon.comment_3x,
                 size: 20.0,
-                color: greenColor,
+                color: blackColor,
               ),
               SizedBox(
                 width: 5.0,
@@ -359,7 +358,6 @@ class _ProgramAmalContentState extends State<ProgramAmalContent> {
               Text(
                 '${widget.programAmal.totalComments}' + ' Komentar',
                 style: TextStyle(
-                  fontWeight: FontWeight.bold,
                   fontSize: 13.0,
                 ),
               )
@@ -385,9 +383,17 @@ class _ProgramAmalContentState extends State<ProgramAmalContent> {
           child: Row(
             children: <Widget>[
               Icon(
+                NewIcon.save_3x,
+                size: 20.0,
+                color: blackColor,
+              ),
+              SizedBox(
+                width: 5.0,
+              ),
+              Icon(
                 NewIcon.share_3x,
                 size: 20.0,
-                color: greenColor,
+                color: blackColor,
               ),
               SizedBox(
                 width: 5.0,
@@ -431,8 +437,6 @@ class _ProgramAmalContentState extends State<ProgramAmalContent> {
     }
     checkToken();
   }
-
-
 
   void likeProgram() async {
     SharedPreferences _preferences = await SharedPreferences.getInstance();

@@ -1,10 +1,12 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter_jaring_ummat/src/config/hexColor.dart';
 import 'package:flutter_jaring_ummat/src/config/preferences.dart';
 import 'package:flutter_jaring_ummat/src/models/sebaranAktifitasAmalModel.dart';
 import 'package:flutter_jaring_ummat/src/services/currency_format_service.dart';
+import 'package:flutter_jaring_ummat/src/services/portofolioApi.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/new_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/profile_inbox_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/components/loadingContainer.dart';
@@ -77,71 +79,6 @@ class _PortofolioState extends State<Portofolio> {
 
   @override
   Widget build(BuildContext context) {
-    /*
-   * FabMenu List
-   */
-    // var childButtons = List<UnicornButton>();
-    // childButtons.add(UnicornButton(
-    //   hasLabel: false,
-    //   currentButton: FloatingActionButton(
-    //     heroTag: 'Zakat',
-    //     backgroundColor: Colors.yellowAccent,
-    //     mini: true,
-    //     child: Icon(ProfileInboxIcon.zakat_3x, color: whiteColor, size: 20),
-    //     onPressed: () {
-    //       requestBill("zakat");
-    //     },
-    //   ),
-    // ));
-    // childButtons.add(UnicornButton(
-    //   hasLabel: false,
-    //   currentButton: FloatingActionButton(
-    //     heroTag: 'Infaq',
-    //     backgroundColor: Colors.redAccent,
-    //     mini: true,
-    //     child: Icon(ProfileInboxIcon.infaq_3x, color: whiteColor, size: 20),
-    //     onPressed: () {
-    //       requestBill("infaq");
-    //     },
-    //   ),
-    // ));
-    // childButtons.add(UnicornButton(
-    //   hasLabel: false,
-    //   currentButton: FloatingActionButton(
-    //     heroTag: 'Sodaqoh',
-    //     backgroundColor: Colors.deepPurpleAccent,
-    //     mini: true,
-    //     child: Icon(ProfileInboxIcon.sodaqoh_3x, color: whiteColor, size: 20),
-    //     onPressed: () {
-    //       requestBill("sodaqoh");
-    //     },
-    //   ),
-    // ));
-    // childButtons.add(UnicornButton(
-    //   hasLabel: false,
-    //   currentButton: FloatingActionButton(
-    //     heroTag: 'Wakaf',
-    //     backgroundColor: Colors.greenAccent,
-    //     mini: true,
-    //     child: Icon(ProfileInboxIcon.wakaf_3x, color: whiteColor, size: 20),
-    //     onPressed: () {
-    //       requestBill("wakaf");
-    //     },
-    //   ),
-    // ));
-    // childButtons.add(UnicornButton(
-    //   hasLabel: false,
-    //   currentButton: FloatingActionButton(
-    //     heroTag: 'Donasi',
-    //     backgroundColor: Colors.yellowAccent,
-    //     mini: true,
-    //     child: Icon(ProfileInboxIcon.donation_3x, color: whiteColor, size: 20),
-    //     onPressed: () {
-    //       requestBill("donasi");
-    //     },
-    //   ),
-    // ));
-
     // Title Bar Widget
 
     final titleBar = Text('Portofolio ${PortofolioTextData.listMonth[9]} 2019',
@@ -269,143 +206,74 @@ class _PortofolioState extends State<Portofolio> {
             ),
           ),
         ),
-        StreamBuilder(
-            stream: blocPotofolio.bloc.sebaranAktifitasAmal,
-            builder:
-                (context, AsyncSnapshot<SebaranAktifitasAmalModel> snapshot) {
-              switch (snapshot.connectionState) {
-                case ConnectionState.waiting:
-                  _loadingVisible = true;
-                  return Text('');
-                  break;
-                default:
-                  if (snapshot.hasData) {
-                    _loadingVisible = false;
-                    var data = snapshot.data;
-
-                    valueDonasi = data.totalDonasi.toDouble();
-                    valueInfaq = data.totalInfaq.toDouble();
-                    valueShodqoh = data.totalSodaqoh.toDouble();
-                    valueWakaf = data.totalWakaf.toDouble();
-                    valueZakat = data.totalZakat.toDouble();
-                    valueTotal = data.totalSemua.toDouble();
-
-                    zakatPercent = data.totalZakatPercent;
-                    infaqPercent = data.totalInfaqPercent;
-                    shodaqohPercent = data.totalSodaqohPercent;
-                    wakafPercent = data.totalWakafPercent;
-                    donasiPercent = data.totalDonasiPercent;
-
-                    final zakatData = PieChartSectionData(
-                        color: Colors.orangeAccent,
-                        value: data.totalZakatPercent,
-                        title:
-                            "${data.totalZakatPercent.toString().substring(0, 2)}%",
-                        radius: 26,
-                        titleStyle: TextStyle(fontSize: 12, color: whiteColor));
-
-                    final infaqData = PieChartSectionData(
-                        color: Colors.red,
-                        value: data.totalInfaqPercent,
-                        title:
-                            "${data.totalInfaqPercent.toString().substring(0, 2)}%",
-                        radius: 26,
-                        titleStyle: TextStyle(fontSize: 12, color: whiteColor));
-
-                    final sodaqohData = PieChartSectionData(
-                        color: Colors.purpleAccent,
-                        value: data.totalSodaqohPercent,
-                        title:
-                            "${data.totalSemuaPercent.toString().substring(0, 2)}%",
-                        radius: 26,
-                        titleStyle: TextStyle(fontSize: 12, color: whiteColor));
-
-                    final wakafData = PieChartSectionData(
-                        color: Colors.green,
-                        value: data.totalWakafPercent,
-                        title: "${data.totalWakafPercent.toString().substring(0, 2)}%",
-                        radius: 26,
-                        titleStyle: TextStyle(fontSize: 12, color: whiteColor));
-
-                    final donasiData = PieChartSectionData(
-                        color: blueColor,
-                        value: data.totalDonasiPercent,
-                        title:
-                            "${data.totalDonasiPercent.toString().substring(0, 2)}%",
-                        radius: 26,
-                        titleStyle: TextStyle(fontSize: 12, color: whiteColor));
-
-                    final items = [
-                      zakatData,
-                      infaqData,
-                      sodaqohData,
-                      wakafData,
-                      donasiData
-                    ];
-                    pieChartRawSections = items;
-                    showingSections = pieChartRawSections;
-                    return Row(
-                      children: <Widget>[
-                        Expanded(
-                          flex: 6,
-                          child: Container(
-                            height: 190,
-                            width: 190,
-                            child: FlChart(
+        valueTotal == 0
+            ? Center(
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 50),
+                  child: Text(
+                      'Belum ada data untuk Portofolio, \n silahkan melakukan kegiatan.',
+                      textAlign: TextAlign.center),
+                ),
+              )
+            : Row(
+                children: <Widget>[
+                  Expanded(
+                    flex: 5,
+                    child: AspectRatio(
+                      aspectRatio: 1.3,
+                      child: showingSections == null
+                          ? Center(
+                              child: Text('Loading data ...'),
+                            )
+                          : FlChart(
                               chart: PieChart(
                                 PieChartData(
-                                    borderData: FlBorderData(show: false),
-                                    sectionsSpace: 5,
-                                    centerSpaceRadius: 65,
-                                    sections: showingSections),
+                                  borderData: FlBorderData(show: false),
+                                  sectionsSpace: 5,
+                                  centerSpaceRadius: 45,
+                                  sections: showingSections,
+                                ),
                               ),
                             ),
+                    ),
+                  ),
+                  Expanded(
+                    flex: 5,
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 5),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            'Total pada periode berjalan',
+                            style: TextStyle(fontSize: 13, color: grayColor),
                           ),
-                        ),
-                        Expanded(
-                          flex: 4,
-                          child: Padding(
-                            padding: const EdgeInsets.only(right: 5),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: <Widget>[
-                                Text(
-                                  'Total pada periode berjalan',
-                                  style:
-                                      TextStyle(fontSize: 13, color: grayColor),
-                                ),
-                                RichText(
-                                  text: TextSpan(children: <TextSpan>[
-                                    TextSpan(
-                                        text: 'Rp',
-                                        style: TextStyle(color: grayColor)),
-                                    TextSpan(
-                                      text:
-                                          '${CurrencyFormat().currency(data.totalSemua.toDouble())}',
-                                      style: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold,
-                                          color: blackColor),
-                                    ),
-                                  ]),
-                                ),
-                                Text(
-                                  '/ 34 Aktivitas Amal',
-                                  style:
-                                      TextStyle(color: grayColor, fontSize: 13),
-                                )
-                              ],
-                            ),
+                          RichText(
+                            text: TextSpan(children: <TextSpan>[
+                              TextSpan(
+                                  text: 'Rp ',
+                                  style: TextStyle(color: grayColor)),
+                              TextSpan(
+                                text:
+                                    '${CurrencyFormat().currency(valueTotal)}',
+                                style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                    color: blackColor),
+                              ),
+                            ]),
                           ),
-                        ),
-                      ],
-                    );
-                  }
-                  _loadingVisible = false;
-                  return Text('NO RESULT DATA');
-              }
-            }),
+                          Text(
+                            '/ 34 Aktivitas Amal',
+                            style: TextStyle(color: grayColor, fontSize: 13),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
       ],
     );
 
@@ -506,7 +374,7 @@ class _PortofolioState extends State<Portofolio> {
                   automaticallyImplyLeading: false,
                   backgroundColor: Colors.transparent,
                   bottom: PreferredSize(
-                    preferredSize: Size.fromHeight(341),
+                    preferredSize: Size.fromHeight(320),
                     child: Text(''),
                   ),
                   flexibleSpace: Container(
@@ -536,16 +404,89 @@ class _PortofolioState extends State<Portofolio> {
                       labelColor: blackColor,
                       onTap: (index) {
                         switch (index) {
+                          case 0:
+                            print('Total Data');
+                            getDataPieChart();
+                            break;
                           case 1:
                             print('Zakat Data');
                             var items = [
                               PieChartSectionData(
-                                  color: Color(0xFF3A5F99),
-                                  value: valueZakat,
-                                  title: "40%",
-                                  radius: 35,
+                                  color: Colors.yellow,
+                                  value: valueZakat == 0.0 ? 1 : valueZakat,
+                                  title:
+                                      "${zakatPercent.toString().substring(0, 3)}%",
+                                  radius: 26,
                                   titleStyle: TextStyle(
-                                      fontSize: 14, color: whiteColor)),
+                                      fontSize: 12, color: whiteColor)),
+                            ];
+                            setState(() {
+                              pieChartRawSections = items;
+                              showingSections = pieChartRawSections;
+                            });
+                            break;
+                          case 2:
+                            print('Infaq Data');
+                            var items = [
+                              PieChartSectionData(
+                                  color: Colors.redAccent,
+                                  value: valueInfaq == 0.0 ? 1 : valueInfaq,
+                                  title:
+                                      "${infaqPercent.toString().substring(0, 3)}%",
+                                  radius: 26,
+                                  titleStyle: TextStyle(
+                                      fontSize: 12, color: whiteColor)),
+                            ];
+                            setState(() {
+                              pieChartRawSections = items;
+                              showingSections = pieChartRawSections;
+                            });
+                            break;
+                          case 3:
+                            print('Sodaqoh Data');
+                            var items = [
+                              PieChartSectionData(
+                                  color: Colors.deepPurple,
+                                  value: valueShodqoh == 0.0 ? 1 : valueShodqoh,
+                                  title:
+                                      "${shodaqohPercent.toString().substring(0, 3)}%",
+                                  radius: 26,
+                                  titleStyle: TextStyle(
+                                      fontSize: 12, color: whiteColor)),
+                            ];
+                            setState(() {
+                              pieChartRawSections = items;
+                              showingSections = pieChartRawSections;
+                            });
+                            break;
+                          case 4:
+                            print('Wakaf Data');
+                            var items = [
+                              PieChartSectionData(
+                                  color: Colors.greenAccent,
+                                  value: valueWakaf == 0.0 ? 1 : valueWakaf,
+                                  title:
+                                      "${wakafPercent.toString().substring(0, 3)}%",
+                                  radius: 26,
+                                  titleStyle: TextStyle(
+                                      fontSize: 12, color: whiteColor)),
+                            ];
+                            setState(() {
+                              pieChartRawSections = items;
+                              showingSections = pieChartRawSections;
+                            });
+                            break;
+                          case 5:
+                            print('Zakat Data');
+                            var items = [
+                              PieChartSectionData(
+                                  color: Colors.blue,
+                                  value: valueZakat == 0.0 ? 1 : valueZakat,
+                                  title:
+                                      "${zakatPercent.toString().substring(0, 3)}%",
+                                  radius: 26,
+                                  titleStyle: TextStyle(
+                                      fontSize: 12, color: whiteColor)),
                             ];
                             setState(() {
                               pieChartRawSections = items;
@@ -562,7 +503,7 @@ class _PortofolioState extends State<Portofolio> {
                               const Text(
                                 'Total',
                                 style: TextStyle(
-                                  color: Color(0xFF3A5F99),
+                                  color: Colors.black,
                                 ),
                               ),
                               new Row(
@@ -590,7 +531,7 @@ class _PortofolioState extends State<Portofolio> {
                               const Text(
                                 'Zakat',
                                 style: TextStyle(
-                                  color: Color(0xFF3A5F99),
+                                  color: Colors.yellow,
                                 ),
                               ),
                               new Row(
@@ -618,7 +559,7 @@ class _PortofolioState extends State<Portofolio> {
                               const Text(
                                 'Infaq',
                                 style: TextStyle(
-                                  color: Color(0xFFDB7E27),
+                                  color: Colors.redAccent,
                                 ),
                               ),
                               new Row(
@@ -646,7 +587,7 @@ class _PortofolioState extends State<Portofolio> {
                               const Text(
                                 'Sodaqoh',
                                 style: TextStyle(
-                                  color: Color(0xFFDEDE71),
+                                  color: Colors.deepPurple,
                                 ),
                               ),
                               new Row(
@@ -670,7 +611,7 @@ class _PortofolioState extends State<Portofolio> {
                               const Text(
                                 'Wakaf',
                                 style: TextStyle(
-                                  color: Color(0xFFDB4B1F),
+                                  color: Colors.greenAccent,
                                 ),
                               ),
                               new Row(
@@ -694,7 +635,7 @@ class _PortofolioState extends State<Portofolio> {
                               const Text(
                                 'Donasi',
                                 style: TextStyle(
-                                  color: Color(0xFF2938C2),
+                                  color: Colors.blue,
                                 ),
                               ),
                               new Row(
@@ -785,61 +726,6 @@ class _PortofolioState extends State<Portofolio> {
         ));
   }
 
-  // void showPayment(String type) {
-  //   showDialog(
-  //     context: context,
-  //     builder: (context) => AlertDialog(
-  //       shape: RoundedRectangleBorder(
-  //         borderRadius: BorderRadius.all(
-  //           Radius.circular(15.0),
-  //         ),
-  //       ),
-  //       title: Text('Masukan nominal $type yang akan dikirimkan',
-  //           textAlign: TextAlign.center),
-  //       content: Container(
-  //         height: 200,
-  //         child: Column(
-  //           crossAxisAlignment: CrossAxisAlignment.center,
-  //           mainAxisAlignment: MainAxisAlignment.center,
-  //           children: <Widget>[
-  //             TextField(
-  //               controller: nominalCtrl,
-  //               keyboardType: TextInputType.number,
-  //               decoration: InputDecoration(hintText: 'Silahkan isi nominal'),
-  //             ),
-  //             SizedBox(
-  //               height: 20,
-  //             ),
-  //             StreamBuilder(
-  //                 stream: bloc.streamRequest,
-  //                 builder: (context, snapshot) {
-  //                   return RaisedButton(
-  //                     onPressed: () {
-  //                       bloc.requestVA(
-  //                           context,
-  //                           nominalCtrl.numberValue,
-  //                           emailCustomer,
-  //                           customerName,
-  //                           customerPhone,
-  //                           null,
-  //                           type);
-  //                     },
-  //                     shape: RoundedRectangleBorder(
-  //                         borderRadius: BorderRadius.circular(45)),
-  //                     child: Text(
-  //                       'Request',
-  //                       style: TextStyle(color: whiteColor),
-  //                     ),
-  //                     color: greenColor,
-  //                   );
-  //                 }),
-  //           ],
-  //         ),
-  //       ),
-  //     ),
-  //   );
-  // }
-
   void requestBill(String type) {
     Navigator.of(context).push(MaterialPageRoute(
       builder: (context) => InputBill(
@@ -856,7 +742,7 @@ class _PortofolioState extends State<Portofolio> {
   void initState() {
     super.initState();
 
-    blocPotofolio.bloc.fetchSebaranAktifitasAmal();
+    getDataPieChart();
     getUser();
   }
 
@@ -866,6 +752,74 @@ class _PortofolioState extends State<Portofolio> {
       emailCustomer = _pref.getString(EMAIL_KEY);
       customerName = _pref.getString(FULLNAME_KEY);
       customerPhone = _pref.getString(CONTACT_KEY);
+    });
+  }
+
+  void getDataPieChart() {
+    PortofolioProvider provider = new PortofolioProvider();
+    provider.pieChartApi().then((response) {
+      if (response.statusCode == 200) {
+        var data =
+            SebaranAktifitasAmalModel.fromJson(json.decode(response.body));
+
+        valueTotal = data.totalSemua.toDouble();
+        valueDonasi = data.totalDonasi.toDouble();
+        valueWakaf = data.totalWakaf.toDouble();
+        valueShodqoh = data.totalSodaqoh.toDouble();
+        valueInfaq = data.totalInfaq.toDouble();
+        valueZakat = data.totalZakat.toDouble();
+
+        zakatPercent = data.totalZakatPercent;
+        infaqPercent = data.totalInfaqPercent;
+        shodaqohPercent = data.totalSodaqohPercent;
+        wakafPercent = data.totalWakafPercent;
+        donasiPercent = data.totalDonasiPercent;
+
+        final zakatData = PieChartSectionData(
+            color: Colors.orangeAccent,
+            value: data.totalZakatPercent,
+            title: "${data.totalZakatPercent.toString().substring(0, 2)}%",
+            radius: 26,
+            titleStyle: TextStyle(fontSize: 12, color: whiteColor));
+
+        final infaqData = PieChartSectionData(
+            color: Colors.red,
+            value: data.totalInfaqPercent,
+            title: "${data.totalInfaqPercent.toString().substring(0, 2)}%",
+            radius: 26,
+            titleStyle: TextStyle(fontSize: 12, color: whiteColor));
+
+        final sodaqohData = PieChartSectionData(
+            color: Colors.purpleAccent,
+            value: data.totalSodaqohPercent,
+            title: "${data.totalSemuaPercent.toString().substring(0, 2)}%",
+            radius: 26,
+            titleStyle: TextStyle(fontSize: 12, color: whiteColor));
+
+        final wakafData = PieChartSectionData(
+            color: Colors.green,
+            value: data.totalWakafPercent,
+            title: "${data.totalWakafPercent.toString().substring(0, 2)}%",
+            radius: 26,
+            titleStyle: TextStyle(fontSize: 12, color: whiteColor));
+
+        final donasiData = PieChartSectionData(
+            color: Colors.blue,
+            value: data.totalDonasiPercent,
+            title: "${data.totalDonasiPercent.toString().substring(0, 2)}%",
+            radius: 26,
+            titleStyle: TextStyle(fontSize: 12, color: whiteColor));
+
+        final items = [
+          zakatData,
+          infaqData,
+          sodaqohData,
+          wakafData,
+          donasiData
+        ];
+        pieChartRawSections = items;
+        showingSections = pieChartRawSections;
+      }
     });
   }
 }

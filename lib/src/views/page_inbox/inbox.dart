@@ -133,7 +133,7 @@ class _InboxState extends State<Inbox> {
             );
           },
           itemBuilder: (context, index) => ListTile(
-            title: Text(InboxTextData.listTitle[index]),
+            title: Text(InboxTextData.listTitle[index], style: TextStyle(fontSize: 14),),
             subtitle: Text(InboxTextData.listSubtitle[index]),
             leading: CircleAvatar(
               backgroundColor: InboxTextData.listColor[index],

@@ -6,7 +6,6 @@ import 'package:flutter_jaring_ummat/src/services/currency_format_service.dart';
 import 'package:flutter_jaring_ummat/src/views/components/galang_amal_container.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/new_icon_icons.dart';
 
-import 'package:flutter_jaring_ummat/src/bloc/requestVABloc.dart';
 import 'package:flutter_jaring_ummat/src/views/page_virtual_account/input_bill.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -35,6 +34,7 @@ class _GalangAmalState extends State<GalangAmalView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: whiteColor,
       appBar: AppBar(
         titleSpacing: 0.0,
         elevation: 1.0,
@@ -42,7 +42,7 @@ class _GalangAmalState extends State<GalangAmalView> {
           onTap: () {
             Navigator.pop(context);
           },
-          child: Icon(NewIcon.back_big_3x, color: greenColor, size: 20),
+          child: Icon(NewIcon.back_big_3x, color: blackColor, size: 20),
         ),
         title: new Text('Galang Amal', style: TextStyle(color: blackColor)),
         centerTitle: false,

@@ -39,7 +39,6 @@ class _GalangAmalContainerState extends State<GalangAmalContainer> {
   Widget build(BuildContext context) {
     return Container(
       color: Colors.white,
-      height: MediaQuery.of(context).size.height,
       margin: EdgeInsets.only(bottom: 5.0),
       child: Column(
         children: <Widget>[
@@ -49,6 +48,17 @@ class _GalangAmalContainerState extends State<GalangAmalContainer> {
           new Divider(),
           setBottomContent(),
           new Divider(),
+          ListTile(
+            title: Text('Donatur Terbaru', style: TextStyle(fontWeight: FontWeight.bold),),
+            subtitle: Text(
+                '3 donatur terbaru pada galang amal ini. Yuk ikut berdonasi bersama mereka agar target donasinya segera tercapai.'),
+            trailing: IconButton(
+              onPressed: null,
+              icon: Icon(NewIcon.next_small_2x),
+              color: blackColor,
+              iconSize: 20,
+            ),
+          ),
           StreamBuilder(
             stream: bloc.galangAmalDonationStream,
             builder: (context,
@@ -77,8 +87,10 @@ class _GalangAmalContainerState extends State<GalangAmalContainer> {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(30.0),
         image: DecorationImage(
-          image: NetworkImage(
-              'https://kempenfeltplayers.com/wp-content/uploads/2015/07/profile-icon-empty.png'),
+          image: widget.programAmal.user.imgProfile == null
+              ? NetworkImage(
+                  'https://kempenfeltplayers.com/wp-content/uploads/2015/07/profile-icon-empty.png')
+              : NetworkImage(widget.programAmal.user.imgProfile[0].imgUrl),
           fit: BoxFit.cover,
         ),
       ),
@@ -131,7 +143,7 @@ class _GalangAmalContainerState extends State<GalangAmalContainer> {
     return Stack(
       children: <Widget>[
         CarouselSlider(
-          height: 200.0,
+          height: 250.0,
           autoPlay: false,
           reverse: false,
           viewportFraction: 1.0,
@@ -177,6 +189,7 @@ class _GalangAmalContainerState extends State<GalangAmalContainer> {
                 : widget.programAmal.imageContent.length,
             position: _current,
             decorator: DotsDecorator(
+              color: greenColor,
               spacing: const EdgeInsets.all(2.0),
             ),
           ),
@@ -301,7 +314,7 @@ class _GalangAmalContainerState extends State<GalangAmalContainer> {
               Icon(
                 (isLoved) ? NewIcon.love_3x : NewIcon.love_3x,
                 size: 20.0,
-                color: (isLoved) ? Colors.red : greenColor,
+                color: (isLoved) ? Colors.red : blackColor,
               ),
               SizedBox(
                 width: 5.0,
@@ -309,7 +322,6 @@ class _GalangAmalContainerState extends State<GalangAmalContainer> {
               Text(
                 '${widget.programAmal.totalLikes}' + ' Likes',
                 style: TextStyle(
-                  fontWeight: FontWeight.bold,
                   fontSize: 13.0,
                 ),
               )
@@ -325,7 +337,7 @@ class _GalangAmalContainerState extends State<GalangAmalContainer> {
             children: <Widget>[
               Icon(
                 NewIcon.comment_3x,
-                color: greenColor,
+                color: blackColor,
                 size: 20.0,
               ),
               SizedBox(
@@ -334,7 +346,6 @@ class _GalangAmalContainerState extends State<GalangAmalContainer> {
               Text(
                 '${widget.programAmal.totalComments}' + ' Komentar',
                 style: TextStyle(
-                  fontWeight: FontWeight.bold,
                   fontSize: 13.0,
                 ),
               )
@@ -354,7 +365,7 @@ class _GalangAmalContainerState extends State<GalangAmalContainer> {
             children: <Widget>[
               Icon(
                 NewIcon.save_3x,
-                color: greenColor,
+                color: blackColor,
                 size: 20.0,
               ),
               SizedBox(
@@ -369,7 +380,7 @@ class _GalangAmalContainerState extends State<GalangAmalContainer> {
             children: <Widget>[
               Icon(
                 NewIcon.share_3x,
-                color: greenColor,
+                color: blackColor,
                 size: 20.0,
               ),
               SizedBox(
@@ -400,7 +411,8 @@ class _GalangAmalContainerState extends State<GalangAmalContainer> {
                     style: TextStyle(fontWeight: FontWeight.bold)),
                 subtitle:
                     Text('${data.donasiDate}', style: TextStyle(fontSize: 11)),
-                trailing: Text('Rp ${CurrencyFormat().currency(data.nominalDibayar.toDouble())}',
+                trailing: Text(
+                    'Rp ${CurrencyFormat().currency(data.nominalDibayar.toDouble())}',
                     style: TextStyle(fontWeight: FontWeight.bold)),
                 leading: Container(
                   width: 53.0,

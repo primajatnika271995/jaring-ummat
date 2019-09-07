@@ -3,18 +3,26 @@ import 'package:flutter_jaring_ummat/src/config/preferences.dart';
 import 'package:flutter_jaring_ummat/src/config/urls.dart';
 import 'package:flutter_jaring_ummat/src/models/sebaranAktifitasAmalModel.dart';
 import 'package:http/http.dart' show Client;
+import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PortofolioProvider {
   Client client = new Client();
 
+  Future<http.Response> pieChartApi() async {
+    SharedPreferences _pref = await SharedPreferences.getInstance();
+    var token = _pref.getString(ACCESS_TOKEN_KEY);
+
+    Map<String, String> headers = {'Authorization': 'Bearer $token'};
+
+    return client.get(PORTOFOLIO_PIE_CHART, headers: headers);
+  }
+
   Future<SebaranAktifitasAmalModel> fetchSebaranAktifitasAmal() async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
     var token = _pref.getString(ACCESS_TOKEN_KEY);
 
-    Map<String, String> headers = {
-      'Authorization': 'Bearer $token'
-    };
+    Map<String, String> headers = {'Authorization': 'Bearer $token'};
 
     final response = await client.get(PORTOFOLIO_PIE_CHART, headers: headers);
     print('--> Response Status Code PIE : ${response.statusCode}');
