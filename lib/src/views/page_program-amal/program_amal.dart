@@ -5,6 +5,7 @@ import 'package:flutter_jaring_ummat/src/config/preferences.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/app_bar_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/new_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/components/loadingContainer.dart';
+import 'package:flutter_jaring_ummat/src/views/page_program-amal/data_search.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
 import 'package:shimmer/shimmer.dart';
@@ -69,7 +70,9 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                 Padding(
                   padding: const EdgeInsets.only(right: 7),
                   child: InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      showSearch(context: context, delegate: DataSearch());
+                    },
                     child: Icon(NewIcon.search_small_2x,
                         size: 20, color: blackColor),
                   ),
@@ -85,7 +88,7 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                 Stack(
                   children: <Widget>[
                     Center(
-                                          child: Padding(
+                      child: Padding(
                         padding: const EdgeInsets.only(right: 10),
                         child: InkWell(
                           onTap: () {
@@ -96,8 +99,8 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                                   .pushNamed('/list/account/chats');
                             }
                           },
-                          child:
-                              Icon(NewIcon.chat_3x, size: 20, color: blackColor),
+                          child: Icon(NewIcon.chat_3x,
+                              size: 20, color: blackColor),
                         ),
                       ),
                     ),
@@ -148,13 +151,13 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                       ),
                 new SliverAppBar(
                   backgroundColor: whiteColor,
-                  elevation: 2.0,
+                  elevation: 0.0,
                   automaticallyImplyLeading: false,
                   floating: true,
                   pinned: true,
                   flexibleSpace: AppBar(
                     backgroundColor: whiteColor,
-                    elevation: 2.0,
+                    elevation: 1.0,
                     automaticallyImplyLeading: false,
                     bottom: TabBar(
                       isScrollable: true,

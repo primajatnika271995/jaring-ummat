@@ -81,7 +81,7 @@ class ProgramAmalApiProvider {
     } else if (response.statusCode == 204) {
       print('--> No Content');
     } else {
-      throw Exception('--> Failed Fetch Program Amal');
+      print('Err :${response.statusCode}');
     }
   }
 }
