@@ -159,56 +159,57 @@ class _ProfileMenuState extends State<ProfileMenu> {
               ),
             ]),
           ),
-          SliverFixedExtentList(
-            itemExtent: 130.0,
-            delegate: SliverChildBuilderDelegate(
-              (context, index) => ListTile(
-                title: Text(MenuTextData.titleMenu[index],
-                    style: TextStyle(fontWeight: FontWeight.bold)),
-                subtitle: Text(MenuTextData.subtitleMenu[index]),
-                leading: CircleAvatar(
-                  backgroundColor: MenuTextData.colorMenu[index],
-                  child: Icon(MenuTextData.iconMenu[index], color: whiteColor),
-                ),
-                trailing: Icon(NewIcon.next_small_2x, color: blackColor),
-              ),
-              childCount: 5,
-            ),
-          ),
-//          SliverList(
-//            delegate: SliverChildListDelegate([
-//              ListView.separated(
-//                itemCount: 5,
-//                shrinkWrap: true,
-//                separatorBuilder: (context, position) {
-//                  return Padding(
-//                    padding: EdgeInsets.only(left: 80.0),
-//                    child: new SizedBox(
-//                      height: 10.0,
-//                      child: new Center(
-//                        child: new Container(
-//                            margin: new EdgeInsetsDirectional.only(
-//                                start: 1.0, end: 1.0),
-//                            height: 5.0,
-//                            color: Colors.grey[200]),
-//                      ),
-//                    ),
-//                  );
-//                },
-//                itemBuilder: (context, index) => ListTile(
-//                  title: Text(MenuTextData.titleMenu[index],
-//                      style: TextStyle(fontWeight: FontWeight.bold)),
-//                  subtitle: Text(MenuTextData.subtitleMenu[index]),
-//                  leading: CircleAvatar(
-//                    backgroundColor: MenuTextData.colorMenu[index],
-//                    child:
-//                        Icon(MenuTextData.iconMenu[index], color: whiteColor),
-//                  ),
-//                  trailing: Icon(NewIcon.next_small_2x, color: blackColor),
+//          SliverFixedExtentList(
+//            itemExtent: 130.0,
+//            delegate: SliverChildBuilderDelegate(
+//              (context, index) => ListTile(
+//                title: Text(MenuTextData.titleMenu[index],
+//                    style: TextStyle(fontWeight: FontWeight.bold)),
+//                subtitle: Text(MenuTextData.subtitleMenu[index]),
+//                leading: CircleAvatar(
+//                  backgroundColor: MenuTextData.colorMenu[index],
+//                  child: Icon(MenuTextData.iconMenu[index], color: whiteColor),
 //                ),
+//                trailing: Icon(NewIcon.next_small_2x, color: blackColor),
 //              ),
-//            ]),
+//              childCount: 5,
+//            ),
 //          ),
+          SliverList(
+            delegate: SliverChildListDelegate([
+              ListView.separated(
+                physics: NeverScrollableScrollPhysics(),
+                itemCount: 5,
+                shrinkWrap: true,
+                separatorBuilder: (context, position) {
+                  return Padding(
+                    padding: EdgeInsets.only(left: 80.0),
+                    child: new SizedBox(
+                      height: 10.0,
+                      child: new Center(
+                        child: new Container(
+                            margin: new EdgeInsetsDirectional.only(
+                                start: 1.0, end: 1.0),
+                            height: 5.0,
+                            color: Colors.grey[200]),
+                      ),
+                    ),
+                  );
+                },
+                itemBuilder: (context, index) => ListTile(
+                  title: Text(MenuTextData.titleMenu[index],
+                      style: TextStyle(fontWeight: FontWeight.bold)),
+                  subtitle: Text(MenuTextData.subtitleMenu[index]),
+                  leading: CircleAvatar(
+                    backgroundColor: MenuTextData.colorMenu[index],
+                    child:
+                        Icon(MenuTextData.iconMenu[index], color: whiteColor),
+                  ),
+                  trailing: Icon(NewIcon.next_small_2x, color: blackColor),
+                ),
+              ),
+            ]),
+          ),
           SliverList(
             delegate: SliverChildListDelegate([
               infoBottom,
