@@ -58,6 +58,7 @@ dependencies:
   giffy_dialog: ^1.3.0
   fl_chart: ^0.1.2
   rxdart: ^0.22.0
+  direct_select_flutter: ^1.0.4
 
   flutter_facebook_login:
     git: https://github.com/lequanghiep74/flutter_facebook_login

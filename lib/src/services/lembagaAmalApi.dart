@@ -1,9 +1,12 @@
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter_jaring_ummat/src/config/preferences.dart';
 import 'package:flutter_jaring_ummat/src/models/lembagaAmalModel.dart';
 import 'package:http/http.dart' show Client;
+import 'package:http/http.dart' as http;
 import 'package:flutter_jaring_ummat/src/config/urls.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LembagaAmalProvider {
   Client client = Client();
@@ -44,7 +47,8 @@ class LembagaAmalProvider {
     }
   }
 
-  Future<List<LembagaAmalModel>> fetchLembagaAmalbyFollowed(String idUser) async {
+  Future<List<LembagaAmalModel>> fetchLembagaAmalbyFollowed(
+      String idUser) async {
     Uri _uri = Uri.parse(LIST_ALL_LEMBAGA_AMAL_BY_FOLLOWED);
 
     var params = {
@@ -94,5 +98,16 @@ class LembagaAmalProvider {
       print('${response.body}');
       return response;
     }
+  }
+
+  Future<http.Response> getListLembagaAmalByFollowed() async {
+    SharedPreferences _pref = await SharedPreferences.getInstance();
+    var userId = _pref.getString(USER_ID_KEY);
+    var params = {
+      "idUser": userId,
+    };
+    Uri _uri = Uri.parse(LIST_ALL_LEMBAGA_AMAL_BY_FOLLOWED);
+    final uriParams = _uri.replace(queryParameters: params);
+    return await client.get(uriParams);
   }
 }
