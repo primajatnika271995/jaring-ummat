@@ -695,7 +695,8 @@ class _PortofolioState extends State<Portofolio> {
                 child: Icon(ProfileInboxIcon.donation_3x),
                 backgroundColor: Colors.blueAccent,
                 onTap: () {
-                  requestBill("donasi");
+//                  requestBill("donasi");
+                Navigator.of(context).pushNamed("/home");
                 }),
             SpeedDialChild(
                 child: Icon(ProfileInboxIcon.wakaf_3x),
