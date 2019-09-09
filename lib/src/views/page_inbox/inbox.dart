@@ -63,7 +63,7 @@ class _InboxState extends State<Inbox> {
           padding: const EdgeInsets.only(left: 20, top: 20, bottom: 10),
           child: Text(
             'Pembayaran',
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            style: TextStyle(fontWeight: FontWeight.bold),
           ),
         ),
         ListView.separated(
@@ -95,7 +95,7 @@ class _InboxState extends State<Inbox> {
                 );
               }
             },
-            title: Text(InboxTextData.listTransaksi[index]),
+            title: Text(InboxTextData.listTransaksi[index], style: TextStyle(fontSize: 14.0),),
             trailing: Icon(NewIcon.next_small_2x, color: blackColor, size: 20),
           ),
         ),
@@ -111,7 +111,7 @@ class _InboxState extends State<Inbox> {
           padding: const EdgeInsets.only(left: 20, top: 20, bottom: 10),
           child: Text(
             'Hari Ini',
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            style: TextStyle(fontWeight: FontWeight.bold),
           ),
         ),
         ListView.separated(

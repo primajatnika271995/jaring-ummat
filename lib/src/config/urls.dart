@@ -18,11 +18,11 @@ const UPLOADER_MEDIA_IMAGE = BASE_API_UPLOADER_URL + '/api/media/upload/image';
 const CHATS_HISTORY = BASE_API_CHATS + '/api/chat/messages'; 
 
 // VIRTUAL ACCOUNT
-const REQUEST_VA_ANONIMOUS = 'http://tabeldata.ip-dynamic.com/jaring-ummat-bni-request/api/bni/virtual-account/anonymous/request';
-const REQUEST_VA_OAUTH = 'http://20.184.15.66:8000/bni-request/api/bni/virtual-account/secured/request';
+const REQUEST_VA_ANONIMOUS = 'http://117.53.47.34:8000/jaring-ummat-bni-request/api/bni/virtual-account/anonymous/request';
+const REQUEST_VA_OAUTH = 'http://117.53.47.34:8000/jaring-ummat-bni-request/api/bni/virtual-account/secured/request';
 
 // PEMBAYARAN
-const PEMBAYARAN_URL = 'http://20.184.15.66:8000/bni-request/api/transaksi/customer/confirm';
+const PEMBAYARAN_URL = 'http://117.53.47.34:8000/jaring-ummat-bni-request/api/transaksi/customer/confirm';
 
 // BASE REGISTER AND LOGIN_URL
 const REGISTRATION_URL = BASE_API_URL + '/api/user/';

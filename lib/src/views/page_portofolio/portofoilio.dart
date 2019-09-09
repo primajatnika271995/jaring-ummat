@@ -117,16 +117,15 @@ class _PortofolioState extends State<Portofolio> {
                   children: <Widget>[
                     Text(
                       'Saldo Jejaring',
-                      style: TextStyle(fontSize: 14, color: grayColor),
+                      style: TextStyle(color: grayColor),
                     ),
                     RichText(
                       text: TextSpan(children: <TextSpan>[
                         TextSpan(
-                            text: 'Rp', style: TextStyle(color: grayColor)),
+                            text: 'Rp ', style: TextStyle(color: grayColor)),
                         TextSpan(
                           text: '1.250',
                           style: TextStyle(
-                              fontSize: 17,
                               fontWeight: FontWeight.bold,
                               color: blackColor),
                         ),
@@ -162,16 +161,16 @@ class _PortofolioState extends State<Portofolio> {
                   children: <Widget>[
                     Text(
                       'Point Amal',
-                      style: TextStyle(fontSize: 14, color: grayColor),
+                      style: TextStyle(color: grayColor),
                     ),
                     RichText(
                       text: TextSpan(children: <TextSpan>[
                         TextSpan(
-                            text: 'Rp', style: TextStyle(color: grayColor)),
+                            text: 'Rp ', style: TextStyle(color: grayColor)),
                         TextSpan(
                           text: '75',
                           style: TextStyle(
-                              fontSize: 17,
+                              fontSize: 14,
                               fontWeight: FontWeight.bold,
                               color: blackColor),
                         ),
