@@ -10,8 +10,8 @@ class HistoriTransaksiBloc {
   Observable<List<HistoriTransaksiModel>> get streamHistory =>
       historyFetcher.stream;
 
-  fetchHistoryTransaksi() async {
-    List<HistoriTransaksiModel> listHistory = await repository.historiTransaksi();
+  fetchHistoryTransaksi(String type) async {
+    List<HistoriTransaksiModel> listHistory = await repository.historiTransaksi(type);
     historyFetcher.sink.add(listHistory);
   }
 

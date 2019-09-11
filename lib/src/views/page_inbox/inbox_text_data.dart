@@ -47,7 +47,7 @@ class InboxTextData {
 
   static const List<String> listTransaksi = [
     "Menunggu Pembayaran",
-    "Menunggu Konfirmasi",
+    "Selesai Dibayar",
   ];
 
 
