@@ -154,7 +154,7 @@ class _InputBillState extends State<InputBill> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Text('Informasi Galang Amal',
+              Text('Informasi Lembaga Amal',
                   style: TextStyle(
                       color: greenColor, fontWeight: FontWeight.bold)),
               Icon(Icons.info_outline)
@@ -199,7 +199,9 @@ class _InputBillState extends State<InputBill> {
                   customerEmail.text,
                   customerName.text,
                   customerPhone.text,
-                  widget.programId != null ? widget.programId : _lembagaAmalModel.idLembagaAmal,
+                  widget.programId != null
+                      ? widget.programId
+                      : _lembagaAmalModel.idLembagaAmal,
                   widget.type);
             },
             shape:
@@ -249,7 +251,7 @@ class _InputBillState extends State<InputBill> {
                   height: 10,
                 ),
                 informasiDatadiri,
-                informasiProgram,
+                widget.programId == null ? informasiProgram : new Container(),
                 SizedBox(
                   height: 10,
                 ),
@@ -371,7 +373,7 @@ class _InputBillState extends State<InputBill> {
   Widget galangAmalSelect() {
     return new DropdownButtonFormField<LembagaAmalModel>(
       decoration: InputDecoration(
-        hintText: "Nama Galang Amal",
+        hintText: "Nama Lembaga Amal",
         contentPadding: EdgeInsets.all(9.0),
         fillColor: Colors.white,
         border: new OutlineInputBorder(

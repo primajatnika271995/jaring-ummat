@@ -58,6 +58,7 @@ class UserStoryAppBarState extends State<UserStoryAppBar> {
         scrollDirection: Axis.horizontal,
         itemBuilder: (context, index) {
           List<String> thumbnail = List<String>();
+          List<String> image = List<String>();
           List<String> videoUrl = List<String>();
           String video;
           String thumbnails;
@@ -100,13 +101,13 @@ class UserStoryAppBarState extends State<UserStoryAppBar> {
                       height: 140.0,
                       child: thumbnail[0] == null
                           ? Image.network(
-                              snapshot[0].storyList[0].contents[0].imgUrl,
-                              fit: BoxFit.cover,
-                            )
+                        data.storyList[0].contents[0].imgUrl,
+                        fit: BoxFit.cover,
+                      )
                           : Image.network(
-                              thumbnail[0],
-                              fit: BoxFit.cover,
-                            ),
+                        thumbnail[0],
+                        fit: BoxFit.cover,
+                      ),
                     ),
                     Positioned(
                       left: 10.0,
@@ -132,9 +133,9 @@ class UserStoryAppBarState extends State<UserStoryAppBar> {
                                 begin: Alignment.bottomCenter,
                                 end: Alignment.topCenter,
                                 colors: [
-                              Colors.black,
-                              Colors.black.withOpacity(0.1)
-                            ])),
+                                  Colors.black,
+                                  Colors.black.withOpacity(0.1)
+                                ])),
                       ),
                     ),
                     Positioned(
