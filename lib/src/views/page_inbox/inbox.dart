@@ -95,7 +95,10 @@ class _InboxState extends State<Inbox> {
                 );
               }
             },
-            title: Text(InboxTextData.listTransaksi[index], style: TextStyle(fontSize: 14.0),),
+            title: Text(
+              InboxTextData.listTransaksi[index],
+              style: TextStyle(fontSize: 14.0),
+            ),
             trailing: Icon(NewIcon.next_small_2x, color: blackColor, size: 20),
           ),
         ),
@@ -104,45 +107,52 @@ class _InboxState extends State<Inbox> {
   }
 
   Widget listInbox() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.only(left: 20, top: 20, bottom: 10),
-          child: Text(
-            'Hari Ini',
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-        ),
-        ListView.separated(
-          itemCount: 4,
-          shrinkWrap: true,
-          separatorBuilder: (context, position) {
-            return Padding(
-              padding: EdgeInsets.only(left: 80.0),
-              child: new SizedBox(
-                height: 10.0,
-                child: new Center(
-                  child: new Container(
-                      margin:
-                          new EdgeInsetsDirectional.only(start: 1.0, end: 1.0),
-                      height: 5.0,
-                      color: Colors.grey[200]),
-                ),
-              ),
-            );
-          },
-          itemBuilder: (context, index) => ListTile(
-            title: Text(InboxTextData.listTitle[index], style: TextStyle(fontSize: 14),),
-            subtitle: Text(InboxTextData.listSubtitle[index]),
-            leading: CircleAvatar(
-              backgroundColor: InboxTextData.listColor[index],
-              child: Icon(InboxTextData.listIcon[index], color: whiteColor),
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.only(left: 20, top: 20, bottom: 10),
+            child: Text(
+              'Hari Ini',
+              style: TextStyle(fontWeight: FontWeight.bold),
             ),
-            trailing: Icon(NewIcon.next_small_2x, color: blackColor, size: 20),
           ),
-        ),
-      ],
+          ListView.separated(
+            itemCount: 4,
+            shrinkWrap: true,
+            physics: NeverScrollableScrollPhysics(),
+            separatorBuilder: (context, position) {
+              return Padding(
+                padding: EdgeInsets.only(left: 80.0),
+                child: new SizedBox(
+                  height: 10.0,
+                  child: new Center(
+                    child: new Container(
+                        margin: new EdgeInsetsDirectional.only(
+                            start: 1.0, end: 1.0),
+                        height: 5.0,
+                        color: Colors.grey[200]),
+                  ),
+                ),
+              );
+            },
+            itemBuilder: (context, index) => ListTile(
+              title: Text(
+                InboxTextData.listTitle[index],
+                style: TextStyle(fontSize: 14),
+              ),
+              subtitle: Text(InboxTextData.listSubtitle[index]),
+              leading: CircleAvatar(
+                backgroundColor: InboxTextData.listColor[index],
+                child: Icon(InboxTextData.listIcon[index], color: whiteColor),
+              ),
+              trailing:
+                  Icon(NewIcon.next_small_2x, color: blackColor, size: 20),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

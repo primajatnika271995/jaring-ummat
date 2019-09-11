@@ -1,3 +1,4 @@
+import 'package:circular_profile_avatar/circular_profile_avatar.dart';
 import 'package:flutter/material.dart';
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -49,11 +50,14 @@ class _GalangAmalContainerState extends State<GalangAmalContainer> {
           setBottomContent(),
           new Divider(),
           ListTile(
-            title: Text('Donatur Terbaru', style: TextStyle(fontWeight: FontWeight.bold),),
+            title: Text(
+              'Donatur Terbaru',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
             subtitle: Text(
                 '3 donatur terbaru pada galang amal ini. Yuk ikut berdonasi bersama mereka agar target donasinya segera tercapai.'),
             trailing: IconButton(
-              onPressed: null,
+              onPressed: () {},
               icon: Icon(NewIcon.next_small_2x),
               color: blackColor,
               iconSize: 20,
@@ -81,19 +85,14 @@ class _GalangAmalContainerState extends State<GalangAmalContainer> {
   }
 
   Widget getProfilePicture() {
-    return Container(
-      width: 53.0,
-      height: 53.0,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(30.0),
-        image: DecorationImage(
-          image: widget.programAmal.user.imgProfile == null
-              ? NetworkImage(
-                  'https://kempenfeltplayers.com/wp-content/uploads/2015/07/profile-icon-empty.png')
-              : NetworkImage(widget.programAmal.user.imgProfile[0].imgUrl),
-          fit: BoxFit.cover,
-        ),
-      ),
+    return CircleAvatar(
+      backgroundColor: greenColor,
+      child: widget.programAmal.user.imgProfile == null
+          ? Text(
+              widget.programAmal.createdBy.substring(0, 1),
+              style: TextStyle(color: whiteColor),
+            )
+          : CircularProfileAvatar(widget.programAmal.user.imgProfile[0].imgUrl),
     );
   }
 
@@ -108,7 +107,7 @@ class _GalangAmalContainerState extends State<GalangAmalContainer> {
             widget.programAmal.titleProgram,
             style: TextStyle(
               fontWeight: FontWeight.bold,
-              fontSize: 17.0,
+              fontSize: 14.0,
             ),
           ),
           Text(

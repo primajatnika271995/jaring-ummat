@@ -44,8 +44,7 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
 
   final titleText = Text(
     'Jejaring',
-    style: TextStyle(
-        color: Colors.black, fontSize: 22.0, fontFamily: 'Arab-Dances'),
+    style: TextStyle(color: Colors.black),
   );
 
   @override

@@ -1,3 +1,4 @@
+import 'package:circular_profile_avatar/circular_profile_avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_jaring_ummat/src/config/hexColor.dart';
 import 'package:flutter_jaring_ummat/src/config/preferences.dart';
@@ -36,7 +37,7 @@ class PopularAccountState extends State<PopularAccountView>
   Widget build(BuildContext context) {
     Widget buttonsWidget = new Container(
       color: Colors.white,
-      child: new TabBar(
+      child: TabBar(
         isScrollable: true,
         indicator: UnderlineTabIndicator(
           borderSide: BorderSide(width: 4.0, color: Colors.blueAccent),
@@ -129,7 +130,7 @@ class PopularAccountState extends State<PopularAccountView>
           IconButton(
             padding: EdgeInsets.only(left: 30.0),
             icon: Icon(NewIcon.search_big_3x),
-            color: greenColor,
+            color: blackColor,
             iconSize: 20.0,
             onPressed: () {
               print('_search_');
@@ -138,7 +139,7 @@ class PopularAccountState extends State<PopularAccountView>
           IconButton(
             padding: EdgeInsets.only(right: 10.0),
             icon: Icon(NewIcon.account_following_3x),
-            color: greenColor,
+            color: blackColor,
             iconSize: 20.0,
             onPressed: () {},
           ),
@@ -199,18 +200,11 @@ class PopularAccountState extends State<PopularAccountView>
         itemBuilder: (BuildContext context, int index) {
           var value = snapshot.data[index];
           return ListTile(
-            leading: Container(
-              width: 35.0,
-              height: 35.0,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(30.0),
-                image: DecorationImage(
-                  image: (value.imageContent == null)
-                      ? NetworkImage(noImg)
-                      : NetworkImage(value.imageContent[0].imgUrl),
-                  fit: BoxFit.cover,
-                ),
-              ),
+            leading: CircleAvatar(
+              backgroundColor: greenColor,
+              child: (value.imageContent == null)
+                  ? CircularProfileAvatar(noImg)
+                  : CircularProfileAvatar(value.imageContent[0].imgUrl),
             ),
             title: Text(
               value.lembagaAmalName,

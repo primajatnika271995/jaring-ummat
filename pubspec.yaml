@@ -93,6 +93,10 @@ flutter:
     - family:  Proxima
       fonts:
         - asset: assets/fonts/proxima_nova_soft.ttf
+        
+    - family: Open-Sans
+      fonts:
+        - asset: assets/fonts/OpenSans-Regular.ttf
 
     - family:  Arab-Dances
       fonts:

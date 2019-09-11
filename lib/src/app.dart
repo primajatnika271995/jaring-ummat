@@ -13,7 +13,7 @@ void App() {
   runApp(
     MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(fontFamily: 'Sofia-Pro'),
+      theme: ThemeData(fontFamily: 'Open-Sans'),
       initialRoute: '/',
       routes: {
         '/': (context) => LandingPage(),

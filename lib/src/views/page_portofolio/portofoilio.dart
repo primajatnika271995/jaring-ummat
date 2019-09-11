@@ -1,25 +1,26 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:circular_profile_avatar/circular_profile_avatar.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter_jaring_ummat/src/config/hexColor.dart';
 import 'package:flutter_jaring_ummat/src/config/preferences.dart';
+import 'package:flutter_jaring_ummat/src/models/aktivitasTerbaruModel.dart';
+import 'package:flutter_jaring_ummat/src/models/aktivitasTerbesarModel.dart';
 import 'package:flutter_jaring_ummat/src/models/sebaranAktifitasAmalModel.dart';
 import 'package:flutter_jaring_ummat/src/services/currency_format_service.dart';
 import 'package:flutter_jaring_ummat/src/services/portofolioApi.dart';
+import 'package:flutter_jaring_ummat/src/services/time_ago_service.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/new_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/profile_inbox_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/components/loadingContainer.dart';
 import 'package:flutter_jaring_ummat/src/views/page_portofolio/portofolio_text_data.dart';
 import 'package:flutter_jaring_ummat/src/views/page_virtual_account/input_bill.dart';
-import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter_jaring_ummat/src/bloc/requestVABloc.dart';
-import 'package:flutter_jaring_ummat/src/bloc/portofolioBloc.dart'
-    as blocPotofolio;
+import 'package:flutter_jaring_ummat/src/bloc/portofolioBloc.dart';
 
 class Portofolio extends StatefulWidget {
   @override
@@ -77,6 +78,12 @@ class _PortofolioState extends State<Portofolio> {
    */
   bool _loadingVisible = false;
 
+  /*
+   * Variable No Content Image
+   */
+  final String noImg =
+      "https://kempenfeltplayers.com/wp-content/uploads/2015/07/profile-icon-empty.png";
+
   @override
   Widget build(BuildContext context) {
     // Title Bar Widget
@@ -126,8 +133,7 @@ class _PortofolioState extends State<Portofolio> {
                         TextSpan(
                           text: '1.250',
                           style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: blackColor),
+                              fontWeight: FontWeight.bold, color: blackColor),
                         ),
                       ]),
                     ),
@@ -148,7 +154,7 @@ class _PortofolioState extends State<Portofolio> {
             child: Row(
               children: <Widget>[
                 CircleAvatar(
-                  backgroundColor: Colors.yellow,
+                  backgroundColor: Colors.yellow[300],
                   child: Icon(ProfileInboxIcon.point_2x,
                       color: whiteColor, size: 20),
                 ),
@@ -218,8 +224,9 @@ class _PortofolioState extends State<Portofolio> {
                 children: <Widget>[
                   Expanded(
                     flex: 5,
-                    child: AspectRatio(
-                      aspectRatio: 1.3,
+                    child: Container(
+                      height: MediaQuery.of(context).size.height * 0.26,
+                      width: MediaQuery.of(context).size.width * 0.26,
                       child: showingSections == null
                           ? Center(
                               child: Text('Loading data ...'),
@@ -228,7 +235,7 @@ class _PortofolioState extends State<Portofolio> {
                               chart: PieChart(
                                 PieChartData(
                                   borderData: FlBorderData(show: false),
-                                  sectionsSpace: 5,
+                                  sectionsSpace: 1,
                                   centerSpaceRadius: 45,
                                   sections: showingSections,
                                 ),
@@ -280,6 +287,9 @@ class _PortofolioState extends State<Portofolio> {
 
     final aktivitasTerbesar = Column(
       children: <Widget>[
+        SizedBox(
+          height: 10,
+        ),
         ListTile(
           title: Text(
             'Aktivitas Terbesar',
@@ -288,42 +298,62 @@ class _PortofolioState extends State<Portofolio> {
           subtitle: Text(
               '3 aktivitas amal terbesarmu berdasarkan nominal. Yuk perbanyak lagi amalmu dengan menekan tombol "+".'),
           trailing: IconButton(
-            onPressed: null,
+            onPressed: () {},
             icon: Icon(NewIcon.next_small_2x),
             color: blackColor,
             iconSize: 20,
           ),
         ),
         Padding(
-          padding:
-              const EdgeInsets.only(left: 15, right: 15, top: 10, bottom: 10),
-          child: GridView.count(
-            crossAxisCount: 3,
-            shrinkWrap: true,
-            children: <Widget>[
-              Container(
-                margin: EdgeInsets.only(right: 10),
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey[200], width: 3),
-                  borderRadius: BorderRadius.circular(13),
-                ),
-              ),
-              Container(
-                margin: EdgeInsets.only(right: 10),
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey[200], width: 3),
-                  borderRadius: BorderRadius.circular(13),
-                ),
-              ),
-              Container(
-                margin: EdgeInsets.only(right: 10),
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey[200], width: 3),
-                  borderRadius: BorderRadius.circular(13),
-                ),
-              ),
-            ],
-          ),
+          padding: const EdgeInsets.only(left: 15, right: 15, top: 10),
+          child: StreamBuilder(
+              stream: bloc.aktivitasTerbesar,
+              builder: (context,
+                  AsyncSnapshot<List<AktivitasAmalTerbaruModel>> snapshot) {
+                switch (snapshot.connectionState) {
+                  case ConnectionState.waiting:
+                    return Text('Loading');
+                    break;
+                  default:
+                    if (snapshot.hasData) {
+                      return listPenerimaAmalTerbesar(snapshot);
+                    }
+                    return GridView.count(
+                      crossAxisCount: 3,
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      children: <Widget>[
+                        Container(
+                          margin: EdgeInsets.only(right: 10),
+                          decoration: BoxDecoration(
+                            border:
+                                Border.all(color: Colors.grey[200], width: 3),
+                            borderRadius: BorderRadius.circular(13),
+                          ),
+                          child: Center(child: Text('No Data')),
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(right: 10),
+                          decoration: BoxDecoration(
+                            border:
+                                Border.all(color: Colors.grey[200], width: 3),
+                            borderRadius: BorderRadius.circular(13),
+                          ),
+                          child: Center(child: Text('No Data')),
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(right: 10),
+                          decoration: BoxDecoration(
+                            border:
+                                Border.all(color: Colors.grey[200], width: 3),
+                            borderRadius: BorderRadius.circular(13),
+                          ),
+                          child: Center(child: Text('No Data')),
+                        ),
+                      ],
+                    );
+                }
+              }),
         ),
       ],
     );
@@ -343,6 +373,57 @@ class _PortofolioState extends State<Portofolio> {
             iconSize: 20,
           ),
         ),
+        Padding(
+            padding:
+                const EdgeInsets.only(left: 15, right: 15, top: 10, bottom: 10),
+            child: StreamBuilder(
+                stream: bloc.aktivitasTerbaru,
+                builder: (context,
+                    AsyncSnapshot<List<AktivitasTerbesarModel>> snapshot) {
+                  switch (snapshot.connectionState) {
+                    case ConnectionState.waiting:
+                      return Center(child: Text('Load data'));
+                      break;
+                    default:
+                      if (snapshot.hasData) {
+                        return listPenerimaAmalTerbaru(snapshot);
+                      }
+                      return ListView.builder(
+                        itemCount: 3,
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: EdgeInsets.symmetric(vertical: 5),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                    color: Colors.grey[200], width: 3),
+                                borderRadius: BorderRadius.circular(13),
+                              ),
+                              child: ListTile(
+                                leading: Container(
+                                  width: 53.0,
+                                  height: 53.0,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(30.0),
+                                    image: DecorationImage(
+                                      image: NetworkImage(
+                                          'https://kempenfeltplayers.com/wp-content/uploads/2015/07/profile-icon-empty.png'),
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                ),
+                                title: Text('No Data'),
+                                subtitle: Text('No Data'),
+                                trailing: Text('0'),
+                              ),
+                            ),
+                          );
+                        },
+                      );
+                  }
+                })),
       ],
     );
 
@@ -371,14 +452,18 @@ class _PortofolioState extends State<Portofolio> {
                 SliverAppBar(
                   elevation: 0,
                   automaticallyImplyLeading: false,
-                  backgroundColor: Colors.transparent,
+                  backgroundColor: Colors.white,
                   bottom: PreferredSize(
-                    preferredSize: Size.fromHeight(320),
+                    preferredSize: Size.fromHeight(
+                        MediaQuery.of(context).size.height * 0.53),
                     child: Text(''),
                   ),
                   flexibleSpace: Container(
                     child: Column(
                       children: <Widget>[
+                        SizedBox(
+                          height: 10,
+                        ),
                         mySaldoGrid,
                         sebaranAktifitas,
                       ],
@@ -431,10 +516,10 @@ class _PortofolioState extends State<Portofolio> {
                                   color: Colors.redAccent,
                                   value: valueInfaq == 0.0 ? 1 : valueInfaq,
                                   title:
-                                      "${infaqPercent.toString().substring(0, 3)}%",
+                                      "${infaqPercent.toString().substring(0, 4)}%",
                                   radius: 26,
                                   titleStyle: TextStyle(
-                                      fontSize: 12, color: whiteColor)),
+                                      fontSize: 10, color: whiteColor)),
                             ];
                             setState(() {
                               pieChartRawSections = items;
@@ -451,7 +536,7 @@ class _PortofolioState extends State<Portofolio> {
                                       "${shodaqohPercent.toString().substring(0, 3)}%",
                                   radius: 26,
                                   titleStyle: TextStyle(
-                                      fontSize: 12, color: whiteColor)),
+                                      fontSize: 10, color: whiteColor)),
                             ];
                             setState(() {
                               pieChartRawSections = items;
@@ -476,16 +561,16 @@ class _PortofolioState extends State<Portofolio> {
                             });
                             break;
                           case 5:
-                            print('Zakat Data');
+                            print('Donasi Data');
                             var items = [
                               PieChartSectionData(
                                   color: Colors.blue,
-                                  value: valueZakat == 0.0 ? 1 : valueZakat,
+                                  value: valueDonasi == 0.0 ? 1 : valueDonasi,
                                   title:
-                                      "${zakatPercent.toString().substring(0, 3)}%",
+                                      "${donasiPercent.toString().substring(0, 4)}%",
                                   radius: 26,
                                   titleStyle: TextStyle(
-                                      fontSize: 12, color: whiteColor)),
+                                      fontSize: 10, color: whiteColor)),
                             ];
                             setState(() {
                               pieChartRawSections = items;
@@ -661,11 +746,12 @@ class _PortofolioState extends State<Portofolio> {
                   automaticallyImplyLeading: false,
                   backgroundColor: Colors.transparent,
                   bottom: PreferredSize(
-                    preferredSize: Size.fromHeight(180),
-                    child: Container(
-                      child: Column(
-                        children: <Widget>[aktivitasTerbesar],
-                      ),
+                    preferredSize: Size.fromHeight(190),
+                    child: Text(''),
+                  ),
+                  flexibleSpace: Container(
+                    child: Column(
+                      children: <Widget>[aktivitasTerbesar],
                     ),
                   ),
                 ),
@@ -674,11 +760,12 @@ class _PortofolioState extends State<Portofolio> {
                   automaticallyImplyLeading: false,
                   backgroundColor: Colors.transparent,
                   bottom: PreferredSize(
-                    preferredSize: Size.fromHeight(20),
-                    child: Container(
-                      child: Column(
-                        children: <Widget>[aktivitasTerbaru],
-                      ),
+                      preferredSize: Size.fromHeight(
+                          MediaQuery.of(context).size.height * 0.5),
+                      child: Text('')),
+                  flexibleSpace: Container(
+                    child: Column(
+                      children: <Widget>[aktivitasTerbaru],
                     ),
                   ),
                 ),
@@ -688,37 +775,52 @@ class _PortofolioState extends State<Portofolio> {
         ),
         floatingActionButton: SpeedDial(
           heroTag: 'Dial',
-          animatedIcon: AnimatedIcons.menu_close,
+          child: Icon(Icons.add),
           backgroundColor: greenColor,
           children: [
             SpeedDialChild(
                 child: Icon(ProfileInboxIcon.donation_3x),
                 backgroundColor: Colors.blueAccent,
+                label: 'Donasi',
+                labelStyle: TextStyle(color: whiteColor),
+                labelBackgroundColor: Colors.black,
                 onTap: () {
 //                  requestBill("donasi");
-                Navigator.of(context).pushNamed("/home");
+                  Navigator.of(context).pushNamed("/home");
                 }),
             SpeedDialChild(
                 child: Icon(ProfileInboxIcon.wakaf_3x),
                 backgroundColor: Colors.green,
+                label: 'Wakaf',
+                labelStyle: TextStyle(color: whiteColor),
+                labelBackgroundColor: Colors.black,
                 onTap: () {
                   requestBill("wakaf");
                 }),
             SpeedDialChild(
                 child: Icon(ProfileInboxIcon.sodaqoh_3x),
                 backgroundColor: Colors.deepPurpleAccent,
+                label: 'Sodaqoh',
+                labelStyle: TextStyle(color: whiteColor),
+                labelBackgroundColor: Colors.black,
                 onTap: () {
                   requestBill("sodaqoh");
                 }),
             SpeedDialChild(
                 child: Icon(ProfileInboxIcon.infaq_3x),
                 backgroundColor: Colors.redAccent,
+                label: 'Infaq',
+                labelStyle: TextStyle(color: whiteColor),
+                labelBackgroundColor: Colors.black,
                 onTap: () {
                   requestBill("infaq");
                 }),
             SpeedDialChild(
                 child: Icon(ProfileInboxIcon.zakat_3x),
                 backgroundColor: Colors.yellow,
+                label: 'Zakat',
+                labelStyle: TextStyle(color: whiteColor),
+                labelBackgroundColor: Colors.black,
                 onTap: () {
                   requestBill("zakat");
                 }),
@@ -738,10 +840,111 @@ class _PortofolioState extends State<Portofolio> {
     ));
   }
 
+  Widget listPenerimaAmalTerbesar(
+      AsyncSnapshot<List<AktivitasAmalTerbaruModel>> snapshot) {
+    return GridView.builder(
+      gridDelegate:
+          SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
+      itemCount: snapshot.data.length <= 3 ? snapshot.data.length : 3,
+      physics: NeverScrollableScrollPhysics(),
+      shrinkWrap: true,
+      itemBuilder: (constext, index) {
+        var value = snapshot.data[index];
+        return Container(
+          margin: EdgeInsets.only(right: 10),
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.grey[200], width: 3),
+            borderRadius: BorderRadius.circular(13),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              CircleAvatar(
+                backgroundColor: greenColor,
+                child: (value.imageContent == null)
+                    ? CircularProfileAvatar(noImg)
+                    : CircularProfileAvatar(value.imageContent[0].imgUrl),
+              ),
+              SizedBox(
+                height: 5,
+              ),
+              Container(
+                width: MediaQuery.of(context).size.width - 150,
+                child: Text(
+                  '${value.nama}',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
+                  textAlign: TextAlign.center,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              Text('${value.totalAktifitas} Aktivitas',
+                  style: TextStyle(fontSize: 10),
+                  overflow: TextOverflow.ellipsis),
+              SizedBox(
+                height: 7,
+              ),
+              Text(
+                'Rp ${CurrencyFormat().currency(value.totalAmal.toDouble())}',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Widget listPenerimaAmalTerbaru(
+      AsyncSnapshot<List<AktivitasTerbesarModel>> snapshot) {
+    return ListView.builder(
+      itemCount: 3,
+      shrinkWrap: true,
+      physics: NeverScrollableScrollPhysics(),
+      itemBuilder: (context, index) {
+        var value = snapshot.data[index];
+        return Padding(
+          padding: EdgeInsets.symmetric(vertical: 5),
+          child: Container(
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.grey[200], width: 3),
+              borderRadius: BorderRadius.circular(13),
+            ),
+            child: ListTile(
+              leading: Container(
+                width: 53.0,
+                height: 53.0,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(30.0),
+                  image: DecorationImage(
+                    image: NetworkImage(
+                        'https://kempenfeltplayers.com/wp-content/uploads/2015/07/profile-icon-empty.png'),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              title: Text('${value.lembagaAmalName}',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
+              subtitle: Text(
+                  '${TimeAgoService().timeAgoFormatting(value.requestedDate)}', style: TextStyle(fontSize: 12)),
+              trailing: Text(
+                  'Rp ${CurrencyFormat().currency(value.totalAmal.toDouble())}',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   @override
   void initState() {
     super.initState();
-
+    bloc.fetchAktivitasTerbesar();
+    bloc.fetchAktivitasTerbaru();
     getDataPieChart();
     getUser();
   }
@@ -778,35 +981,45 @@ class _PortofolioState extends State<Portofolio> {
         final zakatData = PieChartSectionData(
             color: Colors.orangeAccent,
             value: data.totalZakatPercent,
-            title: "${data.totalZakatPercent.toString().substring(0, 2)}%",
+            title: data.totalZakatPercent == 0.0
+                ? null
+                : "${data.totalZakatPercent.toString().substring(0, 2)}%",
             radius: 26,
             titleStyle: TextStyle(fontSize: 12, color: whiteColor));
 
         final infaqData = PieChartSectionData(
             color: Colors.red,
             value: data.totalInfaqPercent,
-            title: "${data.totalInfaqPercent.toString().substring(0, 2)}%",
+            title: data.totalInfaqPercent == 0.0
+                ? null
+                : "${data.totalInfaqPercent.toString().substring(0, 2)}%",
             radius: 26,
             titleStyle: TextStyle(fontSize: 12, color: whiteColor));
 
         final sodaqohData = PieChartSectionData(
             color: Colors.purpleAccent,
             value: data.totalSodaqohPercent,
-            title: "${data.totalSemuaPercent.toString().substring(0, 2)}%",
+            title: data.totalSodaqohPercent == 0.0
+                ? null
+                : "${data.totalSemuaPercent.toString().substring(0, 2)}%",
             radius: 26,
             titleStyle: TextStyle(fontSize: 12, color: whiteColor));
 
         final wakafData = PieChartSectionData(
             color: Colors.green,
             value: data.totalWakafPercent,
-            title: "${data.totalWakafPercent.toString().substring(0, 2)}%",
+            title: data.totalWakafPercent == 0.0
+                ? null
+                : "${data.totalWakafPercent.toString().substring(0, 2)}%",
             radius: 26,
             titleStyle: TextStyle(fontSize: 12, color: whiteColor));
 
         final donasiData = PieChartSectionData(
             color: Colors.blue,
             value: data.totalDonasiPercent,
-            title: "${data.totalDonasiPercent.toString().substring(0, 2)}%",
+            title: data.totalDonasiPercent == 0.0
+                ? null
+                : "${data.totalDonasiPercent.toString().substring(0, 2)}%",
             radius: 26,
             titleStyle: TextStyle(fontSize: 12, color: whiteColor));
 
