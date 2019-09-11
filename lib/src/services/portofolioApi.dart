@@ -36,7 +36,7 @@ class PortofolioProvider {
     return null;
   }
 
-  Future<List<AktivitasAmalTerbaruModel>> fetchAktivitasTerbesar() async {
+  Future<List<AktivitasTerbesarModel>> fetchAktivitasTerbesar() async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
     var token = _pref.getString(ACCESS_TOKEN_KEY);
     var username = _pref.getString(EMAIL_KEY);
@@ -51,7 +51,7 @@ class PortofolioProvider {
     final response = await client.get(uriParams, headers: headers);
     print('Penrima amal terbesar response : ${response.statusCode}');
     if (response.statusCode == 200) {
-      return compute(aktivitasAmalTerbaruModelFromJson, response.body);
+      return compute(aktivitasTerbesarModelFromJson, response.body);
     } else if (response.statusCode == 204) {
       print('No Content');
     }

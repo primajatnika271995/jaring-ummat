@@ -8,11 +8,11 @@ import 'package:rxdart/subjects.dart';
 class PortofolioBloc {
   final repository = PortofolioRepository();
   final sebaranAktifitasAmalFetcher = PublishSubject<SebaranAktifitasAmalModel>();
-  final aktivitasTerbesarFetcher = PublishSubject<List<AktivitasAmalTerbaruModel>>();
+  final aktivitasTerbesarFetcher = PublishSubject<List<AktivitasTerbesarModel>>();
   final aktivitasTerbaruFetcher = PublishSubject<List<AktivitasTerbesarModel>>();
 
   Observable<SebaranAktifitasAmalModel> get sebaranAktifitasAmal => sebaranAktifitasAmalFetcher.stream;
-  Observable<List<AktivitasAmalTerbaruModel>> get aktivitasTerbesar => aktivitasTerbesarFetcher.stream;
+  Observable<List<AktivitasTerbesarModel>> get aktivitasTerbesar => aktivitasTerbesarFetcher.stream;
   Observable<List<AktivitasTerbesarModel>> get aktivitasTerbaru => aktivitasTerbaruFetcher.stream;
 
   fetchSebaranAktifitasAmal() async {
@@ -21,7 +21,7 @@ class PortofolioBloc {
   }
 
   fetchAktivitasTerbesar() async {
-    List<AktivitasAmalTerbaruModel> value = await repository.aktivitasTerbesarFetch();
+    List<AktivitasTerbesarModel> value = await repository.aktivitasTerbesarFetch();
     aktivitasTerbesarFetcher.sink.add(value);
   }
 

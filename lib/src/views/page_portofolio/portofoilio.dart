@@ -309,7 +309,7 @@ class _PortofolioState extends State<Portofolio> {
           child: StreamBuilder(
               stream: bloc.aktivitasTerbesar,
               builder: (context,
-                  AsyncSnapshot<List<AktivitasAmalTerbaruModel>> snapshot) {
+                  AsyncSnapshot<List<AktivitasTerbesarModel>> snapshot) {
                 switch (snapshot.connectionState) {
                   case ConnectionState.waiting:
                     return Text('Loading');
@@ -841,7 +841,7 @@ class _PortofolioState extends State<Portofolio> {
   }
 
   Widget listPenerimaAmalTerbesar(
-      AsyncSnapshot<List<AktivitasAmalTerbaruModel>> snapshot) {
+      AsyncSnapshot<List<AktivitasTerbesarModel>> snapshot) {
     return GridView.builder(
       gridDelegate:
           SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
@@ -872,7 +872,7 @@ class _PortofolioState extends State<Portofolio> {
               Container(
                 width: MediaQuery.of(context).size.width - 150,
                 child: Text(
-                  '${value.nama}',
+                  '${value.lembagaAmalName}',
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
                   textAlign: TextAlign.center,
                   overflow: TextOverflow.ellipsis,
