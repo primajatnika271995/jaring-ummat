@@ -44,7 +44,7 @@ class _ProfileMenuState extends State<ProfileMenu> {
             ClipRRect(
               borderRadius: BorderRadius.circular(20.0),
               child: CircleAvatar(
-                radius: 60,
+                radius: 45,
                 backgroundColor: Colors.transparent,
                 backgroundImage: (selectedImage == null)
                     ? AssetImage('assets/icon/default_picture_man.png')
@@ -54,14 +54,14 @@ class _ProfileMenuState extends State<ProfileMenu> {
             InkWell(
               onTap: _asyncImageSourceDialog,
               child: Container(
-                height: 40,
-                width: 40,
+                height: 30,
+                width: 30,
                 decoration:
                     BoxDecoration(color: greenColor, shape: BoxShape.circle),
                 child: Icon(
                   NewIcon.upload_2x,
                   color: Colors.white,
-                  size: 20,
+                  size: 13,
                 ),
               ),
             ),
@@ -96,11 +96,11 @@ class _ProfileMenuState extends State<ProfileMenu> {
         children: <Widget>[
           Text(
             '$emailKey',
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+            style: TextStyle(fontWeight: FontWeight.bold),
           ),
           Text(
             '$fullnameKey • +62 $phoneNumberKey',
-            style: TextStyle(color: grayColor, fontSize: 15),
+            style: TextStyle(color: grayColor),
           )
         ],
       ),
