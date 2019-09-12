@@ -427,7 +427,10 @@ class _InputBillState extends State<InputBill> {
   void initState() {
     super.initState();
     setState(() {
-      double total = (widget.nilaiZakat * 10);
+      double total = 0.0;
+      if (widget.nilaiZakat != null) {
+        total = (widget.nilaiZakat * 10);
+      }
       customerName.text = widget.customerName;
       customerEmail.text = widget.customerEmail;
       customerPhone.text = widget.customerPhone;
