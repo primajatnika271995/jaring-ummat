@@ -86,7 +86,6 @@ class _PortofolioState extends State<Portofolio> {
   final String noImg =
       "https://kempenfeltplayers.com/wp-content/uploads/2015/07/profile-icon-empty.png";
 
-
   /** Variable Icon Floating Button SpeedDial */
   Icon _ic = new Icon(Icons.add);
 
@@ -219,79 +218,73 @@ class _PortofolioState extends State<Portofolio> {
         ),
         valueTotal == 0
             ? Center(
-          child: Padding(
-            padding: const EdgeInsets.only(top: 50),
-            child: Text(
-                'Belum ada data untuk Portofolio, \n silahkan melakukan kegiatan.',
-                textAlign: TextAlign.center),
-          ),
-        )
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 50),
+                  child: Text(
+                      'Belum ada data untuk Portofolio, \n silahkan melakukan kegiatan.',
+                      textAlign: TextAlign.center),
+                ),
+              )
             : Row(
-          children: <Widget>[
-            Expanded(
-              flex: 5,
-              child: Container(
-                height: MediaQuery
-                    .of(context)
-                    .size
-                    .height * 0.26,
-                width: MediaQuery
-                    .of(context)
-                    .size
-                    .width * 0.26,
-                child: showingSections == null
-                    ? Center(
-                  child: Text('Loading data ...'),
-                )
-                    : FlChart(
-                  chart: PieChart(
-                    PieChartData(
-                      borderData: FlBorderData(show: false),
-                      sectionsSpace: 1,
-                      centerSpaceRadius: 45,
-                      sections: showingSections,
+                children: <Widget>[
+                  Expanded(
+                    flex: 5,
+                    child: Container(
+                      height: MediaQuery.of(context).size.height * 0.26,
+                      width: MediaQuery.of(context).size.width * 0.26,
+                      child: showingSections == null
+                          ? Center(
+                              child: Text('Loading data ...'),
+                            )
+                          : FlChart(
+                              chart: PieChart(
+                                PieChartData(
+                                  borderData: FlBorderData(show: false),
+                                  sectionsSpace: 1,
+                                  centerSpaceRadius: 45,
+                                  sections: showingSections,
+                                ),
+                              ),
+                            ),
                     ),
                   ),
-                ),
-              ),
-            ),
-            Expanded(
-              flex: 5,
-              child: Padding(
-                padding: const EdgeInsets.only(right: 5),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      'Total pada periode berjalan',
-                      style: TextStyle(fontSize: 13, color: grayColor),
+                  Expanded(
+                    flex: 5,
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 5),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            'Total pada periode berjalan',
+                            style: TextStyle(fontSize: 13, color: grayColor),
+                          ),
+                          RichText(
+                            text: TextSpan(children: <TextSpan>[
+                              TextSpan(
+                                  text: 'Rp ',
+                                  style: TextStyle(color: grayColor)),
+                              TextSpan(
+                                text:
+                                    '${CurrencyFormat().currency(valueTotal)}',
+                                style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                    color: blackColor),
+                              ),
+                            ]),
+                          ),
+                          Text(
+                            '/ $valueTotalAktivitas Aktivitas Amal',
+                            style: TextStyle(color: grayColor, fontSize: 13),
+                          )
+                        ],
+                      ),
                     ),
-                    RichText(
-                      text: TextSpan(children: <TextSpan>[
-                        TextSpan(
-                            text: 'Rp ',
-                            style: TextStyle(color: grayColor)),
-                        TextSpan(
-                          text:
-                          '${CurrencyFormat().currency(valueTotal)}',
-                          style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              color: blackColor),
-                        ),
-                      ]),
-                    ),
-                    Text(
-                      '/ $valueTotalAktivitas Aktivitas Amal',
-                      style: TextStyle(color: grayColor, fontSize: 13),
-                    )
-                  ],
-                ),
+                  ),
+                ],
               ),
-            ),
-          ],
-        ),
         SizedBox(
           height: 4,
         ),
@@ -372,7 +365,7 @@ class _PortofolioState extends State<Portofolio> {
                           margin: EdgeInsets.only(right: 10),
                           decoration: BoxDecoration(
                             border:
-                            Border.all(color: Colors.grey[200], width: 3),
+                                Border.all(color: Colors.grey[200], width: 3),
                             borderRadius: BorderRadius.circular(13),
                           ),
                           child: Center(child: Text('No Data')),
@@ -381,7 +374,7 @@ class _PortofolioState extends State<Portofolio> {
                           margin: EdgeInsets.only(right: 10),
                           decoration: BoxDecoration(
                             border:
-                            Border.all(color: Colors.grey[200], width: 3),
+                                Border.all(color: Colors.grey[200], width: 3),
                             borderRadius: BorderRadius.circular(13),
                           ),
                           child: Center(child: Text('No Data')),
@@ -390,7 +383,7 @@ class _PortofolioState extends State<Portofolio> {
                           margin: EdgeInsets.only(right: 10),
                           decoration: BoxDecoration(
                             border:
-                            Border.all(color: Colors.grey[200], width: 3),
+                                Border.all(color: Colors.grey[200], width: 3),
                             borderRadius: BorderRadius.circular(13),
                           ),
                           child: Center(child: Text('No Data')),
@@ -420,7 +413,7 @@ class _PortofolioState extends State<Portofolio> {
         ),
         Padding(
             padding:
-            const EdgeInsets.only(left: 15, right: 15, top: 10, bottom: 10),
+                const EdgeInsets.only(left: 15, right: 15, top: 10, bottom: 10),
             child: StreamBuilder(
                 stream: bloc.aktivitasTerbaru,
                 builder: (context,
@@ -500,10 +493,7 @@ class _PortofolioState extends State<Portofolio> {
                   backgroundColor: Colors.white,
                   bottom: PreferredSize(
                     preferredSize: Size.fromHeight(
-                        MediaQuery
-                            .of(context)
-                            .size
-                            .height * 0.53),
+                        MediaQuery.of(context).size.height * 0.53),
                     child: Text(''),
                   ),
                   flexibleSpace: Container(
@@ -531,7 +521,7 @@ class _PortofolioState extends State<Portofolio> {
                       isScrollable: true,
                       indicator: UnderlineTabIndicator(
                         borderSide:
-                        BorderSide(width: 4.0, color: Colors.blueAccent),
+                            BorderSide(width: 4.0, color: Colors.blueAccent),
                       ),
                       labelColor: blackColor,
                       onTap: (index) {
@@ -547,7 +537,7 @@ class _PortofolioState extends State<Portofolio> {
                                   color: Colors.yellow,
                                   value: valueZakat == 0.0 ? 1 : valueZakat,
                                   title:
-                                  "${zakatPercent.toString().substring(0, 3)}%",
+                                      "${zakatPercent.toString().substring(0, 3)}%",
                                   radius: 26,
                                   titleStyle: TextStyle(
                                       fontSize: 12, color: whiteColor)),
@@ -564,7 +554,7 @@ class _PortofolioState extends State<Portofolio> {
                                   color: Colors.redAccent,
                                   value: valueInfaq == 0.0 ? 1 : valueInfaq,
                                   title:
-                                  "${infaqPercent.toString().substring(0, 3)}%",
+                                      "${infaqPercent.toString().substring(0, 3)}%",
                                   radius: 26,
                                   titleStyle: TextStyle(
                                       fontSize: 10, color: whiteColor)),
@@ -581,8 +571,7 @@ class _PortofolioState extends State<Portofolio> {
                                   color: Colors.green,
                                   value: valueShodqoh == 0.0 ? 1 : valueShodqoh,
                                   title:
-                                  "${shodaqohPercent.toString().substring(
-                                      0, 3)}%",
+                                      "${shodaqohPercent.toString().substring(0, 3)}%",
                                   radius: 26,
                                   titleStyle: TextStyle(
                                       fontSize: 10, color: whiteColor)),
@@ -599,7 +588,7 @@ class _PortofolioState extends State<Portofolio> {
                                   color: Colors.deepPurple,
                                   value: valueWakaf == 0.0 ? 1 : valueWakaf,
                                   title:
-                                  "${wakafPercent.toString().substring(0, 3)}%",
+                                      "${wakafPercent.toString().substring(0, 3)}%",
                                   radius: 26,
                                   titleStyle: TextStyle(
                                       fontSize: 12, color: whiteColor)),
@@ -616,8 +605,7 @@ class _PortofolioState extends State<Portofolio> {
                                   color: Colors.blue,
                                   value: valueDonasi == 0.0 ? 1 : valueDonasi,
                                   title:
-                                  "${donasiPercent.toString().substring(
-                                      0, 4)}%",
+                                      "${donasiPercent.toString().substring(0, 4)}%",
                                   radius: 26,
                                   titleStyle: TextStyle(
                                       fontSize: 10, color: whiteColor)),
@@ -731,8 +719,7 @@ class _PortofolioState extends State<Portofolio> {
                                     style: TextStyle(fontSize: 11.0),
                                   ),
                                   Text(
-                                    '${CurrencyFormat().currency(
-                                        valueShodqoh)}',
+                                    '${CurrencyFormat().currency(valueShodqoh)}',
                                     style: TextStyle(fontSize: 13.0),
                                   ),
                                 ],
@@ -812,10 +799,7 @@ class _PortofolioState extends State<Portofolio> {
                   backgroundColor: Colors.transparent,
                   bottom: PreferredSize(
                       preferredSize: Size.fromHeight(
-                          MediaQuery
-                              .of(context)
-                              .size
-                              .height * 0.5),
+                          MediaQuery.of(context).size.height * 0.5),
                       child: Text('')),
                   flexibleSpace: Container(
                     child: Column(
@@ -890,14 +874,13 @@ class _PortofolioState extends State<Portofolio> {
 
   void requestBill(String type) {
     Navigator.of(context).push(MaterialPageRoute(
-      builder: (context) =>
-          InputBill(
-            type: type,
-            customerName: customerName,
-            customerEmail: emailCustomer,
-            customerPhone: customerPhone,
-            programName: null,
-          ),
+      builder: (context) => InputBill(
+        type: type,
+        customerName: customerName,
+        customerEmail: emailCustomer,
+        customerPhone: customerPhone,
+        programName: null,
+      ),
     ));
   }
 
@@ -905,7 +888,7 @@ class _PortofolioState extends State<Portofolio> {
       AsyncSnapshot<List<AktivitasTerbesarModel>> snapshot) {
     return GridView.builder(
       gridDelegate:
-      SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
+          SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
       itemCount: snapshot.data.length <= 3 ? snapshot.data.length : 3,
       physics: NeverScrollableScrollPhysics(),
       shrinkWrap: true,
@@ -931,10 +914,7 @@ class _PortofolioState extends State<Portofolio> {
                 height: 5,
               ),
               Container(
-                width: MediaQuery
-                    .of(context)
-                    .size
-                    .width - 150,
+                width: MediaQuery.of(context).size.width - 150,
                 child: Text(
                   '${value.lembagaAmalName}',
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
@@ -978,17 +958,20 @@ class _PortofolioState extends State<Portofolio> {
               borderRadius: BorderRadius.circular(13),
             ),
             child: ListTile(
-              leading: Container(
-                width: 53.0,
-                height: 53.0,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(30.0),
-                  image: DecorationImage(
-                    image: NetworkImage(
-                        'https://kempenfeltplayers.com/wp-content/uploads/2015/07/profile-icon-empty.png'),
-                    fit: BoxFit.cover,
-                  ),
-                ),
+              leading: Icon(
+                value.category == "zakat"
+                    ? ProfileInboxIcon.zakat_3x
+                    : value.category == "infaq"
+                        ? ProfileInboxIcon.infaq_3x
+                        : value.category == "sodaqoh"
+                            ? ProfileInboxIcon.sodaqoh_3x
+                            : value.category == "wakaf"
+                                ? ProfileInboxIcon.wakaf_3x
+                                : value.category == "donasi"
+                                    ? ProfileInboxIcon.donation_3x
+                                    : ProfileInboxIcon.donation_3x,
+                color: blackColor,
+                size: 30,
               ),
               title: Text('${value.lembagaAmalName}',
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
@@ -1028,7 +1011,7 @@ class _PortofolioState extends State<Portofolio> {
     provider.pieChartApi().then((response) {
       if (response.statusCode == 200) {
         var data =
-        SebaranAktifitasAmalModel.fromJson(json.decode(response.body));
+            SebaranAktifitasAmalModel.fromJson(json.decode(response.body));
 
         valueTotal = data.totalSemua.toDouble();
         valueDonasi = data.totalDonasi.toDouble();
