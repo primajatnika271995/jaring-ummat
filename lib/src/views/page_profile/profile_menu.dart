@@ -7,6 +7,7 @@ import 'package:flutter_jaring_ummat/src/config/preferences.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/app_bar_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/new_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/sosial_media_icons.dart';
+import 'package:flutter_jaring_ummat/src/views/page_kalkulator_zakat/kalkulator_zakat.dart';
 import 'package:flutter_jaring_ummat/src/views/page_profile/menu_text_data.dart';
 import 'package:giffy_dialog/giffy_dialog.dart';
 import 'package:image_picker/image_picker.dart';
@@ -206,6 +207,15 @@ class _ProfileMenuState extends State<ProfileMenu> {
                         Icon(MenuTextData.iconMenu[index], color: whiteColor),
                   ),
                   trailing: Icon(NewIcon.next_small_2x, color: blackColor),
+                  onTap: () {
+                    switch (index) {
+                      case 1:
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => KalkulatorZakatPage()));
+                        break;
+                      default:
+                    }
+                  },
                 ),
               ),
             ]),

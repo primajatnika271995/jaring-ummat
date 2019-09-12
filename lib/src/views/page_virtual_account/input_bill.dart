@@ -24,6 +24,7 @@ class InputBill extends StatefulWidget {
   final String customerPhone;
   final String programId;
   final String programName;
+  final double nilaiZakat;
 
   InputBill(
       {this.type,
@@ -31,7 +32,8 @@ class InputBill extends StatefulWidget {
       this.customerEmail,
       this.customerPhone,
       this.programId,
-      this.programName});
+      this.programName,
+      this.nilaiZakat});
 
   @override
   _InputBillState createState() => _InputBillState();
@@ -425,10 +427,14 @@ class _InputBillState extends State<InputBill> {
   void initState() {
     super.initState();
     setState(() {
+      double total = (widget.nilaiZakat * 10);
       customerName.text = widget.customerName;
       customerEmail.text = widget.customerEmail;
       customerPhone.text = widget.customerPhone;
       programName.text = widget.programName;
+      widget.nilaiZakat != null
+          ? nominalCtrl.text = total.toString()
+          : nominalCtrl = new MoneyMaskedTextController(leftSymbol: 'Rp ');
       _loadingVisible = false;
       getListLembagaAmil();
     });
