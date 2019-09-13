@@ -13,6 +13,7 @@ import 'package:flutter_jaring_ummat/src/services/portofolioApi.dart';
 import 'package:flutter_jaring_ummat/src/services/time_ago_service.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/new_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/profile_inbox_icon_icons.dart';
+import 'package:flutter_jaring_ummat/src/views/components/indicator_container.dart';
 import 'package:flutter_jaring_ummat/src/views/components/loadingContainer.dart';
 import 'package:flutter_jaring_ummat/src/views/page_portofolio/portofolio_text_data.dart';
 import 'package:flutter_jaring_ummat/src/views/page_virtual_account/input_bill.dart';
@@ -62,6 +63,7 @@ class _PortofolioState extends State<Portofolio> {
   double valueWakaf = 0;
   double valueDonasi = 0;
   double valueTotal = 0;
+  int valueTotalAktivitas = 0;
 
   /*
    * Variable Temp Percent
@@ -83,6 +85,9 @@ class _PortofolioState extends State<Portofolio> {
    */
   final String noImg =
       "https://kempenfeltplayers.com/wp-content/uploads/2015/07/profile-icon-empty.png";
+
+  /** Variable Icon Floating Button SpeedDial */
+  Icon _ic = new Icon(Icons.add);
 
   @override
   Widget build(BuildContext context) {
@@ -271,7 +276,7 @@ class _PortofolioState extends State<Portofolio> {
                             ]),
                           ),
                           Text(
-                            '/ 34 Aktivitas Amal',
+                            '/ $valueTotalAktivitas Aktivitas Amal',
                             style: TextStyle(color: grayColor, fontSize: 13),
                           )
                         ],
@@ -280,6 +285,39 @@ class _PortofolioState extends State<Portofolio> {
                   ),
                 ],
               ),
+        SizedBox(
+          height: 4,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: <Widget>[
+            Indicator(
+              color: Colors.yellowAccent,
+              text: 'Zakat',
+              isSquare: false,
+            ),
+            Indicator(
+              color: Colors.redAccent,
+              text: 'Infaq',
+              isSquare: false,
+            ),
+            Indicator(
+              color: Colors.green,
+              text: 'Sodaqoh',
+              isSquare: false,
+            ),
+            Indicator(
+              color: Colors.deepPurpleAccent,
+              text: 'Wakaf',
+              isSquare: false,
+            ),
+            Indicator(
+              color: Colors.blue,
+              text: 'Donasi',
+              isSquare: false,
+            ),
+          ],
+        ),
       ],
     );
 
@@ -309,7 +347,7 @@ class _PortofolioState extends State<Portofolio> {
           child: StreamBuilder(
               stream: bloc.aktivitasTerbesar,
               builder: (context,
-                  AsyncSnapshot<List<AktivitasAmalTerbaruModel>> snapshot) {
+                  AsyncSnapshot<List<AktivitasTerbesarModel>> snapshot) {
                 switch (snapshot.connectionState) {
                   case ConnectionState.waiting:
                     return Text('Loading');
@@ -516,7 +554,7 @@ class _PortofolioState extends State<Portofolio> {
                                   color: Colors.redAccent,
                                   value: valueInfaq == 0.0 ? 1 : valueInfaq,
                                   title:
-                                      "${infaqPercent.toString().substring(0, 4)}%",
+                                      "${infaqPercent.toString().substring(0, 3)}%",
                                   radius: 26,
                                   titleStyle: TextStyle(
                                       fontSize: 10, color: whiteColor)),
@@ -530,7 +568,7 @@ class _PortofolioState extends State<Portofolio> {
                             print('Sodaqoh Data');
                             var items = [
                               PieChartSectionData(
-                                  color: Colors.deepPurple,
+                                  color: Colors.green,
                                   value: valueShodqoh == 0.0 ? 1 : valueShodqoh,
                                   title:
                                       "${shodaqohPercent.toString().substring(0, 3)}%",
@@ -547,7 +585,7 @@ class _PortofolioState extends State<Portofolio> {
                             print('Wakaf Data');
                             var items = [
                               PieChartSectionData(
-                                  color: Colors.greenAccent,
+                                  color: Colors.deepPurple,
                                   value: valueWakaf == 0.0 ? 1 : valueWakaf,
                                   title:
                                       "${wakafPercent.toString().substring(0, 3)}%",
@@ -615,7 +653,7 @@ class _PortofolioState extends State<Portofolio> {
                               const Text(
                                 'Zakat',
                                 style: TextStyle(
-                                  color: Colors.yellow,
+                                  color: Colors.black,
                                 ),
                               ),
                               new Row(
@@ -643,7 +681,7 @@ class _PortofolioState extends State<Portofolio> {
                               const Text(
                                 'Infaq',
                                 style: TextStyle(
-                                  color: Colors.redAccent,
+                                  color: Colors.black,
                                 ),
                               ),
                               new Row(
@@ -671,7 +709,7 @@ class _PortofolioState extends State<Portofolio> {
                               const Text(
                                 'Sodaqoh',
                                 style: TextStyle(
-                                  color: Colors.deepPurple,
+                                  color: Colors.black,
                                 ),
                               ),
                               new Row(
@@ -695,7 +733,7 @@ class _PortofolioState extends State<Portofolio> {
                               const Text(
                                 'Wakaf',
                                 style: TextStyle(
-                                  color: Colors.greenAccent,
+                                  color: Colors.black,
                                 ),
                               ),
                               new Row(
@@ -719,7 +757,7 @@ class _PortofolioState extends State<Portofolio> {
                               const Text(
                                 'Donasi',
                                 style: TextStyle(
-                                  color: Colors.blue,
+                                  color: Colors.black,
                                 ),
                               ),
                               new Row(
@@ -775,7 +813,13 @@ class _PortofolioState extends State<Portofolio> {
         ),
         floatingActionButton: SpeedDial(
           heroTag: 'Dial',
-          child: Icon(Icons.add),
+          child: _ic,
+          onOpen: () {
+            _ic = Icon(Icons.close);
+          },
+          onClose: () {
+            _ic = Icon(Icons.add);
+          },
           backgroundColor: greenColor,
           children: [
             SpeedDialChild(
@@ -841,7 +885,7 @@ class _PortofolioState extends State<Portofolio> {
   }
 
   Widget listPenerimaAmalTerbesar(
-      AsyncSnapshot<List<AktivitasAmalTerbaruModel>> snapshot) {
+      AsyncSnapshot<List<AktivitasTerbesarModel>> snapshot) {
     return GridView.builder(
       gridDelegate:
           SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
@@ -872,7 +916,7 @@ class _PortofolioState extends State<Portofolio> {
               Container(
                 width: MediaQuery.of(context).size.width - 150,
                 child: Text(
-                  '${value.nama}',
+                  '${value.lembagaAmalName}',
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
                   textAlign: TextAlign.center,
                   overflow: TextOverflow.ellipsis,
@@ -978,6 +1022,7 @@ class _PortofolioState extends State<Portofolio> {
         valueShodqoh = data.totalSodaqoh.toDouble();
         valueInfaq = data.totalInfaq.toDouble();
         valueZakat = data.totalZakat.toDouble();
+        valueTotalAktivitas = data.totalAktifitas;
 
         zakatPercent = data.totalZakatPercent;
         infaqPercent = data.totalInfaqPercent;

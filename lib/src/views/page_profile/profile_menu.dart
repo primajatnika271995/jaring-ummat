@@ -7,6 +7,7 @@ import 'package:flutter_jaring_ummat/src/config/preferences.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/app_bar_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/new_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/sosial_media_icons.dart';
+import 'package:flutter_jaring_ummat/src/views/page_kalkulator_zakat/kalkulator_zakat.dart';
 import 'package:flutter_jaring_ummat/src/views/page_profile/menu_text_data.dart';
 import 'package:giffy_dialog/giffy_dialog.dart';
 import 'package:image_picker/image_picker.dart';
@@ -43,7 +44,7 @@ class _ProfileMenuState extends State<ProfileMenu> {
             ClipRRect(
               borderRadius: BorderRadius.circular(20.0),
               child: CircleAvatar(
-                radius: 60,
+                radius: 45,
                 backgroundColor: Colors.transparent,
                 backgroundImage: (selectedImage == null)
                     ? AssetImage('assets/icon/default_picture_man.png')
@@ -53,14 +54,14 @@ class _ProfileMenuState extends State<ProfileMenu> {
             InkWell(
               onTap: _asyncImageSourceDialog,
               child: Container(
-                height: 40,
-                width: 40,
+                height: 30,
+                width: 30,
                 decoration:
                     BoxDecoration(color: greenColor, shape: BoxShape.circle),
                 child: Icon(
                   NewIcon.upload_2x,
                   color: Colors.white,
-                  size: 20,
+                  size: 13,
                 ),
               ),
             ),
@@ -95,11 +96,11 @@ class _ProfileMenuState extends State<ProfileMenu> {
         children: <Widget>[
           Text(
             '$emailKey',
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+            style: TextStyle(fontWeight: FontWeight.bold),
           ),
           Text(
             '$fullnameKey • +62 $phoneNumberKey',
-            style: TextStyle(color: grayColor, fontSize: 15),
+            style: TextStyle(color: grayColor),
           )
         ],
       ),
@@ -206,6 +207,15 @@ class _ProfileMenuState extends State<ProfileMenu> {
                         Icon(MenuTextData.iconMenu[index], color: whiteColor),
                   ),
                   trailing: Icon(NewIcon.next_small_2x, color: blackColor),
+                  onTap: () {
+                    switch (index) {
+                      case 1:
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => KalkulatorZakatPage()));
+                        break;
+                      default:
+                    }
+                  },
                 ),
               ),
             ]),

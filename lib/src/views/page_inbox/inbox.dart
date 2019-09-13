@@ -4,6 +4,7 @@ import 'package:flutter_jaring_ummat/src/views/components/icon_text/new_icon_ico
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/profile_inbox_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/page_inbox/histori_transaksi.dart';
 import 'package:flutter_jaring_ummat/src/views/page_inbox/inbox_text_data.dart';
+import 'package:flutter_jaring_ummat/src/views/page_inbox/transaksi_selesai.dart';
 
 class Inbox extends StatefulWidget {
   @override
@@ -91,6 +92,13 @@ class _InboxState extends State<Inbox> {
                 Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) => HistoriTransaksiView(),
+                  ),
+                );
+              }
+              if (index == 1) {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => TransaksiSelesaiView(),
                   ),
                 );
               }

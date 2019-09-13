@@ -82,3 +82,7 @@ const HISTORY_TRANSACTION = BASE_API_URL + '/api/transaksi/history/detail';
 
 // GALANG AMAL DONATION LIST
 const GALANG_AMAL_DONATION_LIST = BASE_API_URL + '/api/transaksi/donasi/detail';
+
+// KALKULATOR ZAKAT
+const KALKULATOR_ZAKAT_PROFESI = BASE_API_URL + '/api/zakat/profesi';
+const MASTER_NILAI_ZAKAT_FITRAH = BASE_API_URL + '/api/zakat/nilai-beras';

@@ -24,6 +24,7 @@ class InputBill extends StatefulWidget {
   final String customerPhone;
   final String programId;
   final String programName;
+  final double nilaiZakat;
 
   InputBill(
       {this.type,
@@ -31,7 +32,8 @@ class InputBill extends StatefulWidget {
       this.customerEmail,
       this.customerPhone,
       this.programId,
-      this.programName});
+      this.programName,
+      this.nilaiZakat});
 
   @override
   _InputBillState createState() => _InputBillState();
@@ -154,7 +156,7 @@ class _InputBillState extends State<InputBill> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Text('Informasi Galang Amal',
+              Text('Informasi Lembaga Amal',
                   style: TextStyle(
                       color: greenColor, fontWeight: FontWeight.bold)),
               Icon(Icons.info_outline)
@@ -199,7 +201,9 @@ class _InputBillState extends State<InputBill> {
                   customerEmail.text,
                   customerName.text,
                   customerPhone.text,
-                  widget.programId != null ? widget.programId : _lembagaAmalModel.idLembagaAmal,
+                  widget.programId != null
+                      ? widget.programId
+                      : _lembagaAmalModel.idLembagaAmal,
                   widget.type);
             },
             shape:
@@ -249,7 +253,7 @@ class _InputBillState extends State<InputBill> {
                   height: 10,
                 ),
                 informasiDatadiri,
-                informasiProgram,
+                widget.programId == null ? informasiProgram : new Container(),
                 SizedBox(
                   height: 10,
                 ),
@@ -371,7 +375,7 @@ class _InputBillState extends State<InputBill> {
   Widget galangAmalSelect() {
     return new DropdownButtonFormField<LembagaAmalModel>(
       decoration: InputDecoration(
-        hintText: "Nama Galang Amal",
+        hintText: "Nama Lembaga Amal",
         contentPadding: EdgeInsets.all(9.0),
         fillColor: Colors.white,
         border: new OutlineInputBorder(
@@ -423,10 +427,17 @@ class _InputBillState extends State<InputBill> {
   void initState() {
     super.initState();
     setState(() {
+      double total = 0.0;
+      if (widget.nilaiZakat != null) {
+        total = (widget.nilaiZakat * 10);
+      }
       customerName.text = widget.customerName;
       customerEmail.text = widget.customerEmail;
       customerPhone.text = widget.customerPhone;
       programName.text = widget.programName;
+      widget.nilaiZakat != null
+          ? nominalCtrl.text = total.toString()
+          : nominalCtrl = new MoneyMaskedTextController(leftSymbol: 'Rp ');
       _loadingVisible = false;
       getListLembagaAmil();
     });

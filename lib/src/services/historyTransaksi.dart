@@ -8,14 +8,20 @@ import 'package:shared_preferences/shared_preferences.dart';
 class HistoriTransaksiProvider {
   Client client = new Client();
 
-  Future<List<HistoriTransaksiModel>> historiTransaksi() async {
+  Future<List<HistoriTransaksiModel>> historiTransaksi(String type) async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
     var token = _pref.getString(ACCESS_TOKEN_KEY);
 
+    Uri uri = Uri.parse(HISTORY_TRANSACTION);
+    var params = {"type": type};
+    final uriParams = uri.replace(queryParameters: params);
+    print(uriParams);
+
     Map<String, String> header = {'Authorization': 'Bearer $token'};
 
-    final response = await client.get(HISTORY_TRANSACTION, headers: header);
-    print('--> Response Status Code Histori Transaksi : ${response.statusCode}');
+    final response = await client.get(uriParams, headers: header);
+    print(
+        '--> Response Status Code Histori Transaksi : ${response.statusCode}');
     if (response.statusCode == 200) {
       return compute(historiTransaksiModelFromJson, response.body);
     } else {

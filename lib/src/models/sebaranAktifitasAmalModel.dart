@@ -21,6 +21,7 @@ class SebaranAktifitasAmalModel {
     dynamic totalZakatPercent;
     dynamic totalInfaqPercent;
     int totalDonasi;
+    int totalAktifitas;
 
     SebaranAktifitasAmalModel({
         this.totalSodaqohPercent,
@@ -35,6 +36,7 @@ class SebaranAktifitasAmalModel {
         this.totalZakatPercent,
         this.totalInfaqPercent,
         this.totalDonasi,
+        this.totalAktifitas
     });
 
     factory SebaranAktifitasAmalModel.fromJson(Map<String, dynamic> json) => new SebaranAktifitasAmalModel(
@@ -50,6 +52,7 @@ class SebaranAktifitasAmalModel {
         totalZakatPercent: json["totalZakatPercent"] == null ? null : json["totalZakatPercent"].toDouble(),
         totalInfaqPercent: json["totalInfaqPercent"] == null ? null : json["totalInfaqPercent"].toDouble(),
         totalDonasi: json["totalDonasi"] == null ? null : json["totalDonasi"],
+        totalAktifitas: json["totalAktifitas"] == null ? null : json["totalAktifitas"],
     );
 
     Map<String, dynamic> toJson() => {
@@ -65,5 +68,6 @@ class SebaranAktifitasAmalModel {
         "totalZakatPercent": totalZakatPercent == null ? null : totalZakatPercent,
         "totalInfaqPercent": totalInfaqPercent == null ? null : totalInfaqPercent,
         "totalDonasi": totalDonasi == null ? null : totalDonasi,
+        "totalAktifitas": totalAktifitas == null ? null : totalAktifitas,
     };
 }

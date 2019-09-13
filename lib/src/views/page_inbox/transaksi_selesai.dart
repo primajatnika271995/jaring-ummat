@@ -5,12 +5,12 @@ import 'package:flutter_jaring_ummat/src/services/currency_format_service.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/new_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/bloc/historiTransaksiBloc.dart';
 
-class HistoriTransaksiView extends StatefulWidget {
+class TransaksiSelesaiView extends StatefulWidget {
   @override
-  _HistoriTransaksiViewState createState() => _HistoriTransaksiViewState();
+  _TransaksiSelesaiViewState createState() => _TransaksiSelesaiViewState();
 }
 
-class _HistoriTransaksiViewState extends State<HistoriTransaksiView> {
+class _TransaksiSelesaiViewState extends State<TransaksiSelesaiView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -80,16 +80,9 @@ class _HistoriTransaksiViewState extends State<HistoriTransaksiView> {
           subtitle: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text('Jumlah Transaksi ${CurrencyFormat().currency(data.jumlahTransaksi.toDouble())}'),
+              Text('Jumlah Dibayar ${CurrencyFormat().currency(data.jumlahDibayar.toDouble())}'),
               Text('${data.jenisTransaksi}'),
             ],
-          ),
-          trailing: RaisedButton(
-            onPressed: () {},
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(45)),
-            color: greenColor,
-            child: Text('Bayar', style: TextStyle(color: whiteColor)),
           ),
         );
       },
@@ -100,6 +93,6 @@ class _HistoriTransaksiViewState extends State<HistoriTransaksiView> {
   void initState() {
     super.initState();
 
-    bloc.fetchHistoryTransaksi("waiting");
+    bloc.fetchHistoryTransaksi("finish");
   }
 }

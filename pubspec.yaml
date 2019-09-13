@@ -66,12 +66,12 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
-  
+
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  
+
   flutter_launcher_icons: "^0.7.0"
 
 flutter_icons:
@@ -93,7 +93,7 @@ flutter:
     - family:  Proxima
       fonts:
         - asset: assets/fonts/proxima_nova_soft.ttf
-        
+
     - family: Open-Sans
       fonts:
         - asset: assets/fonts/OpenSans-Regular.ttf
@@ -101,7 +101,7 @@ flutter:
     - family:  Arab-Dances
       fonts:
         - asset: assets/fonts/ArabDances.ttf
-  
+
     - family:  Sofia-Pro
       fonts:
         - asset: assets/fonts/Sofia-Pro-Black.ttf
@@ -120,7 +120,7 @@ flutter:
     - family: ProfileInboxIcon
       fonts:
         - asset: assets/fonts/ProfileInboxIcon.ttf
-    
+
     - family:  SosialMedia
       fonts:
         - asset: assets/fonts/SosialMedia.ttf
@@ -142,18 +142,18 @@ flutter:
         - asset: assets/fonts/ActiveIcon.ttf
 
 
-    - family:  CustomFonts 
+    - family:  CustomFonts
       fonts:
         - asset: assets/fonts/custom_icons.ttf
-        
-    - family:  IconCustom 
+
+    - family:  IconCustom
       fonts:
         - asset: assets/fonts/IconCustom.ttf
 
-    - family:  HeaderCustom 
+    - family:  HeaderCustom
       fonts:
         - asset: assets/fonts/HeaderCustom.ttf
-     
+
     - family:  AppBarCustom
       fonts:
         - asset: assets/fonts/AppBarCustom.ttf
@@ -164,11 +164,11 @@ flutter:
 
     - family:  IconBaru
       fonts:
-      - asset: assets/fonts/IconBaru.ttf
+        - asset: assets/fonts/IconBaru.ttf
 
     - family:  MenuIcon
       fonts:
-      - asset: assets/fonts/MenuIcon.ttf
+        - asset: assets/fonts/MenuIcon.ttf
 
     - family:  IconMenuLain
       fonts:
@@ -189,6 +189,10 @@ flutter:
     - family:  CreateAccount
       fonts:
         - asset: assets/fonts/CreateAccount.ttf
+
+    - family: CalculatorOtherIcon
+      fonts:
+        - asset: assets/fonts/CalculatorOtherIcon.ttf
 
   assets:
     - assets/
