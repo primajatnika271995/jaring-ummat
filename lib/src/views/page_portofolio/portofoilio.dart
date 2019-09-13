@@ -914,22 +914,29 @@ class _PortofolioState extends State<Portofolio> {
               borderRadius: BorderRadius.circular(13),
             ),
             child: ListTile(
-              leading: Container(
-                width: 53.0,
-                height: 53.0,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(30.0),
-                  image: DecorationImage(
-                    image: NetworkImage(
-                        'https://kempenfeltplayers.com/wp-content/uploads/2015/07/profile-icon-empty.png'),
-                    fit: BoxFit.cover,
-                  ),
+              leading: CircleAvatar(
+                backgroundColor: greenColor,
+                child: Icon(
+                  value.category == "zakat"
+                      ? ProfileInboxIcon.zakat_3x
+                      : value.category == "infaq"
+                          ? ProfileInboxIcon.infaq_3x
+                          : value.category == "sodaqoh"
+                              ? ProfileInboxIcon.sodaqoh_3x
+                              : value.category == "wakaf"
+                                  ? ProfileInboxIcon.wakaf_3x
+                                  : value.category == "donasi"
+                                      ? ProfileInboxIcon.donation_3x
+                                      : ProfileInboxIcon.donation_3x,
+                  color: whiteColor,
+                  size: 20,
                 ),
               ),
               title: Text('${value.lembagaAmalName}',
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
               subtitle: Text(
-                  '${TimeAgoService().timeAgoFormatting(value.requestedDate)}', style: TextStyle(fontSize: 12)),
+                  '${TimeAgoService().timeAgoFormatting(value.requestedDate)}',
+                  style: TextStyle(fontSize: 12)),
               trailing: Text(
                   'Rp ${CurrencyFormat().currency(value.totalAmal.toDouble())}',
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
