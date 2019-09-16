@@ -960,7 +960,17 @@ class _PortofolioState extends State<Portofolio> {
             ),
             child: ListTile(
               leading: CircleAvatar(
-                backgroundColor: greenColor,
+                backgroundColor: value.category == "zakat"
+                    ? Colors.yellow
+                    : value.category == "infaq"
+                        ? Colors.redAccent
+                        : value.category == "sodaqoh"
+                            ? Colors.deepPurple
+                            : value.category == "wakaf"
+                                ? Colors.green
+                                : value.category == "donasi"
+                                    ? Colors.blue
+                                    : Colors.blue,
                 child: Icon(
                   value.category == "zakat"
                       ? ProfileInboxIcon.zakat_3x
