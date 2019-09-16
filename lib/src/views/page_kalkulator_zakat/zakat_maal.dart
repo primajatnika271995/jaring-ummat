@@ -7,6 +7,7 @@ import 'package:flutter_jaring_ummat/src/models/zakatProfesiModel.dart';
 import 'package:flutter_jaring_ummat/src/services/currency_format_service.dart';
 import 'package:flutter_jaring_ummat/src/services/kalkulatorZakatApi.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/calculator_other_icon_icons.dart';
+import 'package:flutter_jaring_ummat/src/views/page_payment/payment.dart';
 import 'package:flutter_jaring_ummat/src/views/page_virtual_account/input_bill.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -25,7 +26,6 @@ class _ZakatMaalPageState extends State<ZakatMaalPage> {
   final nilaiPerhiasanCtrl = new MoneyMaskedTextController(leftSymbol: 'Rp ');
   final nilaiSahamCtrl = new MoneyMaskedTextController(leftSymbol: 'Rp ');
   final nilaiHutangCtrl = new MoneyMaskedTextController(leftSymbol: 'Rp ');
-
 
   /*
    * Form State
@@ -75,8 +75,7 @@ class _ZakatMaalPageState extends State<ZakatMaalPage> {
                       hintText: 'Rp',
                       labelText: 'Nilai Deposito / Tabungan / Giro',
                       hasFloatingPlaceholder: true,
-                      icon:
-                          Icon(CalculatorOtherIcon.edittext_savings_3x)),
+                      icon: Icon(CalculatorOtherIcon.edittext_savings_3x)),
                   controller: nilaiDepositoCtrl,
                   keyboardType: TextInputType.number,
                   validator: (value) {
@@ -89,10 +88,10 @@ class _ZakatMaalPageState extends State<ZakatMaalPage> {
                 TextFormField(
                   decoration: InputDecoration(
                       hintText: 'Rp',
-                      labelText: 'Nilai properti & kendaraan (bukan yang digunakan sehari-hari)',
+                      labelText:
+                          'Nilai properti & kendaraan (bukan yang digunakan sehari-hari)',
                       hasFloatingPlaceholder: true,
-                      icon:
-                          Icon(CalculatorOtherIcon.edittext_property_3x)),
+                      icon: Icon(CalculatorOtherIcon.edittext_property_3x)),
                   controller: nilaiPropertiCtrl,
                   keyboardType: TextInputType.number,
                 ),
@@ -108,9 +107,11 @@ class _ZakatMaalPageState extends State<ZakatMaalPage> {
                 TextFormField(
                   decoration: InputDecoration(
                       hintText: 'Rp',
-                      labelText: 'Lainnya (saham, piutang, dan surat-surat berharga lainnya)',
+                      labelText:
+                          'Lainnya (saham, piutang, dan surat-surat berharga lainnya)',
                       hasFloatingPlaceholder: true,
-                      icon: Icon(CalculatorOtherIcon.edittext_another_salary_3x)),
+                      icon:
+                          Icon(CalculatorOtherIcon.edittext_another_salary_3x)),
                   controller: nilaiSahamCtrl,
                   keyboardType: TextInputType.number,
                 ),
@@ -141,47 +142,51 @@ class _ZakatMaalPageState extends State<ZakatMaalPage> {
                 SizedBox(
                   height: 40,
                 ),
-                hidenNominal ? Container() : Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      'Kewajiban Zakat Maalmu',
-                      style: TextStyle(color: grayColor),
-                    ),
-                    RichText(
-                      text: TextSpan(children: <TextSpan>[
-                        TextSpan(
-                            text: 'Rp ', style: TextStyle(color: grayColor)),
-                        TextSpan(
-                          text: '${CurrencyFormat().currency(totalZakat)}',
-                          style: TextStyle(
-                              fontSize: 23,
-                              fontWeight: FontWeight.bold,
-                              color: blackColor),
-                        ),
-                      ]),
-                    ),
-                    Text(
-                      'Itulah besar nominal kewajiban zakatmu. Yuk segera bayar kewajibanmu itu dengan menekan tombol "Bayar Zakat"',
-                      style: TextStyle(color: grayColor),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    FlatButton(
-                      onPressed: () {
-                        requestBill('zakat');
-                      },
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(45)),
-                      child: const Text('Bayar Zakat',
-                          style: TextStyle(color: Colors.white)),
-                      color: greenColor,
-                      disabledColor: grayColor,
-                      disabledTextColor: whiteColor,
-                    ),
-                  ],
-                ),
+                hidenNominal
+                    ? Container()
+                    : Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            'Kewajiban Zakat Maalmu',
+                            style: TextStyle(color: grayColor),
+                          ),
+                          RichText(
+                            text: TextSpan(children: <TextSpan>[
+                              TextSpan(
+                                  text: 'Rp ',
+                                  style: TextStyle(color: grayColor)),
+                              TextSpan(
+                                text:
+                                    '${CurrencyFormat().currency(totalZakat)}',
+                                style: TextStyle(
+                                    fontSize: 23,
+                                    fontWeight: FontWeight.bold,
+                                    color: blackColor),
+                              ),
+                            ]),
+                          ),
+                          Text(
+                            'Itulah besar nominal kewajiban zakatmu. Yuk segera bayar kewajibanmu itu dengan menekan tombol "Bayar Zakat"',
+                            style: TextStyle(color: grayColor),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          FlatButton(
+                            onPressed: () {
+                              requestBill('zakat');
+                            },
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(45)),
+                            child: const Text('Bayar Zakat',
+                                style: TextStyle(color: Colors.white)),
+                            color: greenColor,
+                            disabledColor: grayColor,
+                            disabledTextColor: whiteColor,
+                          ),
+                        ],
+                      ),
               ],
             ),
           ),
@@ -201,7 +206,12 @@ class _ZakatMaalPageState extends State<ZakatMaalPage> {
 
   void hitung() {
     _provider
-        .zakatMaalApi(nilaiDepositoCtrl.numberValue, nilaiPropertiCtrl.numberValue, nilaiPerhiasanCtrl.numberValue, nilaiHutangCtrl.numberValue, nilaiSahamCtrl.numberValue)
+        .zakatMaalApi(
+            nilaiDepositoCtrl.numberValue,
+            nilaiPropertiCtrl.numberValue,
+            nilaiPerhiasanCtrl.numberValue,
+            nilaiHutangCtrl.numberValue,
+            nilaiSahamCtrl.numberValue)
         .then((response) {
       print(response.statusCode);
       if (response.statusCode == 200) {
@@ -243,13 +253,12 @@ class _ZakatMaalPageState extends State<ZakatMaalPage> {
     }
 
     Navigator.of(context).push(MaterialPageRoute(
-      builder: (context) => InputBill(
-          type: type,
-          customerName: customerName,
-          customerEmail: emailCustomer,
-          customerPhone: customerPhone,
-          programName: null,
-          nilaiZakat: totalZakat),
-    ));
+        builder: (context) => PaymentPage(
+            type: type,
+            customerName: customerName,
+            customerEmail: emailCustomer,
+            customerContact: customerPhone,
+            toGalangAmalName: null,
+            nilaiZakat: totalZakat)));
   }
 }

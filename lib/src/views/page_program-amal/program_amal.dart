@@ -53,7 +53,7 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
       inAsyncCall: _loadingVisible,
       child: Scaffold(
         body: DefaultTabController(
-          length: 8,
+          length: 6,
           child: Scaffold(
             backgroundColor: softGreyColor,
             appBar: AppBar(
@@ -169,37 +169,32 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                         switch (index) {
                           case 1:
                             setState(() {
-                              selectedCategory = "Pendidikan";
+                              selectedCategory = "";
                             });
                             break;
                           case 2:
                             setState(() {
-                              selectedCategory = "Kemanusiaan";
+                              selectedCategory = "Keagamaan";
                             });
                             break;
                           case 3:
                             setState(() {
-                              selectedCategory = "Amal";
+                              selectedCategory = "Kemanusiaan";
                             });
                             break;
                           case 4:
                             setState(() {
-                              selectedCategory = "Pembangunan Mesjid";
+                              selectedCategory = "Pendidikan";
                             });
                             break;
                           case 5:
                             setState(() {
-                              selectedCategory = "Zakat";
+                              selectedCategory = "Lingkungan";
                             });
                             break;
                           case 6:
                             setState(() {
-                              selectedCategory = "Sosial";
-                            });
-                            break;
-                          case 7:
-                            setState(() {
-                              selectedCategory = "lain-lain";
+                              selectedCategory = "Kesehatan";
                             });
                             break;
                           default:
@@ -214,25 +209,19 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                           text: 'Populer',
                         ),
                         new Tab(
-                          text: 'Pendidikan',
+                          text: 'Keagamaan',
                         ),
                         new Tab(
                           text: 'Kemanusiaan',
                         ),
                         new Tab(
-                          text: 'Amal',
+                          text: 'Pendidikan',
                         ),
                         new Tab(
-                          text: 'Pembangunan Masjid',
+                          text: 'Lingkungan',
                         ),
                         new Tab(
-                          text: 'Zakat',
-                        ),
-                        new Tab(
-                          text: 'Bakti Sosial',
-                        ),
-                        new Tab(
-                          text: 'lain-lain',
+                          text: 'Kesehatan',
                         ),
                       ],
                     ),
