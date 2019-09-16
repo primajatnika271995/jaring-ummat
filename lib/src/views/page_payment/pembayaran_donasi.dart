@@ -19,6 +19,7 @@ class PembayaranDonasi extends StatefulWidget {
   String type;
   String idProgram;
   String nameProgram;
+  String customerName;
 
   PembayaranDonasi(
       {Key key,
@@ -29,7 +30,8 @@ class PembayaranDonasi extends StatefulWidget {
       this.lembagaId,
       this.type,
       this.idProgram,
-      this.nameProgram})
+      this.nameProgram,
+      this.customerName})
       : super(key: key);
 
   @override
@@ -41,7 +43,8 @@ class PembayaranDonasi extends StatefulWidget {
       this.lembagaId,
       this.type,
       this.idProgram,
-      this.nameProgram);
+      this.nameProgram,
+      this.customerName);
 }
 
 class _PembayaranDonasiState extends State<PembayaranDonasi> {
@@ -53,9 +56,10 @@ class _PembayaranDonasiState extends State<PembayaranDonasi> {
   String type;
   String idProgram;
   String nameProgram;
+  String customerName;
 
   _PembayaranDonasiState(this.toLembagaAmal, this.nominal, this.email,
-      this.phone, this.lembagaId, this.type, this.idProgram, this.nameProgram);
+      this.phone, this.lembagaId, this.type, this.idProgram, this.nameProgram, this.customerName);
 
   /*
    * Background Img
@@ -268,7 +272,7 @@ class _PembayaranDonasiState extends State<PembayaranDonasi> {
                                 toLembagaAmal,
                                 nominal,
                                 email,
-                                toLembagaAmal,
+                                customerName,
                                 phone,
                                 idProgram != null ? idProgram : lembagaId,
                                 type,

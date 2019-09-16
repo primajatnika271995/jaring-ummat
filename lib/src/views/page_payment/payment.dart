@@ -266,6 +266,7 @@ class _PaymentPageState extends State<PaymentPage> {
                             phone: cutomerContact,
                             lembagaId: toLembagaId,
                             type: type,
+                            customerName: customerName,
                           ),
                         ));
                       }
