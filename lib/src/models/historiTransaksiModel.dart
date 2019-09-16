@@ -12,6 +12,7 @@ class HistoriTransaksiModel {
     String idTransaksi;
     String jenisTransaksi;
     String donasiTitle;
+    String namaLembagaAmal;
     int jumlahTransaksi;
     int jumlahDibayar;
     int tanggalTransaksi;
@@ -22,6 +23,7 @@ class HistoriTransaksiModel {
         this.idTransaksi,
         this.jenisTransaksi,
         this.donasiTitle,
+        this.namaLembagaAmal,
         this.jumlahTransaksi,
         this.jumlahDibayar,
         this.tanggalTransaksi,
@@ -33,6 +35,7 @@ class HistoriTransaksiModel {
         idTransaksi: json["idTransaksi"] == null ? null : json["idTransaksi"],
         jenisTransaksi: json["jenisTransaksi"] == null ? null : json["jenisTransaksi"],
         donasiTitle: json["donasiTitle"] == null ? null : json["donasiTitle"],
+        namaLembagaAmal: json["namaLembagaAmal"] == null ? null : json["namaLembagaAmal"],
         jumlahTransaksi: json["jumlahTransaksi"] == null ? null : json["jumlahTransaksi"],
         jumlahDibayar: json["jumlahDibayar"],
         tanggalTransaksi: json["tanggalTransaksi"] == null ? null : json["tanggalTransaksi"],
@@ -44,6 +47,7 @@ class HistoriTransaksiModel {
         "idTransaksi": idTransaksi == null ? null : idTransaksi,
         "jenisTransaksi": jenisTransaksi == null ? null : jenisTransaksi,
         "donasiTitle": donasiTitle == null ? null : donasiTitle,
+        "namaLembagaAmal": namaLembagaAmal == null ? null : namaLembagaAmal,
         "jumlahTransaksi": jumlahTransaksi == null ? null : jumlahTransaksi,
         "jumlahDibayar": jumlahDibayar,
         "tanggalTransaksi": tanggalTransaksi == null ? null : tanggalTransaksi,
