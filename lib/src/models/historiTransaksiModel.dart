@@ -16,6 +16,7 @@ class HistoriTransaksiModel {
     int jumlahDibayar;
     int tanggalTransaksi;
     bool status;
+    String virtualAccount;
 
     HistoriTransaksiModel({
         this.idTransaksi,
@@ -25,25 +26,28 @@ class HistoriTransaksiModel {
         this.jumlahDibayar,
         this.tanggalTransaksi,
         this.status,
+        this.virtualAccount,
     });
 
     factory HistoriTransaksiModel.fromJson(Map<String, dynamic> json) => HistoriTransaksiModel(
-        idTransaksi: json["idTransaksi"],
-        jenisTransaksi: json["jenisTransaksi"],
+        idTransaksi: json["idTransaksi"] == null ? null : json["idTransaksi"],
+        jenisTransaksi: json["jenisTransaksi"] == null ? null : json["jenisTransaksi"],
         donasiTitle: json["donasiTitle"] == null ? null : json["donasiTitle"],
-        jumlahTransaksi: json["jumlahTransaksi"],
+        jumlahTransaksi: json["jumlahTransaksi"] == null ? null : json["jumlahTransaksi"],
         jumlahDibayar: json["jumlahDibayar"],
-        tanggalTransaksi: json["tanggalTransaksi"],
-        status: json["status"],
+        tanggalTransaksi: json["tanggalTransaksi"] == null ? null : json["tanggalTransaksi"],
+        status: json["status"] == null ? null : json["status"],
+        virtualAccount: json["virtualAccount"] == null ? null : json["virtualAccount"],
     );
 
     Map<String, dynamic> toJson() => {
-        "idTransaksi": idTransaksi,
-        "jenisTransaksi": jenisTransaksi,
+        "idTransaksi": idTransaksi == null ? null : idTransaksi,
+        "jenisTransaksi": jenisTransaksi == null ? null : jenisTransaksi,
         "donasiTitle": donasiTitle == null ? null : donasiTitle,
-        "jumlahTransaksi": jumlahTransaksi,
+        "jumlahTransaksi": jumlahTransaksi == null ? null : jumlahTransaksi,
         "jumlahDibayar": jumlahDibayar,
-        "tanggalTransaksi": tanggalTransaksi,
-        "status": status,
+        "tanggalTransaksi": tanggalTransaksi == null ? null : tanggalTransaksi,
+        "status": status == null ? null : status,
+        "virtualAccount": virtualAccount == null ? null : virtualAccount,
     };
 }
