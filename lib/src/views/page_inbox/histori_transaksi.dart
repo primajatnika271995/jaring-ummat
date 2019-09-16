@@ -4,6 +4,7 @@ import 'package:flutter_jaring_ummat/src/models/historiTransaksiModel.dart';
 import 'package:flutter_jaring_ummat/src/services/currency_format_service.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/new_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/bloc/historiTransaksiBloc.dart';
+import 'package:flutter_jaring_ummat/src/views/page_payment/instruksi_pembayaran.dart';
 
 class HistoriTransaksiView extends StatefulWidget {
   @override
@@ -85,7 +86,16 @@ class _HistoriTransaksiViewState extends State<HistoriTransaksiView> {
             ],
           ),
           trailing: RaisedButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => InstruksiPembayaran(
+                    transaksiId: data.idTransaksi,
+                    nominal: data.jumlahTransaksi.toDouble(),
+                    tanggalRequest: data.tanggalTransaksi.toString(),
+                    toLembagAmal: data.namaLembagaAmal,
+                    virtualNumber: data.virtualAccount),
+              ));
+            },
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(45)),
             color: greenColor,
