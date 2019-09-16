@@ -62,12 +62,18 @@ class _PembayaranDonasiState extends State<PembayaranDonasi> {
    */
   final String bgUrl = 'assets/backgrounds/payment_accent_full_width.png';
 
+  /*
+   * Virtual Name List
+   */
   final List<String> vaName = [
     'BNI Syariah VA Billing',
     'Mandiri Syariah VA Billing',
     'Bank Muamalat VA Billing'
   ];
 
+  /*
+   * Virtual Account Image
+   */
   final List<String> imageVA = [
     'https://2.bp.blogspot.com/-qy7Sanutml0/WmXk88IBzNI/AAAAAAAANyg/2fENOvWf5bUgTD8T7FEAzotvjdmusMZYACLcBGAs/s600/Bank-BNI-Syariah-Logo.jpg',
     'https://www.syariahbank.com/wp-content/uploads/2015/03/profil-dan-produk-Bank-Syariah-Mandiri.jpg',
@@ -78,6 +84,13 @@ class _PembayaranDonasiState extends State<PembayaranDonasi> {
    * Boolen for Loading
    */
   bool _loadingVisible = false;
+
+  /*
+   * Metode Pembayaran Temp
+   */
+  String titleMetode = 'Dompet Jejaring';
+  String subtitleMetode = '1.700';
+  int indexTile = null;
 
   @override
   Widget build(BuildContext context) {
@@ -199,15 +212,15 @@ class _PembayaranDonasiState extends State<PembayaranDonasi> {
                               borderRadius: BorderRadius.circular(13),
                             ),
                             child: ListTile(
-                                title: const Text('Dompet Jejaring'),
-                                subtitle: RichText(
+                                title: Text('$titleMetode'),
+                                subtitle: subtitleMetode == null ? null : RichText(
                                   text: TextSpan(children: <TextSpan>[
                                     TextSpan(
                                         text: 'Rp ',
                                         style: TextStyle(
                                             color: Colors.grey, fontSize: 13)),
                                     TextSpan(
-                                      text: '1.700',
+                                      text: '$subtitleMetode',
                                       style: TextStyle(
                                           color: Colors.black,
                                           fontSize: SizeUtils.titleSize,
@@ -217,11 +230,12 @@ class _PembayaranDonasiState extends State<PembayaranDonasi> {
                                 ),
                                 leading: CircleAvatar(
                                   backgroundColor: Colors.redAccent,
-                                  child: Icon(
+                                  backgroundImage: indexTile == null ? null : NetworkImage(imageVA[indexTile]),
+                                  child: indexTile == null ? Icon(
                                     ProfileInboxIcon.balance_2x,
                                     color: whiteColor,
                                     size: 20,
-                                  ),
+                                  ) : null
                                 ),
                                 trailing: OutlineButton(
                                   onPressed: () {
@@ -312,6 +326,7 @@ class _PembayaranDonasiState extends State<PembayaranDonasi> {
             width: screenWidth(context),
             color: Colors.transparent,
             child: Scaffold(
+              backgroundColor: whiteColor,
               appBar: AppBar(
                 title: const Text('Pilih Metode Pembayaran',
                     style: TextStyle(
@@ -360,7 +375,32 @@ class _PembayaranDonasiState extends State<PembayaranDonasi> {
                                   backgroundImage: NetworkImage(imageVA[index]),
                                 ),
                                 trailing: OutlineButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    switch (index) {
+                                      case 0:
+                                        setState(() {
+                                          titleMetode = 'BNI Syariah VA Billing';
+                                          subtitleMetode = null;
+                                          indexTile = 0;
+                                        });
+                                        break;
+                                      case 1:
+                                        setState(() {
+                                          titleMetode = 'Mandiri Syariah VA Billing';
+                                          subtitleMetode = null;
+                                          indexTile = 1;
+                                        });
+                                        break;
+                                      case 2:
+                                        setState(() {
+                                          titleMetode = 'Bank Muamalat VA Billing';
+                                          subtitleMetode = null;
+                                          indexTile = 2;
+                                        });
+                                        break;
+                                      default:
+                                    }
+                                  },
                                   child: const Text('Ganti',
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold,
