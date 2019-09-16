@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_jaring_ummat/src/config/hexColor.dart';
 import 'package:flutter_jaring_ummat/src/models/historiTransaksiModel.dart';
 import 'package:flutter_jaring_ummat/src/services/currency_format_service.dart';
+import 'package:flutter_jaring_ummat/src/utils/sizeUtils.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/new_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/bloc/historiTransaksiBloc.dart';
+import 'package:flutter_jaring_ummat/src/views/components/icon_text/profile_inbox_icon_icons.dart';
 
 class TransaksiSelesaiView extends StatefulWidget {
   @override
@@ -14,11 +16,12 @@ class _TransaksiSelesaiViewState extends State<TransaksiSelesaiView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: whiteColor,
       appBar: AppBar(
         backgroundColor: Colors.white,
         titleSpacing: 0,
         elevation: 0,
-        title: Text('Transaksi Histori', style: TextStyle(color: blackColor)),
+        title: Text('Transaksi Histori', style: TextStyle(color: blackColor, fontSize: SizeUtils.titleSize)),
         leading: IconButton(
           onPressed: () {
             Navigator.of(context).pop();
@@ -70,7 +73,34 @@ class _TransaksiSelesaiViewState extends State<TransaksiSelesaiView> {
       itemBuilder: (context, index) {
         var data = snapshot[index];
         return ListTile(
-          leading: Icon(Icons.history, size: 30,),
+          leading: CircleAvatar(
+            backgroundColor: data.jenisTransaksi == "ZAKAT"
+                ? Colors.yellow
+                : data.jenisTransaksi == "INFAQ"
+                    ? Colors.redAccent
+                    : data.jenisTransaksi == "SODAQOH"
+                        ? Colors.deepPurple
+                        : data.jenisTransaksi == "WAKAF"
+                            ? Colors.green
+                            : data.jenisTransaksi == "DONASI"
+                                ? Colors.blue
+                                : Colors.blue,
+            child: Icon(
+              data.jenisTransaksi == "ZAKAT"
+                  ? ProfileInboxIcon.zakat_3x
+                  : data.jenisTransaksi == "INFAQ"
+                      ? ProfileInboxIcon.infaq_3x
+                      : data.jenisTransaksi == "SODAQOH"
+                          ? ProfileInboxIcon.sodaqoh_3x
+                          : data.jenisTransaksi == "WAKAF"
+                              ? ProfileInboxIcon.wakaf_3x
+                              : data.jenisTransaksi == "DONASI"
+                                  ? ProfileInboxIcon.donation_3x
+                                  : ProfileInboxIcon.donation_3x,
+              color: whiteColor,
+              size: 20,
+            ),
+          ),
           title: data.donasiTitle == null
               ? Text("${data.jenisTransaksi}",
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13))

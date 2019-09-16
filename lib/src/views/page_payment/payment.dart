@@ -128,8 +128,7 @@ class _PaymentPageState extends State<PaymentPage> {
                         child: Text(
                             'Pemberi ${widget.type[0].toUpperCase()}${widget.type.substring(1)}',
                             style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: SizeUtils.titleSize)),
+                                fontWeight: FontWeight.bold, fontSize: 16)),
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -176,8 +175,7 @@ class _PaymentPageState extends State<PaymentPage> {
                         child: Text(
                             'Penerima ${widget.type[0].toUpperCase()}${widget.type.substring(1)}',
                             style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: SizeUtils.titleSize)),
+                                fontWeight: FontWeight.bold, fontSize: 16)),
                       ),
                       toLembagaId == null
                           ? informasiProgram

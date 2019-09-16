@@ -18,6 +18,7 @@ class HistoriTransaksiModel {
     int tanggalTransaksi;
     bool status;
     String virtualAccount;
+    int totalMenitCounting;
 
     HistoriTransaksiModel({
         this.idTransaksi,
@@ -29,6 +30,7 @@ class HistoriTransaksiModel {
         this.tanggalTransaksi,
         this.status,
         this.virtualAccount,
+        this.totalMenitCounting
     });
 
     factory HistoriTransaksiModel.fromJson(Map<String, dynamic> json) => HistoriTransaksiModel(
@@ -41,6 +43,7 @@ class HistoriTransaksiModel {
         tanggalTransaksi: json["tanggalTransaksi"] == null ? null : json["tanggalTransaksi"],
         status: json["status"] == null ? null : json["status"],
         virtualAccount: json["virtualAccount"] == null ? null : json["virtualAccount"],
+        totalMenitCounting: json["totalMenitCounting"] == null ? null : json["totalMenitCounting"],
     );
 
     Map<String, dynamic> toJson() => {
@@ -53,5 +56,6 @@ class HistoriTransaksiModel {
         "tanggalTransaksi": tanggalTransaksi == null ? null : tanggalTransaksi,
         "status": status == null ? null : status,
         "virtualAccount": virtualAccount == null ? null : virtualAccount,
+        "totalMenitCounting": totalMenitCounting == null ? null : totalMenitCounting,
     };
 }

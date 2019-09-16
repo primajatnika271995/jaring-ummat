@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_jaring_ummat/src/config/hexColor.dart';
 import 'package:flutter_jaring_ummat/src/models/historiTransaksiModel.dart';
 import 'package:flutter_jaring_ummat/src/services/currency_format_service.dart';
+import 'package:flutter_jaring_ummat/src/utils/sizeUtils.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/new_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/bloc/historiTransaksiBloc.dart';
+import 'package:flutter_jaring_ummat/src/views/components/icon_text/profile_inbox_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/page_payment/instruksi_pembayaran.dart';
 
 class HistoriTransaksiView extends StatefulWidget {
@@ -15,11 +17,12 @@ class _HistoriTransaksiViewState extends State<HistoriTransaksiView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: whiteColor,
       appBar: AppBar(
         backgroundColor: Colors.white,
         titleSpacing: 0,
         elevation: 0,
-        title: Text('Transaksi Histori', style: TextStyle(color: blackColor)),
+        title: Text('Transaksi Histori', style: TextStyle(color: blackColor, fontSize: SizeUtils.titleSize)),
         leading: IconButton(
           onPressed: () {
             Navigator.of(context).pop();
@@ -71,7 +74,34 @@ class _HistoriTransaksiViewState extends State<HistoriTransaksiView> {
       itemBuilder: (context, index) {
         var data = snapshot[index];
         return ListTile(
-          leading: Icon(Icons.history, size: 30,),
+          leading: CircleAvatar(
+            backgroundColor: data.jenisTransaksi == "ZAKAT"
+                ? Colors.yellow
+                : data.jenisTransaksi == "INFAQ"
+                    ? Colors.redAccent
+                    : data.jenisTransaksi == "SODAQOH"
+                        ? Colors.deepPurple
+                        : data.jenisTransaksi == "WAKAF"
+                            ? Colors.green
+                            : data.jenisTransaksi == "DONASI"
+                                ? Colors.blue
+                                : Colors.blue,
+            child: Icon(
+              data.jenisTransaksi == "ZAKAT"
+                  ? ProfileInboxIcon.zakat_3x
+                  : data.jenisTransaksi == "INFAQ"
+                      ? ProfileInboxIcon.infaq_3x
+                      : data.jenisTransaksi == "SODAQOH"
+                          ? ProfileInboxIcon.sodaqoh_3x
+                          : data.jenisTransaksi == "WAKAF"
+                              ? ProfileInboxIcon.wakaf_3x
+                              : data.jenisTransaksi == "DONASI"
+                                  ? ProfileInboxIcon.donation_3x
+                                  : ProfileInboxIcon.donation_3x,
+              color: whiteColor,
+              size: 20,
+            ),
+          ),
           title: data.donasiTitle == null
               ? Text("${data.jenisTransaksi}",
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13))
@@ -81,11 +111,18 @@ class _HistoriTransaksiViewState extends State<HistoriTransaksiView> {
           subtitle: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text('Jumlah Transaksi ${CurrencyFormat().currency(data.jumlahTransaksi.toDouble())}'),
+              Text(
+                  'Jumlah Transaksi ${CurrencyFormat().currency(data.jumlahTransaksi.toDouble())}'),
               Text('${data.jenisTransaksi}'),
             ],
           ),
-          trailing: RaisedButton(
+          trailing: data.totalMenitCounting <= 1 ? RaisedButton(
+            onPressed: null,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(45)),
+            color: greenColor,
+            child: Text('Waktu Habis', style: TextStyle(color: whiteColor)),
+          ) : RaisedButton(
             onPressed: () {
               Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) => InstruksiPembayaran(
@@ -93,6 +130,7 @@ class _HistoriTransaksiViewState extends State<HistoriTransaksiView> {
                     nominal: data.jumlahTransaksi.toDouble(),
                     tanggalRequest: data.tanggalTransaksi.toString(),
                     toLembagAmal: data.namaLembagaAmal,
+                    counting: data.totalMenitCounting,
                     virtualNumber: data.virtualAccount),
               ));
             },

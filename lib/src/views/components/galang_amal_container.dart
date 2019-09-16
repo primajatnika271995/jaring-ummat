@@ -396,6 +396,7 @@ class _GalangAmalContainerState extends State<GalangAmalContainer> {
     return ListView.builder(
         itemCount: snapshot.length,
         shrinkWrap: true,
+        physics: NeverScrollableScrollPhysics(),
         itemBuilder: (context, index) {
           var data = snapshot[index];
           return Padding(

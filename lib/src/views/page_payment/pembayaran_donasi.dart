@@ -58,8 +58,16 @@ class _PembayaranDonasiState extends State<PembayaranDonasi> {
   String nameProgram;
   String customerName;
 
-  _PembayaranDonasiState(this.toLembagaAmal, this.nominal, this.email,
-      this.phone, this.lembagaId, this.type, this.idProgram, this.nameProgram, this.customerName);
+  _PembayaranDonasiState(
+      this.toLembagaAmal,
+      this.nominal,
+      this.email,
+      this.phone,
+      this.lembagaId,
+      this.type,
+      this.idProgram,
+      this.nameProgram,
+      this.customerName);
 
   /*
    * Background Img
@@ -133,10 +141,13 @@ class _PembayaranDonasiState extends State<PembayaranDonasi> {
                         Padding(
                           padding: const EdgeInsets.only(
                               left: 20, top: 15, bottom: 10),
-                          child: const Text('Jumlah Tagihan',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: SizeUtils.titleSize)),
+                          child: const Text(
+                            'Jumlah Tagihan',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                            ),
+                          ),
                         ),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -201,10 +212,13 @@ class _PembayaranDonasiState extends State<PembayaranDonasi> {
                         Padding(
                           padding: const EdgeInsets.only(
                               left: 20, top: 15, bottom: 10),
-                          child: const Text('Metode Pembayaran',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: SizeUtils.titleSize)),
+                          child: const Text(
+                            'Metode Pembayaran',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                            ),
+                          ),
                         ),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -216,31 +230,40 @@ class _PembayaranDonasiState extends State<PembayaranDonasi> {
                               borderRadius: BorderRadius.circular(13),
                             ),
                             child: ListTile(
-                                title: Text('$titleMetode'),
-                                subtitle: subtitleMetode == null ? null : RichText(
-                                  text: TextSpan(children: <TextSpan>[
-                                    TextSpan(
-                                        text: 'Rp ',
-                                        style: TextStyle(
-                                            color: Colors.grey, fontSize: 13)),
-                                    TextSpan(
-                                      text: '$subtitleMetode',
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: SizeUtils.titleSize,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ]),
+                                title: Text(
+                                  '$titleMetode',
+                                  style: TextStyle(fontSize: 14),
                                 ),
+                                subtitle: subtitleMetode == null
+                                    ? null
+                                    : RichText(
+                                        text: TextSpan(children: <TextSpan>[
+                                          TextSpan(
+                                              text: 'Rp ',
+                                              style: TextStyle(
+                                                  color: Colors.grey,
+                                                  fontSize: 13)),
+                                          TextSpan(
+                                            text: '$subtitleMetode',
+                                            style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: SizeUtils.titleSize,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ]),
+                                      ),
                                 leading: CircleAvatar(
-                                  backgroundColor: Colors.redAccent,
-                                  backgroundImage: indexTile == null ? null : NetworkImage(imageVA[indexTile]),
-                                  child: indexTile == null ? Icon(
-                                    ProfileInboxIcon.balance_2x,
-                                    color: whiteColor,
-                                    size: 20,
-                                  ) : null
-                                ),
+                                    backgroundColor: Colors.redAccent,
+                                    backgroundImage: indexTile == null
+                                        ? null
+                                        : NetworkImage(imageVA[indexTile]),
+                                    child: indexTile == null
+                                        ? Icon(
+                                            ProfileInboxIcon.balance_2x,
+                                            color: whiteColor,
+                                            size: 20,
+                                          )
+                                        : null),
                                 trailing: OutlineButton(
                                   onPressed: () {
                                     _modalBottomSheet();
@@ -326,7 +349,7 @@ class _PembayaranDonasiState extends State<PembayaranDonasi> {
         context: context,
         builder: (builder) {
           return Container(
-            height: screenHeight(context, dividedBy: 2.5),
+            height: screenHeight(context, dividedBy: 2.3),
             width: screenWidth(context),
             color: Colors.transparent,
             child: Scaffold(
@@ -383,27 +406,31 @@ class _PembayaranDonasiState extends State<PembayaranDonasi> {
                                     switch (index) {
                                       case 0:
                                         setState(() {
-                                          titleMetode = 'BNI Syariah VA Billing';
+                                          titleMetode =
+                                              'BNI Syariah VA Billing';
                                           subtitleMetode = null;
                                           indexTile = 0;
                                         });
                                         break;
                                       case 1:
                                         setState(() {
-                                          titleMetode = 'Mandiri Syariah VA Billing';
+                                          titleMetode =
+                                              'Mandiri Syariah VA Billing';
                                           subtitleMetode = null;
                                           indexTile = 1;
                                         });
                                         break;
                                       case 2:
                                         setState(() {
-                                          titleMetode = 'Bank Muamalat VA Billing';
+                                          titleMetode =
+                                              'Bank Muamalat VA Billing';
                                           subtitleMetode = null;
                                           indexTile = 2;
                                         });
                                         break;
                                       default:
                                     }
+                                    Navigator.of(context).pop();
                                   },
                                   child: const Text('Ganti',
                                       style: TextStyle(

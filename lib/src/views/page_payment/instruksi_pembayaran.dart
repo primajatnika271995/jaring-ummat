@@ -15,6 +15,7 @@ class InstruksiPembayaran extends StatefulWidget {
   final String transaksiId;
   final String virtualNumber;
   final String tanggalRequest;
+  final int counting;
 
   InstruksiPembayaran(
       {Key key,
@@ -22,22 +23,23 @@ class InstruksiPembayaran extends StatefulWidget {
       this.nominal,
       this.transaksiId,
       this.virtualNumber,
-      this.tanggalRequest})
+      this.tanggalRequest,
+      this.counting})
       : super(key: key);
 
   @override
   _InstruksiPembayaranState createState() => _InstruksiPembayaranState(
-      this.toLembagAmal, this.nominal, this.transaksiId, this.virtualNumber);
+      this.toLembagAmal, this.nominal, this.transaksiId, this.virtualNumber, this.counting);
 }
 
-class _InstruksiPembayaranState extends State<InstruksiPembayaran>
-    with TickerProviderStateMixin {
-  String toLembagaAmal;
-  double nominal;
+class _InstruksiPembayaranState extends State<InstruksiPembayaran> with TickerProviderStateMixin {
+  final String toLembagaAmal;
+  final double nominal;
   final String transaksiId;
   final String virtualNumber;
+  final int counting;
   _InstruksiPembayaranState(
-      this.toLembagaAmal, this.nominal, this.transaksiId, this.virtualNumber);
+      this.toLembagaAmal, this.nominal, this.transaksiId, this.virtualNumber, this.counting);
 
   /*
    * Animation Controller
@@ -89,7 +91,7 @@ class _InstruksiPembayaranState extends State<InstruksiPembayaran>
                       child: const Text('Pemberi Donasi',
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
-                              fontSize: SizeUtils.titleSize)),
+                              fontSize: 16)),
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -101,7 +103,7 @@ class _InstruksiPembayaranState extends State<InstruksiPembayaran>
                         ),
                         child: ListTile(
                           title: Text('Lakukan pembayaran dalam waktu',
-                              style: TextStyle(fontSize: 13)),
+                              style: TextStyle(fontSize: 11)),
                           subtitle: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
@@ -112,12 +114,12 @@ class _InstruksiPembayaranState extends State<InstruksiPembayaran>
                                       style: TextStyle(
                                           color: Colors.redAccent,
                                           fontWeight: FontWeight.bold,
-                                          fontSize: SizeUtils.titleSize));
+                                          fontSize: 16));
                                 },
                               ),
                               const Text(
                                   'atau sebelum Rabu, 02 Januari 2019 pukul 20:53 WIB',
-                                  style: TextStyle(fontSize: 13))
+                                  style: TextStyle(fontSize: 11))
                             ],
                           ),
                           leading: CircleAvatar(
@@ -143,7 +145,7 @@ class _InstruksiPembayaranState extends State<InstruksiPembayaran>
                       child: const Text('Jumlah Tagihan',
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
-                              fontSize: SizeUtils.titleSize)),
+                              fontSize: 16)),
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -208,7 +210,7 @@ class _InstruksiPembayaranState extends State<InstruksiPembayaran>
                       child: const Text('Nomor Virtual Account',
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
-                              fontSize: SizeUtils.titleSize)),
+                              fontSize: 16)),
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -225,7 +227,7 @@ class _InstruksiPembayaranState extends State<InstruksiPembayaran>
                                 text: '$virtualNumber',
                                 style: TextStyle(
                                     color: Colors.black,
-                                    fontSize: SizeUtils.titleSize,
+                                    fontSize: 14,
                                     fontWeight: FontWeight.bold),
                               ),
                             ]),
@@ -265,34 +267,34 @@ class _InstruksiPembayaranState extends State<InstruksiPembayaran>
                       child: const Text('Panduan Pembayaran',
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
-                              fontSize: SizeUtils.titleSize)),
+                              fontSize: 16)),
                     ),
                     ExpansionTile(
                       title: const Text('Mobile Banking BNI Syariah',
-                          style: TextStyle(fontWeight: FontWeight.bold)),
+                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
                     ),
                     ExpansionTile(
                       title: const Text('SMS Banking',
-                          style: TextStyle(fontWeight: FontWeight.bold)),
+                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
                     ),
                     ExpansionTile(
                       title: const Text('ATM BNI Syariah',
-                          style: TextStyle(fontWeight: FontWeight.bold)),
+                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
                     ),
                     ExpansionTile(
                       title: const Text('ATM Bersama',
-                          style: TextStyle(fontWeight: FontWeight.bold)),
+                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
                     ),
                     ExpansionTile(
                       title: const Text('Bank Lain',
-                          style: TextStyle(fontWeight: FontWeight.bold)),
+                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
                     ),
                     Padding(
-                      padding: EdgeInsets.only(top: 20),
+                      padding: EdgeInsets.only(top: 4),
                       child: ListTile(
                         title: const Text(
                             'Mohon tidak memberikan data pembayaran kepada pihak manapun kecuali Jejaring!',
-                            style: TextStyle(color: Colors.redAccent)),
+                            style: TextStyle(color: Colors.redAccent, fontSize: 11)),
                         leading:
                             Icon(Icons.info_outline, color: Colors.redAccent),
                       ),
@@ -333,7 +335,7 @@ class _InstruksiPembayaranState extends State<InstruksiPembayaran>
   @override
   void initState() {
     _animationController =
-        AnimationController(vsync: this, duration: Duration(days: 1));
+        AnimationController(vsync: this, duration: Duration(minutes: counting == null ? 1440 : counting));
     startTimer();
     setState(() {
       _loadingVisible = false;
