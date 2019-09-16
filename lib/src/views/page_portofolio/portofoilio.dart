@@ -15,6 +15,7 @@ import 'package:flutter_jaring_ummat/src/views/components/icon_text/new_icon_ico
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/profile_inbox_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/components/indicator_container.dart';
 import 'package:flutter_jaring_ummat/src/views/components/loadingContainer.dart';
+import 'package:flutter_jaring_ummat/src/views/page_payment/payment.dart';
 import 'package:flutter_jaring_ummat/src/views/page_portofolio/portofolio_text_data.dart';
 import 'package:flutter_jaring_ummat/src/views/page_virtual_account/input_bill.dart';
 import 'package:intl/intl.dart';
@@ -93,7 +94,7 @@ class _PortofolioState extends State<Portofolio> {
   Widget build(BuildContext context) {
     // Title Bar Widget
 
-    final titleBar = Text('Portofolio ${PortofolioTextData.listMonth[9]} 2019',
+    final titleBar = Text('Amal ${PortofolioTextData.listMonth[9]} 2019',
         style: TextStyle(color: blackColor));
 
     // My Saldo Widget
@@ -874,12 +875,12 @@ class _PortofolioState extends State<Portofolio> {
 
   void requestBill(String type) {
     Navigator.of(context).push(MaterialPageRoute(
-      builder: (context) => InputBill(
+      builder: (context) => PaymentPage(
         type: type,
         customerName: customerName,
         customerEmail: emailCustomer,
-        customerPhone: customerPhone,
-        programName: null,
+        customerContact: customerPhone,
+        toGalangAmalName: null,
       ),
     ));
   }

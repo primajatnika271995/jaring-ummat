@@ -46,8 +46,24 @@ class InboxTextData {
   ];
 
   static const List<String> listTransaksi = [
-    "Menunggu Pembayaran",
-    "Selesai Dibayar",
+    "Pembayaran Amal",
+    "Daftar Amal",
+  ];
+
+  /*
+   *  Data Color For Transaksi
+   */
+  static const List listColorTransaksi = [
+    Colors.orangeAccent,
+    Colors.deepPurple
+  ];
+
+  /*
+   *  Data Icon List Tile For Transaksi
+   */
+  static const List listIconTransaksi= [
+    ProfileInboxIcon.donation_3x,
+    ProfileInboxIcon.wakaf_3x,
   ];
 
 

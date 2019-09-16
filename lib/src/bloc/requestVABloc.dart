@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_jaring_ummat/src/models/requestVAModel.dart';
 import 'package:flutter_jaring_ummat/src/repository/RequestVARepository.dart';
+import 'package:flutter_jaring_ummat/src/views/page_payment/instruksi_pembayaran.dart';
 import 'package:flutter_jaring_ummat/src/views/page_virtual_account/input_bill.dart';
 import 'package:flutter_jaring_ummat/src/views/page_virtual_account/request_va.dart';
 import 'package:rxdart/rxdart.dart';
@@ -20,6 +21,7 @@ class RequestVABloc {
 
   requestVA(
       BuildContext context,
+      String toLembagaAmal,
       double amount,
       String customerEmail,
       String customerName,
@@ -38,15 +40,22 @@ class RequestVABloc {
     print('Request Status : ${value.status}');
     if (value.status == "000") {
       print('Data OK!');
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(
-          builder: (context) => RequestVA(
+      Navigator.of(context).pushReplacement(MaterialPageRoute(
+          builder: (context) => InstruksiPembayaran(
             nominal: amount,
+            toLembagAmal: toLembagaAmal,
             transaksiId: value.data.transactionId,
             virtualNumber: value.data.virtualNumber,
-          ),
-        ),
-      );
+          )));
+      // Navigator.of(context).pushReplacement(
+      //   MaterialPageRoute(
+      //     builder: (context) => RequestVA(
+      //       nominal: amount,
+      //       transaksiId: value.data.transactionId,
+      //       virtualNumber: value.data.virtualNumber,
+      //     ),
+      //   ),
+      // );
     } else {
       if (transactionId == null) {
         Navigator.of(context).pushReplacement(MaterialPageRoute(

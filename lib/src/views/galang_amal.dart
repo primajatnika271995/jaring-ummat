@@ -5,6 +5,7 @@ import 'package:flutter_jaring_ummat/src/models/program_amal.dart';
 import 'package:flutter_jaring_ummat/src/services/currency_format_service.dart';
 import 'package:flutter_jaring_ummat/src/views/components/galang_amal_container.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/new_icon_icons.dart';
+import 'package:flutter_jaring_ummat/src/views/page_payment/payment.dart';
 
 import 'package:flutter_jaring_ummat/src/views/page_virtual_account/input_bill.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
@@ -12,6 +13,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class GalangAmalView extends StatefulWidget {
   final ProgramAmalModel programAmal;
+
   GalangAmalView({Key key, this.programAmal});
 
   @override
@@ -119,15 +121,27 @@ class _GalangAmalState extends State<GalangAmalView> {
     );
   }
 
-    void requestBill(String type) {
+  void requestBill(String type) {
+//    Navigator.of(context).push(MaterialPageRoute(
+//      builder: (context) => InputBill(
+//        type: type,
+//        customerName: customerName,
+//        customerEmail: emailCustomer,
+//        customerPhone: customerPhone,
+//        programId: widget.programAmal.idProgram,
+//        programName: widget.programAmal.titleProgram,
+//      ),
+//    ));
     Navigator.of(context).push(MaterialPageRoute(
-      builder: (context) => InputBill(
-        type: type,
+      builder: (context) => PaymentPage(
         customerName: customerName,
+        customerContact: customerPhone,
         customerEmail: emailCustomer,
-        customerPhone: customerPhone,
-        programId: widget.programAmal.idProgram,
-        programName: widget.programAmal.titleProgram,
+        toLembagaName: widget.programAmal.createdBy,
+        toGalangAmalName: widget.programAmal.titleProgram,
+        toGalangAmalId: widget.programAmal.idProgram,
+        toLembagaId: widget.programAmal.user.userId,
+        type: 'donasi',
       ),
     ));
   }

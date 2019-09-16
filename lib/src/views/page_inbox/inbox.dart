@@ -43,7 +43,7 @@ class _InboxState extends State<Inbox> {
             indicatorColor: greenColor,
             labelColor: greenColor,
             unselectedLabelColor: grayColor,
-            tabs: <Widget>[Tab(text: 'Transaksi'), Tab(text: 'Inbox')],
+            tabs: <Widget>[Tab(text: 'Transaksi'), Tab(text: 'Lainnya')],
           ),
         ),
         body: TabBarView(
@@ -106,6 +106,11 @@ class _InboxState extends State<Inbox> {
             title: Text(
               InboxTextData.listTransaksi[index],
               style: TextStyle(fontSize: 14.0),
+            ),
+            leading: CircleAvatar(
+              backgroundColor: InboxTextData.listColorTransaksi[index],
+              child: Icon(InboxTextData.listIconTransaksi[index],
+                  color: whiteColor),
             ),
             trailing: Icon(NewIcon.next_small_2x, color: blackColor, size: 20),
           ),

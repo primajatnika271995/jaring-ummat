@@ -8,6 +8,7 @@ import 'package:flutter_jaring_ummat/src/models/zakatProfesiModel.dart';
 import 'package:flutter_jaring_ummat/src/services/currency_format_service.dart';
 import 'package:flutter_jaring_ummat/src/services/kalkulatorZakatApi.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/calculator_other_icon_icons.dart';
+import 'package:flutter_jaring_ummat/src/views/page_payment/payment.dart';
 import 'package:flutter_jaring_ummat/src/views/page_virtual_account/input_bill.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -298,13 +299,12 @@ class _ZakatFitrahPagesState extends State<ZakatFitrahPages> {
     }
 
     Navigator.of(context).push(MaterialPageRoute(
-      builder: (context) => InputBill(
-          type: type,
-          customerName: customerName,
-          customerEmail: emailCustomer,
-          customerPhone: customerPhone,
-          programName: null,
-          nilaiZakat: totalZakat),
-    ));
+        builder: (context) => PaymentPage(
+            type: type,
+            customerName: customerName,
+            customerEmail: emailCustomer,
+            customerContact: customerPhone,
+            toGalangAmalName: null,
+            nilaiZakat: totalZakat)));
   }
 }

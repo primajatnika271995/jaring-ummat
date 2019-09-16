@@ -5,7 +5,7 @@ import 'package:direct_select_flutter/direct_select_item.dart';
 import 'package:direct_select_flutter/direct_select_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_jaring_ummat/src/bloc/lembagaAmalBloc.dart'
-    as blocLembagaAmal;
+as blocLembagaAmal;
 import 'package:flutter_jaring_ummat/src/config/hexColor.dart';
 import 'package:flutter_jaring_ummat/src/models/lembagaAmalModel.dart';
 import 'package:flutter_jaring_ummat/src/models/program_amal.dart';
@@ -28,12 +28,12 @@ class InputBill extends StatefulWidget {
 
   InputBill(
       {this.type,
-      this.customerName,
-      this.customerEmail,
-      this.customerPhone,
-      this.programId,
-      this.programName,
-      this.nilaiZakat});
+        this.customerName,
+        this.customerEmail,
+        this.customerPhone,
+        this.programId,
+        this.programName,
+        this.nilaiZakat});
 
   @override
   _InputBillState createState() => _InputBillState();
@@ -83,7 +83,7 @@ class _InputBillState extends State<InputBill> {
                 TextSpan(
                   text: '1.250',
                   style:
-                      TextStyle(fontWeight: FontWeight.bold, color: blackColor),
+                  TextStyle(fontWeight: FontWeight.bold, color: blackColor),
                 ),
               ]),
             ),
@@ -197,6 +197,9 @@ class _InputBillState extends State<InputBill> {
               });
               bloc.requestVA(
                   context,
+                  widget.programId != null
+                      ? widget.programName
+                      : _lembagaAmalModel.lembagaAmalName,
                   nominalCtrl.numberValue,
                   customerEmail.text,
                   customerName.text,
@@ -207,7 +210,7 @@ class _InputBillState extends State<InputBill> {
                   widget.type);
             },
             shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(45)),
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(45)),
             child: Text(
               'Kirim ${widget.type}',
               style: TextStyle(color: whiteColor),
@@ -323,7 +326,7 @@ class _InputBillState extends State<InputBill> {
                                       itemBuilder: (String value) =>
                                           getDropDownMenuItem(value),
                                       focusedItemDecoration:
-                                          _getDslDecoration(),
+                                      _getDslDecoration(),
                                       onItemSelectedListener:
                                           (item, index, context) {
                                         Scaffold.of(context).showSnackBar(
@@ -396,13 +399,13 @@ class _InputBillState extends State<InputBill> {
       items: _lembagaAmalList == null
           ? new Text("Tidak Ditemukan Data")
           : _lembagaAmalList.map((LembagaAmalModel value) {
-              return new DropdownMenuItem<LembagaAmalModel>(
-                value: value,
-                child: new Text(value.lembagaAmalName,
-                    style:
-                        new TextStyle(fontFamily: "Poppins", fontSize: 13.0)),
-              );
-            }).toList(),
+        return new DropdownMenuItem<LembagaAmalModel>(
+          value: value,
+          child: new Text(value.lembagaAmalName,
+              style:
+              new TextStyle(fontFamily: "Poppins", fontSize: 13.0)),
+        );
+      }).toList(),
     );
   }
 
