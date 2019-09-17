@@ -141,7 +141,7 @@ class _ProfileMenuState extends State<ProfileMenu> {
         title: titleBar,
         actions: <Widget>[
           IconButton(
-            icon: Icon(AppBarIcon.logout),
+            icon: Icon(AppBarIcon.logout, size: 20),
             color: blackColor,
             onPressed: _onlogout,
           ),
@@ -200,7 +200,7 @@ class _ProfileMenuState extends State<ProfileMenu> {
                 itemBuilder: (context, index) => ListTile(
                   title: Text(MenuTextData.titleMenu[index],
                       style: TextStyle(fontWeight: FontWeight.bold)),
-                  subtitle: Text(MenuTextData.subtitleMenu[index]),
+                  subtitle: Text(MenuTextData.subtitleMenu[index], style: TextStyle(fontSize: 13)),
                   leading: CircleAvatar(
                     backgroundColor: MenuTextData.colorMenu[index],
                     child:

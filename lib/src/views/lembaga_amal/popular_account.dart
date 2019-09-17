@@ -1,12 +1,12 @@
-import 'package:circular_profile_avatar/circular_profile_avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_jaring_ummat/src/config/hexColor.dart';
 import 'package:flutter_jaring_ummat/src/config/preferences.dart';
 
 import 'package:flutter_jaring_ummat/src/models/lembagaAmalModel.dart';
-import 'package:flutter_jaring_ummat/src/views/components/appbar_custom_icons.dart';
 import 'package:flutter_jaring_ummat/src/bloc/lembagaAmalBloc.dart';
+import 'package:flutter_jaring_ummat/src/utils/sizeUtils.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/new_icon_icons.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 const double _ITEM_HEIGHT = 70.0;
@@ -20,24 +20,23 @@ class PopularAccountView extends StatefulWidget {
 
 class PopularAccountState extends State<PopularAccountView>
     with TickerProviderStateMixin {
-  ScrollController _scrollController;
+  final String noImg =
+      "https://kempenfeltplayers.com/wp-content/uploads/2015/07/profile-icon-empty.png";
+
+  ScrollController scrollController;
   TabController _tabController;
-
-  String selectedCategory = "";
-
-  bool isFollowed = false;
 
   SharedPreferences _preferences;
   String _token;
 
-  final String noImg =
-      "https://kempenfeltplayers.com/wp-content/uploads/2015/07/profile-icon-empty.png";
+  String selectedCategory = "";
+  bool isFollowed = false;
 
   @override
   Widget build(BuildContext context) {
     Widget buttonsWidget = new Container(
       color: Colors.white,
-      child: TabBar(
+      child: new TabBar(
         isScrollable: true,
         indicator: UnderlineTabIndicator(
           borderSide: BorderSide(width: 4.0, color: Colors.blueAccent),
@@ -46,9 +45,14 @@ class PopularAccountState extends State<PopularAccountView>
         unselectedLabelColor: Colors.grey,
         onTap: (int index) {
           switch (index) {
+            case 0:
+              setState(() {
+                selectedCategory = "";
+              });
+              break;
             case 1:
               setState(() {
-                selectedCategory = "Pendidikan";
+                selectedCategory = "Keagamaan";
               });
               break;
             case 2:
@@ -58,27 +62,17 @@ class PopularAccountState extends State<PopularAccountView>
               break;
             case 3:
               setState(() {
-                selectedCategory = "Amal";
+                selectedCategory = "Pendidikan";
               });
               break;
             case 4:
               setState(() {
-                selectedCategory = "Pembangunan Mesjid";
+                selectedCategory = "Lingkungan";
               });
               break;
             case 5:
               setState(() {
-                selectedCategory = "Zakat";
-              });
-              break;
-            case 6:
-              setState(() {
-                selectedCategory = "Sosial";
-              });
-              break;
-            case 7:
-              setState(() {
-                selectedCategory = "lain-lain";
+                selectedCategory = "Kesehatan";
               });
               break;
             default:
@@ -93,26 +87,20 @@ class PopularAccountState extends State<PopularAccountView>
             text: 'Populer',
           ),
           new Tab(
-            text: 'Pendidikan',
+            text: 'Keagamaan',
           ),
           new Tab(
             text: 'Kemanusiaan',
           ),
           new Tab(
-            text: 'Amal',
+            text: 'Pendidikan',
           ),
           new Tab(
-            text: 'Pembangunan Masjid',
+            text: 'Lingkungan',
           ),
           new Tab(
-            text: 'Zakat',
+            text: 'Kesehatan',
           ),
-          new Tab(
-            text: 'Bakti Sosial',
-          ),
-          new Tab(
-            text: 'lain-lain',
-          )
         ],
         controller: _tabController,
       ),
@@ -124,7 +112,7 @@ class PopularAccountState extends State<PopularAccountView>
         // leading: new Icon(NewIcon.back_big_3x, color: greenColor),
         title: const Text(
           'Amil Jejaring',
-          style: TextStyle(color: Colors.black, fontSize: 18.0),
+          style: TextStyle(color: Colors.black, fontSize: SizeUtils.titleSize),
         ),
         actions: <Widget>[
           IconButton(
@@ -160,14 +148,58 @@ class PopularAccountState extends State<PopularAccountView>
                 stream: bloc.allLembagaAmalList,
                 builder: (BuildContext context,
                     AsyncSnapshot<List<LembagaAmalModel>> snapshot) {
-                  if (snapshot.hasData) {
-                    return buildListLembagaAmal(snapshot);
-                  } else if (snapshot.hasError) {
-                    return Text(snapshot.error.toString());
+                  switch (snapshot.connectionState) {
+                    case ConnectionState.waiting:
+                      Center(
+                        child: CircularProgressIndicator(),
+                      );
+                      return Text('');
+                      break;
+                    default:
+                      if (snapshot.hasData) {
+                        Center(
+                          child: CircularProgressIndicator(),
+                        );
+                        return buildListLembagaAmal(snapshot);
+                      } else if (snapshot.hasError) {
+                        return Text(snapshot.error.toString());
+                      }
+                      Center(
+                        child: CircularProgressIndicator(),
+                      );
+                      return Container(
+                        width: 500.0,
+                        margin: EdgeInsets.only(top: 30.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            SvgPicture.asset(
+                              'assets/icon/no-content.svg',
+                              height: 250.0,
+                            ),
+                            Text(
+                              'Oops..',
+                              style: TextStyle(
+                                fontFamily: 'Proxima',
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16.0,
+                              ),
+                            ),
+                            Text(
+                              'There\'s nothing \'ere, yet.',
+                              style: TextStyle(
+                                fontFamily: 'Proxima',
+                                fontWeight: FontWeight.bold,
+                                color: Colors.grey,
+                                fontSize: 15.0,
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                      break;
                   }
-                  return Center(
-                    child: CircularProgressIndicator(),
-                  );
                 },
               ),
             ),
@@ -189,7 +221,7 @@ class PopularAccountState extends State<PopularAccountView>
               child: new Center(
                 child: new Container(
                     margin:
-                        new EdgeInsetsDirectional.only(start: 1.0, end: 1.0),
+                    new EdgeInsetsDirectional.only(start: 1.0, end: 1.0),
                     height: 5.0,
                     color: softGreyColor),
               ),
@@ -199,12 +231,20 @@ class PopularAccountState extends State<PopularAccountView>
         itemCount: snapshot.data.length,
         itemBuilder: (BuildContext context, int index) {
           var value = snapshot.data[index];
+          isFollowed = snapshot.data[index].followThisAccount;
           return ListTile(
-            leading: CircleAvatar(
-              backgroundColor: greenColor,
-              child: (value.imageContent == null)
-                  ? CircularProfileAvatar(noImg)
-                  : CircularProfileAvatar(value.imageContent[0].imgUrl),
+            leading: Container(
+              width: 35.0,
+              height: 35.0,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(30.0),
+                image: DecorationImage(
+                  image: (value.imageContent == null)
+                      ? NetworkImage(noImg)
+                      : NetworkImage(value.imageContent[0].imgUrl),
+                  fit: BoxFit.cover,
+                ),
+              ),
             ),
             title: Text(
               value.lembagaAmalName,
@@ -218,7 +258,7 @@ class PopularAccountState extends State<PopularAccountView>
                 Text('${value.totalPostProgramAmal} Galang Amal'),
               ],
             ),
-            trailing: (value.followThisAccount)
+            trailing: (isFollowed)
                 ? buttonUnfollow(value.idLembagaAmal)
                 : buttonFollow(value.idLembagaAmal),
           );
@@ -233,13 +273,11 @@ class PopularAccountState extends State<PopularAccountView>
         if (_token == null) {
           Navigator.of(context).pushNamed('/login');
         } else {
+          bloc.followAccount(idAccount);
+          await Future.delayed(Duration(milliseconds: 1));
+          bloc.fetchAllLembagaAmal(selectedCategory);
           setState(() {
-            this.isFollowed = true;
-          });
-          await bloc.followAccount(idAccount);
-          await Future.delayed(Duration(milliseconds: 3));
-          setState(() async {
-            await bloc.fetchAllLembagaAmal(selectedCategory);
+            isFollowed = true;
           });
         }
       },
@@ -251,7 +289,7 @@ class PopularAccountState extends State<PopularAccountView>
         child: Text(
           'Follow',
           style:
-              TextStyle(color: Colors.deepPurple, fontWeight: FontWeight.bold),
+          TextStyle(color: Colors.deepPurple, fontWeight: FontWeight.bold),
         ),
       ),
     );
@@ -265,12 +303,12 @@ class PopularAccountState extends State<PopularAccountView>
           if (_token == null) {
             Navigator.of(context).pushNamed('/login');
           } else {
-            setState(() {
-              this.isFollowed = true;
-            });
             bloc.unfollow(idAccountAmil);
-            await Future.delayed(Duration(milliseconds: 3));
+            await Future.delayed(Duration(milliseconds: 1));
             bloc.fetchAllLembagaAmal(selectedCategory);
+            setState(() {
+              isFollowed = false;
+            });
           }
         });
       },
@@ -290,8 +328,8 @@ class PopularAccountState extends State<PopularAccountView>
   @override
   void initState() {
     bloc.fetchAllLembagaAmal(selectedCategory);
-    _scrollController = new ScrollController();
-    _tabController = new TabController(vsync: this, length: 8);
+    scrollController = new ScrollController();
+    _tabController = new TabController(vsync: this, length: 6);
 
     checkToken();
     super.initState();
