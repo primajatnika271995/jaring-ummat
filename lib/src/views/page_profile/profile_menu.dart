@@ -180,7 +180,7 @@ class _ProfileMenuState extends State<ProfileMenu> {
             delegate: SliverChildListDelegate([
               ListView.separated(
                 physics: NeverScrollableScrollPhysics(),
-                itemCount: 5,
+                itemCount: 3,
                 shrinkWrap: true,
                 separatorBuilder: (context, position) {
                   return Padding(
