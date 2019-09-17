@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_jaring_ummat/src/config/hexColor.dart';
 import 'package:flutter_jaring_ummat/src/services/currency_format_service.dart';
@@ -30,8 +31,7 @@ class InstruksiPembayaran extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _InstruksiPembayaranState createState() =>
-      _InstruksiPembayaranState(
+  _InstruksiPembayaranState createState() => _InstruksiPembayaranState(
         this.toLembagAmal,
         this.nominal,
         this.transaksiId,
@@ -63,7 +63,11 @@ class _InstruksiPembayaranState extends State<InstruksiPembayaran>
    */
   bool _loadingVisible = false;
 
+  /**
+      Date Time For Tanggal Berakhir
+   */
   DateTime tanggalBerakhir = null;
+  var formatter = new DateFormat('dd-MM-yyyy HH:mm:ss');
 
   final String bniLogo =
       'https://2.bp.blogspot.com/-qy7Sanutml0/WmXk88IBzNI/AAAAAAAANyg/2fENOvWf5bUgTD8T7FEAzotvjdmusMZYACLcBGAs/s600/Bank-BNI-Syariah-Logo.jpg';
@@ -105,12 +109,12 @@ class _InstruksiPembayaranState extends State<InstruksiPembayaran>
                 )),
             new SliverList(
                 delegate: SliverChildListDelegate([
-                  Column(children: <Widget>[
-                    jumlahTagihan(),
-                    nomorVirtualAccount(),
-                    panduanPembayaran()
-                  ])
-                ]))
+              Column(children: <Widget>[
+                jumlahTagihan(),
+                nomorVirtualAccount(),
+                panduanPembayaran()
+              ])
+            ]))
           ],
         ),
       ),
@@ -150,7 +154,7 @@ class _InstruksiPembayaranState extends State<InstruksiPembayaran>
                                 fontSize: 16));
                       },
                     ),
-                    Text('atau sebelum $tanggalBerakhir',
+                    Text('atau sebelum ${formatter.format(tanggalBerakhir)}',
                         style: TextStyle(fontSize: 11, color: Colors.white))
                   ],
                 ),
@@ -358,7 +362,8 @@ class _InstruksiPembayaranState extends State<InstruksiPembayaran>
   void initState() {
     if (tanggalBerakhirVa == null) {
       setState(() {
-        tanggalBerakhir = DateTime.parse(new DateTime.now().add(Duration(days: 1)).toString());
+        tanggalBerakhir = DateTime.parse(
+            new DateTime.now().add(Duration(days: 1)).toString());
       });
     } else {
       setState(() {
@@ -398,10 +403,6 @@ class _InstruksiPembayaranState extends State<InstruksiPembayaran>
   String get timerString {
     Duration duration =
         _animationController.duration * _animationController.value;
-    return '${duration.inHours} Jam : ${(duration.inMinutes % 60)
-        .toString()
-        .padLeft(2, '0')} Menit : ${(duration.inSeconds % 60)
-        .toString()
-        .padLeft(2, '0')} Detik';
+    return '${duration.inHours} Jam : ${(duration.inMinutes % 60).toString().padLeft(2, '0')} Menit : ${(duration.inSeconds % 60).toString().padLeft(2, '0')} Detik';
   }
 }
