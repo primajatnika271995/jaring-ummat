@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_jaring_ummat/src/bloc/programAmalBloc.dart';
 import 'package:flutter_jaring_ummat/src/config/hexColor.dart';
 import 'package:flutter_jaring_ummat/src/config/preferences.dart';
+import 'package:flutter_jaring_ummat/src/utils/screenSize.dart';
+import 'package:flutter_jaring_ummat/src/utils/sizeUtils.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/app_bar_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/new_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/components/loadingContainer.dart';
@@ -28,9 +30,19 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
   String _token;
 
   /*
-   * Selected Category
+   * Variable Selected Category & Location
    */
   String selectedCategory = "";
+  int _locationSelected;
+
+  /*
+   * List Category for Location
+   */
+  static List<String> location = [
+    'Lokasi Saat Ini',
+    'Lokasi Tempat Tinggal',
+    'Lokasi Tempat Lahir',
+  ];
 
   /*
    * Variable for Boolean
@@ -79,7 +91,9 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                 Padding(
                   padding: const EdgeInsets.only(right: 7),
                   child: InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      checkLocation();
+                    },
                     child: Icon(AppBarIcon.location_inactive,
                         size: 20, color: blackColor),
                   ),
@@ -349,5 +363,117 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
         }
       }
     });
+  }
+
+  void checkLocation() {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return StatefulBuilder(
+            builder: (context, setState) {
+              return Dialog(
+                child: Padding(
+                  padding:
+                      EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 5),
+                  child: Container(
+                    height: 470,
+                    child: Column(
+                      children: <Widget>[
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: <Widget>[
+                            IconButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              iconSize: 20,
+                              color: greenColor,
+                              icon: Icon(NewIcon.close_2x),
+                            ),
+                          ],
+                        ),
+                        Container(
+                          height: 150,
+                          width: 150,
+                          decoration: BoxDecoration(
+                              image: DecorationImage(
+                                  image: AssetImage(
+                                      'assets/backgrounds/location_accent.png'))),
+                        ),
+                        const Text('Pilih Lokasi',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: SizeUtils.titleSize)),
+                        const Text(
+                            'Dengan mimilih dan mengaktifkan lokasi ini, maka aplikasi Jejaring akan menampilkan data galang amal, akun amil dan berita disekitar lokasi terpilih.',
+                            style: TextStyle(fontSize: 12, color: Colors.grey),
+                            textAlign: TextAlign.center),
+                        SizedBox(height: 7),
+                        ListView.builder(
+                          itemCount: location.length,
+                          shrinkWrap: true,
+                          itemBuilder: (context, index) => Padding(
+                            padding: const EdgeInsets.only(
+                                top: 3, bottom: 3, left: 55),
+                            child: Container(
+                              // color: Colors.pink,
+                              child: Row(
+                                children: <Widget>[
+                                  InkWell(
+                                    onTap: () {
+                                      setState(() {
+                                        _locationSelected = index;
+                                      });
+                                    },
+                                    child: CircleAvatar(
+                                      radius: 15,
+                                      backgroundColor:
+                                          _locationSelected != null &&
+                                                  _locationSelected == index
+                                              ? greenColor
+                                              : grayColor,
+                                      child: Icon(Icons.check,
+                                          color: whiteColor, size: 15),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 5,
+                                  ),
+                                  Text(location[index],
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 13)),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                        Container(
+                          width: screenWidth(context),
+                          padding: EdgeInsets.only(top: 10),
+                          child: RaisedButton(
+                            onPressed: () {
+                              print(_locationSelected);
+                              Navigator.of(context).pop();
+                            },
+                            child: const Text('Atur Lokasi',
+                                style: TextStyle(color: Colors.white)),
+                            color: greenColor,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+              );
+            },
+          );
+        });
   }
 }

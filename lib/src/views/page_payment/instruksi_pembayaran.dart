@@ -67,7 +67,7 @@ class _InstruksiPembayaranState extends State<InstruksiPembayaran>
       Date Time For Tanggal Berakhir
    */
   DateTime tanggalBerakhir = null;
-  var formatter = new DateFormat('dd-MM-yyyy HH:mm:ss');
+  var formatter = new DateFormat('dd MMMM yyyy HH:mm:ss');
 
   final String bniLogo =
       'https://2.bp.blogspot.com/-qy7Sanutml0/WmXk88IBzNI/AAAAAAAANyg/2fENOvWf5bUgTD8T7FEAzotvjdmusMZYACLcBGAs/s600/Bank-BNI-Syariah-Logo.jpg';
