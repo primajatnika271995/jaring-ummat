@@ -148,7 +148,7 @@ class _HistoriTransaksiViewState extends State<HistoriTransaksiView>
                                       DateTime.fromMicrosecondsSinceEpoch(
                                           data.tanggalBerakhirVa * 1000)),
                                   style: TextStyle(
-                                      fontSize: 16,
+                                      fontSize: 13,
                                       color: Colors.redAccent,
                                       fontWeight: FontWeight.bold))
                             ],
