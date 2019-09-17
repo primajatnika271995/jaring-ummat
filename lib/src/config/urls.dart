@@ -1,8 +1,8 @@
 // const BASE_API_URL = 'http://tabeldata.ip-dynamic.com/jaring-ummat';
 // const BASE_API_UPLOADER_URL = 'http://tabeldata.ip-dynamic.com/jaring-ummat-uploader';
 
-const BASE_API_URL = 'http://139.162.15.91/jaring-ummat';
-//const BASE_API_URL = 'http://192.168.1.41:9091';
+//const BASE_API_URL = 'http://139.162.15.91/jaring-ummat';
+const BASE_API_URL = 'http://192.168.1.41:9091';
 const BASE_API_UPLOADER_URL = 'http://139.162.15.91/uploader';
 
 // const BASE_API_CHATS = 'http://tabeldata.ip-dynamic.com/hcare-chat';

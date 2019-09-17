@@ -16,24 +16,29 @@ class InstruksiPembayaran extends StatefulWidget {
   final String virtualNumber;
   final String tanggalRequest;
   final int counting;
+  final int tanggalBerakhirVa;
 
-  InstruksiPembayaran(
-      {Key key,
-      this.toLembagAmal,
-      this.nominal,
-      this.transaksiId,
-      this.virtualNumber,
-      this.tanggalRequest,
-      this.counting})
-      : super(key: key);
+  InstruksiPembayaran({
+    Key key,
+    this.toLembagAmal,
+    this.nominal,
+    this.transaksiId,
+    this.virtualNumber,
+    this.tanggalRequest,
+    this.counting,
+    this.tanggalBerakhirVa,
+  }) : super(key: key);
 
   @override
-  _InstruksiPembayaranState createState() => _InstruksiPembayaranState(
-      this.toLembagAmal,
-      this.nominal,
-      this.transaksiId,
-      this.virtualNumber,
-      this.counting);
+  _InstruksiPembayaranState createState() =>
+      _InstruksiPembayaranState(
+        this.toLembagAmal,
+        this.nominal,
+        this.transaksiId,
+        this.virtualNumber,
+        this.counting,
+        this.tanggalBerakhirVa,
+      );
 }
 
 class _InstruksiPembayaranState extends State<InstruksiPembayaran>
@@ -43,9 +48,10 @@ class _InstruksiPembayaranState extends State<InstruksiPembayaran>
   final String transaksiId;
   final String virtualNumber;
   final int counting;
+  final int tanggalBerakhirVa;
 
   _InstruksiPembayaranState(this.toLembagaAmal, this.nominal, this.transaksiId,
-      this.virtualNumber, this.counting);
+      this.virtualNumber, this.counting, this.tanggalBerakhirVa);
 
   /*
    * Animation Controller
@@ -56,6 +62,8 @@ class _InstruksiPembayaranState extends State<InstruksiPembayaran>
    * Boolen for Loading
    */
   bool _loadingVisible = false;
+
+  DateTime tanggalBerakhir = null;
 
   final String bniLogo =
       'https://2.bp.blogspot.com/-qy7Sanutml0/WmXk88IBzNI/AAAAAAAANyg/2fENOvWf5bUgTD8T7FEAzotvjdmusMZYACLcBGAs/s600/Bank-BNI-Syariah-Logo.jpg';
@@ -97,12 +105,12 @@ class _InstruksiPembayaranState extends State<InstruksiPembayaran>
                 )),
             new SliverList(
                 delegate: SliverChildListDelegate([
-              Column(children: <Widget>[
-                jumlahTagihan(),
-                nomorVirtualAccount(),
-                panduanPembayaran()
-              ])
-            ]))
+                  Column(children: <Widget>[
+                    jumlahTagihan(),
+                    nomorVirtualAccount(),
+                    panduanPembayaran()
+                  ])
+                ]))
           ],
         ),
       ),
@@ -121,12 +129,14 @@ class _InstruksiPembayaranState extends State<InstruksiPembayaran>
             child: Container(
               width: screenWidth(context),
               decoration: BoxDecoration(
-                border: Border.all(color: Colors.grey[300], width: 1),
-                color: Colors.red
-              ),
+                  border: Border.all(color: Colors.grey[300], width: 1),
+                  color: Colors.red),
               child: ListTile(
                 title: Text('Lakukan pembayaran dalam waktu',
-                    style: TextStyle(fontSize: 11, color: Colors.white,)),
+                    style: TextStyle(
+                      fontSize: 11,
+                      color: Colors.white,
+                    )),
                 subtitle: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
@@ -140,8 +150,7 @@ class _InstruksiPembayaranState extends State<InstruksiPembayaran>
                                 fontSize: 16));
                       },
                     ),
-                    const Text(
-                        'atau sebelum Rabu, 02 Januari 2019 pukul 20:53 WIB',
+                    Text('atau sebelum $tanggalBerakhir',
                         style: TextStyle(fontSize: 11, color: Colors.white))
                   ],
                 ),
@@ -347,6 +356,16 @@ class _InstruksiPembayaranState extends State<InstruksiPembayaran>
 
   @override
   void initState() {
+    if (tanggalBerakhirVa == null) {
+      setState(() {
+        tanggalBerakhir = DateTime.parse(new DateTime.now().add(Duration(days: 1)).toString());
+      });
+    } else {
+      setState(() {
+        tanggalBerakhir =
+            DateTime.fromMicrosecondsSinceEpoch(tanggalBerakhirVa * 1000);
+      });
+    }
     _animationController = AnimationController(
         vsync: this,
         duration: Duration(minutes: counting == null ? 1440 : counting));
@@ -379,6 +398,10 @@ class _InstruksiPembayaranState extends State<InstruksiPembayaran>
   String get timerString {
     Duration duration =
         _animationController.duration * _animationController.value;
-    return '${duration.inHours} Jam : ${(duration.inMinutes % 60).toString().padLeft(2, '0')} Menit : ${(duration.inSeconds % 60).toString().padLeft(2, '0')} Detik';
+    return '${duration.inHours} Jam : ${(duration.inMinutes % 60)
+        .toString()
+        .padLeft(2, '0')} Menit : ${(duration.inSeconds % 60)
+        .toString()
+        .padLeft(2, '0')} Detik';
   }
 }

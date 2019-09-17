@@ -131,7 +131,8 @@ class _HistoriTransaksiViewState extends State<HistoriTransaksiView> {
                     tanggalRequest: data.tanggalTransaksi.toString(),
                     toLembagAmal: data.namaLembagaAmal,
                     counting: data.totalMenitCounting,
-                    virtualNumber: data.virtualAccount),
+                    virtualNumber: data.virtualAccount,
+                    tanggalBerakhirVa: data.tanggalBerakhirVa),
               ));
             },
             shape:
