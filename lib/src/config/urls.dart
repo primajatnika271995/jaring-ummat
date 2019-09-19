@@ -2,7 +2,7 @@
 // const BASE_API_UPLOADER_URL = 'http://tabeldata.ip-dynamic.com/jaring-ummat-uploader';
 
 const BASE_API_URL = 'http://139.162.15.91/jaring-ummat';
-//const BASE_API_URL = 'http://192.168.1.41:9091';
+// const BASE_API_URL = 'http://192.168.1.41:9091';
 const BASE_API_UPLOADER_URL = 'http://139.162.15.91/uploader';
 
 // const BASE_API_CHATS = 'http://tabeldata.ip-dynamic.com/hcare-chat';
@@ -87,3 +87,7 @@ const GALANG_AMAL_DONATION_LIST = BASE_API_URL + '/api/transaksi/donasi/detail';
 // KALKULATOR ZAKAT
 const KALKULATOR_ZAKAT_PROFESI = BASE_API_URL + '/api/zakat/profesi';
 const MASTER_NILAI_ZAKAT_FITRAH = BASE_API_URL + '/api/zakat/nilai-beras';
+
+// UPDATE
+const UPDATE_LOKASI_AMAL = BASE_API_URL + '/api/user/update/lokasi-amal';
+const UPDATE_USER_DETAILS = BASE_API_URL + '/api/user/update';

@@ -19,6 +19,13 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  geocoder: ^0.2.1
+  location: ^2.3.5
+  google_places_picker: ^2.0.2+2
+  firebase_messaging: ^5.0.1
+  firebase_core: ^0.3.0
+  google_maps_flutter: ^0.5.21+2
+  flutter_google_places: ^0.2.3
   flutter_speed_dial: ^1.2.1
   flushbar: ^1.8.2
   jstomp: ^1.1.3
@@ -34,7 +41,7 @@ dependencies:
   percent_indicator: ^1.0.16
   draggable_scrollbar: ^0.0.4
   font_awesome_flutter: ^8.4.0
-  mailer: ^3.0.1
+  mailer: ^3.0.2
   otp: ^1.0.1
   toast: ^0.1.4
   dio: ^2.1.13

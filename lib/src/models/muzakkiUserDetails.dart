@@ -13,6 +13,15 @@ class MuzakkiUserDetails {
     String email;
     String fullname;
     String contact;
+    String alamat;
+    String kotaTinggal;
+    dynamic longitudeTinggal;
+    dynamic latitudeTinggal;
+    String kotaLahir;
+    dynamic longitudeLahir;
+    dynamic latitudeLahir;
+    String lokasiAmal;
+    dynamic tanggalLahir;
     List<ImgProfile> imgProfile;
 
     MuzakkiUserDetails({
@@ -20,15 +29,33 @@ class MuzakkiUserDetails {
         this.email,
         this.fullname,
         this.contact,
+        this.alamat,
+        this.kotaTinggal,
+        this.longitudeTinggal,
+        this.latitudeTinggal,
+        this.kotaLahir,
+        this.longitudeLahir,
+        this.latitudeLahir,
+        this.lokasiAmal,
+        this.tanggalLahir,
         this.imgProfile,
     });
 
-    factory MuzakkiUserDetails.fromJson(Map<String, dynamic> json) => new MuzakkiUserDetails(
+    factory MuzakkiUserDetails.fromJson(Map<String, dynamic> json) => MuzakkiUserDetails(
         userId: json["userId"] == null ? null : json["userId"],
         email: json["email"] == null ? null : json["email"],
         fullname: json["fullname"] == null ? null : json["fullname"],
         contact: json["contact"] == null ? null : json["contact"],
-        imgProfile: json["imgProfile"] == null ? null : new List<ImgProfile>.from(json["imgProfile"].map((x) => ImgProfile.fromJson(x))),
+        alamat: json["alamat"] == null ? null : json["alamat"],
+        kotaTinggal: json["kotaTinggal"] == null ? null : json["kotaTinggal"],
+        longitudeTinggal: json["longitudeTinggal"],
+        latitudeTinggal: json["latitudeTinggal"],
+        kotaLahir: json["kotaLahir"] == null ? null : json["kotaLahir"],
+        longitudeLahir: json["longitudeLahir"],
+        latitudeLahir: json["latitudeLahir"],
+        lokasiAmal: json["lokasiAmal"] == null ? null : json["lokasiAmal"],
+        tanggalLahir: json["tanggalLahir"],
+        imgProfile: json["imgProfile"] == null ? null : List<ImgProfile>.from(json["imgProfile"].map((x) => ImgProfile.fromJson(x))),
     );
 
     Map<String, dynamic> toJson() => {
@@ -36,7 +63,16 @@ class MuzakkiUserDetails {
         "email": email == null ? null : email,
         "fullname": fullname == null ? null : fullname,
         "contact": contact == null ? null : contact,
-        "imgProfile": imgProfile == null ? null : new List<dynamic>.from(imgProfile.map((x) => x.toJson())),
+        "alamat": alamat == null ? null : alamat,
+        "kotaTinggal": kotaTinggal == null ? null : kotaTinggal,
+        "longitudeTinggal": longitudeTinggal,
+        "latitudeTinggal": latitudeTinggal,
+        "kotaLahir": kotaLahir == null ? null : kotaLahir,
+        "longitudeLahir": longitudeLahir,
+        "latitudeLahir": latitudeLahir,
+        "lokasiAmal": lokasiAmal == null ? null : lokasiAmal,
+        "tanggalLahir": tanggalLahir,
+        "imgProfile": imgProfile == null ? null : List<dynamic>.from(imgProfile.map((x) => x.toJson())),
     };
 }
 
@@ -57,7 +93,7 @@ class ImgProfile {
         this.createdBy,
     });
 
-    factory ImgProfile.fromJson(Map<String, dynamic> json) => new ImgProfile(
+    factory ImgProfile.fromJson(Map<String, dynamic> json) => ImgProfile(
         id: json["id"] == null ? null : json["id"],
         thumbnailUrl: json["thumbnailUrl"],
         videoUrl: json["videoUrl"],

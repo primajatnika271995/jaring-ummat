@@ -1,13 +1,14 @@
 import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_jaring_ummat/src/config/hexColor.dart';
 import 'package:flutter_jaring_ummat/src/config/preferences.dart';
+import 'package:flutter_jaring_ummat/src/utils/sizeUtils.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/app_bar_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/new_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/sosial_media_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/page_kalkulator_zakat/kalkulator_zakat.dart';
+import 'package:flutter_jaring_ummat/src/views/page_profile/kelengkapan_akun.dart';
 import 'package:flutter_jaring_ummat/src/views/page_profile/menu_text_data.dart';
 import 'package:giffy_dialog/giffy_dialog.dart';
 import 'package:image_picker/image_picker.dart';
@@ -33,7 +34,7 @@ class _ProfileMenuState extends State<ProfileMenu> {
 
   @override
   Widget build(BuildContext context) {
-    final titleBar = Text('Menu Lain', style: TextStyle(color: blackColor));
+    final titleBar = Text('Menu Lain', style: TextStyle(color: blackColor, fontSize: SizeUtils.titleSize));
 
     final profileIcon = Padding(
       padding: EdgeInsets.only(top: 30),
@@ -82,7 +83,13 @@ class _ProfileMenuState extends State<ProfileMenu> {
     final editProfile = Padding(
       padding: EdgeInsets.only(left: 60, right: 60, top: 10),
       child: RaisedButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => KelengkapanAkunPage()
+            ),
+          );
+        },
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(45)),
         color: greenColor,
         child: Text('Lengkapi Akun', style: TextStyle(color: whiteColor)),
@@ -96,11 +103,11 @@ class _ProfileMenuState extends State<ProfileMenu> {
         children: <Widget>[
           Text(
             '$emailKey',
-            style: TextStyle(fontWeight: FontWeight.bold),
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
           ),
           Text(
             '$fullnameKey • +62 $phoneNumberKey',
-            style: TextStyle(color: grayColor),
+            style: TextStyle(color: grayColor, fontSize: 11),
           )
         ],
       ),
@@ -136,51 +143,30 @@ class _ProfileMenuState extends State<ProfileMenu> {
     return Scaffold(
       appBar: AppBar(
         elevation: 1.0,
-        automaticallyImplyLeading: false,
         backgroundColor: whiteColor,
         title: titleBar,
+        automaticallyImplyLeading: false,
         actions: <Widget>[
           IconButton(
-            icon: Icon(AppBarIcon.logout),
+            icon: Icon(AppBarIcon.logout, size: 20),
             color: blackColor,
             onPressed: _onlogout,
           ),
         ],
       ),
-      body: CustomScrollView(
-        scrollDirection: Axis.vertical,
-        slivers: <Widget>[
-          SliverList(
-            delegate: SliverChildListDelegate([
+      body: SingleChildScrollView(
+        child: Container(
+          child: Column(
+            children: <Widget>[
               profileIcon,
               userProfile,
               editProfile,
               SizedBox(
                 height: 20,
               ),
-            ]),
-          ),
-//          SliverFixedExtentList(
-//            itemExtent: 130.0,
-//            delegate: SliverChildBuilderDelegate(
-//              (context, index) => ListTile(
-//                title: Text(MenuTextData.titleMenu[index],
-//                    style: TextStyle(fontWeight: FontWeight.bold)),
-//                subtitle: Text(MenuTextData.subtitleMenu[index]),
-//                leading: CircleAvatar(
-//                  backgroundColor: MenuTextData.colorMenu[index],
-//                  child: Icon(MenuTextData.iconMenu[index], color: whiteColor),
-//                ),
-//                trailing: Icon(NewIcon.next_small_2x, color: blackColor),
-//              ),
-//              childCount: 5,
-//            ),
-//          ),
-          SliverList(
-            delegate: SliverChildListDelegate([
               ListView.separated(
-                physics: NeverScrollableScrollPhysics(),
-                itemCount: 5,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: 3,
                 shrinkWrap: true,
                 separatorBuilder: (context, position) {
                   return Padding(
@@ -199,8 +185,8 @@ class _ProfileMenuState extends State<ProfileMenu> {
                 },
                 itemBuilder: (context, index) => ListTile(
                   title: Text(MenuTextData.titleMenu[index],
-                      style: TextStyle(fontWeight: FontWeight.bold)),
-                  subtitle: Text(MenuTextData.subtitleMenu[index]),
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
+                  subtitle: Text(MenuTextData.subtitleMenu[index], style: TextStyle(fontSize: 13)),
                   leading: CircleAvatar(
                     backgroundColor: MenuTextData.colorMenu[index],
                     child:
@@ -218,20 +204,14 @@ class _ProfileMenuState extends State<ProfileMenu> {
                   },
                 ),
               ),
-            ]),
-          ),
-          SliverList(
-            delegate: SliverChildListDelegate([
               infoBottom,
               socialMedia,
-            ]),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
-
-  /// Future call PopUp Dialog Image Source
 
   Future<ImageSource> _asyncImageSourceDialog() {
     return showDialog<ImageSource>(
@@ -255,6 +235,14 @@ class _ProfileMenuState extends State<ProfileMenu> {
         );
       },
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Call void getProfile
+    getProfile();
   }
 
   Future _onlogout() {
@@ -286,14 +274,6 @@ class _ProfileMenuState extends State<ProfileMenu> {
         },
       ),
     );
-  }
-
-  @override
-  void initState() {
-    super.initState();
-
-    // Call void getProfile
-    getProfile();
   }
 
   /// Call function to Get Image From Gallery
@@ -329,7 +309,7 @@ class _ProfileMenuState extends State<ProfileMenu> {
     });
   }
 
-  /// Call Function to Logout and Clear Preferences
+  /// Call Function Logout
 
   void logout() async {
     SharedPreferences _preferences = await SharedPreferences.getInstance();

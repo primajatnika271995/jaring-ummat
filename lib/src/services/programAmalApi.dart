@@ -45,6 +45,9 @@ class ProgramAmalApiProvider {
       String userId, String category, String offset, String limit) async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
     var token = _pref.getString(ACCESS_TOKEN_KEY);
+    var filter = _pref.getString(FILTER_PROGRAM_AMAL);
+
+    print('ini filter : $filter');
 
     if (token == null) {
       token =
@@ -59,6 +62,7 @@ class ProgramAmalApiProvider {
         "idUser": userId,
         "limit": limit,
         "offset": offset,
+        "filter": filter == null ? "false" : "true"
       };
       uri = Uri.parse(PROGRAM_AMAL_LIST_ALL_URL);
     } else {
@@ -68,6 +72,7 @@ class ProgramAmalApiProvider {
         "limit": limit,
         "offset": offset,
         "category": category,
+        "filter": filter == null ? "false" : "true"
       };
       uri = Uri.parse(PROGRAM_AMAL_LIST_BY_CATEGORY_URL);
     }
@@ -82,6 +87,6 @@ class ProgramAmalApiProvider {
       print('--> No Content');
     } else {
       print('Err :${response.statusCode}');
-    }
+    } return null;
   }
 }

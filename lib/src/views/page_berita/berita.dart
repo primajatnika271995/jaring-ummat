@@ -1,12 +1,12 @@
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_jaring_ummat/src/bloc/beritaBloc.dart';
 import 'package:flutter_jaring_ummat/src/config/hexColor.dart';
 import 'package:flutter_jaring_ummat/src/models/beritaModel.dart';
-import 'package:flutter_jaring_ummat/src/views/components/icon_text/home_page_icons_icons.dart';
+import 'package:flutter_jaring_ummat/src/utils/sizeUtils.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/new_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/components/loadingContainer.dart';
 import 'package:flutter_jaring_ummat/src/views/page_berita/berita_content.dart';
+import 'package:flutter_jaring_ummat/src/views/page_berita/berita_views.dart';
 import 'package:flutter_svg/svg.dart';
 
 class BeritaPage extends StatefulWidget {
@@ -17,15 +17,10 @@ class BeritaPage extends StatefulWidget {
 }
 
 class _BeritaPageState extends State<BeritaPage> {
-  final String title = "Berita Jejaring";
-  String selectedCategory = "";
+  String selectedCategory = "beritaku";
 
-  final List<String> imgList = [
-    'http://www.radar-palembang.com/wp-content/uploads/2017/06/BNI.jpg',
-    'https://cdn2.tstatic.net/sumsel/foto/bank/images/muhammad-adil-direktur-utama-bank-sumselbabel-berfoto-dengan-anak-panti_20150710_151920.jpg',
-    'http://informatika.narotama.ac.id/file/content/150730105606_bukber2014_2.jpg'
-  ];
-  int _current = 0;
+  final String noImg =
+      "http://www.sclance.com/pngs/no-image-png/no_image_png_935227.png";
 
   bool _loadingVisible = false;
 
@@ -35,7 +30,8 @@ class _BeritaPageState extends State<BeritaPage> {
       inAsyncCall: _loadingVisible,
       child: Scaffold(
         body: DefaultTabController(
-          length: 6,
+          length: 7,
+          initialIndex: 0,
           child: Scaffold(
             backgroundColor: whiteColor,
             appBar: AppBar(
@@ -43,8 +39,9 @@ class _BeritaPageState extends State<BeritaPage> {
               backgroundColor: whiteColor,
               elevation: 0.0,
               title: Text(
-                title,
-                style: TextStyle(color: blackColor, fontSize: 18.0),
+                'Berita Jejaring',
+                style:
+                    TextStyle(color: blackColor, fontSize: SizeUtils.titleSize),
               ),
               actions: <Widget>[
                 IconButton(
@@ -77,6 +74,11 @@ class _BeritaPageState extends State<BeritaPage> {
                       unselectedLabelColor: grayColor,
                       onTap: (int index) {
                         switch (index) {
+                          case 0:
+                            setState(() {
+                              selectedCategory = "beritaku";
+                            });
+                            break;
                           case 1:
                             setState(() {
                               selectedCategory = "";
@@ -109,12 +111,15 @@ class _BeritaPageState extends State<BeritaPage> {
                             break;
                           default:
                             setState(() {
-                              selectedCategory = "";
+                              selectedCategory = "beritaku";
                             });
                         }
                         bloc.fetchAllBerita(selectedCategory);
                       },
                       tabs: <Widget>[
+                        new Tab(
+                          text: 'Beritaku',
+                        ),
                         new Tab(
                           text: 'Populer',
                         ),
@@ -132,7 +137,16 @@ class _BeritaPageState extends State<BeritaPage> {
                         ),
                         new Tab(
                           text: 'Kesehatan',
-                        )
+                        ),
+//                        new Tab(
+//                          text: 'Zakat',
+//                        ),
+//                        new Tab(
+//                          text: 'Bakti Sosial',
+//                        ),
+//                        new Tab(
+//                          text: 'lain-lain',
+//                        ),
                       ],
                     ),
                   ),
@@ -142,71 +156,142 @@ class _BeritaPageState extends State<BeritaPage> {
                     Column(
                       children: <Widget>[
                         Container(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              getFullScreenCarousel(context),
-                              Padding(
-                                padding: EdgeInsets.only(
-                                    left: 10.0, right: 20.0, top: 10.0),
-                                child: const Text(
-                                  'Kegiatan',
-                                  style: TextStyle(color: Colors.grey),
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.only(
-                                    left: 10.0, right: 15.0, top: 5.0),
-                                child: const Text(
-                                  'Pleatihan Da\'i Mandiri Se-Jawa Barat Di YABNI Sumedang',
-                                  style: TextStyle(
-                                      fontSize: 14.0,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.only(
-                                    left: 10.0, right: 15.0, top: 0.0),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    const Text(
-                                        'Bamuis BNI | 08:56, 02 Januari 2019'),
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                          top: 10.0, right: 5.0, bottom: 5.0),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.end,
+                          child: StreamBuilder(
+                              stream: bloc.allBerita,
+                              builder: (context,
+                                  AsyncSnapshot<List<BeritaModel>> snapshot) {
+                                switch (snapshot.connectionState) {
+                                  case ConnectionState.waiting:
+                                    return Text('');
+                                    break;
+                                  default:
+                                    if (snapshot.hasData) {
+                                      var data = snapshot.data[0];
+                                      return Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: <Widget>[
-                                          Icon(NewIcon.love_3x,
-                                              color: blackColor, size: 20.0),
-                                          SizedBox(width: 10.0),
-                                          Icon(NewIcon.comment_3x,
-                                              color: blackColor, size: 20.0),
-                                          SizedBox(width: 10.0),
-                                          Icon(NewIcon.share_3x,
-                                              color: blackColor, size: 20.0),
+                                          InkWell(
+                                            onTap: () {
+                                              Navigator.of(context).push(
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      BeritaViews(
+                                                    value: data,
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                            child: Container(
+                                              height: 230.0,
+                                              width: MediaQuery.of(context)
+                                                  .size
+                                                  .width,
+                                              child: data.imageContent == null
+                                                  ? Image.network(
+                                                      noImg,
+                                                      fit: BoxFit.fitWidth,
+                                                    )
+                                                  : Image.network(
+                                                      data.imageContent[0]
+                                                          .imgUrl,
+                                                      fit: BoxFit.fitWidth,
+                                                    ),
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.only(
+                                                left: 10.0,
+                                                right: 20.0,
+                                                top: 10.0),
+                                            child: const Text(
+                                              'Kegiatan',
+                                              style:
+                                                  TextStyle(color: Colors.grey),
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.only(
+                                              left: 10.0,
+                                              right: 20.0,
+                                              top: 0.0,
+                                            ),
+                                            child: Text(
+                                              data.titleBerita,
+                                              style: TextStyle(
+                                                  fontSize: 14.0,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.only(
+                                              left: 10.0,
+                                              right: 15.0,
+                                              top: 5.0,
+                                            ),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: <Widget>[
+                                                Column(
+                                                  children: <Widget>[
+                                                    Text(data.createdBy),
+                                                    Text(DateTime
+                                                            .fromMicrosecondsSinceEpoch(
+                                                                data.createdDate *
+                                                                    1000)
+                                                        .toString(), style: TextStyle(fontSize: 11))
+                                                  ],
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                ),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                    top: 5.0,
+                                                    right: 5.0,
+                                                    bottom: 5.0,
+                                                  ),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.end,
+                                                    children: <Widget>[
+                                                      Icon(NewIcon.love_3x,
+                                                          color: blackColor,
+                                                          size: 20.0),
+                                                      SizedBox(width: 10.0),
+                                                      Icon(NewIcon.comment_3x,
+                                                          color: blackColor,
+                                                          size: 20.0),
+                                                      SizedBox(width: 10.0),
+                                                      Icon(NewIcon.share_3x,
+                                                          color: blackColor,
+                                                          size: 20.0),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 10.0,
+                                            child: new Center(
+                                              child: new Container(
+                                                margin:
+                                                    new EdgeInsetsDirectional
+                                                            .only(
+                                                        start: 1.0, end: 1.0),
+                                                height: 5.0,
+                                                color: softGreyColor,
+                                              ),
+                                            ),
+                                          ),
                                         ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(
-                                height: 10.0,
-                                child: new Center(
-                                  child: new Container(
-                                    margin: new EdgeInsetsDirectional.only(
-                                        start: 1.0, end: 1.0),
-                                    height: 5.0,
-                                    color: softGreyColor,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
+                                      );
+                                    }
+                                }
+                                return Container();
+                              }),
                         ),
                         StreamBuilder(
                           stream: bloc.allBerita,
@@ -280,28 +365,6 @@ class _BeritaPageState extends State<BeritaPage> {
     }
 
     return result;
-  }
-
-  CarouselSlider getFullScreenCarousel(BuildContext context) {
-    return CarouselSlider(
-      autoPlay: false,
-      viewportFraction: 3.0,
-      onPageChanged: (index) {
-        setState(() {
-          _current = index;
-        });
-      },
-      items: imgList.map(
-        (url) {
-          return Container(
-            child: Image.network(
-              url,
-              fit: BoxFit.cover,
-            ),
-          );
-        },
-      ).toList(),
-    );
   }
 
   Widget buildList(AsyncSnapshot<List<BeritaModel>> snapshot) {
