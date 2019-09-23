@@ -30,7 +30,7 @@ class _BeritaPageState extends State<BeritaPage> {
       inAsyncCall: _loadingVisible,
       child: Scaffold(
         body: DefaultTabController(
-          length: 7,
+          length: 6,
           initialIndex: 0,
           child: Scaffold(
             backgroundColor: whiteColor,
@@ -76,50 +76,42 @@ class _BeritaPageState extends State<BeritaPage> {
                         switch (index) {
                           case 0:
                             setState(() {
-                              selectedCategory = "beritaku";
+                              selectedCategory = "";
                             });
                             break;
                           case 1:
                             setState(() {
-                              selectedCategory = "";
+                              selectedCategory = "Keagamaan";
                             });
                             break;
                           case 2:
                             setState(() {
-                              selectedCategory = "Keagamaan";
+                              selectedCategory = "Kemanusiaan";
                             });
                             break;
                           case 3:
                             setState(() {
-                              selectedCategory = "Kemanusiaan";
+                              selectedCategory = "Pendidikan";
                             });
                             break;
                           case 4:
                             setState(() {
-                              selectedCategory = "Pendidikan";
-                            });
-                            break;
-                          case 5:
-                            setState(() {
                               selectedCategory = "Lingkungan";
                             });
                             break;
-                          case 6:
+                          case 5:
                             setState(() {
                               selectedCategory = "Kesehatan";
                             });
                             break;
                           default:
                             setState(() {
-                              selectedCategory = "beritaku";
+                              selectedCategory = "";
                             });
                         }
                         bloc.fetchAllBerita(selectedCategory);
                       },
                       tabs: <Widget>[
-                        new Tab(
-                          text: 'Beritaku',
-                        ),
                         new Tab(
                           text: 'Populer',
                         ),

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_jaring_ummat/src/config/hexColor.dart';
+import 'package:flutter_jaring_ummat/src/utils/sizeUtils.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/new_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/profile_inbox_icon_icons.dart';
+import 'package:flutter_jaring_ummat/src/views/page_inbox/expired_transaksi.dart';
 import 'package:flutter_jaring_ummat/src/views/page_inbox/histori_transaksi.dart';
 import 'package:flutter_jaring_ummat/src/views/page_inbox/inbox_text_data.dart';
 import 'package:flutter_jaring_ummat/src/views/page_inbox/transaksi_selesai.dart';
@@ -14,7 +16,8 @@ class Inbox extends StatefulWidget {
 class _InboxState extends State<Inbox> {
   @override
   Widget build(BuildContext context) {
-    final titleBar = Text('Notifikasi', style: TextStyle(color: blackColor));
+    final titleBar = Text('Inbox',
+        style: TextStyle(color: blackColor, fontSize: SizeUtils.titleSize));
 
     return DefaultTabController(
       length: 2,
@@ -27,13 +30,13 @@ class _InboxState extends State<Inbox> {
           actions: <Widget>[
             IconButton(
               padding: EdgeInsets.only(left: 30),
-              onPressed: null,
+              onPressed: () {},
               icon: Icon(NewIcon.delete_3x),
               color: blackColor,
               iconSize: 20,
             ),
             IconButton(
-              onPressed: null,
+              onPressed: () {},
               icon: Icon(ProfileInboxIcon.mark_as_read_3x),
               color: blackColor,
               iconSize: 20,
@@ -64,15 +67,15 @@ class _InboxState extends State<Inbox> {
           padding: const EdgeInsets.only(left: 20, top: 20, bottom: 10),
           child: Text(
             'Pembayaran',
-            style: TextStyle(fontWeight: FontWeight.bold),
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
           ),
         ),
         ListView.separated(
-          itemCount: 2,
+          itemCount: 3,
           shrinkWrap: true,
           separatorBuilder: (context, position) {
             return Padding(
-              padding: EdgeInsets.only(left: 0.0),
+              padding: EdgeInsets.only(left: 80.0),
               child: new SizedBox(
                 height: 10.0,
                 child: new Center(
@@ -102,6 +105,13 @@ class _InboxState extends State<Inbox> {
                   ),
                 );
               }
+              if (index == 2) {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => ExpiredTransaksi(),
+                  ),
+                );
+              }
             },
             title: Text(
               InboxTextData.listTransaksi[index],
@@ -128,7 +138,7 @@ class _InboxState extends State<Inbox> {
             padding: const EdgeInsets.only(left: 20, top: 20, bottom: 10),
             child: Text(
               'Hari Ini',
-              style: TextStyle(fontWeight: FontWeight.bold),
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
             ),
           ),
           ListView.separated(

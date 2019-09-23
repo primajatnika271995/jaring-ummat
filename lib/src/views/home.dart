@@ -4,9 +4,9 @@ import 'package:flutter_jaring_ummat/src/config/hexColor.dart';
 import 'package:flutter_jaring_ummat/src/models/DTO/UserDetailPref.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/new_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/profile_inbox_icon_icons.dart';
-import 'package:flutter_jaring_ummat/src/views/components/navbar_custom_icon.dart';
 import 'package:flutter_jaring_ummat/src/views/login/reLogin.dart';
 import 'package:flutter_jaring_ummat/src/bloc/preferencesBloc.dart';
+import 'package:flutter_jaring_ummat/src/views/page_explorer/explorer.dart';
 import 'package:flutter_jaring_ummat/src/views/page_inbox/inbox.dart';
 import 'package:flutter_jaring_ummat/src/views/page_portofolio/portofoilio.dart';
 import 'package:flutter_jaring_ummat/src/views/page_profile/profile_menu.dart';
@@ -63,10 +63,10 @@ class _HomeState extends State<HomeView> {
 
     final List<Widget> _children = [
       ProgramAmalPage(),
+      (_token == null) ? ReLogin() : ExplorerPage(),
+      (_token == null) ? ReLogin() : Inbox(),
       (_token == null) ? ReLogin() : Portofolio(),
-      (_token == null) ? ReLogin() : Inbox(),
-      (_token == null) ? ReLogin() : Inbox(),
-      (_token == null) ? ReLogin() : ProfileMenu()
+      (_token == null) ? ReLogin() : ProfileMenu(),
     ];
 
     return Scaffold(
@@ -85,83 +85,44 @@ class _HomeState extends State<HomeView> {
           onTap: _selectedTab,
           items: [
             BottomNavigationBarItem(
-              icon: Icon(NewIcon.nav_home_inactive_3x, size: 20),
-              activeIcon:
-                  Icon(NewIcon.nav_home_active_3x, color: greenColor, size: 20),
-              title: Padding(padding: EdgeInsets.all(0)),
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(NewIcon.nav_portfolio_3x, size: 20),
-              activeIcon: Icon(ProfileInboxIcon.nav_portfolio_active_3x,
-                  color: greenColor, size: 20),
-              title: Padding(padding: EdgeInsets.all(0)),
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(NewIcon.nav_portfolio_3x, size: 0, color: Colors.white),
-              title: Padding(padding: EdgeInsets.all(0)),
-            ),
-            BottomNavigationBarItem(
-              icon: Stack(
-                children: <Widget>[
-                  Icon(NewIcon.nav_inbox_3x, size: 20),
-                  Positioned(
-                    right: 0,
-                    child: Container(
-                      padding: EdgeInsets.all(1),
-                      decoration: new BoxDecoration(
-                        color: Colors.red,
-                        borderRadius: BorderRadius.circular(6),
-                      ),
-                      constraints: BoxConstraints(
-                        minWidth: 12,
-                        minHeight: 12,
-                      ),
-                      child: const Text(
-                        '12',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 8,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                  )
-                ],
-              ),
-              activeIcon: Stack(
-                children: <Widget>[
-                  Icon(ProfileInboxIcon.nav_inbox_active_3x,
-                      color: greenColor, size: 20),
-                  Positioned(
-                    right: 0,
-                    child: Container(
-                      padding: EdgeInsets.all(1),
-                      decoration: BoxDecoration(
-                        color: Colors.red,
-                        borderRadius: BorderRadius.circular(6),
-                      ),
-                      constraints: BoxConstraints(
-                        minWidth: 12,
-                        minHeight: 12,
-                      ),
-                      child: const Text(
-                        '12',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 8,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                  )
-                ],
+              icon: Icon(NewIcon.nav_home_inactive_3x, size: 20.0),
+              activeIcon: Icon(
+                NewIcon.nav_home_active_3x,
+                color: greenColor,
+                size: 20.0,
               ),
               title: Padding(padding: EdgeInsets.all(0)),
             ),
             BottomNavigationBarItem(
-              icon: Icon(NewIcon.nav_others_3x, size: 20),
-              activeIcon: Icon(ProfileInboxIcon.nav_others_active_3x,
-                  color: greenColor, size: 20),
+              icon: Icon(Icons.explore, size: 25.0),
+              activeIcon: Icon(
+                Icons.explore,
+                color: greenColor,
+                size: 25.0,
+              ),
+              title: Padding(padding: EdgeInsets.all(0)),
+            ),
+            BottomNavigationBarItem(
+              icon:
+                  Icon(NewIcon.nav_portfolio_3x, size: 0, color: Colors.white),
+              title: Padding(padding: EdgeInsets.all(0)),
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(NewIcon.nav_portfolio_3x, size: 20.0),
+              activeIcon: Icon(
+                NewIcon.nav_portfolio_3x,
+                color: greenColor,
+                size: 20.0,
+              ),
+              title: Padding(padding: EdgeInsets.all(0)),
+            ),
+            BottomNavigationBarItem(
+              icon: new Icon(NewIcon.nav_others_3x, size: 20.0),
+              activeIcon: new Icon(
+                ProfileInboxIcon.nav_others_active_3x,
+                color: greenColor,
+                size: 20.0,
+              ),
               title: Padding(padding: EdgeInsets.all(0)),
             ),
           ],

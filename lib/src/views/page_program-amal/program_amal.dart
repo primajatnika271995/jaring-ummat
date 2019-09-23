@@ -3,6 +3,7 @@ import 'package:flutter_jaring_ummat/src/utils/screenSize.dart';
 import 'package:flutter_jaring_ummat/src/utils/sizeUtils.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/app_bar_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/new_icon_icons.dart';
+import 'package:flutter_jaring_ummat/src/views/page_inbox/inbox.dart';
 import 'package:flutter_jaring_ummat/src/views/page_program-amal/program_amal_text_data.dart';
 import 'package:flutter_jaring_ummat/src/bloc/programAmalBloc.dart';
 import 'package:flutter_jaring_ummat/src/bloc/registerBloc.dart'
@@ -30,7 +31,7 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
   /*
    * Variable Selected Category & Location
    */
-  String selectedCategory = "programku";
+  String selectedCategory = "";
   String _locationSelected;
 
   /*
@@ -47,7 +48,7 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
   /*
    * Tab Controller
    */
-  int _tabLength = 7;
+  int _tabLength = 6;
 
   @override
   Widget build(BuildContext context) {
@@ -78,10 +79,10 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                   padding: const EdgeInsets.only(right: 7),
                   child: InkWell(
                     onTap: () {
-                      // showSearch(context: context, delegate: DataSearch());
+                      checkLocation();
                     },
                     child: Icon(
-                      NewIcon.search_small_2x,
+                      AppBarIcon.location_inactive,
                       size: 20,
                       color: blackColor,
                     ),
@@ -91,10 +92,14 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                   padding: const EdgeInsets.only(right: 7),
                   child: InkWell(
                     onTap: () {
-                      checkLocation();
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => Inbox(),
+                        ),
+                      );
                     },
                     child: Icon(
-                      AppBarIcon.location_inactive,
+                      NewIcon.nav_inbox_3x,
                       size: 20,
                       color: blackColor,
                     ),
@@ -187,50 +192,42 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                             switch (index) {
                               case 0:
                                 setState(() {
-                                  selectedCategory = "programku";
+                                  selectedCategory = "";
                                 });
                                 break;
                               case 1:
                                 setState(() {
-                                  selectedCategory = "";
+                                  selectedCategory = "Keagamaan";
                                 });
                                 break;
                               case 2:
                                 setState(() {
-                                  selectedCategory = "Keagamaan";
+                                  selectedCategory = "Kemanusiaan";
                                 });
                                 break;
                               case 3:
                                 setState(() {
-                                  selectedCategory = "Kemanusiaan";
+                                  selectedCategory = "Pendidikan";
                                 });
                                 break;
                               case 4:
                                 setState(() {
-                                  selectedCategory = "Pendidikan";
-                                });
-                                break;
-                              case 5:
-                                setState(() {
                                   selectedCategory = "Lingkungan";
                                 });
                                 break;
-                              case 6:
+                              case 5:
                                 setState(() {
                                   selectedCategory = "Kesehatan";
                                 });
                                 break;
                               default:
                                 setState(() {
-                                  selectedCategory = "programku";
+                                  selectedCategory = "";
                                 });
                             }
                             bloc.fetchAllProgramAmal(selectedCategory);
                           },
                           tabs: <Widget>[
-                            new Tab(
-                              text: 'Programku',
-                            ),
                             new Tab(
                               text: 'Populer',
                             ),

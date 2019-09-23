@@ -1,4 +1,3 @@
-import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_jaring_ummat/src/config/hexColor.dart';
 import 'package:flutter_jaring_ummat/src/models/historiTransaksiModel.dart';
@@ -9,15 +8,12 @@ import 'package:flutter_jaring_ummat/src/views/components/icon_text/new_icon_ico
 import 'package:flutter_jaring_ummat/src/bloc/historiTransaksiBloc.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/profile_inbox_icon_icons.dart';
 
-class TransaksiSelesaiView extends StatefulWidget {
+class ExpiredTransaksi extends StatefulWidget {
   @override
-  _TransaksiSelesaiViewState createState() => _TransaksiSelesaiViewState();
+  _ExpiredTransaksiState createState() => _ExpiredTransaksiState();
 }
 
-class _TransaksiSelesaiViewState extends State<TransaksiSelesaiView> {
-
-  var formatter = new DateFormat('dd-MM-yyyy HH:mm:ss');
-
+class _ExpiredTransaksiState extends State<ExpiredTransaksi> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,7 +22,7 @@ class _TransaksiSelesaiViewState extends State<TransaksiSelesaiView> {
         backgroundColor: Colors.white,
         titleSpacing: 0,
         elevation: 0,
-        title: Text('Daftar Amal',
+        title: Text('Amal Dibatalkan',
             style: TextStyle(color: blackColor, fontSize: SizeUtils.titleSize)),
         leading: IconButton(
           onPressed: () {
@@ -50,7 +46,7 @@ class _TransaksiSelesaiViewState extends State<TransaksiSelesaiView> {
                 return listBuilder(snapshot.data);
               }
               return Center(
-                child: Text('NO HISTORY DATA'),
+                child: Text('NO EXPIRED DATA'),
               );
           }
         },
@@ -66,7 +62,7 @@ class _TransaksiSelesaiViewState extends State<TransaksiSelesaiView> {
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
           child: Card(
-            elevation: 1,
+            elevation: 2,
             color: Colors.white,
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
@@ -74,32 +70,31 @@ class _TransaksiSelesaiViewState extends State<TransaksiSelesaiView> {
               // height: screenHeightExcludingToolbar(context, dividedBy: 4),
               child: Column(
                 children: <Widget>[
-                  Container(
-                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-                    width: screenWidth(context),
-                    decoration: BoxDecoration(
-                        color: Colors.grey[100],
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(20),
-                          topRight: Radius.circular(20),
-                        )),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          'Pembayaran Sukses pada ${formatter.format(DateTime.fromMicrosecondsSinceEpoch(data.tanggalBerakhirVa * 1000))} WIB',
-                          style: TextStyle(fontSize: 12),
-                        ),
-                        Text('JJR / ${data.namaLembagaAmal.substring(0, 3).toUpperCase()} / ${data.jenisTransaksi.substring(0, 3).toUpperCase()} / ${data.tanggalTransaksi} /  00$index', style: TextStyle(fontSize: 14, color: Colors.black, fontWeight: FontWeight.bold))
-                      ],
-                    ),
-                  ),
+//                  Container(
+//                    padding: EdgeInsets.symmetric(vertical: 20),
+//                    width: screenWidth(context),
+//                    decoration: BoxDecoration(
+//                        color: Colors.grey[100],
+//                        borderRadius: BorderRadius.only(
+//                          topLeft: Radius.circular(20),
+//                          topRight: Radius.circular(20),
+//                        )),
+//                    child: Column(
+//                      children: <Widget>[
+//                        Text(
+//                          'Pembayaran Sukses pada ${DateTime.fromMillisecondsSinceEpoch(data.tanggalTransaksi)}',
+//                          style: TextStyle(fontSize: 12),
+//                        ),
+//                      ],
+//                    ),
+//                  ),
                   Container(
                     padding: EdgeInsets.only(bottom: 10),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.only(
-                          bottomLeft: Radius.circular(20),
-                          bottomRight: Radius.circular(20)),
+                        bottomLeft: Radius.circular(20),
+                        bottomRight: Radius.circular(20)
+                      ),
                     ),
                     child: ListTile(
                       title: RichText(
@@ -110,7 +105,7 @@ class _TransaksiSelesaiViewState extends State<TransaksiSelesaiView> {
                           ),
                           TextSpan(
                             text:
-                                '${CurrencyFormat().currency(data.jumlahDibayar.toDouble())}',
+                                '${CurrencyFormat().currency(data.jumlahTransaksi.toDouble())}',
                             style: TextStyle(
                                 color: Colors.black,
                                 fontWeight: FontWeight.bold),
@@ -245,6 +240,6 @@ class _TransaksiSelesaiViewState extends State<TransaksiSelesaiView> {
   void initState() {
     super.initState();
 
-    bloc.fetchHistoryTransaksi("finish");
+    bloc.fetchHistoryTransaksi("failed");
   }
 }

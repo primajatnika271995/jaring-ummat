@@ -488,26 +488,20 @@ class _PortofolioState extends State<Portofolio> {
             initialIndex: indexTab,
             child: CustomScrollView(
               slivers: <Widget>[
-                SliverAppBar(
-                  elevation: 0,
-                  automaticallyImplyLeading: false,
-                  backgroundColor: Colors.white,
-                  bottom: PreferredSize(
-                    preferredSize: Size.fromHeight(
-                        MediaQuery.of(context).size.height * 0.53),
-                    child: Text(''),
-                  ),
-                  flexibleSpace: Container(
-                    child: Column(
-                      children: <Widget>[
-                        SizedBox(
-                          height: 10,
-                        ),
-                        mySaldoGrid,
-                        sebaranAktifitas,
-                      ],
+                SliverList(
+                  delegate: SliverChildListDelegate([
+                    Container(
+                      child: Column(
+                        children: <Widget>[
+                          SizedBox(
+                            height: 10,
+                          ),
+                          mySaldoGrid,
+                          sebaranAktifitas,
+                        ],
+                      ),
                     ),
-                  ),
+                  ]),
                 ),
                 SliverAppBar(
                   backgroundColor: whiteColor,
@@ -780,33 +774,19 @@ class _PortofolioState extends State<Portofolio> {
                     ),
                   ),
                 ),
-                SliverAppBar(
-                  elevation: 0,
-                  automaticallyImplyLeading: false,
-                  backgroundColor: Colors.transparent,
-                  bottom: PreferredSize(
-                    preferredSize: Size.fromHeight(190),
-                    child: Text(''),
-                  ),
-                  flexibleSpace: Container(
-                    child: Column(
-                      children: <Widget>[aktivitasTerbesar],
+                SliverList(
+                  delegate: SliverChildListDelegate([
+                    Container(
+                      child: Column(
+                        children: <Widget>[aktivitasTerbesar],
+                      ),
                     ),
-                  ),
-                ),
-                SliverAppBar(
-                  elevation: 0,
-                  automaticallyImplyLeading: false,
-                  backgroundColor: Colors.transparent,
-                  bottom: PreferredSize(
-                      preferredSize: Size.fromHeight(
-                          MediaQuery.of(context).size.height * 0.5),
-                      child: Text('')),
-                  flexibleSpace: Container(
-                    child: Column(
-                      children: <Widget>[aktivitasTerbaru],
+                    Container(
+                      child: Column(
+                        children: <Widget>[aktivitasTerbaru],
+                      ),
                     ),
-                  ),
+                  ]),
                 ),
               ],
             ),

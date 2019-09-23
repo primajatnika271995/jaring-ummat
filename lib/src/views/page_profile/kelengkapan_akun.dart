@@ -275,7 +275,7 @@ class _KelengkapanAkunPageState extends State<KelengkapanAkunPage> {
                 setState(() {
                   _cityReadOnly = !_cityReadOnly;
                 });
-                _showAutocomplete();
+                _showAutocompleteCity();
               },
               child: const Text('Ubah',
                   style: TextStyle(
@@ -344,7 +344,6 @@ class _KelengkapanAkunPageState extends State<KelengkapanAkunPage> {
               fontSize: 13.0,
               color: Colors.black,
             ),
-            readOnly: _streetReadOnly,
             controller: _streetCtrl,
             decoration: InputDecoration(
               labelText: 'Alamat',
@@ -363,7 +362,7 @@ class _KelengkapanAkunPageState extends State<KelengkapanAkunPage> {
                       setState(() {
                         _streetReadOnly = !_streetReadOnly;
                       });
-                      _getLocation();
+                      _showAutocompleteAddress();
                     },
                     child: const Text('Ubah',
                         style: TextStyle(
@@ -602,7 +601,7 @@ class _KelengkapanAkunPageState extends State<KelengkapanAkunPage> {
     // _getLocation();
 
     PluginGooglePlacePicker.initialize(
-        androidApiKey: "AIzaSyBe1GRyUzUQcSZP5gb0qxo-Su8XJTOenas");
+        androidApiKey: "AIzaSyCu1HQ1DdlfT7Sdw2kro-MJovvH6wW8DJg");
     super.initState();
   }
 
@@ -611,7 +610,7 @@ class _KelengkapanAkunPageState extends State<KelengkapanAkunPage> {
     final DateTime picked = await showDatePicker(
         context: context,
         initialDate: date,
-        firstDate: date.subtract(Duration(days: 1)),
+        firstDate: new DateTime(1945),
         lastDate: new DateTime(2100));
 
     if (picked != null && picked != date) {
@@ -696,50 +695,49 @@ class _KelengkapanAkunPageState extends State<KelengkapanAkunPage> {
     });
   }
 
-  /// Call Google Place
+  /// Call Google Place City
 
-  void _showAutocomplete() async {
-    var placeName;
-    var locationRestriction = LocationRestriction()
-      ..northEastLat = 20.0
-      ..northEastLng = 20.0
-      ..southWestLng = 0.0
-      ..southWestLat = 0.0;
-
-    var country = "ID";
-
-    // Platform messages may fail, so we use a try/catch PlatformException.
+  void _showAutocompleteCity() async {
     var place = await PluginGooglePlacePicker.showAutocomplete(
         mode: PlaceAutocompleteMode.MODE_OVERLAY,
-        countryCode: country,
-        restriction: locationRestriction,
-        typeFilter: TypeFilter.ESTABLISHMENT);
-    placeName = place.name;
+        typeFilter: TypeFilter.REGIONS);
 
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
     if (!mounted) return;
 
     setState(() {
-      _cityCtrl.text = placeName;
+      _cityCtrl.text = place.name;
     });
   }
+
+  /// Call Google Place Address
+
+  void _showAutocompleteAddress() async {
+    var place = await PluginGooglePlacePicker.showAutocomplete(
+        mode: PlaceAutocompleteMode.MODE_OVERLAY,
+        typeFilter: TypeFilter.ADDRESS);
+
+    if (!mounted) return;
+
+    setState(() {
+      _streetCtrl.text = place.address;
+    });
+  }
+
 
   // Call Function Get Latitude & Longitude
-  void _getLocation() async {
-    var currentLocation = await location.getLocation();
-    print(currentLocation.latitude);
-    print(currentLocation.longitude);
+  // void _getLocation() async {
+  //   var currentLocation = await location.getLocation();
+  //   print(currentLocation.latitude);
+  //   print(currentLocation.longitude);
 
-    final coordinate =
-        new Coordinates(currentLocation.latitude, currentLocation.longitude);
-    var data = await Geocoder.local.findAddressesFromCoordinates(coordinate);
-    print(data.first.addressLine);
-    setState(() {
-      _streetCtrl.text = data.first.addressLine;
-      latitude = currentLocation.latitude.toString();
-      longitude = currentLocation.longitude.toString();
-    });
-  }
+  //   final coordinate =
+  //       new Coordinates(currentLocation.latitude, currentLocation.longitude);
+  //   var data = await Geocoder.local.findAddressesFromCoordinates(coordinate);
+  //   print(data.first.addressLine);
+  //   setState(() {
+  //     _streetCtrl.text = data.first.addressLine;
+  //     latitude = currentLocation.latitude.toString();
+  //     longitude = currentLocation.longitude.toString();
+  //   });
+  // }
 }

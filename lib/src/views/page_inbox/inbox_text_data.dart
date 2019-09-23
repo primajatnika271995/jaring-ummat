@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/profile_inbox_icon_icons.dart';
 
 class InboxTextData {
-
   /*
    *  Data Icon List Tile
    */
@@ -12,7 +11,6 @@ class InboxTextData {
     ProfileInboxIcon.saved_galang_amal_3x,
     ProfileInboxIcon.donation_3x
   ];
-
 
   /*
    * Data Title List Tile 
@@ -48,6 +46,7 @@ class InboxTextData {
   static const List<String> listTransaksi = [
     "Pembayaran Amal",
     "Daftar Amal",
+    "Amal Dibatalakan"
   ];
 
   /*
@@ -55,7 +54,8 @@ class InboxTextData {
    */
   static const List listColorTransaksi = [
     Colors.orangeAccent,
-    Colors.deepPurple
+    Colors.deepPurple,
+    Colors.indigoAccent,
   ];
 
   /*
@@ -64,7 +64,6 @@ class InboxTextData {
   static const List listIconTransaksi= [
     ProfileInboxIcon.donation_3x,
     ProfileInboxIcon.wakaf_3x,
+    ProfileInboxIcon.change_3x,
   ];
-
-
 }
