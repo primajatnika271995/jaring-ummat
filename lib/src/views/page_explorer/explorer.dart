@@ -43,7 +43,7 @@ class _ExplorerPageState extends State<ExplorerPage> {
             tabs: <Widget>[
               Tab(text: 'Populer'),
               Tab(text: 'Aktivitas Amal'),
-              Tab(text: 'Akun Amil'),
+              Tab(text: 'Story Jejaring'),
               Tab(text: 'Tanya Ustadz'),
               Tab(text: 'Berita')
             ],
@@ -80,11 +80,11 @@ class _ExplorerPageState extends State<ExplorerPage> {
 
   Widget bantuKamiMain() {
     return Container(
-      height: 250,
+      height: 200,
       width: screenWidth(context),
       decoration: BoxDecoration(
         color: Colors.pinkAccent,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(10),
         image: DecorationImage(
             image: NetworkImage(ExplorerText.bantuKamiUrl), fit: BoxFit.cover),
       ),
@@ -109,10 +109,10 @@ class _ExplorerPageState extends State<ExplorerPage> {
             child: Padding(
               padding: const EdgeInsets.only(right: 5),
               child: Container(
-                height: 200,
+                height: 170,
                 decoration: BoxDecoration(
                   color: Colors.pink,
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(10),
                   image: DecorationImage(
                     image: NetworkImage(ExplorerText.bantuKamiUrl1),
                     fit: BoxFit.cover,
@@ -134,10 +134,10 @@ class _ExplorerPageState extends State<ExplorerPage> {
             child: Padding(
               padding: const EdgeInsets.only(left: 5),
               child: Container(
-                height: 200,
+                height: 170,
                 decoration: BoxDecoration(
                   color: Colors.blue,
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(10),
                   image: DecorationImage(
                     image: NetworkImage(ExplorerText.bantuKamiUrl2),
                     fit: BoxFit.cover,
@@ -172,11 +172,11 @@ class _ExplorerPageState extends State<ExplorerPage> {
     return Padding(
       padding: const EdgeInsets.only(bottom: 10),
       child: Container(
-        height: 250,
+        height: 200,
         width: screenWidth(context),
         decoration: BoxDecoration(
           color: Colors.pinkAccent,
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(10),
           image: DecorationImage(
               image: NetworkImage(ExplorerText.kebaikanDisekitarUrl),
               fit: BoxFit.cover),

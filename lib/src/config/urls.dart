@@ -77,6 +77,7 @@ const UNFOLLOW_LEMBAGA_AMAL_URL = BASE_API_URL + '/api/account-amil/unfollow';
 const PORTOFOLIO_PIE_CHART = BASE_API_URL + '/api/transaksi/zakat-sodaqoh/chart/pie';
 const AKTIVITAS_TERBESAR_URL = BASE_API_URL + '/api/transaksi/muzakki/top';
 const AKTIVITAS_TERBARU_URL = BASE_API_URL + '/api/transaksi/terakhir/muzakki';
+const BAR_CHART_MUZAKKI = BASE_API_URL + '/api/transaksi/chart/bar';
 
 // HISTORY TRANSACTION
 const HISTORY_TRANSACTION = BASE_API_URL + '/api/transaksi/history/detail';

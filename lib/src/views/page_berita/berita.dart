@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:flutter_jaring_ummat/src/bloc/beritaBloc.dart';
 import 'package:flutter_jaring_ummat/src/config/hexColor.dart';
 import 'package:flutter_jaring_ummat/src/models/beritaModel.dart';
@@ -23,6 +24,8 @@ class _BeritaPageState extends State<BeritaPage> {
       "http://www.sclance.com/pngs/no-image-png/no_image_png_935227.png";
 
   bool _loadingVisible = false;
+
+  var formatter = new DateFormat('dd MMMM yyyy HH:mm:ss');
 
   @override
   Widget build(BuildContext context) {
@@ -226,16 +229,24 @@ class _BeritaPageState extends State<BeritaPage> {
                                                   MainAxisAlignment
                                                       .spaceBetween,
                                               children: <Widget>[
-                                                Column(
-                                                  children: <Widget>[
-                                                    Text(data.createdBy),
-                                                    Text(DateTime
-                                                            .fromMicrosecondsSinceEpoch(
-                                                                data.createdDate *
-                                                                    1000)
-                                                        .toString(), style: TextStyle(fontSize: 11))
-                                                  ],
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                Padding(
+                                                  padding: const EdgeInsets.only(bottom: 5),
+                                                  child: Column(
+                                                    children: <Widget>[
+                                                      Text(data.createdBy),
+                                                      Text(
+                                                          formatter
+                                                              .format(DateTime
+                                                                  .fromMicrosecondsSinceEpoch(
+                                                                      data.createdDate *
+                                                                          1000))
+                                                              .toString(),
+                                                          style: TextStyle(
+                                                              fontSize: 11))
+                                                    ],
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment.start,
+                                                  ),
                                                 ),
                                                 Padding(
                                                   padding:

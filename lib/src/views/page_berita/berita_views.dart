@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:flutter_jaring_ummat/src/config/hexColor.dart';
 import 'package:flutter_jaring_ummat/src/models/beritaModel.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_baru_icons.dart';
@@ -21,6 +22,8 @@ class _BeritaViewsState extends State<BeritaViews> {
     style: TextStyle(color: blackColor),
   );
 
+  var formatter = new DateFormat('dd MMMM yyyy HH:mm:ss');
+
   @override
   Widget build(BuildContext context) {
     final title = Padding(
@@ -42,7 +45,12 @@ class _BeritaViewsState extends State<BeritaViews> {
     final createdDate = Padding(
       padding: EdgeInsets.only(left: 20.0, right: 20.0, top: 3.0),
       child: Text(
-          'Diterbitkan pada ${DateTime.fromMicrosecondsSinceEpoch(widget.value.createdDate)}'),
+        'Diterbitkan pada ' +
+            formatter.format(
+              DateTime.fromMicrosecondsSinceEpoch(
+                  widget.value.createdDate * 1000),
+            ),
+      ),
     );
 
     final description = Padding(

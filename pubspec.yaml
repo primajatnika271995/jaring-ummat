@@ -67,6 +67,7 @@ dependencies:
   rxdart: ^0.22.0
   direct_select_flutter: ^1.0.4
   solid_bottom_sheet: ^0.1.4
+  charts_flutter: ^0.8.1
 
   flutter_facebook_login:
     git: https://github.com/lequanghiep74/flutter_facebook_login
@@ -116,6 +117,10 @@ flutter:
         - asset: assets/fonts/Sofia-Pro-Bold.ttf
         - asset: assets/fonts/Sofia-Pro-ExtraLight.ttf
         - asset: assets/fonts/Sofia-Pro-Light.ttf
+
+    - family: AllInOneIcon
+      fonts:
+        - asset: assets/fonts/AllInOneIcon.ttf
 
     - family:  HomePageIcons
       fonts:

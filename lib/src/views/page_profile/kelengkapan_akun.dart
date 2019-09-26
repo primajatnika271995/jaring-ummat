@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:flutter_jaring_ummat/src/models/DTO/ReturnData.dart';
 import 'package:flutter_jaring_ummat/src/models/muzakkiUserDetails.dart';
+import 'package:flutter_jaring_ummat/src/views/page_profile/place_details.dart';
 import 'package:geocoder/geocoder.dart';
 import 'package:google_places_picker/google_places_picker.dart';
 import 'package:intl/intl.dart';
@@ -362,7 +364,16 @@ class _KelengkapanAkunPageState extends State<KelengkapanAkunPage> {
                       setState(() {
                         _streetReadOnly = !_streetReadOnly;
                       });
-                      _showAutocompleteAddress();
+                      // _showAutocompleteAddress();
+                      Navigator.of(context)
+                          .push(
+                        MaterialPageRoute(
+                          builder: (context) => GMapsUbahAlamat(),
+                        ),
+                      )
+                          .then((value) {
+                        navigateGoogleMaps(context, value);
+                      });
                     },
                     child: const Text('Ubah',
                         style: TextStyle(
@@ -723,6 +734,10 @@ class _KelengkapanAkunPageState extends State<KelengkapanAkunPage> {
     });
   }
 
+  void navigateGoogleMaps(BuildContext context, ProfileReturn value) async {
+    _streetCtrl.text = value.alamatLembaga;
+    _cityCtrl.text = value.kotaLembaga;
+  }
 
   // Call Function Get Latitude & Longitude
   // void _getLocation() async {

@@ -37,3 +37,10 @@ class MenuTextData {
     Colors.purpleAccent
   ];
 }
+
+class GMapsLocation {
+  static const String appTitle = "Ubah Alamat";
+  static const String alamatPin = "Alamat sesuai Pinpoint";
+  static const String detailsAlamat = "Detail Alamat";
+}
+

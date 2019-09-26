@@ -7,6 +7,7 @@ import 'package:flutter_jaring_ummat/src/config/hexColor.dart';
 import 'package:flutter_jaring_ummat/src/config/preferences.dart';
 import 'package:flutter_jaring_ummat/src/models/aktivitasTerbaruModel.dart';
 import 'package:flutter_jaring_ummat/src/models/aktivitasTerbesarModel.dart';
+import 'package:flutter_jaring_ummat/src/models/barChartModel.dart';
 import 'package:flutter_jaring_ummat/src/models/sebaranAktifitasAmalModel.dart';
 import 'package:flutter_jaring_ummat/src/services/currency_format_service.dart';
 import 'package:flutter_jaring_ummat/src/services/portofolioApi.dart';
@@ -18,6 +19,7 @@ import 'package:flutter_jaring_ummat/src/views/components/loadingContainer.dart'
 import 'package:flutter_jaring_ummat/src/views/page_payment/payment.dart';
 import 'package:flutter_jaring_ummat/src/views/page_portofolio/portofolio_text_data.dart';
 import 'package:flutter_jaring_ummat/src/views/page_virtual_account/input_bill.dart';
+import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
@@ -42,6 +44,12 @@ class _PortofolioState extends State<Portofolio> {
    */
   List<PieChartSectionData> pieChartRawSections;
   List<PieChartSectionData> showingSections;
+
+  /*
+   * From Libs charts_flutter
+   */
+  static List<BarchartModel> barData;
+  List<charts.Series<BarchartModel, String>> _seriesLineData;
 
   /*
    * Tab Index
@@ -94,8 +102,10 @@ class _PortofolioState extends State<Portofolio> {
   Widget build(BuildContext context) {
     // Title Bar Widget
 
-    final titleBar = Text('Amal ${PortofolioTextData.listMonth[9]} 2019',
-        style: TextStyle(color: blackColor));
+    final titleBar = Text(
+      'Catatan Amal ${PortofolioTextData.listMonth[8]} 2019',
+      style: TextStyle(color: blackColor),
+    );
 
     // My Saldo Widget
 
@@ -319,6 +329,19 @@ class _PortofolioState extends State<Portofolio> {
             ),
           ],
         ),
+      ],
+    );
+
+    // Tren Aktivitas Harian / Line Chart
+
+    final trenAktivitas = Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        ListTile(
+          title: Text('Tren Aktivitas Amal Harian',
+              style: TextStyle(color: blackColor)),
+        ),
+        buildBarChart(context),
       ],
     );
 
@@ -778,12 +801,23 @@ class _PortofolioState extends State<Portofolio> {
                   delegate: SliverChildListDelegate([
                     Container(
                       child: Column(
-                        children: <Widget>[aktivitasTerbesar],
+                        children: <Widget>[
+                          trenAktivitas,
+                        ],
                       ),
                     ),
                     Container(
                       child: Column(
-                        children: <Widget>[aktivitasTerbaru],
+                        children: <Widget>[
+                          aktivitasTerbesar,
+                        ],
+                      ),
+                    ),
+                    Container(
+                      child: Column(
+                        children: <Widget>[
+                          aktivitasTerbaru,
+                        ],
                       ),
                     ),
                   ]),
@@ -987,6 +1021,7 @@ class _PortofolioState extends State<Portofolio> {
     super.initState();
     bloc.fetchAktivitasTerbesar();
     bloc.fetchAktivitasTerbaru();
+    bloc.fetchBarChart(null, "tiga");
     getDataPieChart();
     getUser();
   }
@@ -1077,5 +1112,60 @@ class _PortofolioState extends State<Portofolio> {
         showingSections = pieChartRawSections;
       }
     });
+  }
+
+  Widget buildBarChart(BuildContext context) {
+    return StreamBuilder(
+      stream: bloc.barChartStream,
+      builder: (context, AsyncSnapshot<List<BarchartModel>> snapshot) {
+        if (snapshot.hasData) {
+          return barChartBuild(context, snapshot.data);
+        }
+        return Center(
+          child: Text('loading'),
+        );
+      },
+    );
+  }
+
+  Widget barChartBuild(BuildContext context, List<BarchartModel> snapshot) {
+    barData = snapshot;
+    _createData(barData);
+
+    return Container(
+      height: 150,
+      width: MediaQuery.of(context).size.width,
+      child: charts.BarChart(
+        _seriesLineData,
+        animate: false,
+        // primaryMeasureAxis:
+        //     new charts.NumericAxisSpec(renderSpec: new charts.NoneRenderSpec()),
+        // domainAxis: new charts.OrdinalAxisSpec(showAxisLine: true),
+        barRendererDecorator: new charts.BarLabelDecorator<String>(
+          insideLabelStyleSpec:
+              charts.TextStyleSpec(fontSize: 10, color: charts.Color.white),
+        ),
+        domainAxis: new charts.OrdinalAxisSpec(),
+        layoutConfig: new charts.LayoutConfig(
+            leftMarginSpec: new charts.MarginSpec.fixedPixel(0),
+            topMarginSpec: new charts.MarginSpec.fixedPixel(0),
+            rightMarginSpec: new charts.MarginSpec.fixedPixel(0),
+            bottomMarginSpec: new charts.MarginSpec.fixedPixel(0)),
+      ),
+    );
+  }
+
+  void _createData(lineData) {
+    _seriesLineData = List<charts.Series<BarchartModel, String>>();
+    _seriesLineData.add(
+      charts.Series(
+          id: 'Tren Aktivitas',
+          colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
+          domainFn: (tren, _) => tren.namaBulan.substring(0, 3),
+          measureFn: (BarchartModel tren, _) => tren.total / 10000,
+          data: lineData,
+          labelAccessorFn: (BarchartModel tren, _) =>
+              '${CurrencyFormat().currency(tren.total.toDouble())}'),
+    );
   }
 }

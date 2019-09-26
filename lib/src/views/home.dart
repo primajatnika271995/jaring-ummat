@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_jaring_ummat/src/config/hexColor.dart';
 import 'package:flutter_jaring_ummat/src/models/DTO/UserDetailPref.dart';
+import 'package:flutter_jaring_ummat/src/views/components/icon_text/all_in_one_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/new_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/profile_inbox_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/login/reLogin.dart';
@@ -94,11 +95,11 @@ class _HomeState extends State<HomeView> {
               title: Padding(padding: EdgeInsets.all(0)),
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.explore, size: 25.0),
+              icon: Icon(AllInOneIcon.nav_explore_inactive_3x, size: 20.0),
               activeIcon: Icon(
-                Icons.explore,
+                AllInOneIcon.nav_explore_active_3x,
                 color: greenColor,
-                size: 25.0,
+                size: 20.0,
               ),
               title: Padding(padding: EdgeInsets.all(0)),
             ),
@@ -108,9 +109,9 @@ class _HomeState extends State<HomeView> {
               title: Padding(padding: EdgeInsets.all(0)),
             ),
             BottomNavigationBarItem(
-              icon: Icon(NewIcon.nav_portfolio_3x, size: 20.0),
+              icon: Icon(AllInOneIcon.nav_portfolio_3x, size: 20.0),
               activeIcon: Icon(
-                NewIcon.nav_portfolio_3x,
+                AllInOneIcon.nav_portfolio_active_3x,
                 color: greenColor,
                 size: 20.0,
               ),

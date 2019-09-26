@@ -3,6 +3,7 @@ import 'package:flutter_jaring_ummat/src/config/preferences.dart';
 import 'package:flutter_jaring_ummat/src/config/urls.dart';
 import 'package:flutter_jaring_ummat/src/models/aktivitasTerbaruModel.dart';
 import 'package:flutter_jaring_ummat/src/models/aktivitasTerbesarModel.dart';
+import 'package:flutter_jaring_ummat/src/models/barChartModel.dart';
 import 'package:flutter_jaring_ummat/src/models/sebaranAktifitasAmalModel.dart';
 import 'package:http/http.dart' show Client;
 import 'package:http/http.dart' as http;
@@ -18,6 +19,26 @@ class PortofolioProvider {
     Map<String, String> headers = {'Authorization': 'Bearer $token'};
 
     return client.get(PORTOFOLIO_PIE_CHART, headers: headers);
+  }
+
+    Future<List<BarchartModel>> barChartApi(String category, String type) async {
+    SharedPreferences _pref = await SharedPreferences.getInstance();
+    var token = _pref.getString(ACCESS_TOKEN_KEY);
+
+    Uri uri = Uri.parse(BAR_CHART_MUZAKKI);
+    var params = {"category": category, "type": type};
+    final uriParams = uri.replace(queryParameters: params);
+
+    Map<String, String> headers = {'Authorization': 'Bearer $token'};
+    final response = await client.get(uriParams, headers: headers);
+
+    print(response.statusCode);
+
+    if (response.statusCode == 200) {
+      return compute(barchartModelFromJson, response.body);
+    } else if (response.statusCode == 204) {
+      print('No Content');
+    } return null;
   }
 
   Future<SebaranAktifitasAmalModel> fetchSebaranAktifitasAmal() async {

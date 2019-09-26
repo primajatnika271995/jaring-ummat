@@ -3,7 +3,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_jaring_ummat/src/config/hexColor.dart';
 import 'package:flutter_jaring_ummat/src/config/preferences.dart';
+import 'package:flutter_jaring_ummat/src/utils/screenSize.dart';
 import 'package:flutter_jaring_ummat/src/utils/sizeUtils.dart';
+import 'package:flutter_jaring_ummat/src/views/components/icon_text/all_in_one_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/app_bar_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/new_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/sosial_media_icons.dart';
@@ -34,7 +36,8 @@ class _ProfileMenuState extends State<ProfileMenu> {
 
   @override
   Widget build(BuildContext context) {
-    final titleBar = Text('Menu Lain', style: TextStyle(color: blackColor, fontSize: SizeUtils.titleSize));
+    final titleBar = Text('Menu Lain',
+        style: TextStyle(color: blackColor, fontSize: SizeUtils.titleSize));
 
     final profileIcon = Padding(
       padding: EdgeInsets.only(top: 30),
@@ -85,9 +88,7 @@ class _ProfileMenuState extends State<ProfileMenu> {
       child: RaisedButton(
         onPressed: () {
           Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) => KelengkapanAkunPage()
-            ),
+            MaterialPageRoute(builder: (context) => KelengkapanAkunPage()),
           );
         },
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(45)),
@@ -147,11 +148,39 @@ class _ProfileMenuState extends State<ProfileMenu> {
         title: titleBar,
         automaticallyImplyLeading: false,
         actions: <Widget>[
-          IconButton(
-            icon: Icon(AppBarIcon.logout, size: 20),
-            color: blackColor,
-            onPressed: _onlogout,
+          Padding(
+            padding: const EdgeInsets.only(right: 7),
+            child: InkWell(
+              onTap: null,
+              child: Icon(
+                AllInOneIcon.faq_3x,
+                size: 20,
+                color: blackColor,
+              ),
+            ),
           ),
+          Padding(
+            padding: const EdgeInsets.only(right: 7),
+            child: InkWell(
+              onTap: null,
+              child: Icon(
+                AllInOneIcon.t_c_3x,
+                size: 20,
+                color: blackColor,
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(right: 15),
+            child: InkWell(
+              onTap: _onlogout,
+              child: Icon(
+                AppBarIcon.logout,
+                size: 20,
+                color: blackColor,
+              ),
+            ),
+          )
         ],
       ),
       body: SingleChildScrollView(
@@ -185,8 +214,10 @@ class _ProfileMenuState extends State<ProfileMenu> {
                 },
                 itemBuilder: (context, index) => ListTile(
                   title: Text(MenuTextData.titleMenu[index],
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
-                  subtitle: Text(MenuTextData.subtitleMenu[index], style: TextStyle(fontSize: 13)),
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
+                  subtitle: Text(MenuTextData.subtitleMenu[index],
+                      style: TextStyle(fontSize: 13)),
                   leading: CircleAvatar(
                     backgroundColor: MenuTextData.colorMenu[index],
                     child:
@@ -248,30 +279,92 @@ class _ProfileMenuState extends State<ProfileMenu> {
   Future _onlogout() {
     return showDialog(
       context: (context),
-      builder: (_) => NetworkGiffyDialog(
-        image: Image.asset(
-          'assets/404.gif',
-        ),
-        title: Text(
-          'Logout Akun !',
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontSize: 22.0,
-            fontWeight: FontWeight.w600,
+      builder: (_) => Dialog(
+        child: Container(
+          width: screenWidth(context),
+          height: 500,
+          child: Column(
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.only(bottom: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    IconButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      iconSize: 20,
+                      color: greenColor,
+                      icon: Icon(NewIcon.close_2x),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                height: 200,
+                width: 200,
+                decoration: BoxDecoration(
+                    image: DecorationImage(
+                        image: AssetImage(
+                            'assets/backgrounds/logout_accent.png'))),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Column(
+                  children: <Widget>[
+                    RichText(
+                      textAlign: TextAlign.center,
+                      text: TextSpan(children: <TextSpan>[
+                        TextSpan(
+                          text: 'LOGOUT \n',
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20),
+                        ),
+                        TextSpan(
+                          text: 'Kamu yakin ingin keluar \n',
+                          style: TextStyle(color: Colors.grey, fontSize: 13),
+                        ),
+                        TextSpan(
+                          text: 'dari aplikasi Jejaring?',
+                          style: TextStyle(color: Colors.grey, fontSize: 13),
+                        ),
+                      ]),
+                    ),
+                    SizedBox(
+                      height: 40,
+                    ),
+                    Container(
+                      width: screenWidth(context),
+                      child: OutlineButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: Text('Batalkan'),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20)),
+                      ),
+                    ),
+                    Container(
+                      width: screenWidth(context),
+                      child: RaisedButton(
+                        onPressed: logout,
+                        child: Text('Logout',
+                            style: TextStyle(color: Colors.white)),
+                        color: greenColor,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20)),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
         ),
-        description: Text(
-          'Apakah anda ingin keluar dari Aplikasi Mitra Jejaring ?',
-          textAlign: TextAlign.center,
-        ),
-        buttonOkColor: Colors.redAccent,
-        buttonOkText: Text(
-          'Logout',
-          style: TextStyle(color: Colors.white),
-        ),
-        onOkButtonPressed: () {
-          logout();
-        },
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       ),
     );
   }

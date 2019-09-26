@@ -536,8 +536,8 @@ class _StepThreeState extends State<StepThree> {
       );
 
       await changeLoadingVisible();
-      bloc.saveUser(context, value, _selectedImage.path);
-      // await changeLoadingVisible();
+      await bloc.saveUser(context, value, _selectedImage.path);
+      changeLoadingVisible();
     }
   }
 }

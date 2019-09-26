@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_jaring_ummat/src/views/components/icon_text/all_in_one_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/profile_inbox_icon_icons.dart';
 
 class InboxTextData {
@@ -44,26 +45,41 @@ class InboxTextData {
   ];
 
   static const List<String> listTransaksi = [
-    "Pembayaran Amal",
-    "Daftar Amal",
-    "Amal Dibatalakan"
+    "Dalam Proses",
+    "Pembayaran Sukses",
+    "Tidak Dibayarkan"
+  ];
+
+  static const List<String> listPenerimaanAmal = [
+    "Dalam Proses",
+    "Pembayaran Sukses"
+  ];
+
+  static const List colorListPenerimaanAmal = [
+    Colors.yellowAccent,
+    Colors.deepPurpleAccent
+  ];
+
+  static const List iconListPenerimaanAmal = [
+    AllInOneIcon.on_process_3x,
+    AllInOneIcon.payment_done_3x
   ];
 
   /*
    *  Data Color For Transaksi
    */
   static const List listColorTransaksi = [
-    Colors.orangeAccent,
-    Colors.deepPurple,
-    Colors.indigoAccent,
+    Colors.yellow,
+    Colors.purple,
+    Colors.redAccent,
   ];
 
   /*
    *  Data Icon List Tile For Transaksi
    */
   static const List listIconTransaksi= [
-    ProfileInboxIcon.donation_3x,
-    ProfileInboxIcon.wakaf_3x,
-    ProfileInboxIcon.change_3x,
+    AllInOneIcon.on_process_3x,
+    AllInOneIcon.payment_done_3x,
+    AllInOneIcon.donation_cancel_3x,
   ];
 }
