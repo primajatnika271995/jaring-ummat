@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_jaring_ummat/src/config/hexColor.dart';
+import 'package:flutter_jaring_ummat/src/services/loginApi.dart';
 import 'package:flutter_jaring_ummat/src/services/otp_service.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/new_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/sosial_media_icons.dart';
@@ -145,17 +146,44 @@ class _StepOneState extends State<StepOne> {
   }
 
   void onSubmit() {
-    if (_formKey.currentState.validate()) {
-      var otp = _otpServices.otpGenarator(_textEditingControllerContact.text);
-      _otpServices.emailOtp(_textEditingControllerContact.text, otp.toString());
+    LoginApiProvider apiProvider = new LoginApiProvider();
+    var email = _textEditingControllerContact.text;
 
-      Navigator.of(context).push(
-        MaterialPageRoute(
-            builder: (context) => StepTwo(
-                  emailKey: _textEditingControllerContact.text,
-                  otpKey: otp.toString(),
-                )),
-      );
-    }
+    apiProvider.getUserDetails(email).then((response) {
+      print('Ambil Data : ${response.statusCode}');
+      if (response.statusCode == 200) {
+        showDialog<String>(
+          context: context,
+          barrierDismissible: true,
+          builder: (context) {
+            return SimpleDialog(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(10.0))),
+              title: Text(
+                '$email \n sudah terdaftar',
+                style: TextStyle(fontSize: 14.0),
+                textAlign: TextAlign.center,
+              ),
+              children: <Widget>[],
+            );
+          },
+        );
+      } else {
+        if (_formKey.currentState.validate()) {
+          var otp =
+              _otpServices.otpGenarator(_textEditingControllerContact.text);
+          _otpServices.emailOtp(
+              _textEditingControllerContact.text, otp.toString());
+
+          Navigator.of(context).push(
+            MaterialPageRoute(
+                builder: (context) => StepTwo(
+                      emailKey: _textEditingControllerContact.text,
+                      otpKey: otp.toString(),
+                    )),
+          );
+        }
+      }
+    });
   }
 }
