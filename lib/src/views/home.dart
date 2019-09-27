@@ -1,5 +1,7 @@
+import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_jaring_ummat/src/config/hexColor.dart';
 import 'package:flutter_jaring_ummat/src/models/DTO/UserDetailPref.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/all_in_one_icon_icons.dart';
@@ -21,6 +23,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeView extends StatefulWidget {
   final int currentindex;
+
   HomeView({this.currentindex});
 
   @override
@@ -28,6 +31,8 @@ class HomeView extends StatefulWidget {
     return _HomeState();
   }
 }
+
+String qrCode;
 
 class _HomeState extends State<HomeView> {
   int _currentIndex = 0;
@@ -73,7 +78,9 @@ class _HomeState extends State<HomeView> {
     return Scaffold(
       body: _children[_currentIndex],
       floatingActionButton: new FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          scan();
+        },
         child: Icon(NewIcon.nav_scan_3x, size: 20.0),
         backgroundColor: greenColor,
       ),
@@ -176,5 +183,30 @@ class _HomeState extends State<HomeView> {
     setState(() {
       _currentIndex = index;
     });
+  }
+
+  Future scan() async {
+    print("Scan QR Code");
+    try {
+      String barcode = await BarcodeScanner.scan();
+      setState(() {
+        print("Barcode $barcode");
+        qrCode = barcode;
+        print("QR Code $qrCode");
+      });
+    } on PlatformException catch (e) {
+      if (e.code == BarcodeScanner.CameraAccessDenied) {
+        setState(() {
+          qrCode = 'The user did not grant the camera permission!';
+        });
+      } else {
+        setState(() => qrCode = 'Unknown error: $e');
+      }
+    } on FormatException {
+      setState(() => qrCode =
+          'null (User returned using the "back"-button before scanning anything. Result)');
+    } catch (e) {
+      setState(() => qrCode = 'Unknown error: $e');
+    }
   }
 }
