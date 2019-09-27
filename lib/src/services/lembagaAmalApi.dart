@@ -110,4 +110,13 @@ class LembagaAmalProvider {
     final uriParams = _uri.replace(queryParameters: params);
     return await client.get(uriParams);
   }
+
+  Future<http.Response> getLembagaAmalByEmail(String email) async {
+    var params = {
+      "email": email,
+    };
+    Uri _uri = Uri.parse(LEMBAGA_AMAL_BY_EMAIL);
+    final uriParams = _uri.replace(queryParameters: params);
+    return await client.get(uriParams);
+  }
 }

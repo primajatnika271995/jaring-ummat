@@ -1,9 +1,13 @@
+import 'dart:convert';
+
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_jaring_ummat/src/config/hexColor.dart';
 import 'package:flutter_jaring_ummat/src/models/DTO/UserDetailPref.dart';
+import 'package:flutter_jaring_ummat/src/models/lembagaAmalModel.dart';
+import 'package:flutter_jaring_ummat/src/services/lembagaAmalApi.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/all_in_one_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/new_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/profile_inbox_icon_icons.dart';
@@ -11,6 +15,7 @@ import 'package:flutter_jaring_ummat/src/views/login/reLogin.dart';
 import 'package:flutter_jaring_ummat/src/bloc/preferencesBloc.dart';
 import 'package:flutter_jaring_ummat/src/views/page_explorer/explorer.dart';
 import 'package:flutter_jaring_ummat/src/views/page_inbox/inbox.dart';
+import 'package:flutter_jaring_ummat/src/views/page_payment/payment.dart';
 import 'package:flutter_jaring_ummat/src/views/page_portofolio/portofoilio.dart';
 import 'package:flutter_jaring_ummat/src/views/page_profile/profile_menu.dart';
 
@@ -33,6 +38,10 @@ class HomeView extends StatefulWidget {
 }
 
 String qrCode;
+String emailCustomer;
+String customerName;
+String customerPhone;
+String nilaiZakat;
 
 class _HomeState extends State<HomeView> {
   int _currentIndex = 0;
@@ -194,6 +203,7 @@ class _HomeState extends State<HomeView> {
         qrCode = barcode;
         print("QR Code $qrCode");
       });
+      getLembagaAmilByEmail(barcode);
     } on PlatformException catch (e) {
       if (e.code == BarcodeScanner.CameraAccessDenied) {
         setState(() {
@@ -208,5 +218,55 @@ class _HomeState extends State<HomeView> {
     } catch (e) {
       setState(() => qrCode = 'Unknown error: $e');
     }
+  }
+
+  void navigateInfaq(LembagaAmalModel qrCodeLembaga) async {
+    SharedPreferences _pref = await SharedPreferences.getInstance();
+    setState(() {
+      emailCustomer = _pref.getString(EMAIL_KEY);
+      customerName = _pref.getString(FULLNAME_KEY);
+      customerPhone = _pref.getString(CONTACT_KEY);
+    });
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => PaymentPage(
+              type: 'infaq',
+              customerName: customerName,
+              customerEmail: emailCustomer,
+              customerContact: customerPhone,
+              toGalangAmalName: null,
+              qrCodeLembaga: qrCodeLembaga,
+            )));
+  }
+
+  LembagaAmalProvider _lembagaAmalProvider = new LembagaAmalProvider();
+
+  Future getLembagaAmilByEmail(String email) async {
+    print("get lembaga amal by email");
+    await _lembagaAmalProvider.getLembagaAmalByEmail(email).then((response) {
+      print('Reponse Get Lembaga Amal By Email:');
+      print(response.statusCode);
+      print(response.body);
+      if (response.statusCode == 200) {
+        LembagaAmalModel _lembagaAmalModel =
+            LembagaAmalModel.fromJson(json.decode(response.body));
+        print("Lembaga Ama Model :");
+        print(_lembagaAmalModel);
+        navigateInfaq(_lembagaAmalModel);
+      } else {
+        return showDialog<String>(
+          context: context,
+          barrierDismissible: true,
+          builder: (context) {
+            return SimpleDialog(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(10.0))),
+              title: const Text('Gagal mendapatkan identitas Lembaga Amal',
+                  style: TextStyle(fontSize: 14.0)),
+              children: <Widget>[],
+            );
+          },
+        );
+      }
+    });
   }
 }
