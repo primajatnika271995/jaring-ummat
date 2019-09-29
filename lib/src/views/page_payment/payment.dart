@@ -21,6 +21,7 @@ class PaymentPage extends StatefulWidget {
   final String toGalangAmalId;
   final String type;
   final double nilaiZakat;
+  final LembagaAmalModel qrCodeLembaga;
 
   PaymentPage(
       {Key key,
@@ -32,7 +33,8 @@ class PaymentPage extends StatefulWidget {
       this.toGalangAmalName,
       this.toGalangAmalId,
       this.type,
-      this.nilaiZakat})
+      this.nilaiZakat,
+      this.qrCodeLembaga})
       : super(key: key);
 
   @override
@@ -44,7 +46,8 @@ class PaymentPage extends StatefulWidget {
       this.toGalangAmalName,
       this.toGalangAmalId,
       this.type,
-      this.toLembagaId);
+      this.toLembagaId,
+      this.qrCodeLembaga);
 }
 
 class _PaymentPageState extends State<PaymentPage> {
@@ -56,6 +59,7 @@ class _PaymentPageState extends State<PaymentPage> {
   String toGalangAmalName;
   String toGalangAmalId;
   String type;
+  LembagaAmalModel qrCodeLembaga;
 
   _PaymentPageState(
       this.customerName,
@@ -65,7 +69,8 @@ class _PaymentPageState extends State<PaymentPage> {
       this.toGalangAmalName,
       this.toGalangAmalId,
       this.type,
-      this.toLembagaId);
+      this.toLembagaId,
+      this.qrCodeLembaga);
 
   /*
    * Background Img
@@ -76,19 +81,39 @@ class _PaymentPageState extends State<PaymentPage> {
    * Masking Money Edit Controller
    */
   var nominalCtrl = new MoneyMaskedTextController(leftSymbol: 'Rp ');
+  String lembaga = "Nama Lembaga";
 
   @override
   Widget build(BuildContext context) {
     final informasiProgram = Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: Column(
-        children: <Widget>[
-          galangAmalSelect(),
-          Text(
-              '*akan terisi secara otomatis saat melakukan donasi pada Program Amal',
-              style: TextStyle(fontSize: 12)),
-        ],
-      ),
+      child: qrCodeLembaga != null
+          ? Container(
+              width: screenWidth(context),
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.grey[300], width: 3),
+                borderRadius: BorderRadius.circular(13),
+              ),
+              child: ListTile(
+                title: Text(qrCodeLembaga.lembagaAmalName,
+                    style:
+                        TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
+                leading: CircleAvatar(
+                  backgroundColor: greenColor,
+                  child: Text(
+                      '${qrCodeLembaga.lembagaAmalName.substring(0, 1)}',
+                      style: TextStyle(color: Colors.white)),
+                ),
+              ),
+            )
+          : Column(
+              children: <Widget>[
+                galangAmalSelect(),
+                Text(
+                    '*akan terisi secara otomatis saat melakukan donasi pada Program Amal',
+                    style: TextStyle(fontSize: 12)),
+              ],
+            ),
     );
 
     return Stack(
@@ -299,7 +324,7 @@ class _PaymentPageState extends State<PaymentPage> {
   Map _lembagaAmalModelValueSend = new Map();
 
   Widget galangAmalSelect() {
-    return new DropdownButtonFormField<LembagaAmalModel>(
+    return DropdownButtonFormField<LembagaAmalModel>(
       decoration: InputDecoration(
         hintText: "Pilih Lembaga Amal",
         contentPadding: EdgeInsets.all(9.0),
@@ -361,6 +386,9 @@ class _PaymentPageState extends State<PaymentPage> {
         : nominalCtrl = new MoneyMaskedTextController(leftSymbol: 'Rp ');
     print(type);
     getListLembagaAmil();
+    if (qrCodeLembaga != null) {
+      _lembagaAmalModel = qrCodeLembaga;
+    }
     super.initState();
   }
 }
