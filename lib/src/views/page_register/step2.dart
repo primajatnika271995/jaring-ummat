@@ -3,9 +3,9 @@ import 'package:flutter_jaring_ummat/src/views/components/icon_text/new_icon_ico
 import 'package:flutter_jaring_ummat/src/views/page_register/step3.dart';
 
 class StepTwo extends StatefulWidget {
-  final String emailKey;
+  final String contactKey;
   final String otpKey;
-  StepTwo({@required this.emailKey, @required this.otpKey});
+  StepTwo({@required this.contactKey, @required this.otpKey});
 
   @override
   _StepTwoState createState() => _StepTwoState();
@@ -77,15 +77,24 @@ class _StepTwoState extends State<StepTwo> with TickerProviderStateMixin {
               children: <Widget>[
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child:
-                      Text("Masukan kode OTP yang terkirim ke nomor telepon"),
+                  child: Text(
+                    "Masukan kode OTP yang terkirim ke nomor telepon",
+                    style: TextStyle(color: Colors.black54),
+                  ),
                 ),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                  child: Text(widget.emailKey
-                      .replaceRange(5, 6, "*")
-                      .replaceRange(6, 7, "*")
-                      .replaceRange(7, 8, "*")),
+                  child: Text(
+                    '+62 ' +
+                        widget.contactKey
+                            .replaceAllMapped(RegExp(r".{4}"),
+                                (match) => "${match.group(0)} ")
+                            .replaceRange(5, 6, "*")
+                            .replaceRange(6, 7, "*")
+                            .replaceRange(7, 8, "*")
+                            .replaceRange(8, 9, "*"),
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                  ),
                 ),
                 Container(
                   height: 75,
@@ -253,7 +262,9 @@ class _StepTwoState extends State<StepTwo> with TickerProviderStateMixin {
                         builder: (_, Widget child) {
                           return Text(
                             timerString,
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.redAccent),
                           );
                         }),
                   ],
@@ -292,7 +303,7 @@ class _StepTwoState extends State<StepTwo> with TickerProviderStateMixin {
   @override
   void initState() {
     animationController =
-        AnimationController(vsync: this, duration: Duration(seconds: 180));
+        AnimationController(vsync: this, duration: Duration(seconds: 300));
     startTimer();
 
     super.initState();
@@ -344,14 +355,16 @@ class _StepTwoState extends State<StepTwo> with TickerProviderStateMixin {
 
     if (otp == widget.otpKey) {
       Navigator.of(context).push(
-        MaterialPageRoute(builder: (context) => StepThree(
-          emailKey: widget.emailKey,
-        )),
+        MaterialPageRoute(
+          builder: (context) => StepThree(
+            contactKey: widget.contactKey,
+          ),
+        ),
       );
-    } else  {
+    } else {
       setState(() {
-      isSubmitted = false;
-    });
+        isSubmitted = false;
+      });
     }
   }
 }

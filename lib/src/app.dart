@@ -22,7 +22,6 @@ void App() {
         '/register/step1': (context) => StepOne(),
         '/galang-amal': (context) => GalangAmalView(),
         '/onboarding': (context) => OnboardingView(),
-        '/user/story': (context) => UserStoryView(),
         '/list/account/chats': (context) => ListAccountChat(),
         '/chats': (context) => ChatScreen(),
       },

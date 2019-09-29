@@ -1,30 +1,41 @@
+import 'dart:convert';
 import 'dart:io';
 
-import 'package:flushbar/flushbar.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_jaring_ummat/src/config/hexColor.dart';
+import 'package:flutter_jaring_ummat/src/config/key.dart';
+import 'package:flutter_jaring_ummat/src/models/DTO/FilePathResponse.dart';
 import 'package:flutter_jaring_ummat/src/models/postModel.dart';
+import 'package:flutter_jaring_ummat/src/views/components/flushbarContainer.dart';
+import 'package:flutter_jaring_ummat/src/views/components/icon_text/all_in_one_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/navigation_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/new_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/components/loadingContainer.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_jaring_ummat/src/bloc/registerBloc.dart';
+import 'package:flutter_jaring_ummat/src/services/cloudinaryClient.dart';
+import 'package:flutter_jaring_ummat/src/models/cloudinaryUploadImageModel.dart';
 
 class StepThree extends StatefulWidget {
-  final String emailKey;
-  StepThree({@required this.emailKey});
+
+  String contactKey;
+  StepThree({@required this.contactKey});
 
   @override
   _StepThreeState createState() => _StepThreeState();
 }
 
 class _StepThreeState extends State<StepThree> {
-  final String bgUrl = 'assets/backgrounds/accent_app_width_full_screen.png';
+    final String bgUrl = 'assets/backgrounds/accent_app_width_full_screen.png';
 
   final usernameCtrl = new TextEditingController();
-  final passwordCtrl = new TextEditingController();
   final contactCtrl = new TextEditingController();
+  final passwordCtrl = new TextEditingController();
+  final emailCtrl = new TextEditingController();
 
-  final _keyForm = GlobalKey<FormState>();
+  final FocusNode usernameFocusNode = new FocusNode();
+  final FocusNode passwordFocusNode = new FocusNode();
 
   File _selectedImage;
   String _selectedDefaultPicture = "";
@@ -61,7 +72,7 @@ class _StepThreeState extends State<StepThree> {
             title: Text(
               "Data Diri",
               style: TextStyle(
-                  fontSize: 22,
+                  fontSize: 20,
                   fontFamily: 'sofiapro-bold',
                   color: Colors.black),
             ),
@@ -70,176 +81,241 @@ class _StepThreeState extends State<StepThree> {
           ),
           body: LoadingScreen(
             inAsyncCall: _loadingVisible,
-            child: Form(
-              key: _keyForm,
-              child: Center(
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text(
-                        "Lengkapi Akunmu!",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 23.0),
-                      ),
-                      SizedBox(height: 10),
-                      Text(
-                          "Unggah foto diri dan lengkapi nama Anda\nuntuk mulai berbagi kebaikan!",
-                          textAlign: TextAlign.center),
-                      Container(
-                        padding: EdgeInsets.symmetric(vertical: 30),
-                        width: double.infinity,
-                        child: Align(
-                          alignment: Alignment.center,
-                          child: Stack(
-                            alignment: Alignment.bottomRight,
-                            children: <Widget>[
-                              _selectedImage == null
-                                  ? _selectedDefaultPicture.isEmpty
-                                      ? emptyPicture()
-                                      : defaultPicture()
-                                  : selectedImage(),
-                              GestureDetector(
-                                onTap: () async {
-                                  print(context);
-                                  final ImageSource imageSource =
-                                      await _asyncImageSourceDialog(context);
-                                },
-                                child: Container(
-                                  height: 40,
-                                  width: 40,
-                                  decoration: BoxDecoration(
-                                      color: Colors.green,
-                                      shape: BoxShape.circle),
-                                  child: Icon(
-                                    NewIcon.upload_2x,
-                                    color: Colors.white,
-                                    size: 20,
-                                  ),
+            child: Center(
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      "Lengkapi Akunmu!",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 18.0),
+                    ),
+                    SizedBox(height: 10),
+                    Text(
+                        "Unggah foto diri dan lengkapi nama Anda\nuntuk mulai berbagi kebaikan!",
+                        textAlign: TextAlign.center),
+                    Container(
+                      padding: EdgeInsets.symmetric(vertical: 30),
+                      width: double.infinity,
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: Stack(
+                          alignment: Alignment.bottomRight,
+                          children: <Widget>[
+                            _selectedImage == null
+                                ? _selectedDefaultPicture.isEmpty
+                                    ? emptyPicture()
+                                    : defaultPicture()
+                                : selectedImage(),
+                            GestureDetector(
+                              onTap: () async {
+                                print(context);
+                                final ImageSource imageSource =
+                                    await _asyncImageSourceDialog(context);
+                                print('--> $imageSource');
+                              },
+                              child: Container(
+                                height: 40,
+                                width: 40,
+                                decoration: BoxDecoration(
+                                    color: Colors.green,
+                                    shape: BoxShape.circle),
+                                child: Icon(
+                                  NewIcon.upload_2x,
+                                  color: Colors.white,
+                                  size: 20,
                                 ),
                               ),
-                            ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 70),
+                      child: Stack(
+                        children: <Widget>[
+                          TextField(
+                            style: TextStyle(fontSize: 14),
+                            readOnly: true,
+                            decoration: InputDecoration(
+                              contentPadding:
+                                  EdgeInsets.fromLTRB(45.0, 10.0, 20.0, 10.0),
+                              border: new OutlineInputBorder(
+                                borderRadius: const BorderRadius.all(
+                                    const Radius.circular(30.0)),
+                              ),
+                              hintText: "Nomor telepon",
+                            ),
+                            controller: contactCtrl,
+                            keyboardType: TextInputType.text,
+                            textInputAction: TextInputAction.next,
                           ),
-                        ),
+                          Align(
+                            alignment: Alignment(-0.9, -10),
+                            child: Padding(
+                              padding: const EdgeInsets.only(top: 8),
+                              child: Icon(AllInOneIcon.edittext_phone_3x,
+                                  color: grayColor, size: 20),
+                            ),
+                          ),
+                        ],
                       ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 70.0),
-                        child: TextFormField(
-                          controller: usernameCtrl,
-                          decoration: InputDecoration(
-                              contentPadding: EdgeInsets.symmetric(
-                                vertical: 10.0,
-                                horizontal: 10.0,
-                              ),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 70.0),
+                      child: StreamBuilder<Object>(
+                          stream: bloc.username,
+                          builder: (context, snapshot) {
+                            return Stack(
+                              children: <Widget>[
+                                TextField(
+                                  style: TextStyle(fontSize: 14),
+                                  decoration: InputDecoration(
+                                    contentPadding: EdgeInsets.fromLTRB(
+                                        45.0, 10.0, 20.0, 10.0),
+                                    border: new OutlineInputBorder(
+                                      borderRadius: const BorderRadius.all(
+                                          const Radius.circular(30.0)),
+                                    ),
+                                    errorText: snapshot.error,
+                                    hintText: "Nama Lengkap",
+                                  ),
+                                  controller: usernameCtrl,
+                                  focusNode: usernameFocusNode,
+                                  keyboardType: TextInputType.text,
+                                  textInputAction: TextInputAction.next,
+                                  onEditingComplete: () {
+                                    FocusScope.of(context)
+                                        .requestFocus(passwordFocusNode);
+                                  },
+                                  onChanged: bloc.changeUsername,
+                                ),
+                                Align(
+                                  alignment: Alignment(-0.9, -10),
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(top: 8),
+                                    child: Icon(AllInOneIcon.edittext_name_3x,
+                                        color: grayColor, size: 20),
+                                  ),
+                                ),
+                              ],
+                            );
+                          }),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 70.0),
+                      child: Stack(
+                        children: <Widget>[
+                          TextField(
+                            style: TextStyle(fontSize: 14),
+                            decoration: InputDecoration(
+                              contentPadding:
+                                  EdgeInsets.fromLTRB(45.0, 10.0, 20.0, 10.0),
                               border: new OutlineInputBorder(
                                 borderRadius: const BorderRadius.all(
                                     const Radius.circular(30.0)),
                               ),
-                              prefixIcon: Icon(NewIcon.edittext_name_3x),
-                              hintText: "Nama Lengkap"),
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.go,
-                          validator: (value) {
-                            if (value.isEmpty) {
-                              return 'Username tidak boleh kosong';
-                            }
-                            return null;
-                          },
-                        ),
+                              hintText: "Alamat Email",
+                            ),
+                            controller: emailCtrl,
+                            keyboardType: TextInputType.text,
+                            textInputAction: TextInputAction.done,
+                          ),
+                          Align(
+                            alignment: Alignment(-0.9, -10),
+                            child: Padding(
+                              padding: const EdgeInsets.only(top: 8),
+                              child: Icon(AllInOneIcon.edittext_people_3x,
+                                  color: grayColor, size: 20),
+                            ),
+                          ),
+                        ],
                       ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 70.0),
-                        child: TextFormField(
-                          controller: passwordCtrl,
-                          decoration: InputDecoration(
-                              contentPadding: EdgeInsets.symmetric(
-                                  vertical: 10.0, horizontal: 10.0),
-                              border: new OutlineInputBorder(
-                                borderRadius: const BorderRadius.all(
-                                    const Radius.circular(30.0)),
-                              ),
-                              prefixIcon: Icon(Icons.lock_outline),
-                              hintText: "Password"),
-                          obscureText: true,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.go,
-                          validator: (value) {
-                            if (value.isEmpty) {
-                              return 'Password tidak boleh kosong';
-                            }
-                            return null;
-                          },
-                        ),
-                      ),
-                      SizedBox(
-                        height: 5.0,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 70.0),
-                        child: TextFormField(
-                          controller: contactCtrl,
-                          decoration: InputDecoration(
-                              contentPadding: EdgeInsets.symmetric(
-                                  vertical: 10.0, horizontal: 10.0),
-                              border: new OutlineInputBorder(
-                                borderRadius: const BorderRadius.all(
-                                    const Radius.circular(30.0)),
-                              ),
-                              prefixIcon: Icon(NewIcon.edittext_phone_3x),
-                              hintText: "Nomer telepon"),
-                          keyboardType: TextInputType.number,
-                          textInputAction: TextInputAction.go,
-                          validator: (value) {
-                            if (value.isEmpty) {
-                              return 'Nomer telepon tidak boleh kosong';
-                            }
-                            return null;
-                          },
-                        ),
-                      ),
-                      SizedBox(
-                        height: 15,
-                      ),
-                      Container(
-                        height: 35,
-                        width: double.infinity,
-                        margin: EdgeInsets.symmetric(horizontal: 70),
-                        decoration: BoxDecoration(
-                            color: Colors.amber,
-                            borderRadius: BorderRadius.circular(45)),
-                        child: FlatButton(
-                          onPressed: () {
-                            onSubmit();
-                          },
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 70.0),
+                      child: StreamBuilder<Object>(
+                          stream: bloc.password,
+                          builder: (context, snapshot) {
+                            return Stack(
+                              children: <Widget>[
+                                TextField(
+                                  style: TextStyle(fontSize: 14),
+                                  decoration: InputDecoration(
+                                    contentPadding: EdgeInsets.fromLTRB(
+                                        45.0, 10.0, 20.0, 10.0),
+                                    border: new OutlineInputBorder(
+                                      borderRadius: const BorderRadius.all(
+                                          const Radius.circular(30.0)),
+                                    ),
+                                    errorText: snapshot.error,
+                                    hintText: "Password",
+                                  ),
+                                  controller: passwordCtrl,
+                                  focusNode: passwordFocusNode,
+                                  obscureText: true,
+                                  keyboardType: TextInputType.text,
+                                  textInputAction: TextInputAction.done,
+                                  onChanged: bloc.changePassword,
+                                ),
+                                Align(
+                                  alignment: Alignment(-0.9, -10),
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(top: 8),
+                                    child: Icon(AllInOneIcon.edittext_savings_3x,
+                                        color: grayColor, size: 20),
+                                  ),
+                                ),
+                              ],
+                            );
+                          }),
+                    ),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    Container(
+                      height: 35,
+                      width: double.infinity,
+                      margin: EdgeInsets.symmetric(horizontal: 70),
+                      decoration: BoxDecoration(
+                          color: Colors.amber,
+                          borderRadius: BorderRadius.circular(45)),
+                      child: StreamBuilder<Object>(
+                        stream: bloc.submitValid,
+                        builder: (context, snapshot) => FlatButton(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(45)),
+                          onPressed: snapshot.hasData ? () => onSubmit() : null,
                           child: Text(
                             "Selesai",
                             style: TextStyle(
-                                fontFamily: 'sofiapro-bold',
-                                fontSize: 18,
-                                color: Colors.white),
+                              fontFamily: 'sofiapro-bold',
+                              fontSize: 18,
+                              color: Colors.white,
+                            ),
                           ),
-                          color: Colors.green,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(45)),
+                          color: greenColor,
+                          disabledColor: grayColor,
+                          disabledTextColor: whiteColor,
                         ),
-                      )
-                    ],
-                  ),
+                      ),
+                    )
+                  ],
                 ),
               ),
             ),
-          ),
-        ),
-        Align(
-          alignment: Alignment.bottomCenter,
-          child: Image.asset(
-            bgUrl,
-            fit: BoxFit.fitWidth,
-            alignment: Alignment.bottomLeft,
           ),
         ),
       ],
@@ -497,16 +573,17 @@ class _StepThreeState extends State<StepThree> {
 
   Widget selectedImage() {
     return Container(
-        width: 120,
-        height: 120,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: Colors.white.withOpacity(0.5),
-          image: DecorationImage(
-            image: FileImage(_selectedImage),
-            fit: BoxFit.cover,
-          ),
-        ));
+      width: 120,
+      height: 120,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: Colors.white.withOpacity(0.5),
+        image: DecorationImage(
+          image: FileImage(_selectedImage),
+          fit: BoxFit.cover,
+        ),
+      ),
+    );
   }
 
   Future<void> changeLoadingVisible() async {
@@ -516,28 +593,58 @@ class _StepThreeState extends State<StepThree> {
   }
 
   void onSubmit() async {
-    if (_selectedImage == null) {
-      Flushbar(
-        flushbarPosition: FlushbarPosition.TOP,
-        margin: EdgeInsets.all(8.0),
-        borderRadius: 8.0,
-        message: "Gambar profile tidak boleh kosong",
-        leftBarIndicatorColor: Colors.redAccent,
-        duration: Duration(seconds: 3),
-      )..show(context);
-    } else {
-      final value = PostRegistration(
-        contact: contactCtrl.text,
-        email: widget.emailKey,
-        fullname: usernameCtrl.text,
-        password: passwordCtrl.text,
-        tipe_user: "MUZAKKI",
-        username: widget.emailKey,
-      );
+    if (_selectedImage == null) flushBar(context, "Gambar profile tidak boleh kosong", 3);
+    
+    await changeLoadingVisible();
 
-      await changeLoadingVisible();
-      await bloc.saveUser(context, value, _selectedImage.path);
+    CloudinaryClient client = new CloudinaryClient(CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET, CLOUDINARY_CLOUD_NAME);
+    Response response = await client.uploadImage(_selectedImage.path, filename: "img_profile", folder: emailCtrl.text);
+    if (response.statusCode == 200) {
+
+      await onSaveUser();
+      await onSaveFilepath(response);
+
       changeLoadingVisible();
     }
+  }
+
+  Future<void> onSaveUser() async {
+    print('Eksekusi Save User');
+    final userRegister = PostRegistration(
+      contact: contactCtrl.text,
+      email: emailCtrl.text,
+      fullname: usernameCtrl.text,
+      password: passwordCtrl.text,
+      tipe_user: "MUZAKKI",
+      username: emailCtrl.text,
+    );
+
+    await bloc.saveUser(context, userRegister);
+  }
+
+  Future<void> onSaveFilepath(Response response) async {
+    print('Eksekusi Save File Path');
+    CloudinaryUploadImageModel imageModel = cloudinaryUploadImageModelFromJson(json.encode(response.data));
+
+    final filepath = FilePathResponseModel(
+        resourceType: imageModel.resourceType,
+        urlType: "img_profile",
+        url: imageModel.url,
+    );
+
+    await bloc.saveFilepath(context, filepath);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    contactCtrl.text = widget.contactKey;
+    setState(() {});
+  }
+
+  @override
+  void dispose() {
+    bloc.dispose();
+    super.dispose();
   }
 }

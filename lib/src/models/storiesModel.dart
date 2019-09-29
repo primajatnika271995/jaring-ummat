@@ -1,93 +1,61 @@
 // To parse this JSON data, do
 //
-//     final story = storyFromJson(jsonString);
+//     final allStoryModel = allStoryModelFromJson(jsonString);
 
 import 'dart:convert';
 
-List<Story> storyFromJson(String str) => new List<Story>.from(json.decode(str).map((x) => Story.fromJson(x)));
+List<AllStoryModel> allStoryModelFromJson(String str) => List<AllStoryModel>.from(json.decode(str).map((x) => AllStoryModel.fromJson(x)));
 
-String storyToJson(List<Story> data) => json.encode(new List<dynamic>.from(data.map((x) => x.toJson())));
+String allStoryModelToJson(List<AllStoryModel> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
-class Story {
+class AllStoryModel {
     String userId;
     String createdBy;
     List<StoryList> storyList;
 
-    Story({
+    AllStoryModel({
         this.userId,
         this.createdBy,
         this.storyList,
     });
 
-    factory Story.fromJson(Map<String, dynamic> json) => new Story(
-        userId: json["userId"],
-        createdBy: json["createdBy"],
-        storyList: new List<StoryList>.from(json["storyList"].map((x) => StoryList.fromJson(x))),
+    factory AllStoryModel.fromJson(Map<String, dynamic> json) => AllStoryModel(
+        userId: json["userId"] == null ? null : json["userId"],
+        createdBy: json["createdBy"] == null ? null : json["createdBy"],
+        storyList: json["storyList"] == null ? null : List<StoryList>.from(json["storyList"].map((x) => StoryList.fromJson(x))),
     );
 
     Map<String, dynamic> toJson() => {
-        "userId": userId,
-        "createdBy": createdBy,
-        "storyList": new List<dynamic>.from(storyList.map((x) => x.toJson())),
+        "userId": userId == null ? null : userId,
+        "createdBy": createdBy == null ? null : createdBy,
+        "storyList": storyList == null ? null : List<dynamic>.from(storyList.map((x) => x.toJson())),
     };
 }
 
 class StoryList {
     String id;
     int createdDate;
-    List<Content> contents;
+    String resourceType;
+    String url;
 
     StoryList({
         this.id,
         this.createdDate,
-        this.contents,
+        this.resourceType,
+        this.url,
     });
 
-    factory StoryList.fromJson(Map<String, dynamic> json) => new StoryList(
-        id: json["id"],
-        createdDate: json["createdDate"],
-        contents: new List<Content>.from(json["contents"].map((x) => Content.fromJson(x))),
+    factory StoryList.fromJson(Map<String, dynamic> json) => StoryList(
+        id: json["id"] == null ? null : json["id"],
+        createdDate: json["createdDate"] == null ? null : json["createdDate"],
+        resourceType: json["resource_type"] == null ? null : json["resource_type"],
+        url: json["url"] == null ? null : json["url"],
     );
 
     Map<String, dynamic> toJson() => {
-        "id": id,
-        "createdDate": createdDate,
-        "contents": new List<dynamic>.from(contents.map((x) => x.toJson())),
-    };
-}
-
-class Content {
-    String id;
-    String thumbnailUrl;
-    String videoUrl;
-    dynamic imgUrl;
-    int createdDate;
-    dynamic createdBy;
-
-    Content({
-        this.id,
-        this.thumbnailUrl,
-        this.videoUrl,
-        this.imgUrl,
-        this.createdDate,
-        this.createdBy,
-    });
-
-    factory Content.fromJson(Map<String, dynamic> json) => new Content(
-        id: json["id"],
-        thumbnailUrl: json["thumbnailUrl"],
-        videoUrl: json["videoUrl"],
-        imgUrl: json["imgUrl"],
-        createdDate: json["createdDate"],
-        createdBy: json["createdBy"],
-    );
-
-    Map<String, dynamic> toJson() => {
-        "id": id,
-        "thumbnailUrl": thumbnailUrl,
-        "videoUrl": videoUrl,
-        "imgUrl": imgUrl,
-        "createdDate": createdDate,
-        "createdBy": createdBy,
+        "id": id == null ? null : id,
+        "createdDate": createdDate == null ? null : createdDate,
+        "resource_type": resourceType == null ? null : resourceType,
+        "url": url == null ? null : url,
     };
 }

@@ -22,7 +22,8 @@ class MuzakkiUserDetails {
     dynamic latitudeLahir;
     String lokasiAmal;
     dynamic tanggalLahir;
-    List<ImgProfile> imgProfile;
+    String tipeAkun;
+    String imageUrl;
 
     MuzakkiUserDetails({
         this.userId,
@@ -38,7 +39,8 @@ class MuzakkiUserDetails {
         this.latitudeLahir,
         this.lokasiAmal,
         this.tanggalLahir,
-        this.imgProfile,
+        this.tipeAkun,
+        this.imageUrl,
     });
 
     factory MuzakkiUserDetails.fromJson(Map<String, dynamic> json) => MuzakkiUserDetails(
@@ -55,7 +57,8 @@ class MuzakkiUserDetails {
         latitudeLahir: json["latitudeLahir"],
         lokasiAmal: json["lokasiAmal"] == null ? null : json["lokasiAmal"],
         tanggalLahir: json["tanggalLahir"],
-        imgProfile: json["imgProfile"] == null ? null : List<ImgProfile>.from(json["imgProfile"].map((x) => ImgProfile.fromJson(x))),
+        tipeAkun: json["tipeAkun"] == null ? null : json["tipeAkun"],
+        imageUrl: json["imageUrl"] == null ? null : json["imageUrl"],
     );
 
     Map<String, dynamic> toJson() => {
@@ -72,42 +75,7 @@ class MuzakkiUserDetails {
         "latitudeLahir": latitudeLahir,
         "lokasiAmal": lokasiAmal == null ? null : lokasiAmal,
         "tanggalLahir": tanggalLahir,
-        "imgProfile": imgProfile == null ? null : List<dynamic>.from(imgProfile.map((x) => x.toJson())),
-    };
-}
-
-class ImgProfile {
-    String id;
-    dynamic thumbnailUrl;
-    dynamic videoUrl;
-    String imgUrl;
-    int createdDate;
-    dynamic createdBy;
-
-    ImgProfile({
-        this.id,
-        this.thumbnailUrl,
-        this.videoUrl,
-        this.imgUrl,
-        this.createdDate,
-        this.createdBy,
-    });
-
-    factory ImgProfile.fromJson(Map<String, dynamic> json) => ImgProfile(
-        id: json["id"] == null ? null : json["id"],
-        thumbnailUrl: json["thumbnailUrl"],
-        videoUrl: json["videoUrl"],
-        imgUrl: json["imgUrl"] == null ? null : json["imgUrl"],
-        createdDate: json["createdDate"] == null ? null : json["createdDate"],
-        createdBy: json["createdBy"],
-    );
-
-    Map<String, dynamic> toJson() => {
-        "id": id == null ? null : id,
-        "thumbnailUrl": thumbnailUrl,
-        "videoUrl": videoUrl,
-        "imgUrl": imgUrl == null ? null : imgUrl,
-        "createdDate": createdDate == null ? null : createdDate,
-        "createdBy": createdBy,
+        "tipeAkun": tipeAkun == null ? null : tipeAkun,
+        "imageUrl": imageUrl == null ? null : imageUrl,
     };
 }
