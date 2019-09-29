@@ -12,6 +12,7 @@ import 'package:flutter_jaring_ummat/src/config/urls.dart';
 import 'package:flutter_jaring_ummat/src/models/DTO/FilePathResponse.dart';
 import 'package:flutter_jaring_ummat/src/models/DTO/RegisterResponse.dart';
 import 'package:flutter_jaring_ummat/src/models/amilDetailsModel.dart';
+import 'package:flutter_jaring_ummat/src/models/muzakkiUserDetails.dart';
 import 'package:flutter_jaring_ummat/src/utils/screenSize.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/new_icon_icons.dart';
 import 'package:http/http.dart' show Client;
@@ -31,10 +32,10 @@ class RegisterApiProvider {
     'Content-type': 'application/json',
   };
 
-  Future<AmilDetailsModel> updateUser(AmilDetailsModel value) async {
+  Future<MuzakkiUserDetails> updateUser(MuzakkiUserDetails value) async {
+    //  Sharedpreferences
     SharedPreferences _pref = await SharedPreferences.getInstance();
     var token = _pref.getString(ACCESS_TOKEN_KEY);
-    var idLembaga = _pref.getString(LEMABAGA_AMAL_ID);
     var idUser = _pref.getString(USER_ID_KEY);
 
     Map<String, String> header = {
@@ -43,31 +44,29 @@ class RegisterApiProvider {
     };
 
     Map body = {
-      "id": idUser,
-      "idLembaga": idLembaga,
-      "namaLembaga": value.namaLembaga,
-      "categoryLembaga": "Keagamaan",
-      "contactLembaga": value.contactLembaga,
-      "alamatLembaga": value.alamatLembaga,
-      "emailLembaga": value.emailLembaga,
-      "kotaLembaga": value.kotaLembaga,
-      "longitudeLembaga": value.longitudeLembaga,
-      "latitudeLembaga": value.latitudeLembaga,
+      "alamat": value.alamat,
+      "contact": value.contact,
+      "email": value.email,
+      "fullname": value.fullname,
       "kotaLahir": value.kotaLahir,
-      "longitudeLahir": value.longitudeLahir,
-      "latitudeLahir": value.latitudeLahir,
-      "lokasiAmal": "-",
+      "kotaTinggal": "Jakarta",
+      "latitudeLahir": null,
+      "latitudeTinggal": value.latitudeTinggal,
+      "lokasiAmal": null,
+      "longitudeLahir": null,
+      "longitudeTinggal": value.longitudeTinggal,
       "tanggalLahir": value.tanggalLahir,
-      "imgProfile": null
+      "userId": idUser
     };
 
     final response = await client.post(UPDATE_USER_DETAILS, headers: header, body: json.encode(body));
     print('Update User Response : ${response.statusCode}');
     if (response.statusCode == 201) {
-      return compute(amilDetailsModelFromJson, response.body);
+      return compute(muzakkiUserDetailsFromJson, response.body);
     }
     return null;
   }
+
 
   Future<AmilDetailsModel> updateLokasiAmal(String idLembaga, String lokasiAmal) async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
@@ -109,24 +108,6 @@ class RegisterApiProvider {
 
     final response = await client.post(REGISTRATION_URL, headers: headers, body: json.encode(params));
 
-    if (response.statusCode == 201) {
-      RegisterResponseModel value = registerResponseModelFromJson(response.body);
-      return value;
-    }
-    return null;
-  }
-
-  Future<RegisterResponseModel> saveLembaga(BuildContext context, PostRegistration data) async {
-
-    Map params = {
-      "namaLembaga": data.fullname,
-      "emailLembaga": data.email,
-      "categoryLembaga": "Keagamaan",
-      "contactLembaga": "-",
-      "alamatLembaga": "-"
-    };
-
-    final response = await client.post(CREATE_LEMBAGA_AMAL, headers: headers, body: json.encode(params));
     if (response.statusCode == 201) {
       RegisterResponseModel value = registerResponseModelFromJson(response.body);
       return value;
