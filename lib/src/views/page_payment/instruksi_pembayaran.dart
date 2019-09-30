@@ -63,10 +63,11 @@ class _InstruksiPembayaranState extends State<InstruksiPembayaran>
    */
   bool _loadingVisible = false;
 
-  /**
+  /*
       Date Time For Tanggal Berakhir
    */
-  DateTime tanggalBerakhir = null;
+  DateTime tanggalBerakhir;
+
   var formatter = new DateFormat('dd MMMM yyyy HH:mm:ss');
 
   final String bniLogo =
@@ -323,12 +324,19 @@ class _InstruksiPembayaranState extends State<InstruksiPembayaran>
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
           ),
           Padding(
-            padding: EdgeInsets.only(top: 4),
-            child: ListTile(
-              title: const Text(
-                  'Mohon tidak memberikan data pembayaran kepada pihak manapun kecuali Jejaring!',
-                  style: TextStyle(color: Colors.redAccent, fontSize: 11)),
-              leading: Icon(Icons.info_outline, color: Colors.redAccent),
+            padding: EdgeInsets.only(top: 4, left: 10, right: 10),
+            child: Container(
+              child: Row(
+                children: <Widget>[
+                  Icon(Icons.info_outline, color: Colors.redAccent),
+                  SizedBox(
+                    width: 5,
+                  ),
+                  const Text(
+                      'Mohon tidak memberikan data pembayaran kepada \n pihak manapun kecuali Jejaring!',
+                      style: TextStyle(color: Colors.redAccent, fontSize: 11)),
+                ],
+              ),
             ),
           ),
           Padding(

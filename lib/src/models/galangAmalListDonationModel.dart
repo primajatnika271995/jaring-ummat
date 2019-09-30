@@ -20,7 +20,7 @@ class GalangAmalListDonation {
     String customerUsername;
     String customerEmail;
     int nominalDibayar;
-    String donasiDate;
+    int donasiDate;
 
     GalangAmalListDonation({
         this.virtualAccountRequestId,

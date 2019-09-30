@@ -22,6 +22,7 @@ class _ExplorerPageState extends State<ExplorerPage> {
         appBar: AppBar(
           backgroundColor: whiteColor,
           elevation: 1,
+          automaticallyImplyLeading: false,
           title: Text(ExplorerText.titleBar,
               style: TextStyle(
                   fontSize: SizeUtils.titleSize, color: Colors.black)),
@@ -45,7 +46,7 @@ class _ExplorerPageState extends State<ExplorerPage> {
               Tab(text: 'Aktivitas Amal'),
               Tab(text: 'Story Jejaring'),
               Tab(text: 'Tanya Ustadz'),
-              Tab(text: 'Berita')
+              Tab(text: 'Berita Jejaring')
             ],
           ),
         ),

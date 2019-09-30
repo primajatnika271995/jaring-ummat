@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:flutter_jaring_ummat/src/config/hexColor.dart';
 import 'package:flutter_jaring_ummat/src/models/beritaModel.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/new_icon_icons.dart';
@@ -14,6 +15,11 @@ class BeritaContent extends StatefulWidget {
 class _BeritaContentState extends State<BeritaContent> {
   final String noImg =
       "http://www.sclance.com/pngs/no-image-png/no_image_png_935227.png";
+
+  /*
+   * Formatter Date
+   */
+  var formatter = new DateFormat('dd MMMM yyyy HH:mm:ss');
 
   @override
   Widget build(BuildContext context) {
@@ -117,7 +123,14 @@ class _BeritaContentState extends State<BeritaContent> {
                       ),
                       Text(
                         'oleh ${widget.berita.createdBy}',
-                        style: TextStyle(color: grayColor),
+                        style: TextStyle(color: grayColor, fontSize: 13),
+                      ),
+                      Text(
+                        formatter
+                            .format(DateTime.fromMicrosecondsSinceEpoch(
+                                widget.berita.createdDate * 1000))
+                            .toString(),
+                        style: TextStyle(color: Colors.black, fontSize: 13),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(top: 30.0, right: 20.0),

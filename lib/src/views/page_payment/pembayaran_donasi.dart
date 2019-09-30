@@ -349,7 +349,7 @@ class _PembayaranDonasiState extends State<PembayaranDonasi> {
         context: context,
         builder: (builder) {
           return Container(
-            height: screenHeight(context, dividedBy: 2.3),
+            height: screenHeight(context, dividedBy: 2.2),
             width: screenWidth(context),
             color: Colors.transparent,
             child: Scaffold(
@@ -396,7 +396,7 @@ class _PembayaranDonasiState extends State<PembayaranDonasi> {
                             child: ListTile(
                                 title: Text('${vaName[index]}',
                                     style:
-                                        TextStyle(fontWeight: FontWeight.bold)),
+                                        TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
                                 leading: CircleAvatar(
                                   backgroundColor: Colors.redAccent,
                                   backgroundImage: NetworkImage(imageVA[index]),

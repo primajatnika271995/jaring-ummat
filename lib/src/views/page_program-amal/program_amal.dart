@@ -416,10 +416,14 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: SizeUtils.titleSize)),
-                        const Text(
-                            'Dengan mimilih dan mengaktifkan lokasi ini, maka aplikasi Jejaring akan menampilkan data galang amal, akun amil dan berita disekitar lokasi terpilih.',
-                            style: TextStyle(fontSize: 12, color: Colors.grey),
-                            textAlign: TextAlign.center),
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 12.0),
+                          child: const Text(
+                              'Dengan mimilih dan mengaktifkan lokasi ini, maka aplikasi Jejaring akan menampilkan data galang amal, akun amil dan berita disekitar lokasi terpilih.',
+                              style:
+                                  TextStyle(fontSize: 12, color: Colors.grey),
+                              textAlign: TextAlign.center),
+                        ),
                         SizedBox(height: 7),
                         ListView.builder(
                           itemCount: ProgramAmalTextData.location.length,
@@ -463,9 +467,10 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                             ),
                           ),
                         ),
+                        Padding(padding: EdgeInsets.only(top: 10.0)),
                         Container(
                           width: screenWidth(context),
-                          padding: EdgeInsets.only(top: 10),
+                          padding: EdgeInsets.symmetric(horizontal: 12.0),
                           child: RaisedButton(
                             onPressed: () {
                               filtered();

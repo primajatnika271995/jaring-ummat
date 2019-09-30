@@ -75,7 +75,7 @@ class _InboxState extends State<Inbox> {
           shrinkWrap: true,
           separatorBuilder: (context, position) {
             return Padding(
-              padding: EdgeInsets.only(left: 80.0),
+              padding: EdgeInsets.only(left: 70.0),
               child: new SizedBox(
                 height: 10.0,
                 child: new Center(
@@ -147,7 +147,7 @@ class _InboxState extends State<Inbox> {
             physics: NeverScrollableScrollPhysics(),
             separatorBuilder: (context, position) {
               return Padding(
-                padding: EdgeInsets.only(left: 80.0),
+                padding: EdgeInsets.only(left: 70.0),
                 child: new SizedBox(
                   height: 10.0,
                   child: new Center(

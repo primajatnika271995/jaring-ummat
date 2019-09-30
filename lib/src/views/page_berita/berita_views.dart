@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_jaring_ummat/src/utils/sizeUtils.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_jaring_ummat/src/config/hexColor.dart';
 import 'package:flutter_jaring_ummat/src/models/beritaModel.dart';
@@ -19,7 +20,7 @@ class _BeritaViewsState extends State<BeritaViews> {
       "http://www.sclance.com/pngs/no-image-png/no_image_png_935227.png";
   var titleBar = Text(
     'Berita',
-    style: TextStyle(color: blackColor),
+    style: TextStyle(color: blackColor, fontSize: SizeUtils.titleSize),
   );
 
   var formatter = new DateFormat('dd MMMM yyyy HH:mm:ss');
@@ -30,7 +31,7 @@ class _BeritaViewsState extends State<BeritaViews> {
       padding: EdgeInsets.only(left: 20.0, right: 20.0, top: 20.0),
       child: Text(
         widget.value.titleBerita,
-        style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+        style: TextStyle(fontSize: 17.0, fontWeight: FontWeight.bold),
       ),
     );
 
@@ -38,7 +39,7 @@ class _BeritaViewsState extends State<BeritaViews> {
       padding: EdgeInsets.only(left: 20.0, right: 20.0, top: 20.0),
       child: Text(
         widget.value.createdBy,
-        style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+        style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold),
       ),
     );
 
@@ -50,12 +51,13 @@ class _BeritaViewsState extends State<BeritaViews> {
               DateTime.fromMicrosecondsSinceEpoch(
                   widget.value.createdDate * 1000),
             ),
+        style: TextStyle(fontSize: 12),
       ),
     );
 
     final description = Padding(
       padding: EdgeInsets.only(left: 20.0, right: 20.0, top: 10.0),
-      child: Text(widget.value.descriptionBerita),
+      child: Text(widget.value.descriptionBerita, style: TextStyle(fontSize: 14),),
     );
 
     final mainImage = Padding(
@@ -102,7 +104,7 @@ class _BeritaViewsState extends State<BeritaViews> {
       padding: EdgeInsets.only(left: 20.0, right: 20.0, top: 15.0),
       child: const Text(
         'Jakarta, 30 Agustus 2019',
-        style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+        style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold),
       ),
     );
 
@@ -120,7 +122,7 @@ class _BeritaViewsState extends State<BeritaViews> {
                   children: <Widget>[
                     Padding(
                       padding: EdgeInsets.only(right: 10.0),
-                      child: Icon(NewIcon.love_3x, color: greenColor),
+                      child: Icon(NewIcon.love_3x, color: blackColor, size: 20),
                     ),
                     Text('${widget.value.totalLikes} suka'),
                   ],
@@ -143,7 +145,8 @@ class _BeritaViewsState extends State<BeritaViews> {
                     children: <Widget>[
                       Padding(
                         padding: const EdgeInsets.only(right: 10.0),
-                        child: Icon(NewIcon.comment_3x, color: greenColor),
+                        child: Icon(NewIcon.comment_3x,
+                            color: blackColor, size: 20),
                       ),
                       Text('${widget.value.totalComment} komentar'),
                     ],
@@ -152,7 +155,7 @@ class _BeritaViewsState extends State<BeritaViews> {
               ),
             ],
           ),
-          Icon(NewIcon.share_3x, color: greenColor),
+          Icon(NewIcon.share_3x, color: blackColor, size: 20),
         ],
       ),
     );
@@ -168,7 +171,7 @@ class _BeritaViewsState extends State<BeritaViews> {
           onTap: () {
             Navigator.of(context).pop();
           },
-          child: Icon(NewIcon.back_big_3x, color: greenColor),
+          child: Icon(NewIcon.back_big_3x, color: blackColor, size: 20),
         ),
       ),
       body: SingleChildScrollView(

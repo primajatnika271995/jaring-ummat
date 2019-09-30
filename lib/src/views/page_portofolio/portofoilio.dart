@@ -334,15 +334,18 @@ class _PortofolioState extends State<Portofolio> {
 
     // Tren Aktivitas Harian / Line Chart
 
-    final trenAktivitas = Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        ListTile(
-          title: Text('Tren Aktivitas Amal Harian',
-              style: TextStyle(color: blackColor)),
-        ),
-        buildBarChart(context),
-      ],
+    final trenAktivitas = Padding(
+      padding: EdgeInsets.only(bottom: 20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          ListTile(
+            title: Text('Tren Aktivitas Amal Harian',
+                style: TextStyle(color: blackColor)),
+          ),
+          buildBarChart(context),
+        ],
+      ),
     );
 
     // Sebaran Aktivitas Terbesar Widget
@@ -1021,7 +1024,7 @@ class _PortofolioState extends State<Portofolio> {
     super.initState();
     bloc.fetchAktivitasTerbesar();
     bloc.fetchAktivitasTerbaru();
-    bloc.fetchBarChart(null, "tiga");
+    bloc.fetchBarChart(null, "satu");
     getDataPieChart();
     getUser();
   }
@@ -1159,13 +1162,14 @@ class _PortofolioState extends State<Portofolio> {
     _seriesLineData = List<charts.Series<BarchartModel, String>>();
     _seriesLineData.add(
       charts.Series(
-          id: 'Tren Aktivitas',
-          colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
-          domainFn: (tren, _) => tren.namaBulan.substring(0, 3),
-          measureFn: (BarchartModel tren, _) => tren.total / 10000,
-          data: lineData,
-          labelAccessorFn: (BarchartModel tren, _) =>
-              '${CurrencyFormat().currency(tren.total.toDouble())}'),
+        id: 'Tren Aktivitas',
+        colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
+        domainFn: (tren, _) => tren.namaBulan.substring(0, 3),
+        measureFn: (BarchartModel tren, _) => tren.total / 10000,
+        data: lineData,
+        // labelAccessorFn: (BarchartModel tren, _) =>
+        //     '${CurrencyFormat().currency(tren.total.toDouble())}',
+      ),
     );
   }
 }

@@ -1,5 +1,6 @@
 import 'package:circular_profile_avatar/circular_profile_avatar.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_jaring_ummat/src/config/hexColor.dart';
@@ -35,6 +36,8 @@ class _GalangAmalContainerState extends State<GalangAmalContainer> {
 
   String lessDesc;
   String moreDesc;
+
+  var formatter = new DateFormat('dd-MM-yyyy HH:mm:ss');
 
   @override
   Widget build(BuildContext context) {
@@ -410,7 +413,7 @@ class _GalangAmalContainerState extends State<GalangAmalContainer> {
                 title: Text('${data.customerName}',
                     style: TextStyle(fontWeight: FontWeight.bold)),
                 subtitle:
-                    Text('${data.donasiDate}', style: TextStyle(fontSize: 11)),
+                    Text('${formatter.format(DateTime.fromMicrosecondsSinceEpoch(data.donasiDate * 1000)).toString()}', style: TextStyle(fontSize: 11)),
                 trailing: Text(
                     'Rp ${CurrencyFormat().currency(data.nominalDibayar.toDouble())}',
                     style: TextStyle(fontWeight: FontWeight.bold)),

@@ -55,8 +55,22 @@ class _ExpiredTransaksiState extends State<ExpiredTransaksi> {
   }
 
   Widget listBuilder(List<HistoriTransaksiModel> snapshot) {
-    return ListView.builder(
+    return ListView.separated(
       itemCount: snapshot.length,
+      separatorBuilder: (context, position) {
+        return Padding(
+          padding: EdgeInsets.only(left: 0),
+          child: new SizedBox(
+            height: 10.0,
+            child: new Center(
+              child: new Container(
+                  margin: new EdgeInsetsDirectional.only(start: 1.0, end: 1.0),
+                  height: 5.0,
+                  color: Colors.grey[200]),
+            ),
+          ),
+        );
+      },
       itemBuilder: (context, index) {
         var data = snapshot[index];
         return Padding(
@@ -67,34 +81,14 @@ class _ExpiredTransaksiState extends State<ExpiredTransaksi> {
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
             child: Container(
-              // height: screenHeightExcludingToolbar(context, dividedBy: 4),
               child: Column(
                 children: <Widget>[
-//                  Container(
-//                    padding: EdgeInsets.symmetric(vertical: 20),
-//                    width: screenWidth(context),
-//                    decoration: BoxDecoration(
-//                        color: Colors.grey[100],
-//                        borderRadius: BorderRadius.only(
-//                          topLeft: Radius.circular(20),
-//                          topRight: Radius.circular(20),
-//                        )),
-//                    child: Column(
-//                      children: <Widget>[
-//                        Text(
-//                          'Pembayaran Sukses pada ${DateTime.fromMillisecondsSinceEpoch(data.tanggalTransaksi)}',
-//                          style: TextStyle(fontSize: 12),
-//                        ),
-//                      ],
-//                    ),
-//                  ),
                   Container(
                     padding: EdgeInsets.only(bottom: 10),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(20),
-                        bottomRight: Radius.circular(20)
-                      ),
+                          bottomLeft: Radius.circular(20),
+                          bottomRight: Radius.circular(20)),
                     ),
                     child: ListTile(
                       title: RichText(
@@ -168,73 +162,6 @@ class _ExpiredTransaksiState extends State<ExpiredTransaksi> {
       },
     );
   }
-
-  // Widget listBuilder(List<HistoriTransaksiModel> snapshot) {
-  //   return ListView.separated(
-  //     separatorBuilder: (context, position) {
-  //       return Padding(
-  //         padding: EdgeInsets.only(left: 80),
-  //         child: new SizedBox(
-  //           height: 10.0,
-  //           child: new Center(
-  //             child: new Container(
-  //                 margin: new EdgeInsetsDirectional.only(start: 1.0, end: 1.0),
-  //                 height: 5.0,
-  //                 color: Colors.grey[200]),
-  //           ),
-  //         ),
-  //       );
-  //     },
-  //     itemCount: snapshot.length,
-  //     shrinkWrap: true,
-  //     itemBuilder: (context, index) {
-  //       var data = snapshot[index];
-  //       return ListTile(
-  // leading: CircleAvatar(
-  //   backgroundColor: data.jenisTransaksi == "ZAKAT"
-  //       ? Colors.yellow
-  //       : data.jenisTransaksi == "INFAQ"
-  //           ? Colors.redAccent
-  //           : data.jenisTransaksi == "SODAQOH"
-  //               ? Colors.deepPurple
-  //               : data.jenisTransaksi == "WAKAF"
-  //                   ? Colors.green
-  //                   : data.jenisTransaksi == "DONASI"
-  //                       ? Colors.blue
-  //                       : Colors.blue,
-  //   child: Icon(
-  //     data.jenisTransaksi == "ZAKAT"
-  //         ? ProfileInboxIcon.zakat_3x
-  //         : data.jenisTransaksi == "INFAQ"
-  //             ? ProfileInboxIcon.infaq_3x
-  //             : data.jenisTransaksi == "SODAQOH"
-  //                 ? ProfileInboxIcon.sodaqoh_3x
-  //                 : data.jenisTransaksi == "WAKAF"
-  //                     ? ProfileInboxIcon.wakaf_3x
-  //                     : data.jenisTransaksi == "DONASI"
-  //                         ? ProfileInboxIcon.donation_3x
-  //                         : ProfileInboxIcon.donation_3x,
-  //     color: whiteColor,
-  //     size: 20,
-  //   ),
-  // ),
-  //         title: data.donasiTitle == null
-  //             ? Text("${data.jenisTransaksi}",
-  //                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13))
-  //             : Text(data.donasiTitle,
-  //                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
-  //         isThreeLine: true,
-  //         subtitle: Column(
-  //           crossAxisAlignment: CrossAxisAlignment.start,
-  //           children: <Widget>[
-  //             Text('Jumlah Dibayar ${CurrencyFormat().currency(data.jumlahDibayar.toDouble())}'),
-  //             Text('${data.jenisTransaksi}'),
-  //           ],
-  //         ),
-  //       );
-  //     },
-  //   );
-  // }
 
   @override
   void initState() {
