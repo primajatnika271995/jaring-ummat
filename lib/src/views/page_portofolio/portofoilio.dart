@@ -12,6 +12,7 @@ import 'package:flutter_jaring_ummat/src/models/sebaranAktifitasAmalModel.dart';
 import 'package:flutter_jaring_ummat/src/services/currency_format_service.dart';
 import 'package:flutter_jaring_ummat/src/services/portofolioApi.dart';
 import 'package:flutter_jaring_ummat/src/services/time_ago_service.dart';
+import 'package:flutter_jaring_ummat/src/utils/screenSize.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/new_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/profile_inbox_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/components/indicator_container.dart';
@@ -83,6 +84,9 @@ class _PortofolioState extends State<Portofolio> {
   double wakafPercent = 0;
   double shodaqohPercent = 0;
   double donasiPercent = 0;
+
+  List<int> lengthBarChart = [0, 0, 0, 0, 0, 0, 0, 0, 120000, 0, 0, 0];
+  double fillPercent;
 
   /*
    * Boolen for Loading
@@ -334,18 +338,25 @@ class _PortofolioState extends State<Portofolio> {
 
     // Tren Aktivitas Harian / Line Chart
 
-    final trenAktivitas = Padding(
-      padding: EdgeInsets.only(bottom: 20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          ListTile(
-            title: Text('Tren Aktivitas Amal Harian',
-                style: TextStyle(color: blackColor)),
+    final trenAktivitas = Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        ListTile(
+          title: Text('Tren Aktivitas Amal Harian',
+              style: TextStyle(color: blackColor)),
+        ),
+        buildBarChart(context),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              const Text('Jan'),
+              const Text('Des'),
+            ],
           ),
-          buildBarChart(context),
-        ],
-      ),
+        ),
+      ],
     );
 
     // Sebaran Aktivitas Terbesar Widget
@@ -1132,29 +1143,78 @@ class _PortofolioState extends State<Portofolio> {
   }
 
   Widget barChartBuild(BuildContext context, List<BarchartModel> snapshot) {
-    barData = snapshot;
-    _createData(barData);
+    return Stack(
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15),
+          child: Container(
+            height: 150,
+            width: screenWidth(context),
+            child: ListView.builder(
+              itemCount: 12,
+              shrinkWrap: true,
+              scrollDirection: Axis.horizontal,
+              itemBuilder: (context, index) {
+                lengthBarChart[index] == 0 ? fillPercent = 0 : fillPercent = 80;
 
-    return Container(
-      height: 150,
-      width: MediaQuery.of(context).size.width,
-      child: charts.BarChart(
-        _seriesLineData,
-        animate: false,
-        // primaryMeasureAxis:
-        //     new charts.NumericAxisSpec(renderSpec: new charts.NoneRenderSpec()),
-        // domainAxis: new charts.OrdinalAxisSpec(showAxisLine: true),
-        barRendererDecorator: new charts.BarLabelDecorator<String>(
-          insideLabelStyleSpec:
-              charts.TextStyleSpec(fontSize: 10, color: charts.Color.white),
+                final Color background = Colors.grey[200];
+                final Color fill = Colors.deepPurple;
+                final List<Color> gradient = [
+                  background,
+                  background,
+                  fill,
+                  fill,
+                ];
+                // final double fillPercent = 80;
+                final double fillStop = (100 - fillPercent) / 100;
+                final List<double> stops = [0.0, fillStop, fillStop, 1.0];
+
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 3),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: gradient,
+                        stops: stops,
+                        end: Alignment.bottomCenter,
+                        begin: Alignment.topCenter,
+                      ),
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    width: 29.5,
+                  ),
+                );
+              },
+            ),
+          ),
         ),
-        domainAxis: new charts.OrdinalAxisSpec(),
-        layoutConfig: new charts.LayoutConfig(
-            leftMarginSpec: new charts.MarginSpec.fixedPixel(0),
-            topMarginSpec: new charts.MarginSpec.fixedPixel(0),
-            rightMarginSpec: new charts.MarginSpec.fixedPixel(0),
-            bottomMarginSpec: new charts.MarginSpec.fixedPixel(0)),
-      ),
+        // Padding(
+        //   padding: const EdgeInsets.symmetric(horizontal: 15),
+        //   child: Container(
+        //     height: 140,
+        //     width: screenWidth(context),
+        //     child: ListView.builder(
+        //       itemCount: 12,
+        //       shrinkWrap: true,
+        //       scrollDirection: Axis.horizontal,
+        //       itemBuilder: (context, index) {
+        //         return Padding(
+        //           padding: const EdgeInsets.symmetric(horizontal: 3),
+        //           child: Container(
+        //             decoration: BoxDecoration(
+        //                 color: Colors.grey[200],
+        //                 borderRadius: BorderRadius.only(
+        //                   topLeft: Radius.circular(5),
+        //                   topRight: Radius.circular(5),
+        //                 )),
+        //             width: 29.5,
+        //           ),
+        //         );
+        //       },
+        //     ),
+        //   ),
+        // ),
+      ],
     );
   }
 
