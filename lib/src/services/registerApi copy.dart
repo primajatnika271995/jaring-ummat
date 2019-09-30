@@ -11,6 +11,7 @@ import 'package:flutter_jaring_ummat/src/config/preferences.dart';
 import 'package:flutter_jaring_ummat/src/config/urls.dart';
 import 'package:flutter_jaring_ummat/src/models/DTO/FilePathResponse.dart';
 import 'package:flutter_jaring_ummat/src/models/DTO/RegisterResponse.dart';
+import 'package:flutter_jaring_ummat/src/models/amilDetailsModel.dart';
 import 'package:flutter_jaring_ummat/src/models/muzakkiUserDetails.dart';
 import 'package:flutter_jaring_ummat/src/utils/screenSize.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/new_icon_icons.dart';
@@ -66,14 +67,10 @@ class RegisterApiProvider {
     return null;
   }
 
-  Future<MuzakkiUserDetails> updateLokasiAmal(String lokasiAmal) async {
-    //  Sharedpreferences
+
+  Future<AmilDetailsModel> updateLokasiAmal(String idLembaga, String lokasiAmal) async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
     var token = _pref.getString(ACCESS_TOKEN_KEY);
-    var idUser = _pref.getString(USER_ID_KEY);
-    
-
-    // Check if Token null
 
     if (token == null) {
       token =
@@ -82,7 +79,7 @@ class RegisterApiProvider {
 
     Map<String, String> header = {'Authorization': 'Bearer $token'};
 
-    params = {"idUser": idUser, "lokasiAmal": lokasiAmal};
+    params = {"idLembaga": idLembaga, "lokasiAmal": lokasiAmal};
     _uri = Uri.parse(UPDATE_LOKASI_AMAL);
 
     final uriParams = _uri.replace(queryParameters: params);
@@ -90,7 +87,7 @@ class RegisterApiProvider {
 
     print('_response_code : ${response.statusCode}');
     if (response.statusCode == 201) {
-      return compute(muzakkiUserDetailsFromJson, response.body);
+      return compute(amilDetailsModelFromJson, response.body);
     } else if (response.statusCode == 204) {
       print('--> No Content');
     } else {
@@ -99,7 +96,7 @@ class RegisterApiProvider {
     return null;
   }
 
- Future<RegisterResponseModel> saveUser(BuildContext context, PostRegistration data) async {
+  Future<RegisterResponseModel> saveUser(BuildContext context, PostRegistration data) async {
     Map params = {
       "tipe_user": data.tipe_user,
       "password": data.password,
@@ -135,5 +132,4 @@ class RegisterApiProvider {
     }
     return null;
   }
-
 }

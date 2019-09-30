@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_jaring_ummat/src/config/urls.dart';
 import 'package:flutter_jaring_ummat/src/models/DTO/LoginResponse.dart';
 import 'package:flutter_jaring_ummat/src/models/muzakkiUserDetails.dart';
+import 'package:flutter_jaring_ummat/src/views/components/flushbarContainer.dart';
 import 'package:http/http.dart' show Client;
 import 'package:http/http.dart' as http;
 
@@ -26,20 +27,13 @@ class LoginApiProvider {
     };
 
     final response = await client.post(LOGIN_URL, headers: headers, body: params);
-    print('--> login_response ${response.statusCode}');
 
+    print('--> login_response ${response.statusCode}');
     if (response.statusCode == 200) {
       return compute(loginResponseFromJson, response.body);
     } else if (response.statusCode == 400) {
-      Flushbar(
-        margin: EdgeInsets.all(8.0),
-        borderRadius: 8.0,
-        message: "Email atau Password tidak cocok",
-        leftBarIndicatorColor: Colors.redAccent,
-        duration: Duration(seconds: 3),
-      )..show(context);
-    }
-    return null;
+      flushBar(context, "Email atau Password tidak cocok", 3);
+    } return null;
   }
 
   Future<MuzakkiUserDetails> fetchDetails(BuildContext context, String email) async {
@@ -50,8 +44,8 @@ class LoginApiProvider {
 
     final uriParams = uri.replace(queryParameters: params);
     final response = await client.get(uriParams);
+    
     print('--> user_details_response ${response.statusCode}');
-
     if (response.statusCode == 200) {
       return compute(muzakkiUserDetailsFromJson, response.body);
     } else if (response.statusCode == 201) {}

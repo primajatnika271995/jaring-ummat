@@ -17,41 +17,35 @@ class LoginBloc {
 
   login(BuildContext context, String username, String password) async {
     SharedPreferences _preferences = await SharedPreferences.getInstance();
-    LoginResponse response =
-        await repository.login(context, username, password);
-    loginFetcher.sink.add(response);
 
-    _preferences.setString(ACCESS_TOKEN_KEY, response.accessToken);
+    await repository.login(context, username, password).then((LoginResponse value) {
+      loginFetcher.sink.add(value);
+      _preferences.setString(ACCESS_TOKEN_KEY, value.accessToken);
+      userDetails(context, username);
+    }).catchError((err) => print('Err : $err'));
   }
 
   userDetails(BuildContext context, String email) async {
     SharedPreferences _preferences = await SharedPreferences.getInstance();
     MuzakkiUserDetails response = await repository.fetchDetail(context, email);
 
-    detailFetcher.sink.add(response);
+    await repository.fetchDetail(context, email).then((MuzakkiUserDetails value) {
+      detailFetcher.sink.add(value);
 
-    if (!response.userId.isEmpty) {
-      _preferences.setString(USER_ID_KEY, response.userId);
-      _preferences.setString(EMAIL_KEY, response.email);
-      _preferences.setString(FULLNAME_KEY, response.fullname);
-      _preferences.setString(CONTACT_KEY, response.contact);
+      if (value.userId != null) {
+        _preferences.setString(USER_ID_KEY, response.userId);
+        _preferences.setString(EMAIL_KEY, response.email);
+        _preferences.setString(FULLNAME_KEY, response.fullname);
+        _preferences.setString(CONTACT_KEY, response.contact);
+        _preferences.setString(PROFILE_PICTURE_KEY, value.imageUrl);
 
-      if (response.imgProfile == null) {
-        _preferences.setString(PROFILE_PICTURE_KEY,
-            'https://kempenfeltplayers.com/wp-content/uploads/2015/07/profile-icon-empty.png');
-      } else {
-        _preferences.setString(
-            PROFILE_PICTURE_KEY, response.imgProfile[0].imgUrl);
-      }
-
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => HomeView(
-            currentindex: 4,
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => HomeView(),
           ),
-        ),
-      );
-    }
+        );
+      }
+    }).catchError((err) => print('Err : $err'));
   }
 
   dispose() async {

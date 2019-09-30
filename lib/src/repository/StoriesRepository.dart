@@ -7,6 +7,6 @@ import '../models/storiesModel.dart';
 class StoriesRepository {
   final repository = StoriesApiProvider();
   
-  Future<List<Story>> fetchAllStory() => repository.fetchAllStory();
-  Future<StoryByUser> fetchStoryByUser(String userId) => repository.fetchStoryUser(userId);
+  Future<List<AllStoryModel>> fetchAllStory() => repository.fetchAllStory();
+  Future<StoryByUserModel> fetchStoryByUser(String userId) => repository.fetchStoryUser(userId);
 }

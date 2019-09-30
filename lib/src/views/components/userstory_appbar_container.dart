@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:circular_profile_avatar/circular_profile_avatar.dart';
 import 'package:flutter_jaring_ummat/src/config/hexColor.dart';
 import 'package:flutter_jaring_ummat/src/models/storiesModel.dart';
+import 'package:flutter_jaring_ummat/src/views/page_story_view/story_page_builder.dart';
 import 'package:flutter_jaring_ummat/src/views/user_story.dart';
 import '../../bloc/storiesBloc.dart';
 
@@ -25,7 +26,7 @@ class UserStoryAppBarState extends State<UserStoryAppBar> {
         children: <Widget>[
           StreamBuilder(
             stream: bloc.storyFetchAll,
-            builder: (context, AsyncSnapshot<List<Story>> snapshot) {
+            builder: (context, AsyncSnapshot<List<AllStoryModel>> snapshot) {
               if (snapshot.hasData) {
                 return userStories(snapshot.data);
               } else if (snapshot.hasError) {
@@ -49,7 +50,7 @@ class UserStoryAppBarState extends State<UserStoryAppBar> {
     );
   }
 
-  Widget userStories(List<Story> snapshot) {
+  Widget userStories(List<AllStoryModel> snapshot) {
     return Expanded(
       flex: 1,
       child: ListView.builder(
@@ -64,23 +65,18 @@ class UserStoryAppBarState extends State<UserStoryAppBar> {
           String thumbnails;
           var data = snapshot[index];
           data.storyList.forEach((f) {
-            f.contents.forEach((val) {
-              thumbnails = val.thumbnailUrl;
-              video = val.videoUrl;
-              thumbnail.add(thumbnails);
-              videoUrl.add(video);
-            });
+            video = f.url;
+            thumbnail.add(thumbnails);
+            videoUrl.add(video);
           });
           return GestureDetector(
             onTap: () async {
-              Route route = MaterialPageRoute(
-                builder: (context) => UserStoryView(
-                  userId: data.userId,
-                  createdBy: data.createdBy,
-                  createdDate: data.storyList[0].createdDate,
-                ),
-              );
-              Navigator.push(context, route);
+              print('User ID Story Content : ${data.userId}');
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => StoryPage(
+                      idStory: data.userId,
+                      createdBy: data.createdBy,
+                      createdDate: data.storyList[0].createdDate)));
             },
             child: Container(
               margin: EdgeInsets.only(top: 8.0),
@@ -101,13 +97,13 @@ class UserStoryAppBarState extends State<UserStoryAppBar> {
                       height: 140.0,
                       child: thumbnail[0] == null
                           ? Image.network(
-                        data.storyList[0].contents[0].imgUrl,
-                        fit: BoxFit.cover,
-                      )
+                              data.storyList[0].url,
+                              fit: BoxFit.cover,
+                            )
                           : Image.network(
-                        thumbnail[0],
-                        fit: BoxFit.cover,
-                      ),
+                              thumbnail[0],
+                              fit: BoxFit.cover,
+                            ),
                     ),
                     Positioned(
                       left: 10.0,
@@ -133,9 +129,9 @@ class UserStoryAppBarState extends State<UserStoryAppBar> {
                                 begin: Alignment.bottomCenter,
                                 end: Alignment.topCenter,
                                 colors: [
-                                  Colors.black,
-                                  Colors.black.withOpacity(0.1)
-                                ])),
+                              Colors.black,
+                              Colors.black.withOpacity(0.1)
+                            ])),
                       ),
                     ),
                     Positioned(

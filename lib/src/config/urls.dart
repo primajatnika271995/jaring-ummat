@@ -1,12 +1,9 @@
 // const BASE_API_URL = 'http://tabeldata.ip-dynamic.com/jaring-ummat';
 // const BASE_API_UPLOADER_URL = 'http://tabeldata.ip-dynamic.com/jaring-ummat-uploader';
 
-const BASE_API_URL = 'http://139.162.15.91/jaring-ummat';
-// const BASE_API_URL = 'http://192.168.1.17:9091';
+// const BASE_API_URL = 'http://139.162.15.91/jaring-ummat';
+const BASE_API_URL = 'http://192.168.42.82:9091';
 const BASE_API_UPLOADER_URL = 'http://139.162.15.91/uploader';
-
-// const BASE_API_CHATS = 'http://tabeldata.ip-dynamic.com/hcare-chat';
-// const WEBSOCKET_CHAT = 'ws://tabeldata.ip-dynamic.com:6061/hcare-chat/ws';
 
 // Chat Api For Server Production Cloud
 const BASE_API_CHATS = 'http://20.184.15.66:6061/hcare-chat';
@@ -25,18 +22,25 @@ const REQUEST_VA_OAUTH = 'http://117.53.47.34:8000/jaring-ummat-bni-request/api/
 // PEMBAYARAN
 const PEMBAYARAN_URL = 'http://117.53.47.34:8000/jaring-ummat-bni-request/api/transaksi/customer/confirm';
 
+// SMS OTP CODE
+const OTP_SMS_URL = 'https://reguler.zenziva.net/apps/smsotp.php';
+
+// CLOUDINARY 
+const CLOUDINARY_URL = 'https://api.cloudinary.com/v1_1/';
+
 // BASE REGISTER AND LOGIN_URL
 const REGISTRATION_URL = BASE_API_URL + '/api/user/';
 const LOGIN_URL = BASE_API_URL + '/oauth/token';
 const USER_BY_ID_URL = BASE_API_URL + '/api/user/';
+const FILE_PATH_SAVE = BASE_API_URL + '/api/filepath/save';
 
 // BASE USER DETAILS
 const USER_DETAILS_URL = BASE_API_URL + '/api/user/findByEmail';
 const CHECK_REGISTRATION_EMAIL = BASE_API_URL + '/api/user/checkout';
 
 // BASE STORY
-const ALL_STORY_URL = BASE_API_URL + '/api/stories/list';
-const STORY_BY_ID_URL = BASE_API_URL + '/api/stories/list/';
+const ALL_STORY_URL = BASE_API_URL + '/api/story/list';
+const STORY_BY_ID_URL = BASE_API_URL + '/api/story/list/';
 
 // For Service Program Amal API
 const PROGRAM_AMAL_SAVE_URL = BASE_API_URL + '/api/program-amal/';
@@ -68,6 +72,8 @@ const LIST_ALL_COMMENT_PROGRAM_AMAL_URL = BASE_API_URL + '/api/comment/program/'
 const LIST_ALL_LEMBAGA_AMAL = BASE_API_URL + '/api/lembaga-amal/list/popular';
 const LIST_ALL_LEMBAGA_AMAL_BY_CATEGORY = BASE_API_URL + '/api/lembaga-amal/list/popular/category';
 const LIST_ALL_LEMBAGA_AMAL_BY_FOLLOWED = BASE_API_URL + '/api/lembaga-amal/list/popular/byFollowed';
+
+const LEMBAGA_AMAL_BY_EMAIL = BASE_API_URL + '/api/lembaga-amal/by-email';
 
 // Follow Lembaga Amal
 const FOLLOW_LEMBAGA_AMAL_URL = BASE_API_URL + '/api/account-amil/follow';

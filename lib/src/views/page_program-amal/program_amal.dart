@@ -355,16 +355,14 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
   }
 
   void hideStory() async {
-    await _provider.response().then((response) {
+    await _provider.hideOrShow().then((response) {
       if (response.statusCode == 204) {
-        setState(() {
-          hidden = true;
-        });
+        hidden = true;
+        setState(() {});
       } else {
         if (response.statusCode == 200) {
-          setState(() {
-            hidden = false;
-          });
+          hidden = false;
+          setState(() {});
         }
       }
     });
