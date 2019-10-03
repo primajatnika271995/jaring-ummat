@@ -1,6 +1,12 @@
 import 'dart:convert';
 
+import 'package:badges/badges.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter_jaring_ummat/src/utils/screenSize.dart';
 import 'package:flutter_jaring_ummat/src/utils/sizeUtils.dart';
+import 'package:flutter_jaring_ummat/src/views/components/icon_text/all_in_one_icon_icons.dart';
+import 'package:flutter_simple_video_player/flutter_simple_video_player.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_jaring_ummat/src/config/hexColor.dart';
@@ -31,6 +37,19 @@ class _BeritaViewsState extends State<BeritaViews> {
       style: TextStyle(color: blackColor, fontSize: SizeUtils.titleSize));
 
   LikeUnlikeProvider api = new LikeUnlikeProvider();
+
+  /*
+   * Image No Content Replace with This
+   */
+  final List<String> imgNoContent = [
+    "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/No_image_3x4.svg/1280px-No_image_3x4.svg.png"
+  ];
+
+  /*
+   * Variable Current Image
+   */
+  int current = 0;
+  int currentImage = 1;
 
   var formatter = new DateFormat('dd MMMM yyyy HH:mm:ss');
 
@@ -69,36 +88,79 @@ class _BeritaViewsState extends State<BeritaViews> {
       padding: EdgeInsets.only(top: 10.0),
       child: Stack(
         children: <Widget>[
-          Container(
-            height: 250.0,
-            width: MediaQuery.of(context).size.width,
-            child: widget.value.imageContent == null
-                ? Image.network(noImg, fit: BoxFit.cover)
-                : Image.network(widget.value.imageContent[0].url,
-                fit: BoxFit.cover),
+          CarouselSlider(
+            height: 260.0,
+            autoPlay: false,
+            reverse: false,
+            viewportFraction: 1.0,
+            aspectRatio: MediaQuery.of(context).size.aspectRatio,
+            items: (widget.value.imageContent == null)
+                ? imgNoContent.map((url) {
+                    return Container(
+                      child: CachedNetworkImage(
+                          imageUrl: url,
+                          fit: BoxFit.cover,
+                          width: MediaQuery.of(context).size.width),
+                    );
+                  }).toList()
+                : widget.value.imageContent.map(
+                    (url) {
+                      return Stack(
+                        children: <Widget>[
+                          Container(
+                            child: CachedNetworkImage(
+                              imageUrl: url.resourceType == "video"
+                                  ? url.urlThumbnail
+                                  : url.url,
+                              fit: BoxFit.cover,
+                              width: MediaQuery.of(context).size.width,
+                            ),
+                          ),
+                          url.resourceType == "video"
+                              ? Positioned(
+                                  right: screenWidth(context, dividedBy: 2.3),
+                                  top: screenHeight(context, dividedBy: 8),
+                                  child: InkWell(
+                                    onTap: () => showMediaPlayer(url.url),
+                                    child: CircleAvatar(
+                                      radius: 30,
+                                      backgroundColor: greenColor,
+                                      child: Icon(
+                                        AllInOneIcon.play_4x,
+                                        color: whiteColor,
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              : Container(),
+                        ],
+                      );
+                    },
+                  ).toList(),
+            onPageChanged: (index) {
+              current = index;
+              currentImage = index + 1;
+              setState(() {});
+            },
           ),
           Positioned(
-            bottom: 0.0,
-            right: 45.0,
-            child: IconButton(
-              onPressed: () {},
-              icon: Icon(
-                NewIcon.sound_on_3x,
-                color: whiteColor,
-                size: 25.0,
-              ),
-            ),
-          ),
-          Positioned(
-            bottom: 0.0,
-            right: 10.0,
-            child: IconButton(
-              onPressed: () {},
-              icon: Icon(
-                NewIcon.full_screen_3x,
-                color: whiteColor,
-                size: 25.0,
-              ),
+            right: 20.0,
+            top: 10.0,
+            child: Badge(
+              badgeColor: blackColor,
+              elevation: 0.0,
+              shape: BadgeShape.square,
+              borderRadius: 10,
+              toAnimate: false,
+              badgeContent: (widget.value.imageContent == null)
+                  ? Text(
+                      '$currentImage / ${imgNoContent.length}',
+                      style: TextStyle(color: whiteColor),
+                    )
+                  : Text(
+                      '$currentImage / ${widget.value.imageContent.length}',
+                      style: TextStyle(color: whiteColor),
+                    ),
             ),
           ),
         ],
@@ -115,7 +177,7 @@ class _BeritaViewsState extends State<BeritaViews> {
 
     final likeNComment = Padding(
       padding:
-      EdgeInsets.only(left: 20.0, right: 20.0, top: 20.0, bottom: 10.0),
+          EdgeInsets.only(left: 20.0, right: 20.0, top: 20.0, bottom: 10.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
@@ -138,8 +200,7 @@ class _BeritaViewsState extends State<BeritaViews> {
                       },
                       child: Padding(
                         padding: EdgeInsets.only(right: 10.0),
-                        child:
-                        isLoved ? iconLike() : iconUnlike(),
+                        child: isLoved ? iconLike() : iconUnlike(),
                       ),
                     ),
                     Text('${widget.value.totalLikes} suka'),
@@ -253,6 +314,25 @@ class _BeritaViewsState extends State<BeritaViews> {
         }
       });
     }
+  }
+
+  void showMediaPlayer(String url) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          child: Container(
+            height: 250,
+            color: Colors.transparent,
+            width: screenWidth(context),
+            child: SimpleViewPlayer(
+              url,
+              isFullScreen: false,
+            ),
+          ),
+        );
+      },
+    );
   }
 
   @override

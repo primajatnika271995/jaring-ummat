@@ -1,4 +1,10 @@
+import 'package:badges/badges.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_jaring_ummat/src/utils/screenSize.dart';
+import 'package:flutter_jaring_ummat/src/views/components/icon_text/all_in_one_icon_icons.dart';
+import 'package:flutter_simple_video_player/flutter_simple_video_player.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_jaring_ummat/src/bloc/beritaBloc.dart';
 import 'package:flutter_jaring_ummat/src/config/hexColor.dart';
@@ -25,6 +31,19 @@ class _BeritaPageState extends State<BeritaPage> {
   bool _loadingVisible = false;
 
   var formatter = new DateFormat('dd MMMM yyyy HH:mm:ss');
+
+  /*
+   * Image No Content Replace with This
+   */
+  final List<String> imgNoContent = [
+    "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/No_image_3x4.svg/1280px-No_image_3x4.svg.png"
+  ];
+
+  /*
+   * Variable Current Image
+   */
+  int current = 0;
+  int currentImage = 1;
 
   @override
   Widget build(BuildContext context) {
@@ -176,20 +195,111 @@ class _BeritaPageState extends State<BeritaPage> {
                                                 ),
                                               );
                                             },
-                                            child: Container(
-                                              height: 230.0,
-                                              width: MediaQuery.of(context)
-                                                  .size
-                                                  .width,
-                                              child: data.imageContent == null
-                                                  ? Image.network(
-                                                      noImg,
-                                                      fit: BoxFit.fitWidth,
-                                                    )
-                                                  : Image.network(
-                                                      data.imageContent[0].url,
-                                                      fit: BoxFit.fitWidth,
-                                                    ),
+                                            child: Stack(
+                                              children: <Widget>[
+                                                CarouselSlider(
+                                                  height: 260.0,
+                                                  autoPlay: false,
+                                                  reverse: false,
+                                                  viewportFraction: 1.0,
+                                                  aspectRatio:
+                                                      MediaQuery.of(context)
+                                                          .size
+                                                          .aspectRatio,
+                                                  items:
+                                                      (data.imageContent ==
+                                                              null)
+                                                          ? imgNoContent
+                                                              .map((url) {
+                                                              return Container(
+                                                                child: CachedNetworkImage(
+                                                                    imageUrl:
+                                                                        url,
+                                                                    fit: BoxFit
+                                                                        .cover,
+                                                                    width: MediaQuery.of(
+                                                                            context)
+                                                                        .size
+                                                                        .width),
+                                                              );
+                                                            }).toList()
+                                                          : data.imageContent
+                                                              .map(
+                                                              (url) {
+                                                                return Stack(
+                                                                  children: <
+                                                                      Widget>[
+                                                                    Container(
+                                                                      child:
+                                                                          CachedNetworkImage(
+                                                                        imageUrl: url.resourceType ==
+                                                                                "video"
+                                                                            ? url.urlThumbnail
+                                                                            : url.url,
+                                                      fit: BoxFit.cover,
+                                                                        width: MediaQuery.of(context)
+                                                                            .size
+                                                                            .width,
+                                                                      ),
+                                                                    ),
+                                                                    url.resourceType ==
+                                                                            "video"
+                                                                        ? Positioned(
+                                                                            right:
+                                                                                screenWidth(context, dividedBy: 2.3),
+                                                                            top:
+                                                                                screenHeight(context, dividedBy: 8),
+                                                                            child:
+                                                                                InkWell(
+                                                                              onTap: () => showMediaPlayer(url.url),
+                                                                              child: CircleAvatar(
+                                                                                radius: 30,
+                                                                                backgroundColor: greenColor,
+                                                                                child: Icon(
+                                                                                  AllInOneIcon.play_4x,
+                                                                                  color: whiteColor,
+                                                                                ),
+                                                                              ),
+                                                                            ),
+                                                                          )
+                                                                        : Container(),
+                                                                  ],
+                                                                );
+                                                              },
+                                                            ).toList(),
+                                                  onPageChanged: (index) {
+                                                    current = index;
+                                                    currentImage = index + 1;
+                                                    setState(() {});
+                                                  },
+                                                ),
+                                                Positioned(
+                                                  right: 20.0,
+                                                  top: 10.0,
+                                                  child: Badge(
+                                                    badgeColor: blackColor,
+                                                    elevation: 0.0,
+                                                    shape: BadgeShape.square,
+                                                    borderRadius: 10,
+                                                    toAnimate: false,
+                                                    badgeContent:
+                                                        (data.imageContent ==
+                                                                null)
+                                                            ? Text(
+                                                                '$currentImage / ${imgNoContent.length}',
+                                                                style: TextStyle(
+                                                                    color:
+                                                                        whiteColor),
+                                                              )
+                                                            : Text(
+                                                                '$currentImage / ${data.imageContent.length}',
+                                                                style: TextStyle(
+                                                                    color:
+                                                                        whiteColor),
+                                                              ),
+                                                  ),
+                                                ),
+                                              ],
                                             ),
                                           ),
                                           Padding(
@@ -388,6 +498,25 @@ class _BeritaPageState extends State<BeritaPage> {
     setState(() {
       _loadingVisible = !_loadingVisible;
     });
+  }
+
+  void showMediaPlayer(String url) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          child: Container(
+            height: 250,
+            color: Colors.transparent,
+            width: screenWidth(context),
+            child: SimpleViewPlayer(
+              url,
+              isFullScreen: false,
+            ),
+          ),
+        );
+      },
+    );
   }
 
   @override

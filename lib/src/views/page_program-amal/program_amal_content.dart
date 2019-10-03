@@ -5,8 +5,11 @@ import 'package:badges/badges.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter_jaring_ummat/src/config/hexColor.dart';
 import 'package:flutter_jaring_ummat/src/services/currency_format_service.dart';
+import 'package:flutter_jaring_ummat/src/utils/screenSize.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/active_icon_icons.dart';
+import 'package:flutter_jaring_ummat/src/views/components/icon_text/all_in_one_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/new_icon_icons.dart';
+import 'package:flutter_simple_video_player/flutter_simple_video_player.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_jaring_ummat/src/config/preferences.dart';
@@ -26,15 +29,21 @@ class ProgramAmalContent extends StatefulWidget {
 }
 
 class _ProgramAmalContentState extends State<ProgramAmalContent> {
+  bool isLoved = false;
+  bool flag = true;
+
+  /*
+   * Image No Content Replace with This
+   */
   final List<String> imgNoContent = [
     "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/No_image_3x4.svg/1280px-No_image_3x4.svg.png"
   ];
 
-  int _current = 0;
-  int _currentImage = 1;
-
-  bool isLoved = false;
-  bool flag = true;
+  /*
+   * Variable Current Image
+   */
+  int current = 0;
+  int currentImage = 1;
 
   String lessDesc;
   String moreDesc;
@@ -60,8 +69,7 @@ class _ProgramAmalContentState extends State<ProgramAmalContent> {
                           widget.programAmal.createdBy.substring(0, 1),
                           style: TextStyle(color: whiteColor),
                         )
-                      : CircularProfileAvatar(
-                          widget.programAmal.user.imageUrl),
+                      : CircularProfileAvatar(widget.programAmal.user.imageUrl),
                 ),
                 Container(
                   padding: EdgeInsets.only(left: 10.0),
@@ -119,20 +127,42 @@ class _ProgramAmalContentState extends State<ProgramAmalContent> {
                 }).toList()
               : widget.programAmal.imageContent.map(
                   (url) {
-                    return Container(
-                      child: CachedNetworkImage(
-                        imageUrl: url.url,
-                        fit: BoxFit.cover,
-                        width: MediaQuery.of(context).size.width,
-                      ),
+                    return Stack(
+                      children: <Widget>[
+                        Container(
+                          child: CachedNetworkImage(
+                            imageUrl: url.resourceType == "video"
+                                ? url.urlThumbnail
+                                : url.url,
+                            fit: BoxFit.cover,
+                            width: MediaQuery.of(context).size.width,
+                          ),
+                        ),
+                        url.resourceType == "video"
+                            ? Positioned(
+                                right: screenWidth(context, dividedBy: 2.3),
+                                top: screenHeight(context, dividedBy: 8),
+                                child: InkWell(
+                                  onTap: () => showMediaPlayer(url.url),
+                                  child: CircleAvatar(
+                                    radius: 30,
+                                    backgroundColor: greenColor,
+                                    child: Icon(
+                                      AllInOneIcon.play_4x,
+                                      color: whiteColor,
+                                    ),
+                                  ),
+                                ),
+                              )
+                            : Container(),
+                      ],
                     );
                   },
                 ).toList(),
           onPageChanged: (index) {
-            setState(() {
-              _current = index;
-              _currentImage = index + 1;
-            });
+            current = index;
+            currentImage = index + 1;
+            setState(() {});
           },
         ),
         Positioned(
@@ -146,11 +176,11 @@ class _ProgramAmalContentState extends State<ProgramAmalContent> {
             toAnimate: false,
             badgeContent: (widget.programAmal.imageContent == null)
                 ? Text(
-                    '$_currentImage / ${imgNoContent.length}',
+                    '$currentImage / ${imgNoContent.length}',
                     style: TextStyle(color: whiteColor),
                   )
                 : Text(
-                    '$_currentImage / ${widget.programAmal.imageContent.length}',
+                    '$currentImage / ${widget.programAmal.imageContent.length}',
                     style: TextStyle(color: whiteColor),
                   ),
           ),
@@ -436,6 +466,25 @@ class _ProgramAmalContentState extends State<ProgramAmalContent> {
       moreDesc = "";
     }
     checkToken();
+  }
+
+  void showMediaPlayer(String url) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          child: Container(
+            height: 250,
+            color: Colors.transparent,
+            width: screenWidth(context),
+            child: SimpleViewPlayer(
+              url,
+              isFullScreen: false,
+            ),
+          ),
+        );
+      },
+    );
   }
 
   void likeProgram() async {
