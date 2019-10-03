@@ -33,6 +33,7 @@ class _ProfileMenuState extends State<ProfileMenu> {
   static String emailKey;
   static String fullnameKey;
   static String phoneNumberKey;
+  static String imgProfileKey;
 
   @override
   Widget build(BuildContext context) {
@@ -50,9 +51,9 @@ class _ProfileMenuState extends State<ProfileMenu> {
               child: CircleAvatar(
                 radius: 45,
                 backgroundColor: Colors.transparent,
-                backgroundImage: (selectedImage == null)
+                backgroundImage: (imgProfileKey == null)
                     ? AssetImage('assets/icon/default_picture_man.png')
-                    : FileImage(selectedImage),
+                    : NetworkImage(imgProfileKey),
               ),
             ),
             InkWell(
@@ -399,6 +400,7 @@ class _ProfileMenuState extends State<ProfileMenu> {
       emailKey = _preferences.getString(EMAIL_KEY);
       fullnameKey = _preferences.getString(FULLNAME_KEY);
       phoneNumberKey = _preferences.getString(CONTACT_KEY);
+      imgProfileKey = _preferences.getString(PROFILE_PICTURE_KEY);
     });
   }
 

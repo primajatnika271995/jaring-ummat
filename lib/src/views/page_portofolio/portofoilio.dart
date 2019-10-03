@@ -937,7 +937,7 @@ class _PortofolioState extends State<Portofolio> {
                 backgroundColor: greenColor,
                 child: (value.imageContent == null)
                     ? CircularProfileAvatar(noImg)
-                    : CircularProfileAvatar(value.imageContent[0].imgUrl),
+                    : CircularProfileAvatar(value.imageContent),
               ),
               SizedBox(
                 height: 5,
@@ -971,10 +971,9 @@ class _PortofolioState extends State<Portofolio> {
     );
   }
 
-  Widget listPenerimaAmalTerbaru(
-      AsyncSnapshot<List<AktivitasTerbesarModel>> snapshot) {
+  Widget listPenerimaAmalTerbaru(AsyncSnapshot<List<AktivitasTerbesarModel>> snapshot) {
     return ListView.builder(
-      itemCount: 3,
+      itemCount: snapshot.data.length <= 3 ? snapshot.data.length : 3,
       shrinkWrap: true,
       physics: NeverScrollableScrollPhysics(),
       itemBuilder: (context, index) {
@@ -991,26 +990,26 @@ class _PortofolioState extends State<Portofolio> {
                 backgroundColor: value.category == "zakat"
                     ? Colors.yellow
                     : value.category == "infaq"
-                        ? Colors.redAccent
-                        : value.category == "sodaqoh"
-                            ? Colors.deepPurple
-                            : value.category == "wakaf"
-                                ? Colors.green
-                                : value.category == "donasi"
-                                    ? Colors.blue
-                                    : Colors.blue,
+                    ? Colors.redAccent
+                    : value.category == "sodaqoh"
+                    ? Colors.deepPurple
+                    : value.category == "wakaf"
+                    ? Colors.green
+                    : value.category == "donasi"
+                    ? Colors.blue
+                    : Colors.blue,
                 child: Icon(
                   value.category == "zakat"
                       ? ProfileInboxIcon.zakat_3x
                       : value.category == "infaq"
-                          ? ProfileInboxIcon.infaq_3x
-                          : value.category == "sodaqoh"
-                              ? ProfileInboxIcon.sodaqoh_3x
-                              : value.category == "wakaf"
-                                  ? ProfileInboxIcon.wakaf_3x
-                                  : value.category == "donasi"
-                                      ? ProfileInboxIcon.donation_3x
-                                      : ProfileInboxIcon.donation_3x,
+                      ? ProfileInboxIcon.infaq_3x
+                      : value.category == "sodaqoh"
+                      ? ProfileInboxIcon.sodaqoh_3x
+                      : value.category == "wakaf"
+                      ? ProfileInboxIcon.wakaf_3x
+                      : value.category == "donasi"
+                      ? ProfileInboxIcon.donation_3x
+                      : ProfileInboxIcon.donation_3x,
                   color: whiteColor,
                   size: 20,
                 ),

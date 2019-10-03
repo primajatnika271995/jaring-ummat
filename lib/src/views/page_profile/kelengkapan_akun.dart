@@ -79,6 +79,8 @@ class _KelengkapanAkunPageState extends State<KelengkapanAkunPage> {
   String longitude;
   Map<String, double> userLocation;
 
+  static String imgProfileKey;
+
   @override
   Widget build(BuildContext context) {
     // Profile Widget
@@ -94,9 +96,9 @@ class _KelengkapanAkunPageState extends State<KelengkapanAkunPage> {
               child: CircleAvatar(
                 radius: 45,
                 backgroundColor: Colors.transparent,
-                backgroundImage: (selectedImage == null)
+                backgroundImage: (imgProfileKey == null)
                     ? AssetImage('assets/icon/default_picture_man.png')
-                    : FileImage(selectedImage),
+                    : NetworkImage(imgProfileKey),
               ),
             ),
             InkWell(
@@ -536,6 +538,8 @@ class _KelengkapanAkunPageState extends State<KelengkapanAkunPage> {
             latitudeTinggal: latitude,
             longitudeTinggal: longitude,
             email: _emailCtrl.text,
+            kabupaten: _kabupatenCtrl.text,
+            provinsi: _provinsiCtrl.text
           );
 
           bloc.updateUser(context, data);
@@ -777,6 +781,7 @@ class _KelengkapanAkunPageState extends State<KelengkapanAkunPage> {
         _streetCtrl.text = value.alamat;
         _provinsiCtrl.text = value.provinsi;
         _kabupatenCtrl.text = value.kabupaten;
+        imgProfileKey = value.imageUrl;
         setState(() {
           _loading = false;
         });

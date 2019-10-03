@@ -8,7 +8,6 @@ import 'package:flutter_jaring_ummat/src/views/components/icon_text/new_icon_ico
 import 'package:flutter_jaring_ummat/src/views/components/loadingContainer.dart';
 import 'package:flutter_jaring_ummat/src/views/page_berita/berita_content.dart';
 import 'package:flutter_jaring_ummat/src/views/page_berita/berita_views.dart';
-import 'package:flutter_svg/svg.dart';
 
 class BeritaPage extends StatefulWidget {
   const BeritaPage({Key key}) : super(key: key);
@@ -188,8 +187,7 @@ class _BeritaPageState extends State<BeritaPage> {
                                                       fit: BoxFit.fitWidth,
                                                     )
                                                   : Image.network(
-                                                      data.imageContent[0]
-                                                          .url,
+                                                      data.imageContent[0].url,
                                                       fit: BoxFit.fitWidth,
                                                     ),
                                             ),
@@ -230,7 +228,9 @@ class _BeritaPageState extends State<BeritaPage> {
                                                       .spaceBetween,
                                               children: <Widget>[
                                                 Padding(
-                                                  padding: const EdgeInsets.only(bottom: 5),
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          bottom: 5),
                                                   child: Column(
                                                     children: <Widget>[
                                                       Text(data.createdBy),
@@ -245,7 +245,8 @@ class _BeritaPageState extends State<BeritaPage> {
                                                               fontSize: 11))
                                                     ],
                                                     crossAxisAlignment:
-                                                        CrossAxisAlignment.start,
+                                                        CrossAxisAlignment
+                                                            .start,
                                                   ),
                                                 ),
                                                 Padding(
@@ -321,10 +322,9 @@ class _BeritaPageState extends State<BeritaPage> {
                                         CrossAxisAlignment.center,
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: <Widget>[
-                                      SvgPicture.asset(
-                                        'assets/icon/no-content.svg',
-                                        height: 250.0,
-                                      ),
+                                      Image.asset(
+                                          'assets/backgrounds/no_data_accent.png',
+                                          height: 250),
                                       Text(
                                         'Oops..',
                                         style: TextStyle(
