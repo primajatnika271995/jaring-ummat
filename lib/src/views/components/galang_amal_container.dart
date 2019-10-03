@@ -1,10 +1,10 @@
+import 'package:flutter_jaring_ummat/src/models/galangAmalListDonationModel.dart';
+import 'package:intl/intl.dart';
 import 'package:circular_profile_avatar/circular_profile_avatar.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_jaring_ummat/src/config/hexColor.dart';
-import 'package:flutter_jaring_ummat/src/models/galangAmalListDonationModel.dart';
 import 'package:flutter_jaring_ummat/src/models/program_amal.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dots_indicator/dots_indicator.dart';
@@ -90,12 +90,12 @@ class _GalangAmalContainerState extends State<GalangAmalContainer> {
   Widget getProfilePicture() {
     return CircleAvatar(
       backgroundColor: greenColor,
-      child: widget.programAmal.user.imgProfile == null
+      child: widget.programAmal.user.imageUrl == null
           ? Text(
               widget.programAmal.createdBy.substring(0, 1),
               style: TextStyle(color: whiteColor),
             )
-          : CircularProfileAvatar(widget.programAmal.user.imgProfile[0].imgUrl),
+          : CircularProfileAvatar(widget.programAmal.user.imageUrl),
     );
   }
 
@@ -167,7 +167,7 @@ class _GalangAmalContainerState extends State<GalangAmalContainer> {
                         borderRadius: BorderRadius.all(Radius.circular(0.0)),
                         child: CachedNetworkImage(
                           fit: BoxFit.cover,
-                          imageUrl: url.imgUrl,
+                          imageUrl: url.url,
                           errorWidget: (content, url, error) =>
                               new Icon(Icons.error),
                           width: MediaQuery.of(context).size.width,

@@ -69,7 +69,7 @@ class _BeritaViewsState extends State<BeritaViews> {
             width: MediaQuery.of(context).size.width,
             child: widget.value.imageContent == null
                 ? Image.network(noImg, fit: BoxFit.cover)
-                : Image.network(widget.value.imageContent[0].imgUrl,
+                : Image.network(widget.value.imageContent[0].url,
                     fit: BoxFit.cover),
           ),
           Positioned(

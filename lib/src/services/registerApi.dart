@@ -55,10 +55,13 @@ class RegisterApiProvider {
       "longitudeLahir": null,
       "longitudeTinggal": value.longitudeTinggal,
       "tanggalLahir": value.tanggalLahir,
+      "kabupaten": value.kabupaten,
+      "provinsi": value.provinsi,
       "userId": idUser
     };
 
-    final response = await client.post(UPDATE_USER_DETAILS, headers: header, body: json.encode(body));
+    final response = await client.post(UPDATE_USER_DETAILS,
+        headers: header, body: json.encode(body));
     print('Update User Response : ${response.statusCode}');
     if (response.statusCode == 201) {
       return compute(muzakkiUserDetailsFromJson, response.body);
@@ -71,7 +74,6 @@ class RegisterApiProvider {
     SharedPreferences _pref = await SharedPreferences.getInstance();
     var token = _pref.getString(ACCESS_TOKEN_KEY);
     var idUser = _pref.getString(USER_ID_KEY);
-    
 
     // Check if Token null
 
@@ -99,7 +101,8 @@ class RegisterApiProvider {
     return null;
   }
 
- Future<RegisterResponseModel> saveUser(BuildContext context, PostRegistration data) async {
+  Future<RegisterResponseModel> saveUser(
+      BuildContext context, PostRegistration data) async {
     Map params = {
       "tipe_user": data.tipe_user,
       "password": data.password,
@@ -109,31 +112,34 @@ class RegisterApiProvider {
       "contact": data.contact
     };
 
-    final response = await client.post(REGISTRATION_URL, headers: headers, body: json.encode(params));
+    final response = await client.post(REGISTRATION_URL,
+        headers: headers, body: json.encode(params));
 
     if (response.statusCode == 201) {
-      RegisterResponseModel value = registerResponseModelFromJson(response.body);
+      RegisterResponseModel value =
+          registerResponseModelFromJson(response.body);
       return value;
     }
     return null;
   }
 
-  Future<FilePathResponseModel> saveFilepath(BuildContext context, FilePathResponseModel data, String idUser) async {
-
+  Future<FilePathResponseModel> saveFilepath(
+      BuildContext context, FilePathResponseModel data, String idUser) async {
     Map params = {
-	    "id_user": idUser,
-	    "resource_type": data.resourceType,
+      "id_user": idUser,
+      "resource_type": data.resourceType,
       "url_type": data.urlType,
-    	"url": data.url,
+      "url": data.url,
     };
 
-    final response = await client.post(FILE_PATH_SAVE, headers: headers, body: json.encode(params));
+    final response = await client.post(FILE_PATH_SAVE,
+        headers: headers, body: json.encode(params));
 
     if (response.statusCode == 201) {
-      FilePathResponseModel value = filePathResponseModelFromJson(response.body);
+      FilePathResponseModel value =
+          filePathResponseModelFromJson(response.body);
       return value;
     }
     return null;
   }
-
 }

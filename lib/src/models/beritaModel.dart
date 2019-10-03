@@ -4,9 +4,9 @@
 
 import 'dart:convert';
 
-List<BeritaModel> beritaModelFromJson(String str) => new List<BeritaModel>.from(json.decode(str).map((x) => BeritaModel.fromJson(x)));
+List<BeritaModel> beritaModelFromJson(String str) => List<BeritaModel>.from(json.decode(str).map((x) => BeritaModel.fromJson(x)));
 
-String beritaModelToJson(List<BeritaModel> data) => json.encode(new List<dynamic>.from(data.map((x) => x.toJson())));
+String beritaModelToJson(List<BeritaModel> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class BeritaModel {
     String idUser;
@@ -37,7 +37,7 @@ class BeritaModel {
         this.totalComment,
     });
 
-    factory BeritaModel.fromJson(Map<String, dynamic> json) => new BeritaModel(
+    factory BeritaModel.fromJson(Map<String, dynamic> json) => BeritaModel(
         idUser: json["idUser"] == null ? null : json["idUser"],
         username: json["username"] == null ? null : json["username"],
         idBerita: json["idBerita"] == null ? null : json["idBerita"],
@@ -45,7 +45,7 @@ class BeritaModel {
         titleBerita: json["titleBerita"] == null ? null : json["titleBerita"],
         descriptionBerita: json["descriptionBerita"] == null ? null : json["descriptionBerita"],
         categoryBerita: json["categoryBerita"] == null ? null : json["categoryBerita"],
-        imageContent: json["imageContent"] == null ? null : new List<ImageContent>.from(json["imageContent"].map((x) => ImageContent.fromJson(x))),
+        imageContent: json["imageContent"] == null ? null : List<ImageContent>.from(json["imageContent"].map((x) => ImageContent.fromJson(x))),
         createdDate: json["createdDate"] == null ? null : json["createdDate"],
         createdBy: json["createdBy"] == null ? null : json["createdBy"],
         totalLikes: json["totalLikes"] == null ? null : json["totalLikes"],
@@ -60,7 +60,7 @@ class BeritaModel {
         "titleBerita": titleBerita == null ? null : titleBerita,
         "descriptionBerita": descriptionBerita == null ? null : descriptionBerita,
         "categoryBerita": categoryBerita == null ? null : categoryBerita,
-        "imageContent": imageContent == null ? null : new List<dynamic>.from(imageContent.map((x) => x.toJson())),
+        "imageContent": imageContent == null ? null : List<dynamic>.from(imageContent.map((x) => x.toJson())),
         "createdDate": createdDate == null ? null : createdDate,
         "createdBy": createdBy == null ? null : createdBy,
         "totalLikes": totalLikes == null ? null : totalLikes,
@@ -70,36 +70,40 @@ class BeritaModel {
 
 class ImageContent {
     String id;
-    dynamic thumbnailUrl;
-    dynamic videoUrl;
-    String imgUrl;
+    String idUser;
+    String resourceType;
+    String urlType;
+    String url;
     int createdDate;
-    dynamic createdBy;
+    String createdBy;
 
     ImageContent({
         this.id,
-        this.thumbnailUrl,
-        this.videoUrl,
-        this.imgUrl,
+        this.idUser,
+        this.resourceType,
+        this.urlType,
+        this.url,
         this.createdDate,
         this.createdBy,
     });
 
-    factory ImageContent.fromJson(Map<String, dynamic> json) => new ImageContent(
+    factory ImageContent.fromJson(Map<String, dynamic> json) => ImageContent(
         id: json["id"] == null ? null : json["id"],
-        thumbnailUrl: json["thumbnailUrl"],
-        videoUrl: json["videoUrl"],
-        imgUrl: json["imgUrl"] == null ? null : json["imgUrl"],
+        idUser: json["idUser"] == null ? null : json["idUser"],
+        resourceType: json["resourceType"] == null ? null : json["resourceType"],
+        urlType: json["urlType"] == null ? null : json["urlType"],
+        url: json["url"] == null ? null : json["url"],
         createdDate: json["createdDate"] == null ? null : json["createdDate"],
-        createdBy: json["createdBy"],
+        createdBy: json["createdBy"] == null ? null : json["createdBy"],
     );
 
     Map<String, dynamic> toJson() => {
         "id": id == null ? null : id,
-        "thumbnailUrl": thumbnailUrl,
-        "videoUrl": videoUrl,
-        "imgUrl": imgUrl == null ? null : imgUrl,
+        "idUser": idUser == null ? null : idUser,
+        "resourceType": resourceType == null ? null : resourceType,
+        "urlType": urlType == null ? null : urlType,
+        "url": url == null ? null : url,
         "createdDate": createdDate == null ? null : createdDate,
-        "createdBy": createdBy,
+        "createdBy": createdBy == null ? null : createdBy,
     };
 }

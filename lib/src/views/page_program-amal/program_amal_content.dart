@@ -55,13 +55,13 @@ class _ProgramAmalContentState extends State<ProgramAmalContent> {
               children: <Widget>[
                 CircleAvatar(
                   backgroundColor: greenColor,
-                  child: widget.programAmal.user.imgProfile == null
+                  child: widget.programAmal.user.imageUrl == null
                       ? Text(
                           widget.programAmal.createdBy.substring(0, 1),
                           style: TextStyle(color: whiteColor),
                         )
                       : CircularProfileAvatar(
-                          widget.programAmal.user.imgProfile[0].imgUrl),
+                          widget.programAmal.user.imageUrl),
                 ),
                 Container(
                   padding: EdgeInsets.only(left: 10.0),
@@ -121,7 +121,7 @@ class _ProgramAmalContentState extends State<ProgramAmalContent> {
                   (url) {
                     return Container(
                       child: CachedNetworkImage(
-                        imageUrl: url.imgUrl,
+                        imageUrl: url.url,
                         fit: BoxFit.cover,
                         width: MediaQuery.of(context).size.width,
                       ),
@@ -231,7 +231,7 @@ class _ProgramAmalContentState extends State<ProgramAmalContent> {
               ),
               SizedBox(height: 3.0),
               Text(
-                'Batas waktu ' + widget.programAmal.endDate,
+                'Batas waktu ' + widget.programAmal.endDate.toString(),
                 style: TextStyle(fontSize: 13.0, color: grayColor),
               )
             ],

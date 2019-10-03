@@ -1,6 +1,6 @@
 class LoginText {
-  static const namaAplikasi = "Mitra Jejaring";
-  static const logoUrl = "assets/icon/logo_mitra_jejaring.png";
+  static const namaAplikasi = "Jejaring";
+  static const logoUrl = "assets/icon/logo_muzakki_jejaring.png";
   static const backgroundUrl = "assets/backgrounds/accent_app_width_full_screen.png";
 
   static const loginBtn = "Masuk";

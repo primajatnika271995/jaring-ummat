@@ -88,7 +88,7 @@ class _GalangAmalState extends State<GalangAmalView> {
                           ),
                         ),
                         Text(
-                          'Batas waktu ' + widget.programAmal.endDate,
+                          'Batas waktu ' + widget.programAmal.endDate.toString(),
                           style: TextStyle(
                               fontSize: 11.0,
                               fontWeight: FontWeight.bold,

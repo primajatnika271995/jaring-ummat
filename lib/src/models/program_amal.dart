@@ -4,9 +4,9 @@
 
 import 'dart:convert';
 
-List<ProgramAmalModel> programAmalModelFromJson(String str) => new List<ProgramAmalModel>.from(json.decode(str).map((x) => ProgramAmalModel.fromJson(x)));
+List<ProgramAmalModel> programAmalModelFromJson(String str) => List<ProgramAmalModel>.from(json.decode(str).map((x) => ProgramAmalModel.fromJson(x)));
 
-String programAmalModelToJson(List<ProgramAmalModel> data) => json.encode(new List<dynamic>.from(data.map((x) => x.toJson())));
+String programAmalModelToJson(List<ProgramAmalModel> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class ProgramAmalModel {
     User user;
@@ -18,12 +18,13 @@ class ProgramAmalModel {
     String categoryProgram;
     dynamic totalDonation;
     dynamic targetDonation;
-    String endDate;
+    DateTime endDate;
     int totalLikes;
     int totalComments;
     List<ImageContent> imageContent;
     String createdBy;
     int createdDate;
+    bool btnKirimDonasi;
 
     ProgramAmalModel({
         this.user,
@@ -41,9 +42,10 @@ class ProgramAmalModel {
         this.imageContent,
         this.createdBy,
         this.createdDate,
+        this.btnKirimDonasi,
     });
 
-    factory ProgramAmalModel.fromJson(Map<String, dynamic> json) => new ProgramAmalModel(
+    factory ProgramAmalModel.fromJson(Map<String, dynamic> json) => ProgramAmalModel(
         user: json["user"] == null ? null : User.fromJson(json["user"]),
         username: json["username"] == null ? null : json["username"],
         idProgram: json["idProgram"] == null ? null : json["idProgram"],
@@ -53,12 +55,13 @@ class ProgramAmalModel {
         categoryProgram: json["categoryProgram"] == null ? null : json["categoryProgram"],
         totalDonation: json["totalDonation"] == null ? null : json["totalDonation"],
         targetDonation: json["targetDonation"] == null ? null : json["targetDonation"],
-        endDate: json["endDate"] == null ? null : json["endDate"],
+        endDate: json["endDate"] == null ? null : DateTime.parse(json["endDate"]),
         totalLikes: json["totalLikes"] == null ? null : json["totalLikes"],
         totalComments: json["totalComments"] == null ? null : json["totalComments"],
-        imageContent: json["imageContent"] == null ? null : new List<ImageContent>.from(json["imageContent"].map((x) => ImageContent.fromJson(x))),
+        imageContent: json["imageContent"] == null ? null : List<ImageContent>.from(json["imageContent"].map((x) => ImageContent.fromJson(x))),
         createdBy: json["createdBy"] == null ? null : json["createdBy"],
         createdDate: json["createdDate"] == null ? null : json["createdDate"],
+        btnKirimDonasi: json["btnKirimDonasi"] == null ? null : json["btnKirimDonasi"],
     );
 
     Map<String, dynamic> toJson() => {
@@ -71,48 +74,55 @@ class ProgramAmalModel {
         "categoryProgram": categoryProgram == null ? null : categoryProgram,
         "totalDonation": totalDonation == null ? null : totalDonation,
         "targetDonation": targetDonation == null ? null : targetDonation,
-        "endDate": endDate == null ? null : endDate,
+        "endDate": endDate == null ? null : "${endDate.year.toString().padLeft(4, '0')}-${endDate.month.toString().padLeft(2, '0')}-${endDate.day.toString().padLeft(2, '0')}",
         "totalLikes": totalLikes == null ? null : totalLikes,
         "totalComments": totalComments == null ? null : totalComments,
-        "imageContent": imageContent == null ? null : new List<dynamic>.from(imageContent.map((x) => x.toJson())),
+        "imageContent": imageContent == null ? null : List<dynamic>.from(imageContent.map((x) => x.toJson())),
         "createdBy": createdBy == null ? null : createdBy,
         "createdDate": createdDate == null ? null : createdDate,
+        "btnKirimDonasi": btnKirimDonasi == null ? null : btnKirimDonasi,
     };
 }
 
+List<ImageContent> imageContentModelFromJson(String str) => List<ImageContent>.from(json.decode(str).map((x) => ImageContent.fromJson(x)));
+
 class ImageContent {
     String id;
-    dynamic thumbnailUrl;
-    dynamic videoUrl;
-    String imgUrl;
+    String idUser;
+    String resourceType;
+    String urlType;
+    String url;
     int createdDate;
-    dynamic createdBy;
+    String createdBy;
 
     ImageContent({
         this.id,
-        this.thumbnailUrl,
-        this.videoUrl,
-        this.imgUrl,
+        this.idUser,
+        this.resourceType,
+        this.urlType,
+        this.url,
         this.createdDate,
         this.createdBy,
     });
 
-    factory ImageContent.fromJson(Map<String, dynamic> json) => new ImageContent(
+    factory ImageContent.fromJson(Map<String, dynamic> json) => ImageContent(
         id: json["id"] == null ? null : json["id"],
-        thumbnailUrl: json["thumbnailUrl"],
-        videoUrl: json["videoUrl"],
-        imgUrl: json["imgUrl"] == null ? null : json["imgUrl"],
+        idUser: json["idUser"] == null ? null : json["idUser"],
+        resourceType: json["resourceType"] == null ? null : json["resourceType"],
+        urlType: json["urlType"] == null ? null : json["urlType"],
+        url: json["url"] == null ? null : json["url"],
         createdDate: json["createdDate"] == null ? null : json["createdDate"],
-        createdBy: json["createdBy"],
+        createdBy: json["createdBy"] == null ? null : json["createdBy"],
     );
 
     Map<String, dynamic> toJson() => {
         "id": id == null ? null : id,
-        "thumbnailUrl": thumbnailUrl,
-        "videoUrl": videoUrl,
-        "imgUrl": imgUrl == null ? null : imgUrl,
+        "idUser": idUser == null ? null : idUser,
+        "resourceType": resourceType == null ? null : resourceType,
+        "urlType": urlType == null ? null : urlType,
+        "url": url == null ? null : url,
         "createdDate": createdDate == null ? null : createdDate,
-        "createdBy": createdBy,
+        "createdBy": createdBy == null ? null : createdBy,
     };
 }
 
@@ -121,22 +131,52 @@ class User {
     String email;
     String fullname;
     String contact;
-    List<ImageContent> imgProfile;
+    String alamat;
+    String kotaTinggal;
+    dynamic longitudeTinggal;
+    dynamic latitudeTinggal;
+    String kotaLahir;
+    dynamic longitudeLahir;
+    dynamic latitudeLahir;
+    String lokasiAmal;
+    dynamic tanggalLahir;
+    String tipeAkun;
+    dynamic imageUrl;
 
     User({
         this.userId,
         this.email,
         this.fullname,
         this.contact,
-        this.imgProfile,
+        this.alamat,
+        this.kotaTinggal,
+        this.longitudeTinggal,
+        this.latitudeTinggal,
+        this.kotaLahir,
+        this.longitudeLahir,
+        this.latitudeLahir,
+        this.lokasiAmal,
+        this.tanggalLahir,
+        this.tipeAkun,
+        this.imageUrl,
     });
 
-    factory User.fromJson(Map<String, dynamic> json) => new User(
+    factory User.fromJson(Map<String, dynamic> json) => User(
         userId: json["userId"] == null ? null : json["userId"],
         email: json["email"] == null ? null : json["email"],
         fullname: json["fullname"] == null ? null : json["fullname"],
         contact: json["contact"] == null ? null : json["contact"],
-        imgProfile: json["imgProfile"] == null ? null : new List<ImageContent>.from(json["imgProfile"].map((x) => ImageContent.fromJson(x))),
+        alamat: json["alamat"] == null ? null : json["alamat"],
+        kotaTinggal: json["kotaTinggal"] == null ? null : json["kotaTinggal"],
+        longitudeTinggal: json["longitudeTinggal"],
+        latitudeTinggal: json["latitudeTinggal"],
+        kotaLahir: json["kotaLahir"] == null ? null : json["kotaLahir"],
+        longitudeLahir: json["longitudeLahir"],
+        latitudeLahir: json["latitudeLahir"],
+        lokasiAmal: json["lokasiAmal"] == null ? null : json["lokasiAmal"],
+        tanggalLahir: json["tanggalLahir"],
+        tipeAkun: json["tipeAkun"] == null ? null : json["tipeAkun"],
+        imageUrl: json["imageUrl"],
     );
 
     Map<String, dynamic> toJson() => {
@@ -144,6 +184,16 @@ class User {
         "email": email == null ? null : email,
         "fullname": fullname == null ? null : fullname,
         "contact": contact == null ? null : contact,
-        "imgProfile": imgProfile == null ? null : new List<dynamic>.from(imgProfile.map((x) => x.toJson())),
+        "alamat": alamat == null ? null : alamat,
+        "kotaTinggal": kotaTinggal == null ? null : kotaTinggal,
+        "longitudeTinggal": longitudeTinggal,
+        "latitudeTinggal": latitudeTinggal,
+        "kotaLahir": kotaLahir == null ? null : kotaLahir,
+        "longitudeLahir": longitudeLahir,
+        "latitudeLahir": latitudeLahir,
+        "lokasiAmal": lokasiAmal == null ? null : lokasiAmal,
+        "tanggalLahir": tanggalLahir,
+        "tipeAkun": tipeAkun == null ? null : tipeAkun,
+        "imageUrl": imageUrl,
     };
 }

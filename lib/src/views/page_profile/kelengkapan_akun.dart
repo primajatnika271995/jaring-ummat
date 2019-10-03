@@ -52,14 +52,16 @@ class _KelengkapanAkunPageState extends State<KelengkapanAkunPage> {
   final _emailCtrl = new TextEditingController();
   final _cityCtrl = new TextEditingController();
   final _streetCtrl = new TextEditingController();
+  final _provinsiCtrl = new TextEditingController();
+  final _kabupatenCtrl = new TextEditingController();
   final _dateCtrl = new TextEditingController();
 
   /*
    *  Boolean Loading
    */
   bool _loading = false;
-
-  SharedPreferences _preferences;
+  
+  String kotaLembaga;
 
   /* 
    * Date Formatter
@@ -389,6 +391,68 @@ class _KelengkapanAkunPageState extends State<KelengkapanAkunPage> {
       ),
     );
 
+    // Kabupaten Field
+
+    final kabupatenWidget = Padding(
+      padding: EdgeInsets.symmetric(horizontal: 15),
+      child: Stack(
+        alignment: const Alignment(1, 0),
+        children: <Widget>[
+          TextFormField(
+            style: TextStyle(
+              fontSize: 13.0,
+              color: Colors.black,
+            ),
+            readOnly: true,
+            controller: _kabupatenCtrl,
+            decoration: InputDecoration(
+              labelText: 'Kabupaten',
+              hasFloatingPlaceholder: true,
+              icon: CircleAvatar(
+                backgroundColor: Colors.greenAccent,
+                child: Icon(
+                  CalculatorOtherIcon.location_inactive_3x,
+                  color: whiteColor,
+                  size: 20,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+
+    // Kabupaten Field
+
+    final provinsiWidget = Padding(
+      padding: EdgeInsets.symmetric(horizontal: 15),
+      child: Stack(
+        alignment: const Alignment(1, 0),
+        children: <Widget>[
+          TextFormField(
+            style: TextStyle(
+              fontSize: 13.0,
+              color: Colors.black,
+            ),
+            readOnly: true,
+            controller: _provinsiCtrl,
+            decoration: InputDecoration(
+              labelText: 'Provinsi',
+              hasFloatingPlaceholder: true,
+              icon: CircleAvatar(
+                backgroundColor: Colors.redAccent,
+                child: Icon(
+                  CalculatorOtherIcon.location_inactive_3x,
+                  color: whiteColor,
+                  size: 20,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+
     // Facebook Sosial Media
 
     final facebookField = ListTile(
@@ -568,6 +632,18 @@ class _KelengkapanAkunPageState extends State<KelengkapanAkunPage> {
                   width: screenWidth(context),
                   child: streetWidget,
                 ),
+                Container(
+                  padding: EdgeInsets.only(top: 10),
+                  // color: Colors.redAccent,
+                  width: screenWidth(context),
+                  child: kabupatenWidget,
+                ),
+                Container(
+                  padding: EdgeInsets.only(top: 10),
+                  // color: Colors.redAccent,
+                  width: screenWidth(context),
+                  child: provinsiWidget,
+                ),
                 Padding(
                   padding: const EdgeInsets.only(top: 20, left: 15, right: 15),
                   child: const Text('Akun Sosial Media',
@@ -699,6 +775,8 @@ class _KelengkapanAkunPageState extends State<KelengkapanAkunPage> {
         _dateCtrl.text = value.tanggalLahir;
         _cityCtrl.text = value.kotaLahir;
         _streetCtrl.text = value.alamat;
+        _provinsiCtrl.text = value.provinsi;
+        _kabupatenCtrl.text = value.kabupaten;
         setState(() {
           _loading = false;
         });
@@ -720,39 +798,11 @@ class _KelengkapanAkunPageState extends State<KelengkapanAkunPage> {
     });
   }
 
-  /// Call Google Place Address
-
-  void _showAutocompleteAddress() async {
-    var place = await PluginGooglePlacePicker.showAutocomplete(
-        mode: PlaceAutocompleteMode.MODE_OVERLAY,
-        typeFilter: TypeFilter.ADDRESS);
-
-    if (!mounted) return;
-
-    setState(() {
-      _streetCtrl.text = place.address;
-    });
-  }
-
   void navigateGoogleMaps(BuildContext context, ProfileReturn value) async {
+    kotaLembaga = value.kotaLembaga;
     _streetCtrl.text = value.alamatLembaga;
-    _cityCtrl.text = value.kotaLembaga;
+    _cityCtrl.text = kotaLembaga;
+    _provinsiCtrl.text = value.provinsiLembaga;
+    _kabupatenCtrl.text = value.kabupatenLembaga;
   }
-
-  // Call Function Get Latitude & Longitude
-  // void _getLocation() async {
-  //   var currentLocation = await location.getLocation();
-  //   print(currentLocation.latitude);
-  //   print(currentLocation.longitude);
-
-  //   final coordinate =
-  //       new Coordinates(currentLocation.latitude, currentLocation.longitude);
-  //   var data = await Geocoder.local.findAddressesFromCoordinates(coordinate);
-  //   print(data.first.addressLine);
-  //   setState(() {
-  //     _streetCtrl.text = data.first.addressLine;
-  //     latitude = currentLocation.latitude.toString();
-  //     longitude = currentLocation.longitude.toString();
-  //   });
-  // }
 }

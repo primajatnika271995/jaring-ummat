@@ -10,9 +10,15 @@ import 'package:flutter_jaring_ummat/src/views/page_story_view/common_stories_la
 
 class StoryPage extends StatefulWidget {
   String idStory;
+  String imageProfile;
   String createdBy;
   int createdDate;
-  StoryPage({Key key, this.idStory, this.createdBy, this.createdDate})
+  StoryPage(
+      {Key key,
+      this.idStory,
+      this.imageProfile,
+      this.createdBy,
+      this.createdDate})
       : super(key: key);
 
   @override
@@ -42,9 +48,15 @@ class _StoryPageState extends State<StoryPage> {
   StoriesApiProvider _provider = new StoriesApiProvider();
 
   String idStory;
+  String imageProfile;
   String createdBy;
   int createdDate;
-  _StoryPageState({Key key, this.idStory, this.createdBy, this.createdDate});
+  _StoryPageState(
+      {Key key,
+      this.idStory,
+      this.imageProfile,
+      this.createdBy,
+      this.createdDate});
 
   @override
   Widget build(BuildContext context) {
@@ -60,20 +72,20 @@ class _StoryPageState extends State<StoryPage> {
           ),
           Positioned(
             left: 20.0,
-            top: 50.0,
+            top: 55.0,
             child: CircularProfileAvatar(
-              'https://kempenfeltplayers.com/wp-content/uploads/2015/07/profile-icon-empty.png',
-              borderWidth: 3.0,
-              radius: 25.0,
-              elevation: 15.0,
+              widget.imageProfile,
+              borderWidth: 1,
+              elevation: 20,
+              radius: 25,
               cacheImage: true,
               borderColor: greenColor,
               backgroundColor: whiteColor,
             ),
           ),
           Positioned(
-            top: 55,
-            left: 75,
+            top: 60,
+            left: 78,
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
@@ -84,9 +96,10 @@ class _StoryPageState extends State<StoryPage> {
                     Text(
                       createdBy,
                       style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16.0,
-                          color: Colors.white),
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16.0,
+                        color: Colors.white,
+                      ),
                     ),
                     SizedBox(height: 2.0),
                     Text(
@@ -121,7 +134,8 @@ class _StoryPageState extends State<StoryPage> {
     _provider.storiesList(idStory).then((response) {
       print('get story list by id : ${response.statusCode}');
       if (response.statusCode == 200) {
-        StoryByUserModel value = StoryByUserModel.fromJson(json.decode(response.body));
+        StoryByUserModel value =
+            StoryByUserModel.fromJson(json.decode(response.body));
         setState(() {
           itemLength = value.storyList.length;
           value.storyList.forEach((data) {

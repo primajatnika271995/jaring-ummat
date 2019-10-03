@@ -3,7 +3,6 @@ import 'package:circular_profile_avatar/circular_profile_avatar.dart';
 import 'package:flutter_jaring_ummat/src/config/hexColor.dart';
 import 'package:flutter_jaring_ummat/src/models/storiesModel.dart';
 import 'package:flutter_jaring_ummat/src/views/page_story_view/story_page_builder.dart';
-import 'package:flutter_jaring_ummat/src/views/user_story.dart';
 import '../../bloc/storiesBloc.dart';
 
 class UserStoryAppBar extends StatefulWidget {
@@ -58,25 +57,20 @@ class UserStoryAppBarState extends State<UserStoryAppBar> {
         shrinkWrap: true,
         scrollDirection: Axis.horizontal,
         itemBuilder: (context, index) {
-          List<String> thumbnail = List<String>();
-          List<String> image = List<String>();
-          List<String> videoUrl = List<String>();
-          String video;
-          String thumbnails;
           var data = snapshot[index];
-          data.storyList.forEach((f) {
-            video = f.url;
-            thumbnail.add(thumbnails);
-            videoUrl.add(video);
-          });
           return GestureDetector(
             onTap: () async {
               print('User ID Story Content : ${data.userId}');
-              Navigator.of(context).push(MaterialPageRoute(
+              Navigator.of(context).push(
+                MaterialPageRoute(
                   builder: (context) => StoryPage(
-                      idStory: data.userId,
-                      createdBy: data.createdBy,
-                      createdDate: data.storyList[0].createdDate)));
+                    idStory: data.userId,
+                    imageProfile: data.imageUrl,
+                    createdBy: data.createdBy,
+                    createdDate: data.storyList[0].createdDate,
+                  ),
+                ),
+              );
             },
             child: Container(
               margin: EdgeInsets.only(top: 8.0),
@@ -95,24 +89,19 @@ class UserStoryAppBarState extends State<UserStoryAppBar> {
                     Container(
                       width: 90.0,
                       height: 140.0,
-                      child: thumbnail[0] == null
-                          ? Image.network(
-                              data.storyList[0].url,
-                              fit: BoxFit.cover,
-                            )
-                          : Image.network(
-                              thumbnail[0],
-                              fit: BoxFit.cover,
-                            ),
+                      child: Image.network(
+                        data.storyList[0].urlThumbnail == null ? data.imageUrl : data.storyList[0].urlThumbnail,
+                        fit: BoxFit.cover,
+                      ),
                     ),
                     Positioned(
                       left: 10.0,
                       top: 10.0,
                       child: CircularProfileAvatar(
-                        'https://kempenfeltplayers.com/wp-content/uploads/2015/07/profile-icon-empty.png',
-                        borderWidth: 3.0,
-                        radius: 20.0,
-                        elevation: 15.0,
+                        data.imageUrl,
+                        borderWidth: 1,
+                        elevation: 20,
+                        radius: 20,
                         cacheImage: true,
                         borderColor: greenColor,
                         backgroundColor: whiteColor,

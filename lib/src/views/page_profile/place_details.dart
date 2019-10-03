@@ -2,11 +2,11 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_jaring_ummat/src/config/hexColor.dart';
+import 'package:flutter_jaring_ummat/src/config/key.dart';
 import 'package:flutter_jaring_ummat/src/models/DTO/ReturnData.dart';
 import 'package:flutter_jaring_ummat/src/models/amilDetailsModel.dart';
 import 'package:flutter_jaring_ummat/src/utils/screenSize.dart';
 import 'package:flutter_jaring_ummat/src/utils/sizeUtils.dart';
-import 'package:flutter_jaring_ummat/src/views/components/icon_text/all_in_one_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/new_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/page_profile/menu_text_data.dart';
 import 'package:geocoder/geocoder.dart';
@@ -47,6 +47,8 @@ class _GMapsUbahAlamatState extends State<GMapsUbahAlamat> {
    */
   String alamatPinPoint;
   String kota;
+  String provinsi;
+  String kabupaten;
   final detailAlamatCtrl = new TextEditingController();
 
   /*
@@ -74,7 +76,13 @@ class _GMapsUbahAlamatState extends State<GMapsUbahAlamat> {
                 TextStyle(color: Colors.black, fontSize: SizeUtils.titleSize)),
         leading: IconButton(
           onPressed: () {
-            ProfileReturn value = ProfileReturn(kota, alamatPinPoint);
+            ProfileReturn value = ProfileReturn(
+              alamatLembaga: alamatPinPoint,
+              kabupatenLembaga: kabupaten,
+              kotaLembaga: kota,
+              provinsiLembaga: provinsi,
+            );
+
             Navigator.of(context).pop(value);
           },
           icon: Icon(NewIcon.back_small_2x, color: blackColor),
@@ -106,6 +114,27 @@ class _GMapsUbahAlamatState extends State<GMapsUbahAlamat> {
     );
   }
 
+  Widget btnSave() {
+    return RaisedButton(
+      onPressed: () {
+        ProfileReturn value = ProfileReturn(
+          alamatLembaga: alamatPinPoint,
+          kabupatenLembaga: kabupaten,
+          kotaLembaga: kota,
+          provinsiLembaga: provinsi,
+        );
+
+        Navigator.of(context).pop(value);
+      },
+      child: const Text(
+        'Simpan Lokasi',
+        style: TextStyle(color: Colors.white),
+      ),
+      color: greenColor,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+    );
+  }
+
   Widget informationAlamat() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -132,6 +161,7 @@ class _GMapsUbahAlamatState extends State<GMapsUbahAlamat> {
             hintStyle: TextStyle(fontSize: 15),
           ),
         ),
+        btnSave(),
       ],
     );
   }
@@ -181,7 +211,7 @@ class _GMapsUbahAlamatState extends State<GMapsUbahAlamat> {
             child: FloatingActionButton(
               heroTag: "My Location",
               onPressed: _onCurrentLocation,
-              child: const Icon(AllInOneIcon.drop_current_location_3x,
+              child: const Icon(Icons.location_searching,
                   color: Colors.black, size: 20),
               backgroundColor: whiteColor,
             ),
@@ -196,7 +226,8 @@ class _GMapsUbahAlamatState extends State<GMapsUbahAlamat> {
     super.initState();
     _getCurrLocation();
     PluginGooglePlacePicker.initialize(
-        androidApiKey: "AIzaSyCu1HQ1DdlfT7Sdw2kro-MJovvH6wW8DJg");
+      androidApiKey: GOOGLE_MAPS_KEY,
+    );
   }
 
   /// Call Function Current Location with Geolocation
@@ -241,6 +272,8 @@ class _GMapsUbahAlamatState extends State<GMapsUbahAlamat> {
     var data = await Geocoder.local.findAddressesFromCoordinates(coordinate);
     alamatPinPoint = data.first.addressLine;
     kota = data.first.subAdminArea;
+    provinsi = data.first.adminArea;
+    kabupaten = data.first.subAdminArea;
     setState(() {});
   }
 
@@ -260,6 +293,8 @@ class _GMapsUbahAlamatState extends State<GMapsUbahAlamat> {
       currLongitude = currentLocation.longitude;
       alamatPinPoint = data.first.addressLine;
       kota = data.first.subAdminArea;
+      provinsi = data.first.adminArea;
+      kabupaten = data.first.subAdminArea;
     });
   }
 
@@ -268,6 +303,7 @@ class _GMapsUbahAlamatState extends State<GMapsUbahAlamat> {
   void _showAutocompleteAddress() async {
     var place = await PluginGooglePlacePicker.showAutocomplete(
       mode: PlaceAutocompleteMode.MODE_OVERLAY,
+      // typeFilter: TypeFilter.ADDRESS,
     );
 
     if (!mounted) return;
@@ -283,8 +319,14 @@ class _GMapsUbahAlamatState extends State<GMapsUbahAlamat> {
         markerId: MarkerId("Tap Location"),
       ),
     );
+
+    final coordinate = new Coordinates(searchLatitude, searchLongitude);
+
+    var data = await Geocoder.local.findAddressesFromCoordinates(coordinate);
     alamatPinPoint = place.address;
     kota = place.name;
+    provinsi = data.first.adminArea;
+    kabupaten = data.first.subAdminArea;
     setState(() {});
 
     _onSearchLocation();

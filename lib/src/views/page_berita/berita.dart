@@ -189,7 +189,7 @@ class _BeritaPageState extends State<BeritaPage> {
                                                     )
                                                   : Image.network(
                                                       data.imageContent[0]
-                                                          .imgUrl,
+                                                          .url,
                                                       fit: BoxFit.fitWidth,
                                                     ),
                                             ),
