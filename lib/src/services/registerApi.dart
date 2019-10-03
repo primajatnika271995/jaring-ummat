@@ -126,10 +126,10 @@ class RegisterApiProvider {
   Future<FilePathResponseModel> saveFilepath(
       BuildContext context, FilePathResponseModel data, String idUser) async {
     Map params = {
-      "id_user": idUser,
-      "resource_type": data.resourceType,
-      "url_type": data.urlType,
-      "url": data.url,
+	    "idUser": idUser,
+	    "resourceType": data.resourceType,
+      "urlType": data.urlType,
+    	"url": data.url,
     };
 
     final response = await client.post(FILE_PATH_SAVE,
