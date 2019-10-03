@@ -18,7 +18,7 @@ class BeritaPage extends StatefulWidget {
 }
 
 class _BeritaPageState extends State<BeritaPage> {
-  String selectedCategory = "beritaku";
+  String selectedCategory = "";
 
   final String noImg =
       "http://www.sclance.com/pngs/no-image-png/no_image_png_935227.png";
