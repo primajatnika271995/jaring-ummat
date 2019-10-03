@@ -2,11 +2,15 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_jaring_ummat/src/config/hexColor.dart';
 import 'package:flutter_jaring_ummat/src/config/key.dart';
 import 'package:flutter_jaring_ummat/src/models/DTO/FilePathResponse.dart';
+import 'package:flutter_jaring_ummat/src/models/DTO/RegisterResponse.dart';
+import 'package:flutter_jaring_ummat/src/models/cloudinaryUploadImageModel.dart';
 import 'package:flutter_jaring_ummat/src/models/postModel.dart';
+import 'package:flutter_jaring_ummat/src/services/cloudinaryClient.dart';
 import 'package:flutter_jaring_ummat/src/views/components/flushbarContainer.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/all_in_one_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/navigation_icons.dart';
@@ -14,8 +18,6 @@ import 'package:flutter_jaring_ummat/src/views/components/icon_text/new_icon_ico
 import 'package:flutter_jaring_ummat/src/views/components/loadingContainer.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_jaring_ummat/src/bloc/registerBloc.dart';
-import 'package:flutter_jaring_ummat/src/services/cloudinaryClient.dart';
-import 'package:flutter_jaring_ummat/src/models/cloudinaryUploadImageModel.dart';
 
 class StepThree extends StatefulWidget {
   String contactKey;
@@ -106,14 +108,14 @@ class _StepThreeState extends State<StepThree> {
                           children: <Widget>[
                             _selectedImage == null
                                 ? _selectedDefaultPicture.isEmpty
-                                    ? emptyPicture()
-                                    : defaultPicture()
+                                ? emptyPicture()
+                                : defaultPicture()
                                 : selectedImage(),
                             GestureDetector(
                               onTap: () async {
                                 print(context);
                                 final ImageSource imageSource =
-                                    await _asyncImageSourceDialog(context);
+                                await _asyncImageSourceDialog(context);
                                 print('--> $imageSource');
                               },
                               child: Container(
@@ -142,7 +144,7 @@ class _StepThreeState extends State<StepThree> {
                             readOnly: true,
                             decoration: InputDecoration(
                               contentPadding:
-                                  EdgeInsets.fromLTRB(45.0, 10.0, 20.0, 10.0),
+                              EdgeInsets.fromLTRB(45.0, 10.0, 20.0, 10.0),
                               border: new OutlineInputBorder(
                                 borderRadius: const BorderRadius.all(
                                     const Radius.circular(30.0)),
@@ -219,7 +221,7 @@ class _StepThreeState extends State<StepThree> {
                             style: TextStyle(fontSize: 14),
                             decoration: InputDecoration(
                               contentPadding:
-                                  EdgeInsets.fromLTRB(45.0, 10.0, 20.0, 10.0),
+                              EdgeInsets.fromLTRB(45.0, 10.0, 20.0, 10.0),
                               border: new OutlineInputBorder(
                                 borderRadius: const BorderRadius.all(
                                     const Radius.circular(30.0)),
@@ -613,7 +615,7 @@ class _StepThreeState extends State<StepThree> {
     }
   }
 
-  Future<void> onSaveUser() async {
+  Future<RegisterResponseModel> onSaveUser() async {
     print('Eksekusi Save User');
     final userRegister = PostRegistration(
       contact: contactCtrl.text,
@@ -630,7 +632,7 @@ class _StepThreeState extends State<StepThree> {
   Future<void> onSaveFilepath(Response response) async {
     print('Eksekusi Save File Path');
     CloudinaryUploadImageModel imageModel =
-        cloudinaryUploadImageModelFromJson(json.encode(response.data));
+    cloudinaryUploadImageModelFromJson(json.encode(response.data));
 
     final filepath = FilePathResponseModel(
       resourceType: imageModel.resourceType,

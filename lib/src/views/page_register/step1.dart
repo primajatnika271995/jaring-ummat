@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_jaring_ummat/src/config/hexColor.dart';
 import 'package:flutter_jaring_ummat/src/services/loginApi.dart';
@@ -178,12 +180,14 @@ class _StepOneState extends State<StepOne> {
 
   void onSubmit() {
     if (_formKey.currentState.validate()) {
+      var addValue = '1';
       var otp = _otpServices.otpGenarator(_contactCtrl.text);
 
-      print(otp.toString());
+      var otpJadi = otp.toString().length <= 5 ? '${otp.toString()}$addValue' : otp.toString();
+      print(otpJadi);
 
       smsProvider
-          .postSMSOtp(_contactCtrl.text, otp.toString())
+          .postSMSOtp(_contactCtrl.text, otpJadi)
           .then((response) {
         print(response.statusCode);
         print(response.body);
@@ -192,7 +196,7 @@ class _StepOneState extends State<StepOne> {
           MaterialPageRoute(
             builder: (context) => StepTwo(
               contactKey: _contactCtrl.text,
-              otpKey: otp.toString(),
+              otpKey: otpJadi,
             ),
           ),
         );

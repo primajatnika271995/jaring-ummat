@@ -448,6 +448,7 @@ class _ProgramAmalContentState extends State<ProgramAmalContent> {
         var addLikes = stateTotalLike + 1;
         setState(() {
           widget.programAmal.totalLikes = addLikes;
+          widget.programAmal.userLikeThis = true;
         });
       }
     });
@@ -463,6 +464,7 @@ class _ProgramAmalContentState extends State<ProgramAmalContent> {
           var sublike = stateTotalLike - 1;
           setState(() {
             widget.programAmal.totalLikes = sublike;
+            widget.programAmal.userLikeThis = false;
           });
         }
       });
