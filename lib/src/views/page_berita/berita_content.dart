@@ -31,8 +31,15 @@ class _BeritaContentState extends State<BeritaContent> {
         width: 150.0,
         child: (widget.berita.imageContent == null)
             ? Image.network(noImg, fit: BoxFit.cover)
-            : Image.network(widget.berita.imageContent[0].url,
-            fit: BoxFit.cover),
+            : widget.berita.imageContent[0].resourceType == "video"
+                ? Image.network(
+                    widget.berita.imageContent[0].urlThumbnail,
+                    fit: BoxFit.cover,
+                  )
+                : Image.network(
+                    widget.berita.imageContent[0].url,
+                    fit: BoxFit.cover,
+                  ),
       ),
     );
 
@@ -133,7 +140,7 @@ class _BeritaContentState extends State<BeritaContent> {
                       Text(
                           formatter
                               .format(DateTime.fromMicrosecondsSinceEpoch(
-                              widget.berita.createdDate * 1000))
+                                  widget.berita.createdDate * 1000))
                               .toString(),
                           style: TextStyle(fontSize: 11)),
                       Padding(

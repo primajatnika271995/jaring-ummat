@@ -42,14 +42,16 @@ class CloudinaryClient extends CloudinariApi {
     });
 
     Dio dio = await getApiClient();
-    Response response = await dio.post(_cloudName + "/image/upload", data: formData);
+    Response response = await dio.post(_cloudName + "/image/upload", data: formData, onSendProgress: (int sent, int total) {
+      print("${sent / 1000000} MB || ${total / 1000000} MB");
+    });
     return response;
   }
 
-  Future<Response> uploadVideo(String videoPath, {String filename, String folder}) async {
+  Future<Response> uploadVideo(String videoPath, {String filename, String folder, int quality, int width, int height}) async {
     print('Upload Video');
 
-       int timeStamp = new DateTime.now().millisecondsSinceEpoch;
+    int timeStamp = new DateTime.now().millisecondsSinceEpoch;
 
     if (videoPath == null) {
       throw Exception("imagePath must not be null");
@@ -66,13 +68,18 @@ class CloudinaryClient extends CloudinariApi {
       "api_key": _apiKey,
       "folder": folder,
       "public_id": publicId,
+      // "quality": quality,
+      // "width": width,
+      // "height": height,
       "file": new UploadFileInfo(new File(videoPath), filename),
       "timestamp": timeStamp,
       "signature": getSignature(folder, publicId, timeStamp)
     });
 
     Dio dio = await getApiClient();
-    Response response = await dio.post(_cloudName + "/video/upload", data: formData);
+    Response response = await dio.post(_cloudName + "/video/upload", data: formData, onSendProgress: (int sent, int total) {
+      print("${sent / 1000000} MB || ${total / 1000000} MB");
+    });
     print(response.statusCode);
     return response;
   }
