@@ -18,6 +18,9 @@ class PortofolioBloc {
   Observable<List<AktivitasTerbesarModel>> get aktivitasTerbaru => aktivitasTerbaruFetcher.stream;
   Observable<List<BarchartModel>> get barChartStream => barChartFetcher.stream;
 
+  BehaviorSubject<List<AktivitasTerbesarModel>> aktivitasTerbaruBehaviour = new BehaviorSubject<List<AktivitasTerbesarModel>>();
+
+
   fetchSebaranAktifitasAmal() async {
     SebaranAktifitasAmalModel value = await repository.sebaranAktifitasAmalFetch();
     sebaranAktifitasAmalFetcher.sink.add(value);
@@ -31,6 +34,7 @@ class PortofolioBloc {
   fetchAktivitasTerbaru() async {
     List<AktivitasTerbesarModel> value = await repository.aktivitasTerbaruFetch();
     aktivitasTerbaruFetcher.sink.add(value);
+    aktivitasTerbaruBehaviour.add(value);
   }
 
   fetchBarChart(String category, String type) async {
