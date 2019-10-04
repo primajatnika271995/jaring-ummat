@@ -46,8 +46,13 @@ class ProgramAmalApiProvider {
     SharedPreferences _pref = await SharedPreferences.getInstance();
     var token = _pref.getString(ACCESS_TOKEN_KEY);
     var filter = _pref.getString(FILTER_PROGRAM_AMAL);
+    var lokasiAmal = _pref.getString(LOKASI_AMAL);
+    var kotaSekarang = _pref.getString(CURRENT_LOCATION_CITY);
+    var provinsiSekarang = _pref.getString(CURRENT_LOCATION_PROVINSI);
 
     print('ini filter : $filter');
+    print('KOTA SEKARANG : $kotaSekarang');
+    print('PROVINSI SEKARANG : $provinsiSekarang');
 
     if (token == null) {
       token =
@@ -62,7 +67,11 @@ class ProgramAmalApiProvider {
         "idUser": userId,
         "limit": limit,
         "offset": offset,
-        "filter": filter == null ? "false" : "true"
+        "filter": filter == null ? "false" : "true",
+        "kota":
+            filter != null && lokasiAmal == 'SEKARANG' ? kotaSekarang : null,
+        "provinsi":
+            filter != null && lokasiAmal == 'SEKARANG' ? provinsiSekarang : null
       };
       uri = Uri.parse(PROGRAM_AMAL_LIST_ALL_URL);
     } else {
@@ -72,7 +81,11 @@ class ProgramAmalApiProvider {
         "limit": limit,
         "offset": offset,
         "category": category,
-        "filter": filter == null ? "false" : "true"
+        "filter": filter == null ? "false" : "true",
+        "kota":
+            filter != null && lokasiAmal == 'SEKARANG' ? kotaSekarang : null,
+        "provinsi":
+            filter != null && lokasiAmal == 'SEKARANG' ? provinsiSekarang : null
       };
       uri = Uri.parse(PROGRAM_AMAL_LIST_BY_CATEGORY_URL);
     }
@@ -87,6 +100,7 @@ class ProgramAmalApiProvider {
       print('--> No Content');
     } else {
       print('Err :${response.statusCode}');
-    } return null;
+    }
+    return null;
   }
 }

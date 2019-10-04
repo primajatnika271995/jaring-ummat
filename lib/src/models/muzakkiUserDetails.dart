@@ -28,26 +28,29 @@ class MuzakkiUserDetails {
   dynamic tanggalLahir;
   String tipeAkun;
   String imageUrl;
+  dynamic kabupatenLahir;
+  dynamic provinsiLahir;
 
-  MuzakkiUserDetails({
-    this.userId,
-    this.email,
-    this.fullname,
-    this.contact,
-    this.alamat,
-    this.kotaTinggal,
-    this.longitudeTinggal,
-    this.latitudeTinggal,
-    this.kotaLahir,
-    this.longitudeLahir,
-    this.latitudeLahir,
-    this.lokasiAmal,
-    this.kabupaten,
-    this.provinsi,
-    this.tanggalLahir,
-    this.tipeAkun,
-    this.imageUrl,
-  });
+  MuzakkiUserDetails(
+      {this.userId,
+      this.email,
+      this.fullname,
+      this.contact,
+      this.alamat,
+      this.kotaTinggal,
+      this.longitudeTinggal,
+      this.latitudeTinggal,
+      this.kotaLahir,
+      this.longitudeLahir,
+      this.latitudeLahir,
+      this.lokasiAmal,
+      this.kabupaten,
+      this.provinsi,
+      this.tanggalLahir,
+      this.tipeAkun,
+      this.imageUrl,
+      this.kabupatenLahir,
+      this.provinsiLahir});
 
   factory MuzakkiUserDetails.fromJson(Map<String, dynamic> json) =>
       MuzakkiUserDetails(
@@ -68,6 +71,10 @@ class MuzakkiUserDetails {
         provinsi: json["provinsi"],
         tipeAkun: json["tipeAkun"] == null ? null : json["tipeAkun"],
         imageUrl: json["imageUrl"] == null ? null : json["imageUrl"],
+        kabupatenLahir:
+            json["kabupatenLahir"] == null ? null : json["kabupatenLahir"],
+        provinsiLahir:
+            json["provinsiLahir"] == null ? null : json["provinsiLahir"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -88,5 +95,7 @@ class MuzakkiUserDetails {
         "provinsi": provinsi,
         "tipeAkun": tipeAkun == null ? null : tipeAkun,
         "imageUrl": imageUrl == null ? null : imageUrl,
+        "kabupatenLahir": kabupatenLahir == null ? null : kabupatenLahir,
+        "provinsiLahir": provinsiLahir == null ? null : provinsiLahir
       };
 }

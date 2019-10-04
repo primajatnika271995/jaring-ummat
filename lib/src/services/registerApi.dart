@@ -57,7 +57,9 @@ class RegisterApiProvider {
       "tanggalLahir": value.tanggalLahir,
       "kabupaten": value.kabupaten,
       "provinsi": value.provinsi,
-      "userId": idUser
+      "userId": idUser,
+      "kabupatenLahir": value.kabupatenLahir,
+      "provinsiLahir": value.provinsiLahir
     };
 
     final response = await client.post(UPDATE_USER_DETAILS,
@@ -126,10 +128,10 @@ class RegisterApiProvider {
   Future<FilePathResponseModel> saveFilepath(
       BuildContext context, FilePathResponseModel data, String idUser) async {
     Map params = {
-	    "idUser": idUser,
-	    "resourceType": data.resourceType,
+      "idUser": idUser,
+      "resourceType": data.resourceType,
       "urlType": data.urlType,
-    	"url": data.url,
+      "url": data.url,
     };
 
     final response = await client.post(FILE_PATH_SAVE,
