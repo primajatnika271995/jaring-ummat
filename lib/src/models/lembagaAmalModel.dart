@@ -16,7 +16,7 @@ class LembagaAmalModel {
     String lembagaAmalAddress;
     String lembagaAmalContact;
     String lembagaAmalCategory;
-    List<ImageContent> imageContent;
+    String imageContent;
     int totalFollowers;
     int totalPostProgramAmal;
     int totalPostBerita;
@@ -37,7 +37,7 @@ class LembagaAmalModel {
         this.followThisAccount,
     });
 
-    factory LembagaAmalModel.fromJson(Map<String, dynamic> json) => new LembagaAmalModel(
+    factory LembagaAmalModel.fromJson(Map<String, dynamic> json) => LembagaAmalModel(
         idUser: json["idUser"] == null ? null : json["idUser"],
         idLembagaAmal: json["idLembagaAmal"] == null ? null : json["idLembagaAmal"],
         lembagaAmalName: json["lembagaAmalName"] == null ? null : json["lembagaAmalName"],
@@ -45,7 +45,7 @@ class LembagaAmalModel {
         lembagaAmalAddress: json["lembagaAmalAddress"] == null ? null : json["lembagaAmalAddress"],
         lembagaAmalContact: json["lembagaAmalContact"] == null ? null : json["lembagaAmalContact"],
         lembagaAmalCategory: json["lembagaAmalCategory"] == null ? null : json["lembagaAmalCategory"],
-        imageContent: json["imageContent"] == null ? null : new List<ImageContent>.from(json["imageContent"].map((x) => ImageContent.fromJson(x))),
+        imageContent: json["imageContent"] == null ? null : json["imageContent"],
         totalFollowers: json["totalFollowers"] == null ? null : json["totalFollowers"],
         totalPostProgramAmal: json["totalPostProgramAmal"] == null ? null : json["totalPostProgramAmal"],
         totalPostBerita: json["totalPostBerita"] == null ? null : json["totalPostBerita"],
@@ -60,7 +60,7 @@ class LembagaAmalModel {
         "lembagaAmalAddress": lembagaAmalAddress == null ? null : lembagaAmalAddress,
         "lembagaAmalContact": lembagaAmalContact == null ? null : lembagaAmalContact,
         "lembagaAmalCategory": lembagaAmalCategory == null ? null : lembagaAmalCategory,
-        "imageContent": imageContent == null ? null : new List<dynamic>.from(imageContent.map((x) => x.toJson())),
+        "imageContent": imageContent == null ? null : imageContent,
         "totalFollowers": totalFollowers == null ? null : totalFollowers,
         "totalPostProgramAmal": totalPostProgramAmal == null ? null : totalPostProgramAmal,
         "totalPostBerita": totalPostBerita == null ? null : totalPostBerita,
