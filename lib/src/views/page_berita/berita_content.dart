@@ -1,11 +1,14 @@
+import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_jaring_ummat/src/config/hexColor.dart';
 import 'package:flutter_jaring_ummat/src/models/beritaModel.dart';
+import 'package:flutter_jaring_ummat/src/views/components/icon_text/active_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/new_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/page_berita/berita_views.dart';
 
 class BeritaContent extends StatefulWidget {
   final BeritaModel berita;
+
   BeritaContent({Key key, @required this.berita}) : super(key: key);
 
   _BeritaContentState createState() => _BeritaContentState();
@@ -17,6 +20,8 @@ class _BeritaContentState extends State<BeritaContent> {
   final String noImg =
       "http://www.sclance.com/pngs/no-image-png/no_image_png_935227.png";
 
+  var formatter = new DateFormat('dd MMM yyyy HH:mm:ss');
+
   @override
   Widget build(BuildContext context) {
     final imageWidget = Padding(
@@ -26,8 +31,15 @@ class _BeritaContentState extends State<BeritaContent> {
         width: 150.0,
         child: (widget.berita.imageContent == null)
             ? Image.network(noImg, fit: BoxFit.cover)
-            : Image.network(widget.berita.imageContent[0].url,
-                fit: BoxFit.cover),
+            : widget.berita.imageContent[0].resourceType == "video"
+                ? Image.network(
+                    widget.berita.imageContent[0].urlThumbnail,
+                    fit: BoxFit.cover,
+                  )
+                : Image.network(
+                    widget.berita.imageContent[0].url,
+                    fit: BoxFit.cover,
+                  ),
       ),
     );
 
@@ -65,7 +77,13 @@ class _BeritaContentState extends State<BeritaContent> {
             ),
             Row(
               children: <Widget>[
-                Icon(NewIcon.love_3x, color: blackColor, size: 20.0),
+                Icon(
+                  widget.berita.likeThis
+                      ? ActiveIcon.love_active_3x
+                      : NewIcon.love_3x,
+                  color: widget.berita.likeThis ? redColor : blackColor,
+                  size: 20,
+                ),
                 Icon(NewIcon.comment_3x, color: blackColor, size: 20.0),
                 Icon(NewIcon.save_3x, color: blackColor, size: 20.0),
               ],
@@ -117,10 +135,16 @@ class _BeritaContentState extends State<BeritaContent> {
                       ),
                       Text(
                         'oleh ${widget.berita.createdBy}',
-                        style: TextStyle(color: grayColor),
+                        style: TextStyle(color: grayColor, fontSize: 12),
                       ),
+                      Text(
+                          formatter
+                              .format(DateTime.fromMicrosecondsSinceEpoch(
+                                  widget.berita.createdDate * 1000))
+                              .toString(),
+                          style: TextStyle(fontSize: 11)),
                       Padding(
-                        padding: const EdgeInsets.only(top: 30.0, right: 20.0),
+                        padding: const EdgeInsets.only(top: 15.0, right: 20.0),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: <Widget>[

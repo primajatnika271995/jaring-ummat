@@ -1,9 +1,9 @@
+import 'package:flutter_jaring_ummat/src/utils/screenSize.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_jaring_ummat/src/config/hexColor.dart';
 import 'package:flutter_jaring_ummat/src/models/historiTransaksiModel.dart';
 import 'package:flutter_jaring_ummat/src/services/currency_format_service.dart';
-import 'package:flutter_jaring_ummat/src/utils/screenSize.dart';
 import 'package:flutter_jaring_ummat/src/utils/sizeUtils.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/new_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/bloc/historiTransaksiBloc.dart';
@@ -37,8 +37,18 @@ class _HistoriTransaksiViewState extends State<HistoriTransaksiView>
         backgroundColor: Colors.white,
         titleSpacing: 0,
         elevation: 0,
-        title: Text('Pembayaran Amal',
-            style: TextStyle(color: blackColor, fontSize: SizeUtils.titleSize)),
+        title: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text('Pembayaran Donasi',
+                style: TextStyle(
+                    color: blackColor, fontSize: SizeUtils.titleSize)),
+            Text('Dalam Proses',
+                style: TextStyle(
+                    color: grayColor, fontSize: SizeUtils.titleSize - 6)),
+          ],
+        ),
         leading: IconButton(
           onPressed: () {
             Navigator.of(context).pop();
@@ -58,7 +68,7 @@ class _HistoriTransaksiViewState extends State<HistoriTransaksiView>
               break;
             default:
               if (snapshot.hasData) {
-                return listBuilder(snapshot.data);
+                return listBuilder2(snapshot.data);
               }
               return Center(
                 child: Text('NO HISTORY DATA'),
@@ -66,6 +76,269 @@ class _HistoriTransaksiViewState extends State<HistoriTransaksiView>
           }
         },
       ),
+    );
+  }
+
+  Widget listBuilder2(List<HistoriTransaksiModel> snapshot) {
+    return ListView.separated(
+      separatorBuilder: (context, position) {
+        return Padding(
+          padding: EdgeInsets.only(left: 0.0),
+          child: new SizedBox(
+            height: 10.0,
+            child: new Center(
+              child: new Container(
+                  margin: new EdgeInsetsDirectional.only(start: 1.0, end: 1.0),
+                  height: 5.0,
+                  color: Colors.grey[200]),
+            ),
+          ),
+        );
+      },
+      itemCount: snapshot.length,
+      itemBuilder: (context, index) {
+        var data = snapshot[index];
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+          child: Card(
+            elevation: 1,
+            color: Colors.white,
+            shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            child: Container(
+              // height: screenHeightExcludingToolbar(context, dividedBy: 4),
+              child: Column(
+                children: <Widget>[
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 0),
+                    width: screenWidth(context),
+                    decoration: BoxDecoration(
+                        color: Colors.grey[100],
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(10),
+                          topRight: Radius.circular(10),
+                        )),
+                    child: ListTile(
+                      title: const Text(
+                        'Lakukan Pembayaran Sebelum',
+                        style: TextStyle(
+                            fontSize: 12),
+                      ),
+                      subtitle: Text(
+                        '${formatter.format(DateTime.fromMicrosecondsSinceEpoch(data.tanggalBerakhirVa * 1000))} WIB',
+                        style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.redAccent,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      trailing: data.totalMenitCounting <= 1
+                          ? OutlineButton(
+                        onPressed: null,
+                        child: const Text(
+                          'Expired',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.red,
+                          ),
+                        ),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20)),
+                      )
+                          : OutlineButton(
+                        onPressed: () {
+                          print("Batalkan On Progress");
+                        },
+                        child: const Text('Batalkan',
+                            style: TextStyle(
+                                fontWeight: FontWeight.w900,
+                                color: Colors.red)),
+                        borderSide: BorderSide(
+                          color: Colors.red, //Color of the border
+                          style: BorderStyle.solid, //Style of the border
+                          width: 2.8, //width of the border
+                        ),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20)),
+                      ),
+                    ),
+                  ),
+                  Container(
+                      padding: EdgeInsets.only(bottom: 10),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(20),
+                            bottomRight: Radius.circular(20)),
+                      ),
+                      child: Column(children: <Widget>[
+                        ListTile(
+                          title: RichText(
+                            text: TextSpan(children: <TextSpan>[
+                              TextSpan(
+                                text: '${data.jenisTransaksi}\n',
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 13),
+                              ),
+                              data.jenisTransaksi == 'DONASI'
+                                  ? TextSpan(
+                                  text: '${data.donasiTitle}',
+                                  style: TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: 11,
+                                  ))
+                                  : TextSpan(
+                                  text: 'Pembayaran ${data.jenisTransaksi}',
+                                  style: TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: 11,
+                                  ))
+                            ]),
+                          ),
+                          subtitle: RichText(
+                            text: TextSpan(children: <TextSpan>[
+                              TextSpan(
+                                text: 'Rp ',
+                                style:
+                                TextStyle(color: Colors.grey, fontSize: 11),
+                              ),
+                              TextSpan(
+                                text:
+                                '${CurrencyFormat().currency(data.jumlahTransaksi.toDouble())}',
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ]),
+                          ),
+                          leading: CircleAvatar(
+                            backgroundColor: data.jenisTransaksi == "ZAKAT"
+                                ? Colors.yellow
+                                : data.jenisTransaksi == "INFAQ"
+                                ? Colors.redAccent
+                                : data.jenisTransaksi == "SODAQOH"
+                                ? Colors.deepPurple
+                                : data.jenisTransaksi == "WAKAF"
+                                ? Colors.green
+                                : data.jenisTransaksi == "DONASI"
+                                ? Colors.blue
+                                : Colors.blue,
+                            child: Icon(
+                              data.jenisTransaksi == "ZAKAT"
+                                  ? ProfileInboxIcon.zakat_3x
+                                  : data.jenisTransaksi == "INFAQ"
+                                  ? ProfileInboxIcon.infaq_3x
+                                  : data.jenisTransaksi == "SODAQOH"
+                                  ? ProfileInboxIcon.sodaqoh_3x
+                                  : data.jenisTransaksi == "WAKAF"
+                                  ? ProfileInboxIcon.wakaf_3x
+                                  : data.jenisTransaksi == "DONASI"
+                                  ? ProfileInboxIcon.donation_3x
+                                  : ProfileInboxIcon
+                                  .donation_3x,
+                              color: whiteColor,
+                              size: 20,
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(left: 70.0),
+                          child: new SizedBox(
+                            height: 10.0,
+                            child: new Center(
+                              child: new Container(
+                                  margin: new EdgeInsetsDirectional.only(
+                                      start: 1.0, end: 1.0),
+                                  height: 5.0,
+                                  color: Colors.grey[200]),
+                            ),
+                          ),
+                        ),
+                        ListTile(
+                          title: Text('BNI Syariah VA Billing',
+                              style: TextStyle(fontSize: 12)),
+                          subtitle: Text(
+                            '${data.virtualAccount}',
+                            style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                                color: blackColor),
+                          ),
+                          leading: CircleAvatar(
+                            backgroundColor: Colors.redAccent,
+                            backgroundImage: NetworkImage(
+                                'https://2.bp.blogspot.com/-qy7Sanutml0/WmXk88IBzNI/AAAAAAAANyg/2fENOvWf5bUgTD8T7FEAzotvjdmusMZYACLcBGAs/s600/Bank-BNI-Syariah-Logo.jpg'),
+                          ),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.only(right: 7.0),
+                              child: OutlineButton(
+                                onPressed: () {
+                                  print("Salin");
+                                },
+                                child: const Text('Salin',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.deepPurple)),
+                                borderSide: BorderSide(
+                                  color: Colors.deepPurple,
+                                  //Color of the border
+                                  style: BorderStyle.solid,
+                                  //Style of the border
+                                  width: 0.8, //width of the border
+                                ),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20)),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 7.0),
+                              child: OutlineButton(
+                                onPressed: () {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) => InstruksiPembayaran(
+                                        transaksiId: data.idTransaksi,
+                                        nominal:
+                                        data.jumlahTransaksi.toDouble(),
+                                        tanggalRequest:
+                                        data.tanggalTransaksi.toString(),
+                                        toLembagAmal: data.namaLembagaAmal,
+                                        counting: data.totalMenitCounting,
+                                        virtualNumber: data.virtualAccount,
+                                      ),
+                                    ),
+                                  );
+                                },
+                                child: const Text('Cara Pembayaran',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w900,
+                                        color: Colors.green)),
+                                borderSide: BorderSide(
+                                  color: Colors.green,
+                                  //Color of the border
+                                  style: BorderStyle.solid,
+                                  //Style of the border
+                                  width: 2.8, //width of the border
+                                ),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20)),
+                              ),
+                            ),
+                          ],
+                        )
+                      ])),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 
@@ -94,26 +367,26 @@ class _HistoriTransaksiViewState extends State<HistoriTransaksiView>
             backgroundColor: data.jenisTransaksi == "ZAKAT"
                 ? Colors.yellow
                 : data.jenisTransaksi == "INFAQ"
-                    ? Colors.redAccent
-                    : data.jenisTransaksi == "SODAQOH"
-                        ? Colors.deepPurple
-                        : data.jenisTransaksi == "WAKAF"
-                            ? Colors.green
-                            : data.jenisTransaksi == "DONASI"
-                                ? Colors.blue
-                                : Colors.blue,
+                ? Colors.redAccent
+                : data.jenisTransaksi == "SODAQOH"
+                ? Colors.deepPurple
+                : data.jenisTransaksi == "WAKAF"
+                ? Colors.green
+                : data.jenisTransaksi == "DONASI"
+                ? Colors.blue
+                : Colors.blue,
             child: Icon(
               data.jenisTransaksi == "ZAKAT"
                   ? ProfileInboxIcon.zakat_3x
                   : data.jenisTransaksi == "INFAQ"
-                      ? ProfileInboxIcon.infaq_3x
-                      : data.jenisTransaksi == "SODAQOH"
-                          ? ProfileInboxIcon.sodaqoh_3x
-                          : data.jenisTransaksi == "WAKAF"
-                              ? ProfileInboxIcon.wakaf_3x
-                              : data.jenisTransaksi == "DONASI"
-                                  ? ProfileInboxIcon.donation_3x
-                                  : ProfileInboxIcon.donation_3x,
+                  ? ProfileInboxIcon.infaq_3x
+                  : data.jenisTransaksi == "SODAQOH"
+                  ? ProfileInboxIcon.sodaqoh_3x
+                  : data.jenisTransaksi == "WAKAF"
+                  ? ProfileInboxIcon.wakaf_3x
+                  : data.jenisTransaksi == "DONASI"
+                  ? ProfileInboxIcon.donation_3x
+                  : ProfileInboxIcon.donation_3x,
               color: whiteColor,
               size: 20,
             ),
@@ -129,7 +402,7 @@ class _HistoriTransaksiViewState extends State<HistoriTransaksiView>
                         style: TextStyle(fontSize: 11, color: grayColor)),
                     TextSpan(
                       text:
-                          '${CurrencyFormat().currency(data.jumlahTransaksi.toDouble())}',
+                      '${CurrencyFormat().currency(data.jumlahTransaksi.toDouble())}',
                       style: TextStyle(
                           color: blackColor, fontWeight: FontWeight.bold),
                     ),
@@ -193,40 +466,40 @@ class _HistoriTransaksiViewState extends State<HistoriTransaksiView>
                 ),
                 trailing: data.totalMenitCounting <= 1
                     ? OutlineButton(
-                        onPressed: null,
-                        child: const Text(
-                          'Expired',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.deepPurple,
-                          ),
-                        ),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20)),
-                      )
+                  onPressed: null,
+                  child: const Text(
+                    'Expired',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.deepPurple,
+                    ),
+                  ),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20)),
+                )
                     : OutlineButton(
-                        onPressed: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) => InstruksiPembayaran(
-                                transaksiId: data.idTransaksi,
-                                nominal: data.jumlahTransaksi.toDouble(),
-                                tanggalRequest:
-                                    data.tanggalTransaksi.toString(),
-                                toLembagAmal: data.namaLembagaAmal,
-                                counting: data.totalMenitCounting,
-                                virtualNumber: data.virtualAccount,
-                              ),
-                            ),
-                          );
-                        },
-                        child: const Text('Pembayaran',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.deepPurple)),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20)),
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => InstruksiPembayaran(
+                          transaksiId: data.idTransaksi,
+                          nominal: data.jumlahTransaksi.toDouble(),
+                          tanggalRequest:
+                          data.tanggalTransaksi.toString(),
+                          toLembagAmal: data.namaLembagaAmal,
+                          counting: data.totalMenitCounting,
+                          virtualNumber: data.virtualAccount,
+                        ),
                       ),
+                    );
+                  },
+                  child: const Text('Pembayaran',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.deepPurple)),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20)),
+                ),
               ),
             ),
           ],

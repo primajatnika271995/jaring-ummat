@@ -33,6 +33,9 @@ class Portofolio extends StatefulWidget {
 }
 
 class _PortofolioState extends State<Portofolio> {
+  /// Inisialisasi Protofolio Provider
+  PortofolioProvider provider = new PortofolioProvider();
+
   /*
    * Format for Current Month
    */
@@ -101,6 +104,9 @@ class _PortofolioState extends State<Portofolio> {
 
   /** Variable Icon Floating Button SpeedDial */
   Icon _ic = new Icon(Icons.add);
+
+  List<AktivitasTerbesarModel> _listAktivitasTerbaruCache =
+      new List<AktivitasTerbesarModel>();
 
   @override
   Widget build(BuildContext context) {
@@ -462,8 +468,15 @@ class _PortofolioState extends State<Portofolio> {
                       break;
                     default:
                       if (snapshot.hasData) {
-                        return listPenerimaAmalTerbaru(snapshot);
+                        return listPenerimaAmalTerbaru(snapshot.data);
                       }
+                      if (_listAktivitasTerbaruCache.length > 0) {
+                        print('Cache Data ==>');
+                        print(_listAktivitasTerbaruCache.length);
+                        return listPenerimaAmalTerbaru(
+                            _listAktivitasTerbaruCache);
+                      }
+
                       return ListView.builder(
                         itemCount: 3,
                         shrinkWrap: true,
@@ -937,7 +950,7 @@ class _PortofolioState extends State<Portofolio> {
                 backgroundColor: greenColor,
                 child: (value.imageContent == null)
                     ? CircularProfileAvatar(noImg)
-                    : CircularProfileAvatar(value.imageContent[0].imgUrl),
+                    : CircularProfileAvatar(value.imageContent),
               ),
               SizedBox(
                 height: 5,
@@ -971,14 +984,13 @@ class _PortofolioState extends State<Portofolio> {
     );
   }
 
-  Widget listPenerimaAmalTerbaru(
-      AsyncSnapshot<List<AktivitasTerbesarModel>> snapshot) {
+  Widget listPenerimaAmalTerbaru(List<AktivitasTerbesarModel> snapshot) {
     return ListView.builder(
-      itemCount: 3,
+      itemCount: snapshot.length <= 3 ? snapshot.length : 3,
       shrinkWrap: true,
       physics: NeverScrollableScrollPhysics(),
       itemBuilder: (context, index) {
-        var value = snapshot.data[index];
+        var value = snapshot[index];
         return Padding(
           padding: EdgeInsets.symmetric(vertical: 5),
           child: Container(
@@ -1037,6 +1049,7 @@ class _PortofolioState extends State<Portofolio> {
     bloc.fetchAktivitasTerbaru();
     bloc.fetchBarChart(null, "satu");
     getDataPieChart();
+    getAktivitasTerbaruCache();
     getUser();
   }
 
@@ -1050,7 +1063,6 @@ class _PortofolioState extends State<Portofolio> {
   }
 
   void getDataPieChart() {
-    PortofolioProvider provider = new PortofolioProvider();
     provider.pieChartApi().then((response) {
       if (response.statusCode == 200) {
         var data =
@@ -1128,6 +1140,17 @@ class _PortofolioState extends State<Portofolio> {
     });
   }
 
+  getAktivitasTerbaruCache() {
+    print('Get Aktivitas Terbaru ===>');
+    bloc.aktivitasTerbaruBehaviour.stream.forEach((value) {
+      if (mounted) {
+        setState(() {
+          _listAktivitasTerbaruCache = value;
+        });
+      }
+    });
+  }
+
   Widget buildBarChart(BuildContext context) {
     return StreamBuilder(
       stream: bloc.barChartStream,
@@ -1148,7 +1171,7 @@ class _PortofolioState extends State<Portofolio> {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15),
           child: Container(
-            height: 150,
+            height: 110,
             width: screenWidth(context),
             child: ListView.builder(
               itemCount: 12,
@@ -1181,7 +1204,7 @@ class _PortofolioState extends State<Portofolio> {
                       ),
                       borderRadius: BorderRadius.circular(5),
                     ),
-                    width: 29.5,
+                    width: screenWidth(context, dividedBy: 15.5),
                   ),
                 );
               },

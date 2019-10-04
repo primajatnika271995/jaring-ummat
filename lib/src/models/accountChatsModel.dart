@@ -13,7 +13,7 @@ class AccountChats {
     String username;
     String tipeUser;
     String email;
-    List<Content> contents;
+    String contents;
 
     AccountChats({
         this.id,
@@ -28,7 +28,7 @@ class AccountChats {
         username: json["username"] == null ? null : json["username"],
         tipeUser: json["tipe_user"] == null ? null : json["tipe_user"],
         email: json["email"] == null ? null : json["email"],
-        contents: json["contents"] == null ? null : new List<Content>.from(json["contents"].map((x) => Content.fromJson(x))),
+        contents: json["contents"] == null ? null : json["contents"],
     );
 
     Map<String, dynamic> toJson() => {
@@ -36,7 +36,7 @@ class AccountChats {
         "username": username == null ? null : username,
         "tipe_user": tipeUser == null ? null : tipeUser,
         "email": email == null ? null : email,
-        "contents": contents == null ? null : new List<dynamic>.from(contents.map((x) => x.toJson())),
+        "contents": contents == null ? null : contents,
     };
 }
 

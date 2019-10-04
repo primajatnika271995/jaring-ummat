@@ -9,7 +9,7 @@ List<AktivitasAmalTerbaruModel> aktivitasAmalTerbaruModelFromJson(String str) =>
 String aktivitasAmalTerbaruModelToJson(List<AktivitasAmalTerbaruModel> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class AktivitasAmalTerbaruModel {
-    List<ImageContent> imageContent;
+    String imageContent;
     String username;
     String nama;
     int totalAmal;
@@ -24,7 +24,7 @@ class AktivitasAmalTerbaruModel {
     });
 
     factory AktivitasAmalTerbaruModel.fromJson(Map<String, dynamic> json) => AktivitasAmalTerbaruModel(
-        imageContent: json["imageContent"] == null ? null : List<ImageContent>.from(json["imageContent"].map((x) => ImageContent.fromJson(x))),
+        imageContent: json["imageContent"] == null ? null : json["imageContent"],
         username: json["username"] == null ? null : json["username"],
         nama: json["nama"] == null ? null : json["nama"],
         totalAmal: json["totalAmal"] == null ? null : json["totalAmal"],
@@ -32,7 +32,7 @@ class AktivitasAmalTerbaruModel {
     );
 
     Map<String, dynamic> toJson() => {
-        "imageContent": imageContent == null ? null : List<dynamic>.from(imageContent.map((x) => x.toJson())),
+        "imageContent": imageContent == null ? null : imageContent,
         "username": username == null ? null : username,
         "nama": nama == null ? null : nama,
         "totalAmal": totalAmal == null ? null : totalAmal,

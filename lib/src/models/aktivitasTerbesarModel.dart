@@ -9,7 +9,7 @@ List<AktivitasTerbesarModel> aktivitasTerbesarModelFromJson(String str) => List<
 String aktivitasTerbesarModelToJson(List<AktivitasTerbesarModel> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class AktivitasTerbesarModel {
-    List<ImageContent> imageContent;
+    String imageContent;
     String lembagaAmalId;
     String lembagaAmalName;
     int totalAmal;
@@ -28,7 +28,7 @@ class AktivitasTerbesarModel {
     });
 
     factory AktivitasTerbesarModel.fromJson(Map<String, dynamic> json) => AktivitasTerbesarModel(
-        imageContent: json["imageContent"] == null ? null : List<ImageContent>.from(json["imageContent"].map((x) => ImageContent.fromJson(x))),
+        imageContent: json["imageContent"] == null ? null : json["imageContent"],
         lembagaAmalId: json["lembagaAmalId"] == null ? null : json["lembagaAmalId"],
         lembagaAmalName: json["lembagaAmalName"] == null ? null : json["lembagaAmalName"],
         totalAmal: json["totalAmal"] == null ? null : json["totalAmal"],
@@ -38,7 +38,7 @@ class AktivitasTerbesarModel {
     );
 
     Map<String, dynamic> toJson() => {
-        "imageContent": imageContent == null ? null : List<dynamic>.from(imageContent.map((x) => x.toJson())),
+        "imageContent": imageContent == null ? null : imageContent,
         "lembagaAmalId": lembagaAmalId == null ? null : lembagaAmalId,
         "lembagaAmalName": lembagaAmalName == null ? null : lembagaAmalName,
         "totalAmal": totalAmal == null ? null : totalAmal,

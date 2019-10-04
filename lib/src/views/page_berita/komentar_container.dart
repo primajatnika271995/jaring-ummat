@@ -168,7 +168,7 @@ class _KomentarContainerState extends State<KomentarContainer>
                       builder: (BuildContext context,
                           AsyncSnapshot<List<ListUserLikes>> snapshot) {
                         if (snapshot.hasData) {
-                          print(snapshot.data[0].imageProfile[0].imgUrl);
+                          print(snapshot.data[0].imgProfile);
                           return buildListLike(snapshot);
                         } else if (snapshot.hasError) {
                           return Text(snapshot.error.toString());
@@ -255,7 +255,7 @@ class _KomentarContainerState extends State<KomentarContainer>
           height: 50.0,
           margin: EdgeInsets.symmetric(horizontal: 2.0),
           child: CircularProfileAvatar(
-            snapshot.data[index].imageProfile[0].imgUrl,
+            snapshot.data[index].imgProfile,
           ),
         );
       },
@@ -283,11 +283,11 @@ class _KomentarContainerState extends State<KomentarContainer>
                     child: Container(
                       width: 50.0,
                       height: 50.0,
-                      child: snapshot.data[index].contents == null
+                      child: snapshot.data[index].imageProfile == null
                           ? CircularProfileAvatar(
                               'https://kempenfeltplayers.com/wp-content/uploads/2015/07/profile-icon-empty.png')
                           : CircularProfileAvatar(
-                              snapshot.data[index].contents[0].imgUrl,
+                              snapshot.data[index].imageProfile,
                             ),
                     ),
                   ),

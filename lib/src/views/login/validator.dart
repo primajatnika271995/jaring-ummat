@@ -16,7 +16,7 @@ mixin Validators {
       if (password.length > 6) {
         sink.add(password);
       } else {
-        sink.addError("Password tidak boleh kosong");
+        sink.addError("Password tidak boleh kosong dan kurang dari 7");
       }
     } 
   );

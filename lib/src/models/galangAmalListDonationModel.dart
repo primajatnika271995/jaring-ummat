@@ -21,6 +21,7 @@ class GalangAmalListDonation {
     String customerEmail;
     int nominalDibayar;
     int donasiDate;
+    String imgUrl;
 
     GalangAmalListDonation({
         this.virtualAccountRequestId,
@@ -35,6 +36,7 @@ class GalangAmalListDonation {
         this.customerEmail,
         this.nominalDibayar,
         this.donasiDate,
+        this.imgUrl,
     });
 
     factory GalangAmalListDonation.fromJson(Map<String, dynamic> json) => new GalangAmalListDonation(
@@ -50,6 +52,7 @@ class GalangAmalListDonation {
         customerEmail: json["customerEmail"] == null ? null : json["customerEmail"],
         nominalDibayar: json["nominalDibayar"] == null ? null : json["nominalDibayar"],
         donasiDate: json["donasiDate"] == null ? null : json["donasiDate"],
+        imgUrl: json["imgUrl"] == null ? null : json["imgUrl"],
     );
 
     Map<String, dynamic> toJson() => {
@@ -65,5 +68,6 @@ class GalangAmalListDonation {
         "customerEmail": customerEmail == null ? null : customerEmail,
         "nominalDibayar": nominalDibayar == null ? null : nominalDibayar,
         "donasiDate": donasiDate == null ? null : donasiDate,
+        "imgUrl": imgUrl == null ? null : imgUrl,
     };
 }

@@ -51,6 +51,8 @@ class _KelengkapanAkunPageState extends State<KelengkapanAkunPage> {
   final _contactCtrl = new TextEditingController();
   final _emailCtrl = new TextEditingController();
   final _cityCtrl = new TextEditingController();
+  final _kabupatenLahirCtrl = new TextEditingController();
+  final _provinsiLahirCtrl = new TextEditingController();
   final _streetCtrl = new TextEditingController();
   final _provinsiCtrl = new TextEditingController();
   final _kabupatenCtrl = new TextEditingController();
@@ -79,6 +81,8 @@ class _KelengkapanAkunPageState extends State<KelengkapanAkunPage> {
   String longitude;
   Map<String, double> userLocation;
 
+  static String imgProfileKey;
+
   @override
   Widget build(BuildContext context) {
     // Profile Widget
@@ -94,9 +98,9 @@ class _KelengkapanAkunPageState extends State<KelengkapanAkunPage> {
               child: CircleAvatar(
                 radius: 45,
                 backgroundColor: Colors.transparent,
-                backgroundImage: (selectedImage == null)
+                backgroundImage: (imgProfileKey == null)
                     ? AssetImage('assets/icon/default_picture_man.png')
-                    : FileImage(selectedImage),
+                    : NetworkImage(imgProfileKey),
               ),
             ),
             InkWell(
@@ -536,7 +540,14 @@ class _KelengkapanAkunPageState extends State<KelengkapanAkunPage> {
             latitudeTinggal: latitude,
             longitudeTinggal: longitude,
             email: _emailCtrl.text,
+            kabupaten: _kabupatenCtrl.text,
+            provinsi: _provinsiCtrl.text,
+            kabupatenLahir: _kabupatenLahirCtrl.text,
+            provinsiLahir: _provinsiLahirCtrl.text
           );
+          print("KOTA PROVINSI LAHIR");
+          print(data.kabupatenLahir);
+          print(data.provinsiLahir);
 
           bloc.updateUser(context, data);
         },
@@ -777,6 +788,9 @@ class _KelengkapanAkunPageState extends State<KelengkapanAkunPage> {
         _streetCtrl.text = value.alamat;
         _provinsiCtrl.text = value.provinsi;
         _kabupatenCtrl.text = value.kabupaten;
+        imgProfileKey = value.imageUrl;
+        _kabupatenLahirCtrl.text = value.kabupatenLahir;
+        _provinsiLahirCtrl.text = value.provinsiLahir;
         setState(() {
           _loading = false;
         });
@@ -790,18 +804,22 @@ class _KelengkapanAkunPageState extends State<KelengkapanAkunPage> {
     var place = await PluginGooglePlacePicker.showAutocomplete(
         mode: PlaceAutocompleteMode.MODE_OVERLAY,
         typeFilter: TypeFilter.REGIONS);
+    final coordinate =
+    new Coordinates(place.latitude, place.longitude);
+    var data = await Geocoder.local.findAddressesFromCoordinates(coordinate);
 
     if (!mounted) return;
 
     setState(() {
-      _cityCtrl.text = place.name;
+      _cityCtrl.text = data.first.subAdminArea;
+      _kabupatenLahirCtrl.text = data.first.subAdminArea;
+      _provinsiLahirCtrl.text = data.first.adminArea;
     });
   }
 
   void navigateGoogleMaps(BuildContext context, ProfileReturn value) async {
     kotaLembaga = value.kotaLembaga;
     _streetCtrl.text = value.alamatLembaga;
-    _cityCtrl.text = kotaLembaga;
     _provinsiCtrl.text = value.provinsiLembaga;
     _kabupatenCtrl.text = value.kabupatenLembaga;
   }

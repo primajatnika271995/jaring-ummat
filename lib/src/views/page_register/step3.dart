@@ -2,11 +2,15 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_jaring_ummat/src/config/hexColor.dart';
 import 'package:flutter_jaring_ummat/src/config/key.dart';
 import 'package:flutter_jaring_ummat/src/models/DTO/FilePathResponse.dart';
+import 'package:flutter_jaring_ummat/src/models/DTO/RegisterResponse.dart';
+import 'package:flutter_jaring_ummat/src/models/cloudinaryUploadImageModel.dart';
 import 'package:flutter_jaring_ummat/src/models/postModel.dart';
+import 'package:flutter_jaring_ummat/src/services/cloudinaryClient.dart';
 import 'package:flutter_jaring_ummat/src/views/components/flushbarContainer.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/all_in_one_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/navigation_icons.dart';
@@ -14,12 +18,10 @@ import 'package:flutter_jaring_ummat/src/views/components/icon_text/new_icon_ico
 import 'package:flutter_jaring_ummat/src/views/components/loadingContainer.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_jaring_ummat/src/bloc/registerBloc.dart';
-import 'package:flutter_jaring_ummat/src/services/cloudinaryClient.dart';
-import 'package:flutter_jaring_ummat/src/models/cloudinaryUploadImageModel.dart';
 
 class StepThree extends StatefulWidget {
-
   String contactKey;
+
   StepThree({@required this.contactKey});
 
   @override
@@ -27,7 +29,7 @@ class StepThree extends StatefulWidget {
 }
 
 class _StepThreeState extends State<StepThree> {
-    final String bgUrl = 'assets/backgrounds/accent_app_width_full_screen.png';
+  final String bgUrl = 'assets/backgrounds/accent_app_width_full_screen.png';
 
   final usernameCtrl = new TextEditingController();
   final contactCtrl = new TextEditingController();
@@ -106,14 +108,14 @@ class _StepThreeState extends State<StepThree> {
                           children: <Widget>[
                             _selectedImage == null
                                 ? _selectedDefaultPicture.isEmpty
-                                    ? emptyPicture()
-                                    : defaultPicture()
+                                ? emptyPicture()
+                                : defaultPicture()
                                 : selectedImage(),
                             GestureDetector(
                               onTap: () async {
                                 print(context);
                                 final ImageSource imageSource =
-                                    await _asyncImageSourceDialog(context);
+                                await _asyncImageSourceDialog(context);
                                 print('--> $imageSource');
                               },
                               child: Container(
@@ -142,7 +144,7 @@ class _StepThreeState extends State<StepThree> {
                             readOnly: true,
                             decoration: InputDecoration(
                               contentPadding:
-                                  EdgeInsets.fromLTRB(45.0, 10.0, 20.0, 10.0),
+                              EdgeInsets.fromLTRB(45.0, 10.0, 20.0, 10.0),
                               border: new OutlineInputBorder(
                                 borderRadius: const BorderRadius.all(
                                     const Radius.circular(30.0)),
@@ -219,7 +221,7 @@ class _StepThreeState extends State<StepThree> {
                             style: TextStyle(fontSize: 14),
                             decoration: InputDecoration(
                               contentPadding:
-                                  EdgeInsets.fromLTRB(45.0, 10.0, 20.0, 10.0),
+                              EdgeInsets.fromLTRB(45.0, 10.0, 20.0, 10.0),
                               border: new OutlineInputBorder(
                                 borderRadius: const BorderRadius.all(
                                     const Radius.circular(30.0)),
@@ -274,8 +276,10 @@ class _StepThreeState extends State<StepThree> {
                                   alignment: Alignment(-0.9, -10),
                                   child: Padding(
                                     padding: const EdgeInsets.only(top: 8),
-                                    child: Icon(AllInOneIcon.edittext_savings_3x,
-                                        color: grayColor, size: 20),
+                                    child: Icon(
+                                        AllInOneIcon.edittext_savings_3x,
+                                        color: grayColor,
+                                        size: 20),
                                   ),
                                 ),
                               ],
@@ -593,22 +597,25 @@ class _StepThreeState extends State<StepThree> {
   }
 
   void onSubmit() async {
-    if (_selectedImage == null) flushBar(context, "Gambar profile tidak boleh kosong", 3);
-    
-    await changeLoadingVisible();
+    if (_selectedImage == null) {
+      flushBar(context, "Gambar profile tidak boleh kosong", 3);
+    } else {
+      await changeLoadingVisible();
 
-    CloudinaryClient client = new CloudinaryClient(CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET, CLOUDINARY_CLOUD_NAME);
-    Response response = await client.uploadImage(_selectedImage.path, filename: "img_profile", folder: emailCtrl.text);
-    if (response.statusCode == 200) {
+      CloudinaryClient client = new CloudinaryClient(
+          CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET, CLOUDINARY_CLOUD_NAME);
+      Response response = await client.uploadImage(_selectedImage.path,
+          filename: "img_profile", folder: emailCtrl.text);
+      if (response.statusCode == 200) {
+        await onSaveUser();
+        await onSaveFilepath(response);
 
-      await onSaveUser();
-      await onSaveFilepath(response);
-
-      changeLoadingVisible();
+        changeLoadingVisible();
+      }
     }
   }
 
-  Future<void> onSaveUser() async {
+  Future<RegisterResponseModel> onSaveUser() async {
     print('Eksekusi Save User');
     final userRegister = PostRegistration(
       contact: contactCtrl.text,
@@ -624,12 +631,13 @@ class _StepThreeState extends State<StepThree> {
 
   Future<void> onSaveFilepath(Response response) async {
     print('Eksekusi Save File Path');
-    CloudinaryUploadImageModel imageModel = cloudinaryUploadImageModelFromJson(json.encode(response.data));
+    CloudinaryUploadImageModel imageModel =
+    cloudinaryUploadImageModelFromJson(json.encode(response.data));
 
     final filepath = FilePathResponseModel(
-        resourceType: imageModel.resourceType,
-        urlType: "img_profile",
-        url: imageModel.url,
+      resourceType: imageModel.resourceType,
+      urlType: "img_profile",
+      url: imageModel.url,
     );
 
     await bloc.saveFilepath(context, filepath);

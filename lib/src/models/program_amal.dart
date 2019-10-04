@@ -94,6 +94,9 @@ class ImageContent {
     String url;
     int createdDate;
     String createdBy;
+    String urlThumbnail;
+    String publicId;
+    String formatFile;
 
     ImageContent({
         this.id,
@@ -103,6 +106,9 @@ class ImageContent {
         this.url,
         this.createdDate,
         this.createdBy,
+        this.urlThumbnail,
+        this.publicId,
+        this.formatFile
     });
 
     factory ImageContent.fromJson(Map<String, dynamic> json) => ImageContent(
@@ -113,6 +119,9 @@ class ImageContent {
         url: json["url"] == null ? null : json["url"],
         createdDate: json["createdDate"] == null ? null : json["createdDate"],
         createdBy: json["createdBy"] == null ? null : json["createdBy"],
+        urlThumbnail: json["urlThumbnail"] == null ? null : json["urlThumbnail"],
+        publicId: json["publicId"] == null ? null : json["publicId"],
+        formatFile: json["formatFile"] == null ? null : json["formatFile"],
     );
 
     Map<String, dynamic> toJson() => {
@@ -123,6 +132,9 @@ class ImageContent {
         "url": url == null ? null : url,
         "createdDate": createdDate == null ? null : createdDate,
         "createdBy": createdBy == null ? null : createdBy,
+        "urlThumbnail": urlThumbnail == null ? null : urlThumbnail,
+        "publicId": publicId == null ? null : publicId,
+        "formatFile": formatFile == null ? null : formatFile,
     };
 }
 

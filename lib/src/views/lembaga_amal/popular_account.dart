@@ -241,7 +241,7 @@ class PopularAccountState extends State<PopularAccountView>
                 image: DecorationImage(
                   image: (value.imageContent == null)
                       ? NetworkImage(noImg)
-                      : NetworkImage(value.imageContent[0].imgUrl),
+                      : NetworkImage(value.imageContent),
                   fit: BoxFit.cover,
                 ),
               ),

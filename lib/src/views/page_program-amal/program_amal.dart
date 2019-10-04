@@ -15,6 +15,8 @@ import 'package:flutter_jaring_ummat/src/models/program_amal.dart';
 import 'package:flutter_jaring_ummat/src/services/storiesApi.dart';
 import 'package:flutter_jaring_ummat/src/views/components/userstory_appbar_container.dart';
 import 'package:flutter_jaring_ummat/src/views/page_program-amal/program_amal_content.dart';
+import 'package:geocoder/geocoder.dart';
+import 'package:location/location.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ProgramAmalPage extends StatefulWidget {
@@ -23,6 +25,9 @@ class ProgramAmalPage extends StatefulWidget {
 }
 
 class _ProgramAmalPageState extends State<ProgramAmalPage> {
+  /// Location Inisialisasi
+  var location = new Location();
+
   /*
    * Variable Temp Token
    */
@@ -354,6 +359,25 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
     super.dispose();
   }
 
+  void _getCurrLocation() async {
+    SharedPreferences _pref = await SharedPreferences.getInstance();
+    var currentLocation = await location.getLocation();
+    print(currentLocation.latitude);
+    print(currentLocation.longitude);
+
+    final coordinate =
+        new Coordinates(currentLocation.latitude, currentLocation.longitude);
+    var data = await Geocoder.local.findAddressesFromCoordinates(coordinate);
+    print(data.first.addressLine);
+    setState(() {
+      _pref.setString(CURRENT_LOCATION_CITY, data.first.subAdminArea);
+      _pref.setString(CURRENT_LOCATION_PROVINSI, data.first.adminArea);
+    });
+    print("Get Current Location");
+    print(data.first.subAdminArea);
+    print(data.first.adminArea);
+  }
+
   void hideStory() async {
     await _provider.hideOrShow().then((response) {
       if (response.statusCode == 204) {
@@ -375,7 +399,18 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
     });
   }
 
-  void checkLocation() {
+  Future<void> checkLocation() async {
+    /// Untuk Pengecekan Memilih Filter Atau Tidak, Jika Tidak Check List Di Hapus
+    SharedPreferences _pref = await SharedPreferences.getInstance();
+    var filter = _pref.getString(FILTER_PROGRAM_AMAL);
+    print("Filter Tidak");
+    print(filter);
+    if (filter == null || filter == "false") {
+      blocRegister.bloc.updateLokasiAmal(null);
+      setState(() {
+        _locationSelected = null;
+      });
+    }
     showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -471,10 +506,15 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                           padding: EdgeInsets.symmetric(horizontal: 12.0),
                           child: RaisedButton(
                             onPressed: () {
+                              if (_locationSelected == 'SEKARANG') {
+                                _getCurrLocation();
+                              }
                               filtered();
                               blocRegister.bloc
                                   .updateLokasiAmal(_locationSelected);
                               print(_locationSelected);
+                              bloc.fetchAllProgramAmal(selectedCategory);
+                              _pref.setString(LOKASI_AMAL, _locationSelected);
                               Navigator.of(context).pop();
                             },
                             child: const Text('Atur Lokasi',
@@ -505,6 +545,9 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
 
   void lokasiAmal() async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
-    _locationSelected = _pref.getString(LOKASI_AMAL);
+    setState(() {
+      _locationSelected = _pref.getString(LOKASI_AMAL);
+    });
+    print("Lokasi Selected $_locationSelected");
   }
 }

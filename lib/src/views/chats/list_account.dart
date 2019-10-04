@@ -101,7 +101,7 @@ class _ListAccountChatState extends State<ListAccountChat> {
                 image: value.imageContent == null
                     ? NetworkImage(
                         'https://kempenfeltplayers.com/wp-content/uploads/2015/07/profile-icon-empty.png')
-                    : NetworkImage(value?.imageContent[0].imgUrl),
+                    : NetworkImage(value?.imageContent),
               ),
             ),
           ),

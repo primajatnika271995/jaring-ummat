@@ -8,30 +8,38 @@ import 'package:shared_preferences/shared_preferences.dart';
 class ProgramAmalBloc {
   SharedPreferences _preferences;
   String idUser;
+  String kotaSekarang;
+  String provinsiSekarang;
 
   final repository = ProgramAmalRepository();
   final programAmalFetcher = PublishSubject<List<ProgramAmalModel>>();
-  final galangAmalDonationFetch = PublishSubject<List<GalangAmalListDonation>>();
+  final galangAmalDonationFetch =
+      PublishSubject<List<GalangAmalListDonation>>();
 
   Observable<List<ProgramAmalModel>> get allProgramAmal =>
       programAmalFetcher.stream;
 
-  Observable<List<GalangAmalListDonation>> get galangAmalDonationStream => galangAmalDonationFetch.stream;
+  Observable<List<GalangAmalListDonation>> get galangAmalDonationStream =>
+      galangAmalDonationFetch.stream;
 
   fetchAllProgramAmal(String category) async {
     _preferences = await SharedPreferences.getInstance();
     idUser = _preferences.getString(USER_ID_KEY);
-    
+    kotaSekarang = _preferences.getString(CURRENT_LOCATION_CITY);
+    provinsiSekarang = _preferences.getString(CURRENT_LOCATION_PROVINSI);
+
     if (idUser == null) {
       idUser = "4b724e9e-3cdb-4b2f-8c72-070646b45fdf";
     }
 
-    List<ProgramAmalModel> listAllProgramAmal = await repository.fetchAllProgramAmal(idUser, category, "0", "20");
+    List<ProgramAmalModel> listAllProgramAmal =
+        await repository.fetchAllProgramAmal(idUser, category, "0", "20");
     programAmalFetcher.sink.add(listAllProgramAmal);
   }
 
   fetchGalangAmalDonation(String idProgram) async {
-    List<GalangAmalListDonation> value = await repository.galangAmalDOnation(idProgram);
+    List<GalangAmalListDonation> value =
+        await repository.galangAmalDOnation(idProgram);
     galangAmalDonationFetch.sink.add(value);
   }
 

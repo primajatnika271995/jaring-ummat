@@ -15,6 +15,7 @@ import 'package:flutter_jaring_ummat/src/bloc/programAmalBloc.dart';
 
 class GalangAmalContainer extends StatefulWidget {
   final ProgramAmalModel programAmal;
+
   GalangAmalContainer({Key key, this.programAmal});
 
   @override
@@ -412,8 +413,9 @@ class _GalangAmalContainerState extends State<GalangAmalContainer> {
               child: ListTile(
                 title: Text('${data.customerName}',
                     style: TextStyle(fontWeight: FontWeight.bold)),
-                subtitle:
-                    Text('${formatter.format(DateTime.fromMicrosecondsSinceEpoch(data.donasiDate * 1000)).toString()}', style: TextStyle(fontSize: 11)),
+                subtitle: Text(
+                    '${formatter.format(DateTime.fromMicrosecondsSinceEpoch(data.donasiDate * 1000)).toString()}',
+                    style: TextStyle(fontSize: 11)),
                 trailing: Text(
                     'Rp ${CurrencyFormat().currency(data.nominalDibayar.toDouble())}',
                     style: TextStyle(fontWeight: FontWeight.bold)),
@@ -423,8 +425,9 @@ class _GalangAmalContainerState extends State<GalangAmalContainer> {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(30.0),
                     image: DecorationImage(
-                      image: NetworkImage(
-                          'https://kempenfeltplayers.com/wp-content/uploads/2015/07/profile-icon-empty.png'),
+                      image: NetworkImage(data.imgUrl == null
+                          ? 'https://kempenfeltplayers.com/wp-content/uploads/2015/07/profile-icon-empty.png'
+                          : data.imgUrl),
                       fit: BoxFit.cover,
                     ),
                   ),
