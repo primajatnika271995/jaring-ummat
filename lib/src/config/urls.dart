@@ -4,6 +4,7 @@
 const BASE_API_URL = 'http://139.162.15.91/jaring-ummat';
 // const BASE_API_URL = 'http://192.168.1.11:9091';
 const BASE_API_UPLOADER_URL = 'http://139.162.15.91/uploader';
+const BASE_API_ELASTIC_SEARCH = 'http://139.162.15.91/elasticsearch';
 
 // Chat Api For Server Production Cloud
 const BASE_API_CHATS = 'http://20.184.15.66:6061/hcare-chat';
@@ -27,6 +28,9 @@ const OTP_SMS_URL = 'https://reguler.zenziva.net/apps/smsotp.php';
 
 // CLOUDINARY 
 const CLOUDINARY_URL = 'https://api.cloudinary.com/v1_1/';
+
+// ELASTIC SEARCH
+const ELASTIC_SEARCH_URL = BASE_API_ELASTIC_SEARCH + '/news/_search';
 
 // BASE REGISTER AND LOGIN_URL
 const REGISTRATION_URL = BASE_API_URL + '/api/user/';

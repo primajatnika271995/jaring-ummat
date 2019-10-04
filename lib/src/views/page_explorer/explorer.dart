@@ -3,9 +3,8 @@ import 'package:flutter_jaring_ummat/src/config/hexColor.dart';
 import 'package:flutter_jaring_ummat/src/utils/screenSize.dart';
 import 'package:flutter_jaring_ummat/src/utils/sizeUtils.dart';
 import 'package:flutter_jaring_ummat/src/utils/textUtils.dart';
-import 'package:flutter_jaring_ummat/src/views/components/icon_text/app_bar_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/new_icon_icons.dart';
-import 'package:flutter_jaring_ummat/src/views/components/icon_text/profile_inbox_icon_icons.dart';
+import 'package:flutter_jaring_ummat/src/views/page_explorer/elastic_search.dart';
 
 class ExplorerPage extends StatefulWidget {
   @override
@@ -16,7 +15,7 @@ class _ExplorerPageState extends State<ExplorerPage> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: ExplorerText.category.length,
+      length: 6,
       initialIndex: 0,
       child: Scaffold(
         appBar: AppBar(
@@ -28,7 +27,7 @@ class _ExplorerPageState extends State<ExplorerPage> {
                   fontSize: SizeUtils.titleSize, color: Colors.black)),
           actions: <Widget>[
             IconButton(
-              onPressed: () {},
+              onPressed: elasticSearch,
               icon: Icon(NewIcon.search_small_2x),
               color: blackColor,
               iconSize: 20,
@@ -46,7 +45,8 @@ class _ExplorerPageState extends State<ExplorerPage> {
               Tab(text: 'Aktivitas Amal'),
               Tab(text: 'Story Jejaring'),
               Tab(text: 'Tanya Ustadz'),
-              Tab(text: 'Berita Jejaring')
+              Tab(text: 'Mitra Jejaring'),
+              Tab(text: 'Berita')
             ],
           ),
         ),
@@ -190,6 +190,14 @@ class _ExplorerPageState extends State<ExplorerPage> {
                 style: TextStyle(color: whiteColor)),
           ),
         ),
+      ),
+    );
+  }
+
+  void elasticSearch() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => ElasticSearch(),
       ),
     );
   }
