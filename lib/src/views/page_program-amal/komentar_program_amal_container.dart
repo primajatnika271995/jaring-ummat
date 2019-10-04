@@ -271,12 +271,12 @@ class _KomentarContainerState extends State<KomentarContainer>
           width: 40.0,
           height: 50.0,
           margin: EdgeInsets.symmetric(horizontal: 2.0),
-          child: (value.imageProfile == null)
+          child: (value.imgProfile == null)
               ? CircularProfileAvatar(
                   noImg,
                 )
               : CircularProfileAvatar(
-                  snapshot.data[index].imageProfile[0].imgUrl,
+                  snapshot.data[index].imgProfile,
                 ),
         );
       },
@@ -304,11 +304,11 @@ class _KomentarContainerState extends State<KomentarContainer>
                     child: Container(
                       width: 50.0,
                       height: 50.0,
-                      child: snapshot.data[index].contents == null
+                      child: snapshot.data[index].imageProfile == null
                           ? CircularProfileAvatar(
                               'https://kempenfeltplayers.com/wp-content/uploads/2015/07/profile-icon-empty.png')
                           : CircularProfileAvatar(
-                              snapshot.data[index].contents[0].imgUrl,
+                              snapshot.data[index].imageProfile,
                             ),
                     ),
                   ),

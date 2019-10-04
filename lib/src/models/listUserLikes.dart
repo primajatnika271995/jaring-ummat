@@ -10,21 +10,21 @@ String listUserLikesToJson(List<ListUserLikes> data) => json.encode(new List<dyn
 
 class ListUserLikes {
     String idUser;
-    List<ImageProfile> imageProfile;
+    String imgProfile;
 
     ListUserLikes({
         this.idUser,
-        this.imageProfile,
+        this.imgProfile,
     });
 
-    factory ListUserLikes.fromJson(Map<String, dynamic> json) => new ListUserLikes(
+    factory ListUserLikes.fromJson(Map<String, dynamic> json) => ListUserLikes(
         idUser: json["idUser"] == null ? null : json["idUser"],
-        imageProfile: json["imageProfile"] == null ? null : new List<ImageProfile>.from(json["imageProfile"].map((x) => ImageProfile.fromJson(x))),
+        imgProfile: json["imgProfile"] == null ? null : json["imgProfile"],
     );
 
     Map<String, dynamic> toJson() => {
         "idUser": idUser == null ? null : idUser,
-        "imageProfile": imageProfile == null ? null : new List<dynamic>.from(imageProfile.map((x) => x.toJson())),
+        "imgProfile": imgProfile == null ? null : imgProfile,
     };
 }
 

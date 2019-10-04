@@ -14,7 +14,7 @@ class Comment {
     String title;
     String komentar;
     int createdDate;
-    List<Content> contents;
+    String imageProfile;
 
     Comment({
         this.idUser,
@@ -22,7 +22,7 @@ class Comment {
         this.title,
         this.komentar,
         this.createdDate,
-        this.contents,
+        this.imageProfile,
     });
 
     factory Comment.fromJson(Map<String, dynamic> json) => new Comment(
@@ -31,7 +31,7 @@ class Comment {
         title: json["title"] == null ? null : json["title"],
         komentar: json["komentar"] == null ? null : json["komentar"],
         createdDate: json["createdDate"] == null ? null : json["createdDate"],
-        contents: json["contents"] == null ? null : new List<Content>.from(json["contents"].map((x) => Content.fromJson(x))),
+        imageProfile: json["imageProfile"] == null ? null : json["imageProfile"],
     );
 
     Map<String, dynamic> toJson() => {
@@ -40,7 +40,7 @@ class Comment {
         "title": title == null ? null : title,
         "komentar": komentar == null ? null : komentar,
         "createdDate": createdDate == null ? null : createdDate,
-        "contents": contents == null ? null : new List<dynamic>.from(contents.map((x) => x.toJson())),
+        "imageProfile": imageProfile == null ? null : imageProfile,
     };
 }
 
