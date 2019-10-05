@@ -152,7 +152,9 @@ class _ProfileMenuState extends State<ProfileMenu> {
           Padding(
             padding: const EdgeInsets.only(right: 7),
             child: InkWell(
-              onTap: null,
+              onTap: () {
+                Navigator.of(context).pushNamed('/faq');
+              },
               child: Icon(
                 AllInOneIcon.faq_3x,
                 size: 20,
@@ -163,7 +165,8 @@ class _ProfileMenuState extends State<ProfileMenu> {
           Padding(
             padding: const EdgeInsets.only(right: 7),
             child: InkWell(
-              onTap: null,
+              onTap: () =>
+                  Navigator.of(context).pushNamed('/term-and-condition'),
               child: Icon(
                 AllInOneIcon.t_c_3x,
                 size: 20,

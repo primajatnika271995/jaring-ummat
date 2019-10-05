@@ -6,7 +6,9 @@ import 'package:flutter_jaring_ummat/src/views/galang_amal.dart';
 import 'package:flutter_jaring_ummat/src/views/home.dart';
 import 'package:flutter_jaring_ummat/src/views/login/login.dart';
 import 'package:flutter_jaring_ummat/src/views/onboarding.dart';
+import 'package:flutter_jaring_ummat/src/views/page_faq/faq.dart';
 import 'package:flutter_jaring_ummat/src/views/page_register/step1.dart';
+import 'package:flutter_jaring_ummat/src/views/page_term_and_condition/termAndCondition.dart';
 import 'package:flutter_jaring_ummat/src/views/user_story.dart';
 
 void App() {
@@ -24,6 +26,8 @@ void App() {
         '/onboarding': (context) => OnboardingView(),
         '/list/account/chats': (context) => ListAccountChat(),
         '/chats': (context) => ChatScreen(),
+        '/faq': (context) => FAQPage(),
+        '/term-and-condition': (context) => TermAndConditionPage(),
       },
     ),
   );

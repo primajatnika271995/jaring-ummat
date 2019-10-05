@@ -230,51 +230,61 @@ class _PembayaranDonasiState extends State<PembayaranDonasi> {
                               borderRadius: BorderRadius.circular(13),
                             ),
                             child: ListTile(
-                                title: Text(
-                                  '$titleMetode',
-                                  style: TextStyle(fontSize: 14),
-                                ),
-                                subtitle: subtitleMetode == null
-                                    ? null
-                                    : RichText(
-                                        text: TextSpan(children: <TextSpan>[
-                                          TextSpan(
-                                              text: 'Rp ',
-                                              style: TextStyle(
-                                                  color: Colors.grey,
-                                                  fontSize: 13)),
-                                          TextSpan(
-                                            text: '$subtitleMetode',
+                              title: Text(
+                                '$titleMetode',
+                                style: TextStyle(fontSize: 14),
+                              ),
+                              subtitle: subtitleMetode == null
+                                  ? null
+                                  : RichText(
+                                      text: TextSpan(children: <TextSpan>[
+                                        TextSpan(
+                                            text: 'Rp ',
                                             style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: SizeUtils.titleSize,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                        ]),
-                                      ),
-                                leading: CircleAvatar(
-                                    backgroundColor: Colors.redAccent,
-                                    backgroundImage: indexTile == null
-                                        ? null
-                                        : NetworkImage(imageVA[indexTile]),
-                                    child: indexTile == null
-                                        ? Icon(
-                                            ProfileInboxIcon.balance_2x,
-                                            color: whiteColor,
-                                            size: 20,
-                                          )
-                                        : null),
-                                trailing: OutlineButton(
-                                  onPressed: () {
-                                    _modalBottomSheet();
-                                  },
-                                  child: const Text('Ganti',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.deepPurple)),
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(20)),
-                                )),
+                                                color: Colors.grey,
+                                                fontSize: 13)),
+                                        TextSpan(
+                                          text: '$subtitleMetode',
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: SizeUtils.titleSize,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ]),
+                                    ),
+                              leading: CircleAvatar(
+                                  backgroundColor: Colors.redAccent,
+                                  backgroundImage: indexTile == null
+                                      ? null
+                                      : NetworkImage(imageVA[indexTile]),
+                                  child: indexTile == null
+                                      ? Icon(
+                                          ProfileInboxIcon.balance_2x,
+                                          color: whiteColor,
+                                          size: 20,
+                                        )
+                                      : null),
+                              trailing: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  Icon(Icons.info_outline,
+                                      size: 30, color: blackColor),
+                                  SizedBox(width: 20),
+                                  OutlineButton(
+                                    onPressed: () {
+                                      _modalBottomSheet();
+                                    },
+                                    child: const Text('Ganti',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.deepPurple)),
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(20)),
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
                         ),
                       ],
@@ -346,62 +356,70 @@ class _PembayaranDonasiState extends State<PembayaranDonasi> {
 
   void _modalBottomSheet() {
     showModalBottomSheet(
-        context: context,
-        builder: (builder) {
-          return Container(
-            height: screenHeight(context, dividedBy: 2.2),
-            width: screenWidth(context),
-            color: Colors.transparent,
-            child: Scaffold(
+      context: context,
+      builder: (builder) {
+        return Container(
+          height: screenHeight(context, dividedBy: 2.7),
+          width: screenWidth(context),
+          color: Colors.transparent,
+          child: Scaffold(
+            backgroundColor: whiteColor,
+            appBar: AppBar(
+              title: const Text('Pilih Metode Pembayaran',
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                      fontSize: SizeUtils.titleSize)),
+              actions: <Widget>[
+                IconButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  icon: Icon(NewIcon.close_2x),
+                  color: greenColor,
+                )
+              ],
               backgroundColor: whiteColor,
-              appBar: AppBar(
-                title: const Text('Pilih Metode Pembayaran',
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                        fontSize: SizeUtils.titleSize)),
-                actions: <Widget>[
-                  IconButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    icon: Icon(NewIcon.close_2x),
-                    color: greenColor,
-                  )
-                ],
-                backgroundColor: whiteColor,
-                elevation: 0,
-                automaticallyImplyLeading: false,
-              ),
-              body: ListView.builder(
-                itemCount: imageVA.length,
-                shrinkWrap: true,
-                itemBuilder: (context, index) {
-                  return Container(
-                    // color: Colors.pink,
-                    width: screenWidth(context),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 10),
-                          child: Container(
-                            width: screenWidth(context),
-                            decoration: BoxDecoration(
-                              border:
-                                  Border.all(color: Colors.grey[300], width: 3),
-                              borderRadius: BorderRadius.circular(13),
+              elevation: 0,
+              automaticallyImplyLeading: false,
+            ),
+            body: ListView.builder(
+              itemCount: imageVA.length,
+              shrinkWrap: true,
+              itemBuilder: (context, index) {
+                return Container(
+                  // color: Colors.pink,
+                  width: screenWidth(context),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 10),
+                        child: Container(
+                          width: screenWidth(context),
+                          decoration: BoxDecoration(
+                            border:
+                                Border.all(color: Colors.grey[300], width: 3),
+                            borderRadius: BorderRadius.circular(13),
+                          ),
+                          child: ListTile(
+                            title: Text(
+                              '${vaName[index]}',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 14),
                             ),
-                            child: ListTile(
-                                title: Text('${vaName[index]}',
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
-                                leading: CircleAvatar(
-                                  backgroundColor: Colors.redAccent,
-                                  backgroundImage: NetworkImage(imageVA[index]),
-                                ),
-                                trailing: OutlineButton(
+                            leading: CircleAvatar(
+                              backgroundColor: Colors.redAccent,
+                              backgroundImage: NetworkImage(imageVA[index]),
+                            ),
+                            trailing: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                Icon(Icons.info_outline,
+                                    size: 30, color: blackColor),
+                                SizedBox(width: 20),
+                                OutlineButton(
                                   onPressed: () {
                                     switch (index) {
                                       case 0:
@@ -438,16 +456,20 @@ class _PembayaranDonasiState extends State<PembayaranDonasi> {
                                           color: Colors.deepPurple)),
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(20)),
-                                )),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-                      ],
-                    ),
-                  );
-                },
-              ),
+                      ),
+                    ],
+                  ),
+                );
+              },
             ),
-          );
-        });
+          ),
+        );
+      },
+    );
   }
 }

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_jaring_ummat/src/config/hexColor.dart';
 import 'package:flutter_jaring_ummat/src/models/elasticSearchModel.dart';
 import 'package:flutter_jaring_ummat/src/utils/screenSize.dart';
-import 'package:flutter_jaring_ummat/src/utils/sizeUtils.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/all_in_one_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/bloc/elasticSearchBloc.dart';
 
@@ -13,7 +12,7 @@ class ElasticSearch extends StatefulWidget {
 
 class _ElasticSearchState extends State<ElasticSearch> {
   final _searchCtrl = new TextEditingController();
-  bool showRecomended = true;
+  bool _isSearch = false;
 
   @override
   Widget build(BuildContext context) {
@@ -65,57 +64,64 @@ class _ElasticSearchState extends State<ElasticSearch> {
         body: SingleChildScrollView(
           child: Column(
             children: <Widget>[
-              recomendation(),
-              StreamBuilder(
-                stream: bloc.streamData,
-                builder: (context, AsyncSnapshot<ElasticSearchModel> snapshot) {
-                  switch (snapshot.connectionState) {
-                    case ConnectionState.waiting:
-                      return Center(
-                        child: Text('Waiting..'),
-                      );
-                      break;
-                    default:
-                      if (snapshot.hasData &&
-                          snapshot.data.hits.hits.isNotEmpty) {
-                        return listResult(snapshot.data);
-                      } else if (snapshot.data.hits.hits.isEmpty) {
-                        return Container(
-                          width: screenWidth(context),
-                          color: whiteColor,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Image.asset(
-                                'assets/backgrounds/no_data_accent.png',
-                                height: 250,
+              _isSearch ? Container() : recomendation(),
+              _isSearch
+                  ? StreamBuilder(
+                      stream: bloc.streamData,
+                      builder: (context,
+                          AsyncSnapshot<ElasticSearchModel> snapshot) {
+                        switch (snapshot.connectionState) {
+                          case ConnectionState.waiting:
+                            return Container(
+                              height: screenHeightExcludingToolbar(context),
+                              child: Center(
+                                child: Text('Waiting..'),
                               ),
-                              Text(
-                                'Oops, Data Tidak Ditemukan',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16,
+                            );
+                            break;
+                          default:
+                            if (snapshot.hasData &&
+                                snapshot.data.hits.hits.isNotEmpty) {
+                              return listResult(snapshot.data);
+                            } else if (snapshot.data.hits.hits.isEmpty) {
+                              return Container(
+                                width: screenWidth(context),
+                                height: screenHeightExcludingToolbar(context),
+                                color: whiteColor,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    Image.asset(
+                                      'assets/backgrounds/no_data_accent.png',
+                                      height: 250,
+                                    ),
+                                    Text(
+                                      'Oops, Data Tidak Ditemukan',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                    Text(
+                                      'Tidak ada hasil pencarian berdasarkan \n kata pencarian "${_searchCtrl.text}"',
+                                      style: TextStyle(
+                                        color: Colors.grey,
+                                        fontSize: 14,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ],
                                 ),
-                              ),
-                              Text(
-                                'Tidak ada hasil pencarian berdasarkan \n kata pencarian "${_searchCtrl.text}"',
-                                style: TextStyle(
-                                  color: Colors.grey,
-                                  fontSize: 14,
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-                            ],
-                          ),
-                        );
-                      }
-                      return Center(
-                        child: Text('Error'),
-                      );
-                  }
-                },
-              ),
+                              );
+                            }
+                            return Center(
+                              child: Text('Error'),
+                            );
+                        }
+                      },
+                    )
+                  : Container(),
             ],
           ),
         ),
@@ -150,6 +156,8 @@ class _ElasticSearchState extends State<ElasticSearch> {
             onEditingComplete: () {
               print(_searchCtrl.text);
               bloc.fetchElasticData(_searchCtrl.text);
+              _isSearch = true;
+              setState(() {});
             },
           ),
           Align(
@@ -185,40 +193,48 @@ class _ElasticSearchState extends State<ElasticSearch> {
               OutlineButton(
                 onPressed: () {
                   _searchCtrl.text = 'Kemanusiaan';
+                  _isSearch = true;
                   bloc.fetchElasticData(_searchCtrl.text);
                   setState(() {});
                 },
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20.0),
                 ),
-                child: Text('Kemanusiaan', style: TextStyle(color: Colors.blueAccent, fontWeight: FontWeight.bold)),
+                child: Text('Kemanusiaan',
+                    style: TextStyle(
+                        color: Colors.blueAccent, fontWeight: FontWeight.bold)),
                 color: grayColor,
                 borderSide: BorderSide(width: 2, color: Colors.grey[200]),
               ),
               OutlineButton(
                 onPressed: () {
                   _searchCtrl.text = 'Donasi';
+                  _isSearch = true;
                   bloc.fetchElasticData(_searchCtrl.text);
                   setState(() {});
                 },
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20.0),
                 ),
-                child: Text('Donasi', style: TextStyle(color: Colors.blueAccent, fontWeight: FontWeight.bold)),
+                child: Text('Donasi',
+                    style: TextStyle(
+                        color: Colors.blueAccent, fontWeight: FontWeight.bold)),
                 color: grayColor,
                 borderSide: BorderSide(width: 2, color: Colors.grey[200]),
               ),
               OutlineButton(
                 onPressed: () {
-                  _searchCtrl.text = 'Bamuis BNI';
+                  _searchCtrl.text = 'Sekolah';
+                  _isSearch = true;
                   bloc.fetchElasticData(_searchCtrl.text);
                   setState(() {});
                 },
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20.0),
                 ),
-                child:
-                    Text('Bamuis BNI', style: TextStyle(color: Colors.blueAccent, fontWeight: FontWeight.bold)),
+                child: Text('Sekolah',
+                    style: TextStyle(
+                        color: Colors.blueAccent, fontWeight: FontWeight.bold)),
                 color: grayColor,
                 borderSide: BorderSide(width: 2, color: Colors.grey[200]),
               ),
@@ -230,6 +246,7 @@ class _ElasticSearchState extends State<ElasticSearch> {
               OutlineButton(
                 onPressed: () {
                   _searchCtrl.text = 'Bantuan Pendidikan';
+                  _isSearch = true;
                   bloc.fetchElasticData(_searchCtrl.text);
                   setState(() {});
                 },
@@ -237,20 +254,22 @@ class _ElasticSearchState extends State<ElasticSearch> {
                   borderRadius: BorderRadius.circular(20.0),
                 ),
                 child: Text('Bantuan Pendidikan',
-                    style: TextStyle(color: Colors.blueAccent, fontWeight: FontWeight.bold)),
+                    style: TextStyle(
+                        color: Colors.blueAccent, fontWeight: FontWeight.bold)),
                 color: grayColor,
                 borderSide: BorderSide(width: 2, color: Colors.grey[200]),
               ),
               OutlineButton(
                 onPressed: () {
-                  _searchCtrl.text = 'Wakaf';
+                  _searchCtrl.text = 'Anak';
+                  _isSearch = true;
                   bloc.fetchElasticData(_searchCtrl.text);
                   setState(() {});
                 },
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20.0),
                 ),
-                child: Text('Wakaf Mesjid',
+                child: Text('Anak',
                     style: TextStyle(
                         color: Colors.blueAccent, fontWeight: FontWeight.bold)),
                 color: grayColor,
@@ -294,7 +313,7 @@ class _ElasticSearchState extends State<ElasticSearch> {
                 borderRadius: BorderRadius.circular(30.0),
                 image: DecorationImage(
                   image: NetworkImage(
-                      "https://kempenfeltplayers.com/wp-content/uploads/2015/07/profile-icon-empty.png"),
+                      "https://img.kitabisa.cc/size/664x357/8e86f327-d4a2-4813-a2f1-228ebd35c953.jpg"),
                   fit: BoxFit.cover,
                 ),
               ),
