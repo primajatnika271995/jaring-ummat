@@ -232,7 +232,7 @@ class _PembayaranDonasiState extends State<PembayaranDonasi> {
                             child: ListTile(
                               title: Text(
                                 '$titleMetode',
-                                style: TextStyle(fontSize: 14),
+                                style: TextStyle(fontSize: 11),
                               ),
                               subtitle: subtitleMetode == null
                                   ? null
@@ -268,8 +268,8 @@ class _PembayaranDonasiState extends State<PembayaranDonasi> {
                                 mainAxisSize: MainAxisSize.min,
                                 children: <Widget>[
                                   Icon(Icons.info_outline,
-                                      size: 30, color: blackColor),
-                                  SizedBox(width: 20),
+                                      size: 25, color: blackColor),
+                                  SizedBox(width: 10),
                                   OutlineButton(
                                     onPressed: () {
                                       _modalBottomSheet();
@@ -359,24 +359,26 @@ class _PembayaranDonasiState extends State<PembayaranDonasi> {
       context: context,
       builder: (builder) {
         return Container(
-          height: screenHeight(context, dividedBy: 2.7),
+          height: screenHeight(context, dividedBy: 2),
           width: screenWidth(context),
           color: Colors.transparent,
           child: Scaffold(
             backgroundColor: whiteColor,
             appBar: AppBar(
-              title: const Text('Pilih Metode Pembayaran',
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                      fontSize: SizeUtils.titleSize)),
+              title: const Text(
+                'Pilih Metode Pembayaran',
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                    fontSize: 16),
+              ),
               actions: <Widget>[
                 IconButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  icon: Icon(NewIcon.close_2x),
-                  color: greenColor,
+                  onPressed: () => Navigator.of(context).pop(),
+                  icon: CircleAvatar(
+                      backgroundColor: greenColor,
+                      child:
+                          Icon(NewIcon.close_2x, size: 20, color: whiteColor)),
                 )
               ],
               backgroundColor: whiteColor,
@@ -407,7 +409,7 @@ class _PembayaranDonasiState extends State<PembayaranDonasi> {
                             title: Text(
                               '${vaName[index]}',
                               style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 14),
+                                  fontWeight: FontWeight.bold, fontSize: 11),
                             ),
                             leading: CircleAvatar(
                               backgroundColor: Colors.redAccent,
@@ -417,8 +419,8 @@ class _PembayaranDonasiState extends State<PembayaranDonasi> {
                               mainAxisSize: MainAxisSize.min,
                               children: <Widget>[
                                 Icon(Icons.info_outline,
-                                    size: 30, color: blackColor),
-                                SizedBox(width: 20),
+                                    size: 20, color: blackColor),
+                                SizedBox(width: 10),
                                 OutlineButton(
                                   onPressed: () {
                                     switch (index) {
@@ -452,8 +454,10 @@ class _PembayaranDonasiState extends State<PembayaranDonasi> {
                                   },
                                   child: const Text('Ganti',
                                       style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.deepPurple)),
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.deepPurple,
+                                      )),
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(20)),
                                 ),
