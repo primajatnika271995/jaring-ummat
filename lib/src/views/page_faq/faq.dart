@@ -62,15 +62,16 @@ class _FAQPageState extends State<FAQPage> {
           ListTile(
             leading: CircleAvatar(
               backgroundColor: blueColor,
-              child:
-                  Icon(AllInOneIcon.ask_jejaring_3x, size: 20, color: whiteColor),
+              child: Icon(AllInOneIcon.ask_jejaring_3x,
+                  size: 20, color: whiteColor),
             ),
             title: Text('$pertanyaan',
-                style: TextStyle(fontWeight: FontWeight.bold)),
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15),
             child: TextField(
+              style: TextStyle(fontSize: 14),
               maxLength: null,
               decoration: InputDecoration(
                   border: InputBorder.none,
@@ -88,7 +89,8 @@ class _FAQPageState extends State<FAQPage> {
               height: 10.0,
               child: new Center(
                 child: new Container(
-                    margin: new EdgeInsetsDirectional.only(start: 1.0, end: 1.0),
+                    margin:
+                        new EdgeInsetsDirectional.only(start: 1.0, end: 1.0),
                     height: 5.0,
                     color: Colors.grey[200]),
               ),

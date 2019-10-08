@@ -236,7 +236,8 @@ class _BeritaPageState extends State<BeritaPage> {
                                                                                 "video"
                                                                             ? url.urlThumbnail
                                                                             : url.url,
-                                                      fit: BoxFit.cover,
+                                                                        fit: BoxFit
+                                                                            .cover,
                                                                         width: MediaQuery.of(context)
                                                                             .size
                                                                             .width,
@@ -370,17 +371,13 @@ class _BeritaPageState extends State<BeritaPage> {
                                                     mainAxisAlignment:
                                                         MainAxisAlignment.end,
                                                     children: <Widget>[
-                                                      Icon(NewIcon.love_3x,
+                                                      Icon(NewIcon.save_3x,
                                                           color: blackColor,
-                                                          size: 20.0),
-                                                      SizedBox(width: 10.0),
-                                                      Icon(NewIcon.comment_3x,
-                                                          color: blackColor,
-                                                          size: 20.0),
+                                                          size: 20),
                                                       SizedBox(width: 10.0),
                                                       Icon(NewIcon.share_3x,
                                                           color: blackColor,
-                                                          size: 20.0),
+                                                          size: 20),
                                                     ],
                                                   ),
                                                 ),

@@ -13,6 +13,7 @@ import 'package:flutter_jaring_ummat/src/services/currency_format_service.dart';
 import 'package:flutter_jaring_ummat/src/services/portofolioApi.dart';
 import 'package:flutter_jaring_ummat/src/services/time_ago_service.dart';
 import 'package:flutter_jaring_ummat/src/utils/screenSize.dart';
+import 'package:flutter_jaring_ummat/src/utils/sizeUtils.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/new_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/profile_inbox_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/components/indicator_container.dart';
@@ -53,7 +54,6 @@ class _PortofolioState extends State<Portofolio> {
    * From Libs charts_flutter
    */
   static List<BarchartModel> barData;
-  List<charts.Series<BarchartModel, String>> _seriesLineData;
 
   /*
    * Tab Index
@@ -88,7 +88,6 @@ class _PortofolioState extends State<Portofolio> {
   double shodaqohPercent = 0;
   double donasiPercent = 0;
 
-  List<int> lengthBarChart = [0, 0, 0, 0, 0, 0, 0, 0, 120000, 0, 0, 0];
   double fillPercent;
 
   /*
@@ -97,12 +96,17 @@ class _PortofolioState extends State<Portofolio> {
   bool _loadingVisible = false;
 
   /*
+   * Bar Chart Default Color
+   */
+
+  var barColor = Colors.deepPurple;
+
+  /*
    * Variable No Content Image
    */
   final String noImg =
       "https://kempenfeltplayers.com/wp-content/uploads/2015/07/profile-icon-empty.png";
 
-  /** Variable Icon Floating Button SpeedDial */
   Icon _ic = new Icon(Icons.add);
 
   List<AktivitasTerbesarModel> _listAktivitasTerbaruCache =
@@ -113,8 +117,8 @@ class _PortofolioState extends State<Portofolio> {
     // Title Bar Widget
 
     final titleBar = Text(
-      'Catatan Amal ${PortofolioTextData.listMonth[8]} 2019',
-      style: TextStyle(color: blackColor),
+      'Dashboard Amal',
+      style: TextStyle(color: blackColor, fontSize: SizeUtils.titleSize),
     );
 
     // My Saldo Widget
@@ -251,8 +255,9 @@ class _PortofolioState extends State<Portofolio> {
                   Expanded(
                     flex: 5,
                     child: Container(
-                      height: MediaQuery.of(context).size.height * 0.26,
-                      width: MediaQuery.of(context).size.width * 0.26,
+                      // height: MediaQuery.of(context).size.height * 0.27,
+                      // width: MediaQuery.of(context).size.width * 0.20,
+                      height: 150,
                       child: showingSections == null
                           ? Center(
                               child: Text('Loading data ...'),
@@ -278,7 +283,7 @@ class _PortofolioState extends State<Portofolio> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
                           Text(
-                            'Total pada periode berjalan',
+                            'Sebaran penerimaan amal',
                             style: TextStyle(fontSize: 13, color: grayColor),
                           ),
                           RichText(
@@ -287,8 +292,9 @@ class _PortofolioState extends State<Portofolio> {
                                   text: 'Rp ',
                                   style: TextStyle(color: grayColor)),
                               TextSpan(
-                                text:
-                                    '${CurrencyFormat().currency(valueTotal)}',
+                                text: valueTotal <= 10
+                                    ? '0'
+                                    : '${CurrencyFormat().currency(valueTotal)}',
                                 style: TextStyle(
                                     fontSize: 20,
                                     fontWeight: FontWeight.bold,
@@ -306,36 +312,135 @@ class _PortofolioState extends State<Portofolio> {
                   ),
                 ],
               ),
-        SizedBox(
-          height: 4,
-        ),
+        SizedBox(height: 15),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
-            Indicator(
-              color: Colors.yellowAccent,
-              text: 'Zakat',
-              isSquare: false,
+            InkWell(
+              onTap: () {
+                print('Zakat Data');
+                var items = [
+                  PieChartSectionData(
+                      color: Colors.yellow,
+                      value: valueZakat == 0.0 ? 1 : valueZakat,
+                      title: "${zakatPercent.toString().substring(0, 3)}%",
+                      radius: 26,
+                      titleStyle: TextStyle(fontSize: 12, color: whiteColor)),
+                ];
+                bloc.fetchBarChart("zakat", "satu");
+
+                setState(() {
+                  valueTotal = valueZakat + 1.0;
+                  barColor = Colors.yellow;
+                  pieChartRawSections = items;
+                  showingSections = pieChartRawSections;
+                });
+              },
+              child: Indicator(
+                color: Colors.yellowAccent,
+                text: 'Zakat',
+                isSquare: false,
+              ),
             ),
-            Indicator(
-              color: Colors.redAccent,
-              text: 'Infaq',
-              isSquare: false,
+            InkWell(
+              onTap: () {
+                print('Infaq Data');
+                var items = [
+                  PieChartSectionData(
+                      color: Colors.redAccent,
+                      value: valueInfaq == 0.0 ? 1 : valueInfaq,
+                      title: "${infaqPercent.toString().substring(0, 3)}%",
+                      radius: 26,
+                      titleStyle: TextStyle(fontSize: 12, color: whiteColor)),
+                ];
+                bloc.fetchBarChart("infaq", "satu");
+                setState(() {
+                  barColor = Colors.red;
+                  valueTotal = valueInfaq + 1.0;
+                  pieChartRawSections = items;
+                  showingSections = pieChartRawSections;
+                });
+              },
+              child: Indicator(
+                color: Colors.redAccent,
+                text: 'Infaq',
+                isSquare: false,
+              ),
             ),
-            Indicator(
-              color: Colors.green,
-              text: 'Sodaqoh',
-              isSquare: false,
+            InkWell(
+              onTap: () {
+                print('Sodaqoh Data');
+                var items = [
+                  PieChartSectionData(
+                      color: Colors.green,
+                      value: valueShodqoh == 0.0 ? 1 : valueShodqoh,
+                      title: "${shodaqohPercent.toString().substring(0, 3)}%",
+                      radius: 26,
+                      titleStyle: TextStyle(fontSize: 12, color: whiteColor)),
+                ];
+                bloc.fetchBarChart("sodaqoh", "satu");
+                setState(() {
+                  barColor = Colors.green;
+                  valueTotal = valueShodqoh + 1.0;
+                  pieChartRawSections = items;
+                  showingSections = pieChartRawSections;
+                });
+              },
+              child: Indicator(
+                color: Colors.green,
+                text: 'Sodaqoh',
+                isSquare: false,
+              ),
             ),
-            Indicator(
-              color: Colors.deepPurpleAccent,
-              text: 'Wakaf',
-              isSquare: false,
+            InkWell(
+              onTap: () {
+                print('Wakaf Data');
+                var items = [
+                  PieChartSectionData(
+                      color: Colors.deepPurple,
+                      value: valueWakaf == 0.0 ? 1 : valueWakaf,
+                      title: "${wakafPercent.toString().substring(0, 3)}%",
+                      radius: 26,
+                      titleStyle: TextStyle(fontSize: 12, color: whiteColor)),
+                ];
+                bloc.fetchBarChart("wakaf", "satu");
+                setState(() {
+                  barColor = Colors.deepPurple;
+                  valueTotal = valueWakaf + 1.0;
+                  pieChartRawSections = items;
+                  showingSections = pieChartRawSections;
+                });
+              },
+              child: Indicator(
+                color: Colors.deepPurpleAccent,
+                text: 'Wakaf',
+                isSquare: false,
+              ),
             ),
-            Indicator(
-              color: Colors.blue,
-              text: 'Donasi',
-              isSquare: false,
+            InkWell(
+              onTap: () {
+                print('Donasi Data');
+                var items = [
+                  PieChartSectionData(
+                      color: Colors.blue,
+                      value: valueDonasi == 0.0 ? 1 : valueDonasi,
+                      title: "${donasiPercent.toString().substring(0, 3)}%",
+                      radius: 26,
+                      titleStyle: TextStyle(fontSize: 12, color: whiteColor)),
+                ];
+                bloc.fetchBarChart("donasi", "satu");
+                setState(() {
+                  barColor = Colors.blue;
+                  valueTotal = valueDonasi + 1.0;
+                  pieChartRawSections = items;
+                  showingSections = pieChartRawSections;
+                });
+              },
+              child: Indicator(
+                color: Colors.blue,
+                text: 'Donasi',
+                isSquare: false,
+              ),
             ),
           ],
         ),
@@ -387,7 +492,8 @@ class _PortofolioState extends State<Portofolio> {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.only(left: 15, right: 15, top: 10),
+          padding:
+              const EdgeInsets.only(left: 15, right: 15, top: 10, bottom: 10),
           child: StreamBuilder(
               stream: bloc.aktivitasTerbesar,
               builder: (context,
@@ -456,63 +562,14 @@ class _PortofolioState extends State<Portofolio> {
           ),
         ),
         Padding(
-            padding:
-                const EdgeInsets.only(left: 15, right: 15, top: 10, bottom: 10),
-            child: StreamBuilder(
-                stream: bloc.aktivitasTerbaru,
-                builder: (context,
-                    AsyncSnapshot<List<AktivitasTerbesarModel>> snapshot) {
-                  switch (snapshot.connectionState) {
-                    case ConnectionState.waiting:
-                      return Center(child: Text('Load data'));
-                      break;
-                    default:
-                      if (snapshot.hasData) {
-                        return listPenerimaAmalTerbaru(snapshot.data);
-                      }
-                      if (_listAktivitasTerbaruCache.length > 0) {
-                        print('Cache Data ==>');
-                        print(_listAktivitasTerbaruCache.length);
-                        return listPenerimaAmalTerbaru(
-                            _listAktivitasTerbaruCache);
-                      }
-
-                      return ListView.builder(
-                        itemCount: 3,
-                        shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
-                        itemBuilder: (context, index) {
-                          return Padding(
-                            padding: EdgeInsets.symmetric(vertical: 5),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                    color: Colors.grey[200], width: 3),
-                                borderRadius: BorderRadius.circular(13),
-                              ),
-                              child: ListTile(
-                                leading: Container(
-                                  width: 53.0,
-                                  height: 53.0,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(30.0),
-                                    image: DecorationImage(
-                                      image: NetworkImage(
-                                          'https://kempenfeltplayers.com/wp-content/uploads/2015/07/profile-icon-empty.png'),
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                ),
-                                title: Text('No Data'),
-                                subtitle: Text('No Data'),
-                                trailing: Text('0'),
-                              ),
-                            ),
-                          );
-                        },
-                      );
-                  }
-                })),
+          padding:
+              const EdgeInsets.only(left: 15, right: 15, top: 10, bottom: 10),
+          child: _listAktivitasTerbaruCache == null
+              ? Center(
+                  child: Text('Load Data'),
+                )
+              : listPenerimaAmalTerbaru(_listAktivitasTerbaruCache),
+        ),
       ],
     );
 
@@ -552,277 +609,6 @@ class _PortofolioState extends State<Portofolio> {
                       ),
                     ),
                   ]),
-                ),
-                SliverAppBar(
-                  backgroundColor: whiteColor,
-                  automaticallyImplyLeading: false,
-                  floating: true,
-                  pinned: true,
-                  flexibleSpace: AppBar(
-                    elevation: 1,
-                    backgroundColor: whiteColor,
-                    automaticallyImplyLeading: false,
-                    bottom: TabBar(
-                      isScrollable: true,
-                      indicator: UnderlineTabIndicator(
-                        borderSide:
-                            BorderSide(width: 4.0, color: Colors.blueAccent),
-                      ),
-                      labelColor: blackColor,
-                      onTap: (index) {
-                        switch (index) {
-                          case 0:
-                            print('Total Data');
-                            getDataPieChart();
-                            break;
-                          case 1:
-                            print('Zakat Data');
-                            var items = [
-                              PieChartSectionData(
-                                  color: Colors.yellow,
-                                  value: valueZakat == 0.0 ? 1 : valueZakat,
-                                  title:
-                                      "${zakatPercent.toString().substring(0, 3)}%",
-                                  radius: 26,
-                                  titleStyle: TextStyle(
-                                      fontSize: 12, color: whiteColor)),
-                            ];
-                            setState(() {
-                              pieChartRawSections = items;
-                              showingSections = pieChartRawSections;
-                            });
-                            break;
-                          case 2:
-                            print('Infaq Data');
-                            var items = [
-                              PieChartSectionData(
-                                  color: Colors.redAccent,
-                                  value: valueInfaq == 0.0 ? 1 : valueInfaq,
-                                  title:
-                                      "${infaqPercent.toString().substring(0, 3)}%",
-                                  radius: 26,
-                                  titleStyle: TextStyle(
-                                      fontSize: 10, color: whiteColor)),
-                            ];
-                            setState(() {
-                              pieChartRawSections = items;
-                              showingSections = pieChartRawSections;
-                            });
-                            break;
-                          case 3:
-                            print('Sodaqoh Data');
-                            var items = [
-                              PieChartSectionData(
-                                  color: Colors.green,
-                                  value: valueShodqoh == 0.0 ? 1 : valueShodqoh,
-                                  title:
-                                      "${shodaqohPercent.toString().substring(0, 3)}%",
-                                  radius: 26,
-                                  titleStyle: TextStyle(
-                                      fontSize: 10, color: whiteColor)),
-                            ];
-                            setState(() {
-                              pieChartRawSections = items;
-                              showingSections = pieChartRawSections;
-                            });
-                            break;
-                          case 4:
-                            print('Wakaf Data');
-                            var items = [
-                              PieChartSectionData(
-                                  color: Colors.deepPurple,
-                                  value: valueWakaf == 0.0 ? 1 : valueWakaf,
-                                  title:
-                                      "${wakafPercent.toString().substring(0, 3)}%",
-                                  radius: 26,
-                                  titleStyle: TextStyle(
-                                      fontSize: 12, color: whiteColor)),
-                            ];
-                            setState(() {
-                              pieChartRawSections = items;
-                              showingSections = pieChartRawSections;
-                            });
-                            break;
-                          case 5:
-                            print('Donasi Data');
-                            var items = [
-                              PieChartSectionData(
-                                  color: Colors.blue,
-                                  value: valueDonasi == 0.0 ? 1 : valueDonasi,
-                                  title:
-                                      "${donasiPercent.toString().substring(0, 4)}%",
-                                  radius: 26,
-                                  titleStyle: TextStyle(
-                                      fontSize: 10, color: whiteColor)),
-                            ];
-                            setState(() {
-                              pieChartRawSections = items;
-                              showingSections = pieChartRawSections;
-                            });
-                            break;
-                          default:
-                        }
-                      },
-                      tabs: <Widget>[
-                        new Tab(
-                          child: Column(
-                            children: <Widget>[
-                              const Text(
-                                'Total',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                ),
-                              ),
-                              new Row(
-                                children: <Widget>[
-                                  const Text(
-                                    'Rp',
-                                    style: TextStyle(
-                                      fontSize: 11.0,
-                                    ),
-                                  ),
-                                  Text(
-                                    '${CurrencyFormat().currency(valueTotal)}',
-                                    style: TextStyle(
-                                      fontSize: 13.0,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                        new Tab(
-                          child: Column(
-                            children: <Widget>[
-                              const Text(
-                                'Zakat',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                ),
-                              ),
-                              new Row(
-                                children: <Widget>[
-                                  const Text(
-                                    'Rp',
-                                    style: TextStyle(
-                                      fontSize: 11.0,
-                                    ),
-                                  ),
-                                  Text(
-                                    '${CurrencyFormat().currency(valueZakat)}',
-                                    style: TextStyle(
-                                      fontSize: 13.0,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                        new Tab(
-                          child: Column(
-                            children: <Widget>[
-                              const Text(
-                                'Infaq',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                ),
-                              ),
-                              new Row(
-                                children: <Widget>[
-                                  const Text(
-                                    'Rp',
-                                    style: TextStyle(
-                                      fontSize: 11.0,
-                                    ),
-                                  ),
-                                  Text(
-                                    '${CurrencyFormat().currency(valueInfaq)}',
-                                    style: TextStyle(
-                                      fontSize: 13.0,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                        new Tab(
-                          child: Column(
-                            children: <Widget>[
-                              const Text(
-                                'Sodaqoh',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                ),
-                              ),
-                              new Row(
-                                children: <Widget>[
-                                  const Text(
-                                    'Rp',
-                                    style: TextStyle(fontSize: 11.0),
-                                  ),
-                                  Text(
-                                    '${CurrencyFormat().currency(valueShodqoh)}',
-                                    style: TextStyle(fontSize: 13.0),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                        new Tab(
-                          child: Column(
-                            children: <Widget>[
-                              const Text(
-                                'Wakaf',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                ),
-                              ),
-                              new Row(
-                                children: <Widget>[
-                                  const Text(
-                                    'Rp',
-                                    style: TextStyle(fontSize: 11.0),
-                                  ),
-                                  Text(
-                                    '${CurrencyFormat().currency(valueWakaf)}',
-                                    style: TextStyle(fontSize: 13.0),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                        new Tab(
-                          child: Column(
-                            children: <Widget>[
-                              const Text(
-                                'Donasi',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                ),
-                              ),
-                              new Row(
-                                children: <Widget>[
-                                  const Text(
-                                    'Rp',
-                                    style: TextStyle(fontSize: 11.0),
-                                  ),
-                                  Text(
-                                    '${CurrencyFormat().currency(valueDonasi)}',
-                                    style: TextStyle(fontSize: 13.0),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
                 ),
                 SliverList(
                   delegate: SliverChildListDelegate([
@@ -1178,10 +964,12 @@ class _PortofolioState extends State<Portofolio> {
               shrinkWrap: true,
               scrollDirection: Axis.horizontal,
               itemBuilder: (context, index) {
-                lengthBarChart[index] == 0 ? fillPercent = 0 : fillPercent = 80;
+                var data = snapshot[index];
+                var percent = (data.total / valueTotal) * 100;
+                fillPercent = percent;
 
                 final Color background = Colors.grey[200];
-                final Color fill = Colors.deepPurple;
+                final Color fill = barColor;
                 final List<Color> gradient = [
                   background,
                   background,
@@ -1204,55 +992,14 @@ class _PortofolioState extends State<Portofolio> {
                       ),
                       borderRadius: BorderRadius.circular(5),
                     ),
-                    width: screenWidth(context, dividedBy: 15.5),
+                    width: screenWidth(context, dividedBy: 16.8),
                   ),
                 );
               },
             ),
           ),
         ),
-        // Padding(
-        //   padding: const EdgeInsets.symmetric(horizontal: 15),
-        //   child: Container(
-        //     height: 140,
-        //     width: screenWidth(context),
-        //     child: ListView.builder(
-        //       itemCount: 12,
-        //       shrinkWrap: true,
-        //       scrollDirection: Axis.horizontal,
-        //       itemBuilder: (context, index) {
-        //         return Padding(
-        //           padding: const EdgeInsets.symmetric(horizontal: 3),
-        //           child: Container(
-        //             decoration: BoxDecoration(
-        //                 color: Colors.grey[200],
-        //                 borderRadius: BorderRadius.only(
-        //                   topLeft: Radius.circular(5),
-        //                   topRight: Radius.circular(5),
-        //                 )),
-        //             width: 29.5,
-        //           ),
-        //         );
-        //       },
-        //     ),
-        //   ),
-        // ),
       ],
-    );
-  }
-
-  void _createData(lineData) {
-    _seriesLineData = List<charts.Series<BarchartModel, String>>();
-    _seriesLineData.add(
-      charts.Series(
-        id: 'Tren Aktivitas',
-        colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
-        domainFn: (tren, _) => tren.namaBulan.substring(0, 3),
-        measureFn: (BarchartModel tren, _) => tren.total / 10000,
-        data: lineData,
-        // labelAccessorFn: (BarchartModel tren, _) =>
-        //     '${CurrencyFormat().currency(tren.total.toDouble())}',
-      ),
     );
   }
 }

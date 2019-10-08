@@ -29,17 +29,16 @@ class _BeritaContentState extends State<BeritaContent> {
       child: Container(
         height: 110.0,
         width: 150.0,
-        child: (widget.berita.imageContent == null)
-            ? Image.network(noImg, fit: BoxFit.cover)
-            : widget.berita.imageContent[0].resourceType == "video"
-                ? Image.network(
-                    widget.berita.imageContent[0].urlThumbnail,
-                    fit: BoxFit.cover,
-                  )
-                : Image.network(
-                    widget.berita.imageContent[0].url,
-                    fit: BoxFit.cover,
-                  ),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          image: DecorationImage(
+              image: (widget.berita.imageContent == null)
+                  ? NetworkImage(noImg)
+                  : widget.berita.imageContent[0].resourceType == "video"
+                      ? NetworkImage(widget.berita.imageContent[0].urlThumbnail)
+                      : NetworkImage(widget.berita.imageContent[0].url),
+              fit: BoxFit.cover),
+        ),
       ),
     );
 
@@ -148,10 +147,7 @@ class _BeritaContentState extends State<BeritaContent> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: <Widget>[
-                            Icon(NewIcon.love_3x,
-                                color: blackColor, size: 20.0),
-                            SizedBox(width: 10.0),
-                            Icon(NewIcon.comment_3x,
+                            Icon(NewIcon.save_3x,
                                 color: blackColor, size: 20.0),
                             SizedBox(width: 10.0),
                             Icon(NewIcon.share_3x,

@@ -69,6 +69,7 @@ dependencies:
   solid_bottom_sheet: ^0.1.4
   charts_flutter: ^0.8.1
   barcode_scan: ^1.0.0
+  flutter_typeahead: ^1.6.1
 
   flutter_facebook_login:
     git: https://github.com/lequanghiep74/flutter_facebook_login

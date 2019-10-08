@@ -45,28 +45,30 @@ class _TermAndConditionPageState extends State<TermAndConditionPage> {
           },
         ),
       ),
-      bottomNavigationBar: SizedBox(
-        height: 80,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Row(
-            children: <Widget>[
-              IconButton(
-                onPressed: () {
-                  _isApprove = !_isApprove;
-                  setState(() {});
-                },
-                // color: _isApprove ? greenColor : whiteColor,
-                icon: CircleAvatar(
-                  backgroundColor: _isApprove ? greenColor : whiteColor,
-                  child: Icon(AllInOneIcon.checklist_2x,
-                      color: _isApprove ? whiteColor : blackColor, size: 20),
-                ),
-                iconSize: 20,
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: Row(
+          children: <Widget>[
+            IconButton(
+              onPressed: () {
+                _isApprove = !_isApprove;
+                setState(() {});
+              },
+              icon: CircleAvatar(
+                backgroundColor: _isApprove ? greenColor : Colors.grey,
+                child: Icon(AllInOneIcon.checklist_2x,
+                    color: _isApprove ? whiteColor : whiteColor, size: 20),
               ),
-              const Text('Saya telah menyetujui Syarat dan Ketentuan Jaring')
-            ],
-          ),
+              iconSize: 20,
+            ),
+            Container(
+              width: 250,
+              child: const Text(
+                'Saya telah menyetujui Syarat dan Ketentuan Jaring',
+                style: TextStyle(fontSize: 13),
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -81,21 +83,25 @@ class _TermAndConditionPageState extends State<TermAndConditionPage> {
             leading: CircleAvatar(
               backgroundColor: blueColor,
               child: Text('${index + 1}',
-                  style: TextStyle(color: whiteColor, fontSize: 20)),
+                  style: TextStyle(color: whiteColor, fontSize: 15)),
             ),
-            title: Text('$term', style: TextStyle(fontWeight: FontWeight.bold)),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 70),
-            child: TextField(
-              maxLength: null,
+            title: Text(
+              '$term',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 15,
+              ),
+            ),
+            subtitle: TextField(
+              style: TextStyle(fontSize: 15),
+              maxLines: null,
               decoration: InputDecoration(
                   border: InputBorder.none,
                   hintText: 'Deskripsi atas poin diatas...'),
             ),
           ),
           Padding(
-            padding: EdgeInsets.only(left: 70, right: 15, top: 10),
+            padding: EdgeInsets.only(left: 70, right: 15),
             child: new SizedBox(
               height: 10.0,
               child: new Center(

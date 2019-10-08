@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_jaring_ummat/src/config/hexColor.dart';
+import 'package:flutter_jaring_ummat/src/models/elasticSearchAutocompleteModel.dart';
 import 'package:flutter_jaring_ummat/src/models/elasticSearchModel.dart';
+import 'package:flutter_jaring_ummat/src/services/elasticSearchApi.dart';
 import 'package:flutter_jaring_ummat/src/utils/screenSize.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/all_in_one_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/bloc/elasticSearchBloc.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 
 class ElasticSearch extends StatefulWidget {
   @override
@@ -11,8 +14,11 @@ class ElasticSearch extends StatefulWidget {
 }
 
 class _ElasticSearchState extends State<ElasticSearch> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final _searchCtrl = new TextEditingController();
   bool _isSearch = false;
+
+  ElasticSearchProvider _provider = new ElasticSearchProvider();
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +30,7 @@ class _ElasticSearchState extends State<ElasticSearch> {
           automaticallyImplyLeading: false,
           backgroundColor: whiteColor,
           elevation: 1,
-          title: searchForm(),
+          title: searchAutoCompleteForm(),
           actions: <Widget>[
             Padding(
               padding: const EdgeInsets.only(right: 7),
@@ -135,6 +141,74 @@ class _ElasticSearchState extends State<ElasticSearch> {
     super.initState();
   }
 
+  Widget searchAutoCompleteForm() {
+    return Form(
+      key: _formKey,
+      child: Container(
+        margin: EdgeInsets.only(top: 8),
+        child: Stack(
+          children: <Widget>[
+            TypeAheadField(
+              textFieldConfiguration: TextFieldConfiguration(
+                style: TextStyle(fontSize: 14),
+                autocorrect: false,
+                decoration: InputDecoration(
+                  contentPadding: EdgeInsets.fromLTRB(40, 10, 15, 10),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(32),
+                    borderSide: BorderSide(color: greenColor),
+                  ),
+                  hintText: 'Apa yang kamu Cari?',
+                ),
+                controller: _searchCtrl,
+                keyboardType: TextInputType.text,
+                textInputAction: TextInputAction.done,
+                onEditingComplete: () {
+                  print(_searchCtrl.text);
+                  bloc.fetchElasticData(_searchCtrl.text);
+                  _isSearch = true;
+                  setState(() {});
+                },
+              ),
+              suggestionsCallback: ((pattern) async {
+                print(pattern);
+                // return CitiesService.getSuggestions(pattern);
+                return _provider.fetchAutoCompleteManual(pattern);
+                // return await bloc.fetchElasticAutoComplete(_searchCtrl.text);
+              }),
+              itemBuilder: (context, suggestion) {
+                return ListTile(
+                  title: Text(
+                    '$suggestion',
+                    style: TextStyle(fontSize: 13),
+                  ),
+                );
+              },
+              onSuggestionSelected: (suggestion) {
+                print('$suggestion');
+                _searchCtrl.text = suggestion;
+                bloc.fetchElasticData(_searchCtrl.text);
+                _isSearch = true;
+                setState(() {});
+              },
+            ),
+            Align(
+              alignment: Alignment(-0.9, -1),
+              child: Padding(
+                padding: const EdgeInsets.only(top: 8),
+                child: Icon(
+                  AllInOneIcon.search_small_2x,
+                  color: grayColor,
+                  size: 20,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   Widget searchForm() {
     return Container(
       margin: EdgeInsets.only(top: 8),
@@ -224,7 +298,7 @@ class _ElasticSearchState extends State<ElasticSearch> {
               ),
               OutlineButton(
                 onPressed: () {
-                  _searchCtrl.text = 'Sekolah';
+                  _searchCtrl.text = 'Anak';
                   _isSearch = true;
                   bloc.fetchElasticData(_searchCtrl.text);
                   setState(() {});
@@ -232,7 +306,7 @@ class _ElasticSearchState extends State<ElasticSearch> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20.0),
                 ),
-                child: Text('Sekolah',
+                child: Text('Bantuan Anak',
                     style: TextStyle(
                         color: Colors.blueAccent, fontWeight: FontWeight.bold)),
                 color: grayColor,
@@ -261,7 +335,7 @@ class _ElasticSearchState extends State<ElasticSearch> {
               ),
               OutlineButton(
                 onPressed: () {
-                  _searchCtrl.text = 'Anak';
+                  _searchCtrl.text = 'Wakaf';
                   _isSearch = true;
                   bloc.fetchElasticData(_searchCtrl.text);
                   setState(() {});
@@ -269,7 +343,7 @@ class _ElasticSearchState extends State<ElasticSearch> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20.0),
                 ),
-                child: Text('Anak',
+                child: Text('Wakaf Mesjid',
                     style: TextStyle(
                         color: Colors.blueAccent, fontWeight: FontWeight.bold)),
                 color: grayColor,
