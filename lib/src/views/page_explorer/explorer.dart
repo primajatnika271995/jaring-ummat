@@ -30,7 +30,7 @@ class _ExplorerPageState extends State<ExplorerPage> {
               onPressed: elasticSearch,
               icon: Icon(NewIcon.search_small_2x),
               color: blackColor,
-              iconSize: 20,
+              iconSize: 25,
             ),
           ],
           bottom: TabBar(

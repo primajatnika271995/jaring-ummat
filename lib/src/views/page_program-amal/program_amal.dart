@@ -88,7 +88,7 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                     },
                     child: Icon(
                       AppBarIcon.location_inactive,
-                      size: 20,
+                      size: 25,
                       color: blackColor,
                     ),
                   ),
@@ -105,7 +105,7 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                     },
                     child: Icon(
                       NewIcon.nav_inbox_3x,
-                      size: 20,
+                      size: 25,
                       color: blackColor,
                     ),
                   ),
@@ -124,7 +124,7 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                                   .pushNamed('/list/account/chats');
                             },
                             child: Icon(NewIcon.chat_3x,
-                                size: 20, color: blackColor)),
+                                size: 25, color: blackColor)),
                       ),
                     ),
                     Positioned(

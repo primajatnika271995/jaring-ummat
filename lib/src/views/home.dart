@@ -102,20 +102,20 @@ class _HomeState extends State<HomeView> {
           onTap: _selectedTab,
           items: [
             BottomNavigationBarItem(
-              icon: Icon(NewIcon.nav_home_inactive_3x, size: 20.0),
+              icon: Icon(NewIcon.nav_home_inactive_3x, size: 25.0),
               activeIcon: Icon(
                 NewIcon.nav_home_active_3x,
                 color: greenColor,
-                size: 20.0,
+                size: 25.0,
               ),
               title: Padding(padding: EdgeInsets.all(0)),
             ),
             BottomNavigationBarItem(
-              icon: Icon(AllInOneIcon.nav_explore_inactive_3x, size: 20.0),
+              icon: Icon(AllInOneIcon.nav_explore_inactive_3x, size: 25.0),
               activeIcon: Icon(
                 AllInOneIcon.nav_explore_active_3x,
                 color: greenColor,
-                size: 20.0,
+                size: 25.0,
               ),
               title: Padding(padding: EdgeInsets.all(0)),
             ),
@@ -125,20 +125,20 @@ class _HomeState extends State<HomeView> {
               title: Padding(padding: EdgeInsets.all(0)),
             ),
             BottomNavigationBarItem(
-              icon: Icon(AllInOneIcon.nav_portfolio_3x, size: 20.0),
+              icon: Icon(AllInOneIcon.nav_portfolio_3x, size: 25.0),
               activeIcon: Icon(
                 AllInOneIcon.nav_portfolio_active_3x,
                 color: greenColor,
-                size: 20.0,
+                size: 25.0,
               ),
               title: Padding(padding: EdgeInsets.all(0)),
             ),
             BottomNavigationBarItem(
-              icon: new Icon(NewIcon.nav_others_3x, size: 20.0),
+              icon: new Icon(NewIcon.nav_others_3x, size: 25.0),
               activeIcon: new Icon(
                 ProfileInboxIcon.nav_others_active_3x,
                 color: greenColor,
-                size: 20.0,
+                size: 25.0,
               ),
               title: Padding(padding: EdgeInsets.all(0)),
             ),

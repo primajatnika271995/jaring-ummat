@@ -23,15 +23,15 @@ class PembayaranDonasi extends StatefulWidget {
 
   PembayaranDonasi(
       {Key key,
-      this.toLembagaAmal,
-      this.nominal,
-      this.email,
-      this.phone,
-      this.lembagaId,
-      this.type,
-      this.idProgram,
-      this.nameProgram,
-      this.customerName})
+        this.toLembagaAmal,
+        this.nominal,
+        this.email,
+        this.phone,
+        this.lembagaId,
+        this.type,
+        this.idProgram,
+        this.nameProgram,
+        this.customerName})
       : super(key: key);
 
   @override
@@ -78,6 +78,7 @@ class _PembayaranDonasiState extends State<PembayaranDonasi> {
    * Virtual Name List
    */
   final List<String> vaName = [
+    'Dompet Jejaring',
     'BNI Syariah VA Billing',
     'Mandiri Syariah VA Billing',
     'Bank Muamalat VA Billing'
@@ -87,6 +88,7 @@ class _PembayaranDonasiState extends State<PembayaranDonasi> {
    * Virtual Account Image
    */
   final List<String> imageVA = [
+    'https://2.bp.blogspot.com/-qy7Sanutml0/WmXk88IBzNI/AAAAAAAANyg/2fENOvWf5bUgTD8T7FEAzotvjdmusMZYACLcBGAs/s600/Bank-BNI-Syariah-Logo.jpg',
     'https://2.bp.blogspot.com/-qy7Sanutml0/WmXk88IBzNI/AAAAAAAANyg/2fENOvWf5bUgTD8T7FEAzotvjdmusMZYACLcBGAs/s600/Bank-BNI-Syariah-Logo.jpg',
     'https://www.syariahbank.com/wp-content/uploads/2015/03/profil-dan-produk-Bank-Syariah-Mandiri.jpg',
     'https://cdn2.tstatic.net/makassar/foto/bank/images/logo-bank-muamalat_20180724_102448.jpg'
@@ -102,7 +104,7 @@ class _PembayaranDonasiState extends State<PembayaranDonasi> {
    */
   String titleMetode = 'Dompet Jejaring';
   String subtitleMetode = '1.700';
-  int indexTile = null;
+  int indexTile = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -155,7 +157,7 @@ class _PembayaranDonasiState extends State<PembayaranDonasi> {
                             width: screenWidth(context),
                             decoration: BoxDecoration(
                               border:
-                                  Border.all(color: Colors.grey[300], width: 3),
+                              Border.all(color: Colors.grey[300], width: 3),
                               borderRadius: BorderRadius.circular(13),
                             ),
                             child: ListTile(
@@ -167,7 +169,7 @@ class _PembayaranDonasiState extends State<PembayaranDonasi> {
                                           color: Colors.grey, fontSize: 13)),
                                   TextSpan(
                                     text:
-                                        '${CurrencyFormat().currency(nominal)}',
+                                    '${CurrencyFormat().currency(nominal)}',
                                     style: TextStyle(
                                         color: Colors.black,
                                         fontSize: SizeUtils.titleSize,
@@ -226,55 +228,65 @@ class _PembayaranDonasiState extends State<PembayaranDonasi> {
                             width: screenWidth(context),
                             decoration: BoxDecoration(
                               border:
-                                  Border.all(color: Colors.grey[300], width: 3),
+                              Border.all(color: Colors.grey[300], width: 3),
                               borderRadius: BorderRadius.circular(13),
                             ),
                             child: ListTile(
-                                title: Text(
-                                  '$titleMetode',
-                                  style: TextStyle(fontSize: 14),
-                                ),
-                                subtitle: subtitleMetode == null
-                                    ? null
-                                    : RichText(
-                                        text: TextSpan(children: <TextSpan>[
-                                          TextSpan(
-                                              text: 'Rp ',
-                                              style: TextStyle(
-                                                  color: Colors.grey,
-                                                  fontSize: 13)),
-                                          TextSpan(
-                                            text: '$subtitleMetode',
-                                            style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: SizeUtils.titleSize,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                        ]),
-                                      ),
-                                leading: CircleAvatar(
-                                    backgroundColor: Colors.redAccent,
-                                    backgroundImage: indexTile == null
-                                        ? null
-                                        : NetworkImage(imageVA[indexTile]),
-                                    child: indexTile == null
-                                        ? Icon(
-                                            ProfileInboxIcon.balance_2x,
-                                            color: whiteColor,
-                                            size: 20,
-                                          )
-                                        : null),
-                                trailing: OutlineButton(
-                                  onPressed: () {
-                                    _modalBottomSheet();
-                                  },
-                                  child: const Text('Ganti',
+                              title: Text(
+                                '$titleMetode',
+                                style: TextStyle(fontSize: 11),
+                              ),
+                              subtitle: subtitleMetode == null
+                                  ? null
+                                  : RichText(
+                                text: TextSpan(children: <TextSpan>[
+                                  TextSpan(
+                                      text: 'Rp ',
                                       style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.deepPurple)),
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(20)),
-                                )),
+                                          color: Colors.grey,
+                                          fontSize: 13)),
+                                  TextSpan(
+                                    text: '$subtitleMetode',
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: SizeUtils.titleSize,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ]),
+                              ),
+                              leading: CircleAvatar(
+                                  backgroundColor: Colors.redAccent,
+                                  backgroundImage: indexTile == 0
+                                      ? null
+                                      : NetworkImage(imageVA[indexTile]),
+                                  child: indexTile == 0
+                                      ? Icon(
+                                    ProfileInboxIcon.balance_2x,
+                                    color: whiteColor,
+                                    size: 20,
+                                  )
+                                      : null),
+                              trailing: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  Icon(Icons.info_outline,
+                                      size: 25, color: blackColor),
+                                  SizedBox(width: 10),
+                                  OutlineButton(
+                                    onPressed: () {
+                                      _modalBottomSheet();
+                                    },
+                                    child: const Text('Ganti',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.deepPurple)),
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                        BorderRadius.circular(20)),
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
                         ),
                       ],
@@ -300,11 +312,6 @@ class _PembayaranDonasiState extends State<PembayaranDonasi> {
                                 idProgram != null ? idProgram : lembagaId,
                                 type,
                               );
-                              // Navigator.of(context).push(MaterialPageRoute(
-                              //     builder: (context) => InstruksiPembayaran(
-                              //           nominal: nominal,
-                              //           toLembagAmal: toLembagaAmal,
-                              //         )));
                             },
                             child: const Text('Selanjutnya',
                                 style: TextStyle(
@@ -346,76 +353,114 @@ class _PembayaranDonasiState extends State<PembayaranDonasi> {
 
   void _modalBottomSheet() {
     showModalBottomSheet(
-        context: context,
-        builder: (builder) {
-          return Container(
-            height: screenHeight(context, dividedBy: 2.2),
-            width: screenWidth(context),
-            color: Colors.transparent,
-            child: Scaffold(
-              backgroundColor: whiteColor,
-              appBar: AppBar(
-                title: const Text('Pilih Metode Pembayaran',
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                        fontSize: SizeUtils.titleSize)),
-                actions: <Widget>[
-                  IconButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    icon: Icon(NewIcon.close_2x),
-                    color: greenColor,
-                  )
-                ],
-                backgroundColor: whiteColor,
-                elevation: 0,
-                automaticallyImplyLeading: false,
+      context: context,
+      builder: (builder) {
+        return Container(
+          height: screenHeight(context, dividedBy: 2),
+          width: screenWidth(context),
+          color: Colors.transparent,
+          child: Scaffold(
+            backgroundColor: whiteColor,
+            appBar: AppBar(
+              title: const Text(
+                'Pilih Metode Pembayaran',
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                    fontSize: 16),
               ),
-              body: ListView.builder(
-                itemCount: imageVA.length,
-                shrinkWrap: true,
-                itemBuilder: (context, index) {
-                  return Container(
-                    // color: Colors.pink,
-                    width: screenWidth(context),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 10),
-                          child: Container(
-                            width: screenWidth(context),
-                            decoration: BoxDecoration(
-                              border:
-                                  Border.all(color: Colors.grey[300], width: 3),
-                              borderRadius: BorderRadius.circular(13),
+              actions: <Widget>[
+                IconButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  icon: CircleAvatar(
+                      backgroundColor: greenColor,
+                      radius: 12.0,
+                      child:
+                      Icon(NewIcon.close_2x, size: 12, color: whiteColor)),
+                )
+              ],
+              backgroundColor: whiteColor,
+              elevation: 0,
+              automaticallyImplyLeading: false,
+            ),
+            body: ListView.builder(
+              itemCount: vaName.length,
+              shrinkWrap: true,
+              itemBuilder: (context, index) {
+                return Container(
+                  // color: Colors.pink,
+                  width: screenWidth(context),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 7),
+                        child: Container(
+                          width: screenWidth(context),
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                                color: indexTile == index
+                                    ? greenColor
+                                    : Colors.grey[300],
+                                width: 3),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: ListTile(
+                            title: Text(
+                              '${vaName[index]}',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 11),
                             ),
-                            child: ListTile(
-                                title: Text('${vaName[index]}',
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
-                                leading: CircleAvatar(
-                                  backgroundColor: Colors.redAccent,
-                                  backgroundImage: NetworkImage(imageVA[index]),
+                            subtitle: index == 0
+                                ? RichText(
+                              text: TextSpan(children: <TextSpan>[
+                                TextSpan(
+                                    text: 'Rp ',
+                                    style: TextStyle(
+                                        color: Colors.grey,
+                                        fontSize: 13)),
+                                TextSpan(
+                                  text: '1.700',
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: SizeUtils.titleSize,
+                                      fontWeight: FontWeight.bold),
                                 ),
-                                trailing: OutlineButton(
+                              ]),
+                            )
+                                : null,
+                            leading: CircleAvatar(
+                                backgroundColor: Colors.redAccent,
+                                backgroundImage: index == 0
+                                    ? null : NetworkImage(imageVA[index]),
+                                child: index == 0
+                                    ? Icon(
+                                  ProfileInboxIcon.balance_2x,
+                                  color: whiteColor,
+                                  size: 20,
+                                )
+                                    : null),
+                            trailing: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                Icon(Icons.info_outline,
+                                    size: 20, color: blackColor),
+                                SizedBox(width: 10),
+                                OutlineButton(
                                   onPressed: () {
                                     switch (index) {
                                       case 0:
                                         setState(() {
-                                          titleMetode =
-                                              'BNI Syariah VA Billing';
-                                          subtitleMetode = null;
+                                          titleMetode = 'Dompet Jejaring';
+                                          subtitleMetode = '1.700';
                                           indexTile = 0;
                                         });
                                         break;
                                       case 1:
                                         setState(() {
                                           titleMetode =
-                                              'Mandiri Syariah VA Billing';
+                                          'BNI Syariah VA Billing';
                                           subtitleMetode = null;
                                           indexTile = 1;
                                         });
@@ -423,31 +468,61 @@ class _PembayaranDonasiState extends State<PembayaranDonasi> {
                                       case 2:
                                         setState(() {
                                           titleMetode =
-                                              'Bank Muamalat VA Billing';
+                                          'Mandiri Syariah VA Billing';
                                           subtitleMetode = null;
                                           indexTile = 2;
+                                        });
+                                        break;
+                                      case 3:
+                                        setState(() {
+                                          titleMetode =
+                                          'Bank Muamalat VA Billing';
+                                          subtitleMetode = null;
+                                          indexTile = 3;
                                         });
                                         break;
                                       default:
                                     }
                                     Navigator.of(context).pop();
                                   },
-                                  child: const Text('Ganti',
+                                  child: Text(getButtonTitle(index),
                                       style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.deepPurple)),
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold,
+                                        color: indexTile != null &&
+                                            indexTile == index
+                                            ? greenColor
+                                            : Colors.deepPurple,
+                                      )),
+                                  borderSide: BorderSide(
+                                    color:
+                                    indexTile != null && indexTile == index
+                                        ? greenColor
+                                        : Colors.grey[300],
+                                    style: BorderStyle.solid,
+                                    //Style of the border
+                                    width: 3.0,
+                                  ),
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(20)),
-                                )),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-                      ],
-                    ),
-                  );
-                },
-              ),
+                      ),
+                    ],
+                  ),
+                );
+              },
             ),
-          );
-        });
+          ),
+        );
+      },
+    );
+  }
+
+  String getButtonTitle(int index) {
+    return indexTile != null && indexTile == index ? 'Dipilih' : 'Pilih';
   }
 }

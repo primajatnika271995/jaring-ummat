@@ -527,7 +527,7 @@ class _PortofolioState extends State<Portofolio> {
               onPressed: null,
               icon: Icon(NewIcon.refresh_2x),
               color: blackColor,
-              iconSize: 20,
+              iconSize: 25,
             ),
           ],
         ),

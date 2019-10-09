@@ -155,7 +155,7 @@ class _ProfileMenuState extends State<ProfileMenu> {
               onTap: null,
               child: Icon(
                 AllInOneIcon.faq_3x,
-                size: 20,
+                size: 25,
                 color: blackColor,
               ),
             ),
@@ -166,7 +166,7 @@ class _ProfileMenuState extends State<ProfileMenu> {
               onTap: null,
               child: Icon(
                 AllInOneIcon.t_c_3x,
-                size: 20,
+                size: 25,
                 color: blackColor,
               ),
             ),
@@ -177,7 +177,7 @@ class _ProfileMenuState extends State<ProfileMenu> {
               onTap: _onlogout,
               child: Icon(
                 AppBarIcon.logout,
-                size: 20,
+                size: 25,
                 color: blackColor,
               ),
             ),
