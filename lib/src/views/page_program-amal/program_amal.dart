@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_jaring_ummat/src/models/DTO/ReturnData.dart';
 import 'package:flutter_jaring_ummat/src/utils/screenSize.dart';
 import 'package:flutter_jaring_ummat/src/utils/sizeUtils.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/app_bar_icon_icons.dart';
@@ -15,6 +16,7 @@ import 'package:flutter_jaring_ummat/src/models/program_amal.dart';
 import 'package:flutter_jaring_ummat/src/services/storiesApi.dart';
 import 'package:flutter_jaring_ummat/src/views/components/userstory_appbar_container.dart';
 import 'package:flutter_jaring_ummat/src/views/page_program-amal/program_amal_content.dart';
+import 'package:flutter_jaring_ummat/src/views/page_program-amal/search_program_amal.dart';
 import 'package:geocoder/geocoder.dart';
 import 'package:location/location.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -38,6 +40,8 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
    */
   String selectedCategory = "";
   String _locationSelected;
+  int initialTabIndex = 0;
+  bool _isFilter = false;
 
   /*
    * Variable Boolean
@@ -67,7 +71,7 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
         backgroundColor: whiteColor,
         body: DefaultTabController(
           length: _tabLength,
-          initialIndex: 0,
+          initialIndex: initialTabIndex,
           child: Scaffold(
             backgroundColor: whiteColor,
             appBar: AppBar(
@@ -80,18 +84,52 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
               ),
               title: titleText,
               actions: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.only(right: 7),
-                  child: InkWell(
-                    onTap: () {
-                      checkLocation();
-                    },
-                    child: Icon(
-                      AppBarIcon.location_inactive,
-                      size: 25,
-                      color: blackColor,
+                Stack(
+                  children: <Widget>[
+                    Center(
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 7),
+                        child: InkWell(
+                          onTap: () {
+                            checkLocation();
+                          },
+                          child: Icon(
+                            _isFilter
+                                ? AppBarIcon.location_inactive
+                                : AppBarIcon.location_inactive,
+                            size: 25,
+                            color: blackColor,
+                          ),
+                        ),
+                      ),
                     ),
-                  ),
+                    Positioned(
+                      right: 5,
+                      top: 13,
+                      child: Container(
+                        padding: EdgeInsets.all(1),
+                        decoration: new BoxDecoration(
+                          color: _isFilter ? Colors.green : Colors.grey,
+                          borderRadius: BorderRadius.circular(100),
+                        ),
+                        constraints: BoxConstraints(
+                          minWidth: 12,
+                          minHeight: 12,
+                        ),
+                        child: _isFilter
+                            ? Icon(
+                          Icons.check,
+                          color: whiteColor,
+                          size: 10.0,
+                        )
+                            : Icon(
+                          Icons.close,
+                          color: whiteColor,
+                          size: 10.0,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
                 Padding(
                   padding: const EdgeInsets.only(right: 7),
@@ -421,7 +459,7 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                   padding:
                       EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 5),
                   child: Container(
-                    height: 470,
+                    height: 550,
                     child: Column(
                       children: <Widget>[
                         Row(
@@ -502,6 +540,23 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                         ),
                         Padding(padding: EdgeInsets.only(top: 10.0)),
                         Container(
+                            width: screenWidth(context),
+                            padding: EdgeInsets.symmetric(horizontal: 12.0),
+                            child: OutlineButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                                cariLokasiLain();
+                              },
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20.0),
+                              ),
+                              child: Text('Cari Lokasi Lain',
+                                  style: TextStyle(color: Colors.deepPurple)),
+                              color: grayColor,
+                              borderSide:
+                              BorderSide(width: 2, color: Colors.grey[200]),
+                            )),
+                        Container(
                           width: screenWidth(context),
                           padding: EdgeInsets.symmetric(horizontal: 12.0),
                           child: RaisedButton(
@@ -525,6 +580,31 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                             ),
                           ),
                         ),
+                        Container(
+                          width: screenWidth(context),
+                          padding: EdgeInsets.symmetric(horizontal: 12.0),
+                          child: RaisedButton(
+                            onPressed: () {
+                              setState(() {
+                                _locationSelected = null;
+                                _isFilter = false;
+                              });
+                              noFilter();
+                              blocRegister.bloc
+                                  .updateLokasiAmal(_locationSelected);
+                              print(_locationSelected);
+                              bloc.fetchAllProgramAmal(selectedCategory);
+                              _pref.setString(LOKASI_AMAL, _locationSelected);
+                              Navigator.of(context).pop();
+                            },
+                            child: const Text('Hapus Filter Lokasi',
+                                style: TextStyle(color: Colors.white)),
+                            color: redColor,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -543,12 +623,19 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
     _pref.setString(FILTER_PROGRAM_AMAL, "true");
   }
 
+  void noFilter() async {
+    SharedPreferences _pref = await SharedPreferences.getInstance();
+    _pref.setString(FILTER_PROGRAM_AMAL, "false");
+  }
+
   void lokasiAmal() async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
     String kotaLahir = _pref.getString(KOTA_LAHIR);
     String provinsiLahir = _pref.getString(PROVINSI_LAHIR);
     String kotaTinggal = _pref.getString(KOTA_TINGGAL);
     String provinsiTinggal = _pref.getString(PROVINSI_TINGGAL);
+    var filter = _pref.getString(FILTER_PROGRAM_AMAL);
+    filter == 'true' ? _isFilter = true : _isFilter = false;
     print('Lokasi Kota / Provinsi : ');
     print('Kota Lahir: $kotaLahir, Provinsi Lahir: $provinsiLahir');
     print('Kota Tinggal: $kotaTinggal, Provinsi Tinggal: $provinsiTinggal');
@@ -556,5 +643,33 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
       _locationSelected = _pref.getString(LOKASI_AMAL);
     });
     print("Lokasi Selected $_locationSelected");
+  }
+
+  void cariLokasiLain() {
+    Navigator.of(context)
+        .push(
+      MaterialPageRoute(
+        builder: (context) => SearchProgramAmal(),
+      ),
+    )
+        .then((value) {
+      navigateSearhProgram(context, value);
+    });
+  }
+
+  void navigateSearhProgram(
+      BuildContext context, ProgramAmalReturn value) async {
+    SharedPreferences _pref = await SharedPreferences.getInstance();
+    print("Value ${value.lokasi}");
+    setState(() {
+      _pref.setString(CURRENT_LOCATION_CITY, value.lokasi);
+      _pref.setString(CURRENT_LOCATION_PROVINSI, value.lokasi);
+      _locationSelected = null;
+      selectedCategory = "";
+      initialTabIndex = 1;
+      _isFilter = true;
+    });
+    filtered();
+    bloc.fetchAllProgramAmal(selectedCategory);
   }
 }
