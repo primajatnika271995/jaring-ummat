@@ -65,8 +65,8 @@ class ProgramAmalApiProvider {
         provinsiSearch = _pref.getString(PROVINSI_TINGGAL);
         break;
       default:
-        kotaSearch = null;
-        provinsiSearch = null;
+        kotaSearch = _pref.getString(CURRENT_LOCATION_CITY);
+        provinsiSearch = _pref.getString(CURRENT_LOCATION_PROVINSI);
         break;
     }
 

@@ -269,7 +269,7 @@ class _GMapsUbahAlamatState extends State<GMapsUbahAlamat> {
       ),
     );
     final coordinate = new Coordinates(latLng.latitude, latLng.longitude);
-    var data = await Geocoder.local.findAddressesFromCoordinates(coordinate);
+    var data = await Geocoder.google(GOOGLE_MAPS_KEY, language: "id").findAddressesFromCoordinates(coordinate);
     alamatPinPoint = data.first.addressLine;
     kota = data.first.subAdminArea;
     provinsi = data.first.adminArea;
@@ -286,7 +286,7 @@ class _GMapsUbahAlamatState extends State<GMapsUbahAlamat> {
 
     final coordinate =
         new Coordinates(currentLocation.latitude, currentLocation.longitude);
-    var data = await Geocoder.local.findAddressesFromCoordinates(coordinate);
+    var data = await Geocoder.google(GOOGLE_MAPS_KEY, language: "id").findAddressesFromCoordinates(coordinate);
     print(data.first.addressLine);
     setState(() {
       currLatitude = currentLocation.latitude;
@@ -322,7 +322,8 @@ class _GMapsUbahAlamatState extends State<GMapsUbahAlamat> {
 
     final coordinate = new Coordinates(searchLatitude, searchLongitude);
 
-    var data = await Geocoder.local.findAddressesFromCoordinates(coordinate);
+//    var data = await Geocoder.local.findAddressesFromCoordinates(coordinate);
+    var data = await Geocoder.google(GOOGLE_MAPS_KEY, language: "id").findAddressesFromCoordinates(coordinate);
     alamatPinPoint = place.address;
     kota = place.name;
     provinsi = data.first.adminArea;

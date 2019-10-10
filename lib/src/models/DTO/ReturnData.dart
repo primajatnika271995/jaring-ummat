@@ -6,3 +6,7 @@ class ProfileReturn {
 
   ProfileReturn({this.kotaLembaga, this.alamatLembaga, this.provinsiLembaga, this.kabupatenLembaga});
 }
+class ProgramAmalReturn {
+  String lokasi;
+  ProgramAmalReturn({this.lokasi});
+}
