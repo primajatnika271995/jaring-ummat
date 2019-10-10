@@ -88,8 +88,8 @@ class ProgramAmalApiProvider {
         "limit": limit,
         "offset": offset,
         "filter": filter == null ? "false" : "true",
-        "kota": filter != null ? kotaSearch : null,
-        "provinsi": filter != null ? provinsiSearch : null
+        "kota": filter != null && filter == "true" ? kotaSearch : null,
+        "provinsi": filter != null && filter == "true" ? provinsiSearch : null
       };
       uri = Uri.parse(PROGRAM_AMAL_LIST_ALL_URL);
     } else {
@@ -100,8 +100,8 @@ class ProgramAmalApiProvider {
         "offset": offset,
         "category": category,
         "filter": filter == null ? "false" : "true",
-        "kota": filter != null ? kotaSearch : null,
-        "provinsi": filter != null ? provinsiSearch : null
+        "kota": filter != null && filter == "true" ? kotaSearch : null,
+        "provinsi": filter != null && filter == "true" ? provinsiSearch : null
       };
       uri = Uri.parse(PROGRAM_AMAL_LIST_BY_CATEGORY_URL);
     }
