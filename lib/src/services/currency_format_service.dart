@@ -1,17 +1,10 @@
-import 'package:flutter_money_formatter/flutter_money_formatter.dart';
+import 'package:intl/intl.dart';
 
 class CurrencyFormat {
-  currency(double data) {
-    FlutterMoneyFormatter fm = new FlutterMoneyFormatter(
-        amount: data,
-        settings: MoneyFormatterSettings(
-            symbol: 'Rp',
-            thousandSeparator: '.',
-            decimalSeparator: ',',
-            symbolAndNumberSeparator: ' ',
-            compactFormatType: CompactFormatType.short
-        )
-    );
-    return fm.output.withoutFractionDigits;
-  }
+  final data = new NumberFormat.currency(
+    name: '',
+    symbol: '',
+    locale: 'en_US',
+    decimalDigits: 0,
+  );
 }

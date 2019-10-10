@@ -196,7 +196,7 @@ class _ZakatFitrahPagesState extends State<ZakatFitrahPages> {
                                   style: TextStyle(color: grayColor)),
                               TextSpan(
                                 text:
-                                    '${CurrencyFormat().currency(totalZakat)}',
+                                    '${CurrencyFormat().data.format(totalZakat)}',
                                 style: TextStyle(
                                     fontSize: 23,
                                     fontWeight: FontWeight.bold,

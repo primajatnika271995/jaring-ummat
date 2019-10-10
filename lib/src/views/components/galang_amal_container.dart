@@ -417,7 +417,7 @@ class _GalangAmalContainerState extends State<GalangAmalContainer> {
                     '${formatter.format(DateTime.fromMicrosecondsSinceEpoch(data.donasiDate * 1000)).toString()}',
                     style: TextStyle(fontSize: 11)),
                 trailing: Text(
-                    'Rp ${CurrencyFormat().currency(data.nominalDibayar.toDouble())}',
+                    'Rp ${CurrencyFormat().data.format(data.nominalDibayar.toDouble())}',
                     style: TextStyle(fontWeight: FontWeight.bold)),
                 leading: Container(
                   width: 53.0,

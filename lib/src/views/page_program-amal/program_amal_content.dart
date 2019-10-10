@@ -22,15 +22,19 @@ import 'package:flutter_jaring_ummat/src/views/page_program-amal/komentar_progra
 
 class ProgramAmalContent extends StatefulWidget {
   final ProgramAmalModel programAmal;
-  ProgramAmalContent({Key key, @required this.programAmal}) : super(key: key);
+  final bool bookmark;
+  ProgramAmalContent({Key key, @required this.programAmal, this.bookmark}) : super(key: key);
 
   @override
-  _ProgramAmalContentState createState() => _ProgramAmalContentState();
+  _ProgramAmalContentState createState() => _ProgramAmalContentState(bookmark: this.bookmark);
 }
 
 class _ProgramAmalContentState extends State<ProgramAmalContent> {
   bool isLoved = false;
   bool flag = true;
+  bool bookmark;
+
+  _ProgramAmalContentState({this.bookmark});
 
   /*
    * Image No Content Replace with This
@@ -250,9 +254,9 @@ class _ProgramAmalContentState extends State<ProgramAmalContent> {
               ),
               Text(
                 'Rp. ' +
-                    '${CurrencyFormat().currency(widget.programAmal.totalDonation.toDouble())}' +
+                    '${CurrencyFormat().data.format(widget.programAmal.totalDonation.toDouble())}' +
                     ' / ' +
-                    '${CurrencyFormat().currency(widget.programAmal.targetDonation.toDouble())}',
+                    '${CurrencyFormat().data.format(widget.programAmal.targetDonation.toDouble())}',
                 style: TextStyle(
                   fontSize: 16.0,
                   fontWeight: FontWeight.bold,
@@ -401,36 +405,28 @@ class _ProgramAmalContentState extends State<ProgramAmalContent> {
   Widget shareContent() {
     return Row(
       children: <Widget>[
-        GestureDetector(
+        InkWell(
           onTap: () {
-            showModalBottomSheet(
-              context: context,
-              builder: (context) {
-                return ShareProgramAmal();
-              },
-            );
+            bookmark = !bookmark;
+            setState(() {});
           },
-          child: Row(
-            children: <Widget>[
-              Icon(
-                NewIcon.save_3x,
-                size: 20.0,
-                color: blackColor,
-              ),
-              SizedBox(
-                width: 5.0,
-              ),
-              Icon(
-                NewIcon.share_3x,
-                size: 20.0,
-                color: blackColor,
-              ),
-              SizedBox(
-                width: 5.0,
-              ),
-            ],
+          child: bookmark ? iconBookmark() : iconUnbookmark(),
+        ),
+        SizedBox(width: 5),
+        InkWell(
+          onTap: () => showModalBottomSheet(
+            context: context,
+            builder: (context) {
+              return ShareProgramAmal();
+            },
+          ),
+          child: Icon(
+            NewIcon.share_3x,
+            size: 20,
+            color: blackColor,
           ),
         ),
+        SizedBox(width: 5),
       ],
     );
   }
@@ -466,6 +462,14 @@ class _ProgramAmalContentState extends State<ProgramAmalContent> {
       moreDesc = "";
     }
     checkToken();
+  }
+
+  Widget iconBookmark() {
+    return Icon(ActiveIcon.save_active_3x, size: 20, color: greenColor);
+  }
+
+  Widget iconUnbookmark() {
+    return Icon(NewIcon.save_3x, size: 20, color: blackColor);
   }
 
   void showMediaPlayer(String url) {

@@ -27,6 +27,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_jaring_ummat/src/bloc/portofolioBloc.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 
 class Portofolio extends StatefulWidget {
   @override
@@ -231,7 +232,9 @@ class _PortofolioState extends State<Portofolio> {
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
           subtitle: Text(
-              'Hey $customerName, terimakasih telah berpartisipasi pada beberapa aktivitas amal dan berikut ini sebaran aktivitasmu pada periode berjalan.'),
+            'Hey $customerName, terimakasih telah berpartisipasi pada beberapa aktivitas amal dan berikut ini sebaran aktivitasmu pada periode berjalan.',
+            textAlign: TextAlign.justify,
+          ),
           trailing: IconButton(
             onPressed: null,
             icon: Icon(
@@ -241,208 +244,9 @@ class _PortofolioState extends State<Portofolio> {
             ),
           ),
         ),
-        valueTotal == 0
-            ? Center(
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 50),
-                  child: Text(
-                      'Belum ada data untuk Portofolio, \n silahkan melakukan kegiatan.',
-                      textAlign: TextAlign.center),
-                ),
-              )
-            : Row(
-                children: <Widget>[
-                  Expanded(
-                    flex: 5,
-                    child: Container(
-                      // height: MediaQuery.of(context).size.height * 0.27,
-                      // width: MediaQuery.of(context).size.width * 0.20,
-                      height: 150,
-                      child: showingSections == null
-                          ? Center(
-                              child: Text('Loading data ...'),
-                            )
-                          : FlChart(
-                              chart: PieChart(
-                                PieChartData(
-                                  borderData: FlBorderData(show: false),
-                                  sectionsSpace: 1,
-                                  centerSpaceRadius: 45,
-                                  sections: showingSections,
-                                ),
-                              ),
-                            ),
-                    ),
-                  ),
-                  Expanded(
-                    flex: 5,
-                    child: Padding(
-                      padding: const EdgeInsets.only(right: 5),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            'Sebaran penerimaan amal',
-                            style: TextStyle(fontSize: 13, color: grayColor),
-                          ),
-                          RichText(
-                            text: TextSpan(children: <TextSpan>[
-                              TextSpan(
-                                  text: 'Rp ',
-                                  style: TextStyle(color: grayColor)),
-                              TextSpan(
-                                text: valueTotal <= 10
-                                    ? '0'
-                                    : '${CurrencyFormat().currency(valueTotal)}',
-                                style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                    color: blackColor),
-                              ),
-                            ]),
-                          ),
-                          Text(
-                            '/ $valueTotalAktivitas Aktivitas Amal',
-                            style: TextStyle(color: grayColor, fontSize: 13),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-        SizedBox(height: 15),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: <Widget>[
-            InkWell(
-              onTap: () {
-                print('Zakat Data');
-                var items = [
-                  PieChartSectionData(
-                      color: Colors.yellow,
-                      value: valueZakat == 0.0 ? 1 : valueZakat,
-                      title: "${zakatPercent.toString().substring(0, 3)}%",
-                      radius: 26,
-                      titleStyle: TextStyle(fontSize: 12, color: whiteColor)),
-                ];
-                bloc.fetchBarChart("zakat", "satu");
-
-                setState(() {
-                  valueTotal = valueZakat + 1.0;
-                  barColor = Colors.yellow;
-                  pieChartRawSections = items;
-                  showingSections = pieChartRawSections;
-                });
-              },
-              child: Indicator(
-                color: Colors.yellowAccent,
-                text: 'Zakat',
-                isSquare: false,
-              ),
-            ),
-            InkWell(
-              onTap: () {
-                print('Infaq Data');
-                var items = [
-                  PieChartSectionData(
-                      color: Colors.redAccent,
-                      value: valueInfaq == 0.0 ? 1 : valueInfaq,
-                      title: "${infaqPercent.toString().substring(0, 3)}%",
-                      radius: 26,
-                      titleStyle: TextStyle(fontSize: 12, color: whiteColor)),
-                ];
-                bloc.fetchBarChart("infaq", "satu");
-                setState(() {
-                  barColor = Colors.red;
-                  valueTotal = valueInfaq + 1.0;
-                  pieChartRawSections = items;
-                  showingSections = pieChartRawSections;
-                });
-              },
-              child: Indicator(
-                color: Colors.redAccent,
-                text: 'Infaq',
-                isSquare: false,
-              ),
-            ),
-            InkWell(
-              onTap: () {
-                print('Sodaqoh Data');
-                var items = [
-                  PieChartSectionData(
-                      color: Colors.green,
-                      value: valueShodqoh == 0.0 ? 1 : valueShodqoh,
-                      title: "${shodaqohPercent.toString().substring(0, 3)}%",
-                      radius: 26,
-                      titleStyle: TextStyle(fontSize: 12, color: whiteColor)),
-                ];
-                bloc.fetchBarChart("sodaqoh", "satu");
-                setState(() {
-                  barColor = Colors.green;
-                  valueTotal = valueShodqoh + 1.0;
-                  pieChartRawSections = items;
-                  showingSections = pieChartRawSections;
-                });
-              },
-              child: Indicator(
-                color: Colors.green,
-                text: 'Sodaqoh',
-                isSquare: false,
-              ),
-            ),
-            InkWell(
-              onTap: () {
-                print('Wakaf Data');
-                var items = [
-                  PieChartSectionData(
-                      color: Colors.deepPurple,
-                      value: valueWakaf == 0.0 ? 1 : valueWakaf,
-                      title: "${wakafPercent.toString().substring(0, 3)}%",
-                      radius: 26,
-                      titleStyle: TextStyle(fontSize: 12, color: whiteColor)),
-                ];
-                bloc.fetchBarChart("wakaf", "satu");
-                setState(() {
-                  barColor = Colors.deepPurple;
-                  valueTotal = valueWakaf + 1.0;
-                  pieChartRawSections = items;
-                  showingSections = pieChartRawSections;
-                });
-              },
-              child: Indicator(
-                color: Colors.deepPurpleAccent,
-                text: 'Wakaf',
-                isSquare: false,
-              ),
-            ),
-            InkWell(
-              onTap: () {
-                print('Donasi Data');
-                var items = [
-                  PieChartSectionData(
-                      color: Colors.blue,
-                      value: valueDonasi == 0.0 ? 1 : valueDonasi,
-                      title: "${donasiPercent.toString().substring(0, 3)}%",
-                      radius: 26,
-                      titleStyle: TextStyle(fontSize: 12, color: whiteColor)),
-                ];
-                bloc.fetchBarChart("donasi", "satu");
-                setState(() {
-                  barColor = Colors.blue;
-                  valueTotal = valueDonasi + 1.0;
-                  pieChartRawSections = items;
-                  showingSections = pieChartRawSections;
-                });
-              },
-              child: Indicator(
-                color: Colors.blue,
-                text: 'Donasi',
-                isSquare: false,
-              ),
-            ),
-          ],
+        Container(
+          height: 250,
+          child: getDefaultDoughnutChart(false),
         ),
       ],
     );
@@ -454,19 +258,12 @@ class _PortofolioState extends State<Portofolio> {
       children: <Widget>[
         ListTile(
           title: Text('Tren Aktivitas Amal Harian',
-              style: TextStyle(color: blackColor)),
+              style: TextStyle(
+                color: blackColor,
+                fontWeight: FontWeight.bold,
+              )),
         ),
         buildBarChart(context),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              const Text('Jan'),
-              const Text('Des'),
-            ],
-          ),
-        ),
       ],
     );
 
@@ -483,7 +280,9 @@ class _PortofolioState extends State<Portofolio> {
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
           subtitle: Text(
-              '3 aktivitas amal terbesarmu berdasarkan nominal. Yuk perbanyak lagi amalmu dengan menekan tombol "+".'),
+            '3 aktivitas amal terbesarmu berdasarkan nominal. Yuk perbanyak lagi amalmu dengan menekan tombol "+".',
+            textAlign: TextAlign.justify,
+          ),
           trailing: IconButton(
             onPressed: () {},
             icon: Icon(NewIcon.next_small_2x),
@@ -757,7 +556,7 @@ class _PortofolioState extends State<Portofolio> {
                 height: 7,
               ),
               Text(
-                'Rp ${CurrencyFormat().currency(value.totalAmal.toDouble())}',
+                'Rp ${CurrencyFormat().data.format(value.totalAmal.toDouble())}',
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
               ),
               SizedBox(
@@ -819,7 +618,7 @@ class _PortofolioState extends State<Portofolio> {
                   '${TimeAgoService().timeAgoFormatting(value.requestedDate)}',
                   style: TextStyle(fontSize: 12)),
               trailing: Text(
-                  'Rp ${CurrencyFormat().currency(value.totalAmal.toDouble())}',
+                  'Rp ${CurrencyFormat().data.format(value.totalAmal.toDouble())}',
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
             ),
           ),
@@ -846,6 +645,68 @@ class _PortofolioState extends State<Portofolio> {
       customerName = _pref.getString(FULLNAME_KEY);
       customerPhone = _pref.getString(CONTACT_KEY);
     });
+  }
+
+  Widget getDefaultDoughnutChart(bool isTileView) {
+    return SfCircularChart(
+      legend: Legend(
+        isVisible: isTileView ? false : true,
+        position: LegendPosition.right,
+        itemPadding: 15,
+        isResponsive: true,
+        padding: 2,
+        overflowMode: LegendItemOverflowMode.wrap,
+      ),
+      series: getDoughnutSeries(isTileView),
+      annotations: <CircularChartAnnotation>[
+        CircularChartAnnotation(
+          widget: Container(
+            child: Text(
+              'Rp ${CurrencyFormat().data.format(valueTotal.toDouble())} \n /$valueTotalAktivitas Aktivitas',
+              style: TextStyle(color: Colors.black, fontSize: 14),
+              textAlign: TextAlign.center,
+            ),
+          ),
+        ),
+      ],
+      palette: [
+        Colors.red,
+        Colors.yellow,
+        Colors.deepOrange,
+        Colors.deepPurpleAccent,
+        Colors.blue,
+      ],
+      tooltipBehavior: TooltipBehavior(enable: true),
+    );
+  }
+
+  List<DoughnutSeries<_DoughnutData, String>> getDoughnutSeries(
+      bool isTileView) {
+    final List<_DoughnutData> chartData = <_DoughnutData>[
+      _DoughnutData('Zakat', zakatPercent, '$zakatPercent %'),
+      _DoughnutData('Infaq', infaqPercent, '$infaqPercent %'),
+      _DoughnutData('Sodaqoh', shodaqohPercent, '$shodaqohPercent %'),
+      _DoughnutData('Wakaf', wakafPercent, '$wakafPercent %'),
+      _DoughnutData('Donasi', donasiPercent, '$donasiPercent %'),
+    ];
+    return <DoughnutSeries<_DoughnutData, String>>[
+      DoughnutSeries<_DoughnutData, String>(
+        radius: '100%',
+        innerRadius: '67%',
+        legendIconType: LegendIconType.circle,
+        explode: true,
+        explodeOffset: '10%',
+        enableSmartLabels: true,
+        dataSource: chartData,
+        xValueMapper: (_DoughnutData data, _) => data.xData,
+        yValueMapper: (_DoughnutData data, _) => data.yData,
+        dataLabelMapper: (_DoughnutData data, _) => data.text,
+        dataLabelSettings: DataLabelSettings(
+          isVisible: true,
+          textStyle: ChartTextStyle(color: Colors.white),
+        ),
+      )
+    ];
   }
 
   void getDataPieChart() {
@@ -952,54 +813,70 @@ class _PortofolioState extends State<Portofolio> {
   }
 
   Widget barChartBuild(BuildContext context, List<BarchartModel> snapshot) {
-    return Stack(
-      children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15),
-          child: Container(
-            height: 110,
-            width: screenWidth(context),
-            child: ListView.builder(
-              itemCount: 12,
-              shrinkWrap: true,
-              scrollDirection: Axis.horizontal,
-              itemBuilder: (context, index) {
-                var data = snapshot[index];
-                var percent = (data.total / valueTotal) * 100;
-                fillPercent = percent;
-
-                final Color background = Colors.grey[200];
-                final Color fill = barColor;
-                final List<Color> gradient = [
-                  background,
-                  background,
-                  fill,
-                  fill,
-                ];
-                // final double fillPercent = 80;
-                final double fillStop = (100 - fillPercent) / 100;
-                final List<double> stops = [0.0, fillStop, fillStop, 1.0];
-
-                return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 3),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: gradient,
-                        stops: stops,
-                        end: Alignment.bottomCenter,
-                        begin: Alignment.topCenter,
-                      ),
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                    width: screenWidth(context, dividedBy: 16.8),
-                  ),
-                );
-              },
+    return Container(
+      height: 150,
+      child: SfCartesianChart(
+        plotAreaBorderWidth: 0,
+        primaryXAxis: CategoryAxis(
+          majorGridLines: MajorGridLines(width: 0),
+        ),
+        primaryYAxis: NumericAxis(
+          isVisible: false,
+          minimum: 0,
+          maximum: valueTotal,
+          axisLine: AxisLine(width: 0),
+          majorGridLines: MajorGridLines(width: 0),
+          majorTickLines: MajorTickLines(size: 0),
+        ),
+        series: <ColumnSeries<SalesData, String>>[
+          ColumnSeries(
+            dataSource: <SalesData>[
+              SalesData('Jan', snapshot[0].total.toDouble()),
+              SalesData('Feb', snapshot[1].total.toDouble()),
+              SalesData('Mar', snapshot[2].total.toDouble()),
+              SalesData('Apr', snapshot[3].total.toDouble()),
+              SalesData('Mei', snapshot[4].total.toDouble()),
+              SalesData('Jun', snapshot[5].total.toDouble()),
+              SalesData('Jul', snapshot[6].total.toDouble()),
+              SalesData('Ags', snapshot[7].total.toDouble()),
+              SalesData('Sep', snapshot[8].total.toDouble()),
+              SalesData('Okt', snapshot[9].total.toDouble()),
+              SalesData('Nov', snapshot[10].total.toDouble()),
+              SalesData('Des', snapshot[11].total.toDouble()),
+            ],
+            isTrackVisible: true,
+            borderRadius: BorderRadius.circular(5),
+            trackColor: Colors.grey[200],
+            xValueMapper: (SalesData sales, _) => sales.year,
+            yValueMapper: (SalesData sales, _) => sales.sales,
+            dataLabelSettings: DataLabelSettings(
+              isVisible: false,
+              textStyle: ChartTextStyle(color: Colors.white),
             ),
           ),
+        ],
+        tooltipBehavior: TooltipBehavior(
+          enable: true,
+          canShowMarker: false,
+          header: '',
+          format: 'Total bulan point.x : point.y',
         ),
-      ],
+      ),
     );
   }
+}
+
+class SalesData {
+  final String year;
+  final double sales;
+
+  SalesData(this.year, this.sales);
+}
+
+class _DoughnutData {
+  final String xData;
+  final num yData;
+  final String text;
+
+  _DoughnutData(this.xData, this.yData, this.text);
 }

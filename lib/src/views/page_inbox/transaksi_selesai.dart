@@ -133,7 +133,7 @@ class _TransaksiSelesaiViewState extends State<TransaksiSelesaiView> {
                           ),
                           TextSpan(
                             text:
-                            '${CurrencyFormat().currency(data.jumlahDibayar.toDouble())}',
+                            '${CurrencyFormat().data.format(data.jumlahDibayar.toDouble())}',
                             style: TextStyle(
                                 color: Colors.black,
                                 fontWeight: FontWeight.bold),

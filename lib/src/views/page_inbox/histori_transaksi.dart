@@ -204,7 +204,7 @@ class _HistoriTransaksiViewState extends State<HistoriTransaksiView>
                               ),
                               TextSpan(
                                 text:
-                                '${CurrencyFormat().currency(data.jumlahTransaksi.toDouble())}',
+                                '${CurrencyFormat().data.format(data.jumlahTransaksi.toDouble())}',
                                 style: TextStyle(
                                     color: Colors.black,
                                     fontSize: 16,
@@ -402,7 +402,7 @@ class _HistoriTransaksiViewState extends State<HistoriTransaksiView>
                         style: TextStyle(fontSize: 11, color: grayColor)),
                     TextSpan(
                       text:
-                      '${CurrencyFormat().currency(data.jumlahTransaksi.toDouble())}',
+                      '${CurrencyFormat().data.format(data.jumlahTransaksi.toDouble())}',
                       style: TextStyle(
                           color: blackColor, fontWeight: FontWeight.bold),
                     ),

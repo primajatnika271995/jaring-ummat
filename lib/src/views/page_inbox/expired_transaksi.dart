@@ -128,7 +128,7 @@ class _ExpiredTransaksiState extends State<ExpiredTransaksi> {
                           ),
                           TextSpan(
                             text:
-                            '${CurrencyFormat().currency(data.jumlahTransaksi.toDouble())}',
+                            '${CurrencyFormat().data.format(data.jumlahTransaksi.toDouble())}',
                             style: TextStyle(
                                 color: Colors.black,
                                 fontWeight: FontWeight.bold),

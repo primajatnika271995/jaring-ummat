@@ -199,7 +199,7 @@ class _InstruksiPembayaranState extends State<InstruksiPembayaran>
                         text: 'Rp ',
                         style: TextStyle(color: Colors.grey, fontSize: 13)),
                     TextSpan(
-                      text: '${CurrencyFormat().currency(nominal)}',
+                      text: '${CurrencyFormat().data.format(nominal)}',
                       style: TextStyle(
                           color: Colors.black,
                           fontSize: SizeUtils.titleSize,

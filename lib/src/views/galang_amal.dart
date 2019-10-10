@@ -78,9 +78,9 @@ class _GalangAmalState extends State<GalangAmalView> {
                         ),
                         Text(
                           'Rp. ' +
-                              '${CurrencyFormat().currency(widget.programAmal.totalDonation.toDouble())}' +
+                              '${CurrencyFormat().data.format(widget.programAmal.totalDonation.toDouble())}' +
                               ' / ' +
-                              '${CurrencyFormat().currency(widget.programAmal.targetDonation.toDouble())}',
+                              '${CurrencyFormat().data.format(widget.programAmal.targetDonation.toDouble())}',
                           style: TextStyle(
                             fontSize: 16.0,
                             fontWeight: FontWeight.bold,

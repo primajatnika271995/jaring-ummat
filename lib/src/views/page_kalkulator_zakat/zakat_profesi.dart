@@ -137,7 +137,7 @@ class _ZakatProfesiPageState extends State<ZakatProfesiPage> {
                                   style: TextStyle(color: grayColor)),
                               TextSpan(
                                 text:
-                                    '${CurrencyFormat().currency(totalZakat)}',
+                                    '${CurrencyFormat().data.format(totalZakat)}',
                                 style: TextStyle(
                                     fontSize: 23,
                                     fontWeight: FontWeight.bold,

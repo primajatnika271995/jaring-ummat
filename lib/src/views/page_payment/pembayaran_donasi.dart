@@ -167,7 +167,7 @@ class _PembayaranDonasiState extends State<PembayaranDonasi> {
                                           color: Colors.grey, fontSize: 13)),
                                   TextSpan(
                                     text:
-                                        '${CurrencyFormat().currency(nominal)}',
+                                        '${CurrencyFormat().data.format(nominal)}',
                                     style: TextStyle(
                                         color: Colors.black,
                                         fontSize: SizeUtils.titleSize,

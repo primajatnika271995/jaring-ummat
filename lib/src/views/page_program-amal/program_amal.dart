@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_jaring_ummat/src/utils/screenSize.dart';
 import 'package:flutter_jaring_ummat/src/utils/sizeUtils.dart';
+import 'package:flutter_jaring_ummat/src/views/components/icon_text/all_in_one_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/app_bar_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/new_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/page_inbox/inbox.dart';
+import 'package:flutter_jaring_ummat/src/views/page_payment/payment.dart';
 import 'package:flutter_jaring_ummat/src/views/page_program-amal/program_amal_text_data.dart';
 import 'package:flutter_jaring_ummat/src/bloc/programAmalBloc.dart';
 import 'package:flutter_jaring_ummat/src/bloc/registerBloc.dart'
@@ -44,6 +46,13 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
    */
   bool hidden = false;
   bool _loadingVisible = false;
+
+  /*
+   * Variable Temp
+   */
+  String emailCustomer;
+  String customerName;
+  String customerPhone;
 
   /*
    * Api Provider
@@ -158,6 +167,108 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
               children: <Widget>[
                 CustomScrollView(
                   slivers: <Widget>[
+                    SliverAppBar(
+                      backgroundColor: whiteColor,
+                      elevation: 0,
+                      floating: true,
+                      pinned: true,
+                      expandedHeight: 0,
+                      automaticallyImplyLeading: false,
+                      bottom: PreferredSize(
+                        preferredSize: Size.fromHeight(90),
+                        child: Container(
+                          height: 85,
+                          child: GridView(
+                            physics: NeverScrollableScrollPhysics(),
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 5),
+                            children: <Widget>[
+                              Column(
+                                children: <Widget>[
+                                  CircleAvatar(
+                                    radius: 27,
+                                    backgroundColor: Colors.yellow,
+                                    child: IconButton(
+                                      icon: Icon(AllInOneIcon.zakat_3x,
+                                          color: whiteColor, size: 25),
+                                      onPressed: () => requestBill("zakat"),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 3),
+                                    child: const Text('Zakat'),
+                                  )
+                                ],
+                              ),
+                              Column(
+                                children: <Widget>[
+                                  CircleAvatar(
+                                    radius: 27,
+                                    backgroundColor: Colors.red,
+                                    child: IconButton(
+                                        icon: Icon(AllInOneIcon.infaq_3x,
+                                            color: whiteColor, size: 25),
+                                        onPressed: () => requestBill("infaq")),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 3),
+                                    child: const Text('Infaq'),
+                                  )
+                                ],
+                              ),
+                              Column(
+                                children: <Widget>[
+                                  CircleAvatar(
+                                    radius: 27,
+                                    backgroundColor: Colors.deepPurple,
+                                    child: IconButton(
+                                        icon: Icon(AllInOneIcon.sodaqoh_3x,
+                                            color: whiteColor, size: 25),
+                                        onPressed: () =>
+                                            requestBill("sodaqoh")),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 3),
+                                    child: const Text('Sodaqoh'),
+                                  )
+                                ],
+                              ),
+                              Column(
+                                children: <Widget>[
+                                  CircleAvatar(
+                                    radius: 27,
+                                    backgroundColor: Colors.green,
+                                    child: IconButton(
+                                        icon: Icon(AllInOneIcon.wakaf_3x,
+                                            color: whiteColor, size: 25),
+                                        onPressed: () => requestBill("wakaf")),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 3),
+                                    child: const Text('Wakaf'),
+                                  )
+                                ],
+                              ),
+                              Column(
+                                children: <Widget>[
+                                  CircleAvatar(
+                                    radius: 27,
+                                    backgroundColor: Colors.blue,
+                                    child: Icon(AllInOneIcon.donation_3x,
+                                        color: whiteColor, size: 25),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 3),
+                                    child: const Text('Donasi'),
+                                  )
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
                     !hidden
                         ? new SliverAppBar(
                             automaticallyImplyLeading: false,
@@ -178,7 +289,7 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                       backgroundColor: whiteColor,
                       elevation: 1.0,
                       automaticallyImplyLeading: false,
-                      floating: true,
+                      floating: false,
                       pinned: true,
                       flexibleSpace: AppBar(
                         backgroundColor: whiteColor,
@@ -267,7 +378,7 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                                         snapshot) {
                                   switch (snapshot.connectionState) {
                                     case ConnectionState.waiting:
-                                      _loadingVisible = true;
+//                                      _loadingVisible = true;
                                       return Text('');
                                       break;
                                     default:
@@ -339,6 +450,7 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
         var value = snapshot.data[index];
         return ProgramAmalContent(
           programAmal: value,
+          bookmark: value.bookmarkThis,
         );
       },
     );
@@ -350,6 +462,7 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
     hideStory();
     checkToken();
     lokasiAmal();
+    getUser();
     super.initState();
   }
 
@@ -536,6 +649,27 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
             },
           );
         });
+  }
+
+  void getUser() async {
+    SharedPreferences _pref = await SharedPreferences.getInstance();
+    setState(() {
+      emailCustomer = _pref.getString(EMAIL_KEY);
+      customerName = _pref.getString(FULLNAME_KEY);
+      customerPhone = _pref.getString(CONTACT_KEY);
+    });
+  }
+
+  void requestBill(String type) {
+    Navigator.of(context).push(MaterialPageRoute(
+      builder: (context) => PaymentPage(
+        type: type,
+        customerName: customerName,
+        customerEmail: emailCustomer,
+        customerContact: customerPhone,
+        toGalangAmalName: null,
+      ),
+    ));
   }
 
   void filtered() async {

@@ -57,7 +57,7 @@ class _PembayaranZakatState extends State<PembayaranZakat> {
                       ),
                     ),
                     Text(
-                      'Rp ${CurrencyFormat().currency(double.parse(widget.nominal))}',
+                      'Rp ${CurrencyFormat().data.format(double.parse(widget.nominal))}',
                       style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,

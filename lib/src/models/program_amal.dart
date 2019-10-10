@@ -13,6 +13,7 @@ class ProgramAmalModel {
     String username;
     String idProgram;
     bool userLikeThis;
+    bool bookmarkThis;
     String titleProgram;
     String descriptionProgram;
     String categoryProgram;
@@ -31,6 +32,7 @@ class ProgramAmalModel {
         this.username,
         this.idProgram,
         this.userLikeThis,
+        this.bookmarkThis,
         this.titleProgram,
         this.descriptionProgram,
         this.categoryProgram,
@@ -50,6 +52,7 @@ class ProgramAmalModel {
         username: json["username"] == null ? null : json["username"],
         idProgram: json["idProgram"] == null ? null : json["idProgram"],
         userLikeThis: json["userLikeThis"] == null ? null : json["userLikeThis"],
+        bookmarkThis: json["bookmarkThis"] == null ? null : json["bookmarkThis"],
         titleProgram: json["titleProgram"] == null ? null : json["titleProgram"],
         descriptionProgram: json["descriptionProgram"] == null ? null : json["descriptionProgram"],
         categoryProgram: json["categoryProgram"] == null ? null : json["categoryProgram"],
@@ -69,6 +72,7 @@ class ProgramAmalModel {
         "username": username == null ? null : username,
         "idProgram": idProgram == null ? null : idProgram,
         "userLikeThis": userLikeThis == null ? null : userLikeThis,
+        "bookmarkThis": bookmarkThis == null ? null : bookmarkThis,
         "titleProgram": titleProgram == null ? null : titleProgram,
         "descriptionProgram": descriptionProgram == null ? null : descriptionProgram,
         "categoryProgram": categoryProgram == null ? null : categoryProgram,

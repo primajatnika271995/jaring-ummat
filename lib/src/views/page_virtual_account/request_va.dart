@@ -55,7 +55,7 @@ class _RequestVAState extends State<RequestVA> {
                       ),
                     ),
                     Text(
-                      'Rp ${CurrencyFormat().currency(widget.nominal)}',
+                      'Rp ${CurrencyFormat().data.format(widget.nominal)}',
                       style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
