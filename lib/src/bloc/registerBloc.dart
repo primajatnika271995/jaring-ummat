@@ -52,6 +52,7 @@ class RegisterBloc with Validators {
   }
 
   updateLokasiAmal(String lokasiAmal) async {
+    SharedPreferences _preferences = await SharedPreferences.getInstance();
     MuzakkiUserDetails updateLokasiAmal = await _repository.updateLokasiAmal(lokasiAmal);
     updateLokasiAmalFetcher.sink.add(updateLokasiAmal);
     if (updateLokasiAmal.userId != null) {
@@ -60,10 +61,23 @@ class RegisterBloc with Validators {
   }
 
   updateUser(BuildContext context, MuzakkiUserDetails data) async {
+    SharedPreferences _preferences = await SharedPreferences.getInstance();
     MuzakkiUserDetails value = await _repository.updateUser(data);
     updateUserFetcher.sink.add(value);
 
+    print('Response Update User Details');
+    print(muzakkiUserDetailsToJson(value));
+
     if (value.userId != null) {
+      _preferences.setString(FULLNAME_KEY, value.fullname);
+      _preferences.setString(CONTACT_KEY, value.contact);
+      _preferences.setString(TEMPAT_LAHIR, value.kotaLahir);
+      _preferences.setString(TGL_LAHIR, value.tanggalLahir);
+      _preferences.setString(ALAMAT_LAHIR, value.kotaLahir);
+      _preferences.setString(KOTA_LAHIR, value.kotaLahir != null ? value.kotaLahir : value.kabupatenLahir);
+      _preferences.setString(PROVINSI_LAHIR, value.provinsiLahir);
+      _preferences.setString(KOTA_TINGGAL, value.kabupaten != null ? value.kabupaten : value.kotaTinggal);
+      _preferences.setString(PROVINSI_TINGGAL, value.provinsi);
       Navigator.of(context).pop();
     }
   }

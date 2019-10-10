@@ -38,6 +38,10 @@ class LoginBloc {
         _preferences.setString(FULLNAME_KEY, response.fullname);
         _preferences.setString(CONTACT_KEY, response.contact);
         _preferences.setString(PROFILE_PICTURE_KEY, value.imageUrl);
+        _preferences.setString(KOTA_LAHIR, value.kotaLahir != null ? value.kotaLahir : value.kabupatenLahir);
+        _preferences.setString(PROVINSI_LAHIR, value.provinsiLahir);
+        _preferences.setString(KOTA_TINGGAL, value.kotaTinggal!= null ? value.kotaTinggal : value.kabupaten);
+        _preferences.setString(PROVINSI_TINGGAL, value.provinsi);
 
         Navigator.of(context).push(
           MaterialPageRoute(

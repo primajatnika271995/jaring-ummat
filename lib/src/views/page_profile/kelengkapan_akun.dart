@@ -542,6 +542,7 @@ class _KelengkapanAkunPageState extends State<KelengkapanAkunPage> {
             email: _emailCtrl.text,
             kabupaten: _kabupatenCtrl.text,
             provinsi: _provinsiCtrl.text,
+            kotaTinggal: _kabupatenCtrl.text,
             kabupatenLahir: _kabupatenLahirCtrl.text,
             provinsiLahir: _provinsiLahirCtrl.text
           );
@@ -804,8 +805,7 @@ class _KelengkapanAkunPageState extends State<KelengkapanAkunPage> {
     var place = await PluginGooglePlacePicker.showAutocomplete(
         mode: PlaceAutocompleteMode.MODE_OVERLAY,
         typeFilter: TypeFilter.REGIONS);
-    final coordinate =
-    new Coordinates(place.latitude, place.longitude);
+    final coordinate = new Coordinates(place.latitude, place.longitude);
     var data = await Geocoder.local.findAddressesFromCoordinates(coordinate);
 
     if (!mounted) return;

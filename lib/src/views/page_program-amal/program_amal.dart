@@ -545,6 +545,13 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
 
   void lokasiAmal() async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
+    String kotaLahir = _pref.getString(KOTA_LAHIR);
+    String provinsiLahir = _pref.getString(PROVINSI_LAHIR);
+    String kotaTinggal = _pref.getString(KOTA_TINGGAL);
+    String provinsiTinggal = _pref.getString(PROVINSI_TINGGAL);
+    print('Lokasi Kota / Provinsi : ');
+    print('Kota Lahir: $kotaLahir, Provinsi Lahir: $provinsiLahir');
+    print('Kota Tinggal: $kotaTinggal, Provinsi Tinggal: $provinsiTinggal');
     setState(() {
       _locationSelected = _pref.getString(LOKASI_AMAL);
     });
