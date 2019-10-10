@@ -6,6 +6,7 @@ import 'package:flutter_jaring_ummat/src/services/elasticSearchApi.dart';
 import 'package:flutter_jaring_ummat/src/utils/screenSize.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/all_in_one_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/bloc/elasticSearchBloc.dart';
+import 'package:flutter_jaring_ummat/src/views/page_explorer/fake_data.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 
 class ElasticSearch extends StatefulWidget {
@@ -73,60 +74,64 @@ class _ElasticSearchState extends State<ElasticSearch> {
               _isSearch ? Container() : recomendation(),
               _isSearch
                   ? StreamBuilder(
-                      stream: bloc.streamData,
-                      builder: (context,
-                          AsyncSnapshot<ElasticSearchModel> snapshot) {
-                        switch (snapshot.connectionState) {
-                          case ConnectionState.waiting:
-                            return Container(
-                              height: screenHeightExcludingToolbar(context),
-                              child: Center(
-                                child: Text('Waiting..'),
-                              ),
-                            );
-                            break;
-                          default:
-                            if (snapshot.hasData &&
-                                snapshot.data.hits.hits.isNotEmpty) {
-                              return listResult(snapshot.data);
-                            } else if (snapshot.data.hits.hits.isEmpty) {
-                              return Container(
-                                width: screenWidth(context),
-                                height: screenHeightExcludingToolbar(context),
-                                color: whiteColor,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
-                                    Image.asset(
-                                      'assets/backgrounds/no_data_accent.png',
-                                      height: 250,
-                                    ),
-                                    Text(
-                                      'Oops, Data Tidak Ditemukan',
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 16,
-                                      ),
-                                    ),
-                                    Text(
-                                      'Tidak ada hasil pencarian berdasarkan \n kata pencarian "${_searchCtrl.text}"',
-                                      style: TextStyle(
-                                        color: Colors.grey,
-                                        fontSize: 14,
-                                      ),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  ],
+                stream: bloc.streamData,
+                builder: (context,
+                    AsyncSnapshot<ElasticSearchModel> snapshot) {
+                  switch (snapshot.connectionState) {
+                    case ConnectionState.waiting:
+                      return Container(
+                        height: screenHeightExcludingToolbar(context),
+                        child: Center(
+                          child: Text('Waiting..'),
+                        ),
+                      );
+                      break;
+                    default:
+                      if (snapshot.hasData &&
+                          snapshot.data.hits.hits.isNotEmpty) {
+                        return listResult(snapshot.data);
+                      } else if (snapshot.data.hits.hits.isEmpty) {
+                        return Container(
+                          width: screenWidth(context),
+                          height: screenHeightExcludingToolbar(context),
+                          color: whiteColor,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Container(
+                                height: 250,
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                    image: AssetImage('assets/backgrounds/no_data_accent.png'),
+                                  ),
                                 ),
-                              );
-                            }
-                            return Center(
-                              child: Text('Error'),
-                            );
-                        }
-                      },
-                    )
+                              ),
+                              Text(
+                                'Oops, Data Tidak Ditemukan',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                ),
+                              ),
+                              Text(
+                                'Tidak ada hasil pencarian berdasarkan \n kata pencarian "${_searchCtrl.text}"',
+                                style: TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 14,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ],
+                          ),
+                        );
+                      }
+                      return Center(
+                        child: Text('Error'),
+                      );
+                  }
+                },
+              )
                   : Container(),
             ],
           ),
@@ -209,46 +214,46 @@ class _ElasticSearchState extends State<ElasticSearch> {
     );
   }
 
-  Widget searchForm() {
-    return Container(
-      margin: EdgeInsets.only(top: 8),
-      child: Stack(
-        children: <Widget>[
-          TextFormField(
-            style: TextStyle(fontSize: 14),
-            decoration: InputDecoration(
-              contentPadding: EdgeInsets.fromLTRB(40, 10, 15, 10),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(32),
-                borderSide: BorderSide(color: greenColor),
-              ),
-              hintText: 'Apa yang kamu cari?',
-            ),
-            controller: _searchCtrl,
-            keyboardType: TextInputType.text,
-            textInputAction: TextInputAction.done,
-            onEditingComplete: () {
-              print(_searchCtrl.text);
-              bloc.fetchElasticData(_searchCtrl.text);
-              _isSearch = true;
-              setState(() {});
-            },
-          ),
-          Align(
-            alignment: Alignment(-0.9, -1),
-            child: Padding(
-              padding: const EdgeInsets.only(top: 8),
-              child: Icon(
-                AllInOneIcon.search_small_2x,
-                color: grayColor,
-                size: 20,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+//  Widget searchForm() {
+//    return Container(
+//      margin: EdgeInsets.only(top: 8),
+//      child: Stack(
+//        children: <Widget>[
+//          TextFormField(
+//            style: TextStyle(fontSize: 14),
+//            decoration: InputDecoration(
+//              contentPadding: EdgeInsets.fromLTRB(40, 10, 15, 10),
+//              border: OutlineInputBorder(
+//                borderRadius: BorderRadius.circular(32),
+//                borderSide: BorderSide(color: greenColor),
+//              ),
+//              hintText: 'Apa yang kamu cari?',
+//            ),
+//            controller: _searchCtrl,
+//            keyboardType: TextInputType.text,
+//            textInputAction: TextInputAction.done,
+//            onEditingComplete: () {
+//              print(_searchCtrl.text);
+//              bloc.fetchElasticData(_searchCtrl.text);
+//              _isSearch = true;
+//              setState(() {});
+//            },
+//          ),
+//          Align(
+//            alignment: Alignment(-0.9, -1),
+//            child: Padding(
+//              padding: const EdgeInsets.only(top: 8),
+//              child: Icon(
+//                AllInOneIcon.search_small_2x,
+//                color: grayColor,
+//                size: 20,
+//              ),
+//            ),
+//          ),
+//        ],
+//      ),
+//    );
+//  }
 
   Widget recomendation() {
     return Padding(
@@ -386,8 +391,7 @@ class _ElasticSearchState extends State<ElasticSearch> {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(30.0),
                 image: DecorationImage(
-                  image: NetworkImage(
-                      "https://img.kitabisa.cc/size/664x357/8e86f327-d4a2-4813-a2f1-228ebd35c953.jpg"),
+                  image: NetworkImage(data.source.images[0].fileUrl),
                   fit: BoxFit.cover,
                 ),
               ),

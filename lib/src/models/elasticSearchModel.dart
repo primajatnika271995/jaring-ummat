@@ -93,90 +93,138 @@ class Hit {
 }
 
 class Source {
-    String userCategory;
     String userEmail;
-    String title;
-    String description;
-    String userContact;
-    DateTime createdDate;
-    double targetDonation;
-    DateTime endDate;
-    String createdBy;
-    DateTime timestamp;
-    String version;
-    String type;
-    String userId;
-    double totalDonation;
-    String id;
     String userStreetAddress;
+    String userId;
+    DateTime timestamp;
+    List<Image> images;
+    String id;
+    String userContact;
+    String description;
+    String type;
+    dynamic totalDonation;
+    DateTime createdDate;
+    DateTime endDate;
+    String version;
+    String title;
+    dynamic targetDonation;
     String userName;
+    String userCategory;
+    String createdBy;
     String category;
     int elasticIndex;
 
     Source({
-        this.userCategory,
         this.userEmail,
-        this.title,
-        this.description,
-        this.userContact,
-        this.createdDate,
-        this.targetDonation,
-        this.endDate,
-        this.createdBy,
-        this.timestamp,
-        this.version,
-        this.type,
-        this.userId,
-        this.totalDonation,
-        this.id,
         this.userStreetAddress,
+        this.userId,
+        this.timestamp,
+        this.images,
+        this.id,
+        this.userContact,
+        this.description,
+        this.type,
+        this.totalDonation,
+        this.createdDate,
+        this.endDate,
+        this.version,
+        this.title,
+        this.targetDonation,
         this.userName,
+        this.userCategory,
+        this.createdBy,
         this.category,
         this.elasticIndex,
     });
 
     factory Source.fromJson(Map<String, dynamic> json) => Source(
-        userCategory: json["user_category"] == null ? null : json["user_category"],
         userEmail: json["user_email"] == null ? null : json["user_email"],
-        title: json["title"] == null ? null : json["title"],
-        description: json["description"] == null ? null : json["description"],
-        userContact: json["user_contact"] == null ? null : json["user_contact"],
-        createdDate: json["created_date"] == null ? null : DateTime.parse(json["created_date"]),
-        targetDonation: json["target_donation"] == null ? null : json["target_donation"],
-        endDate: json["end_date"] == null ? null : DateTime.parse(json["end_date"]),
-        createdBy: json["created_by"] == null ? null : json["created_by"],
-        timestamp: json["@timestamp"] == null ? null : DateTime.parse(json["@timestamp"]),
-        version: json["@version"] == null ? null : json["@version"],
-        type: json["type"] == null ? null : json["type"],
-        userId: json["user_id"] == null ? null : json["user_id"],
-        totalDonation: json["total_donation"] == null ? null : json["total_donation"],
-        id: json["id"] == null ? null : json["id"],
         userStreetAddress: json["user_street_address"] == null ? null : json["user_street_address"],
+        userId: json["user_id"] == null ? null : json["user_id"],
+        timestamp: json["@timestamp"] == null ? null : DateTime.parse(json["@timestamp"]),
+        images: json["images"] == null ? null : List<Image>.from(json["images"].map((x) => Image.fromJson(x))),
+        id: json["id"] == null ? null : json["id"],
+        userContact: json["user_contact"] == null ? null : json["user_contact"],
+        description: json["description"] == null ? null : json["description"],
+        type: json["type"] == null ? null : json["type"],
+        totalDonation: json["total_donation"] == null ? null : json["total_donation"],
+        createdDate: json["created_date"] == null ? null : DateTime.parse(json["created_date"]),
+        endDate: json["end_date"] == null ? null : DateTime.parse(json["end_date"]),
+        version: json["@version"] == null ? null : json["@version"],
+        title: json["title"] == null ? null : json["title"],
+        targetDonation: json["target_donation"] == null ? null : json["target_donation"],
         userName: json["user_name"] == null ? null : json["user_name"],
+        userCategory: json["user_category"] == null ? null : json["user_category"],
+        createdBy: json["created_by"] == null ? null : json["created_by"],
         category: json["category"] == null ? null : json["category"],
         elasticIndex: json["elastic_index"] == null ? null : json["elastic_index"],
     );
 
     Map<String, dynamic> toJson() => {
-        "user_category": userCategory == null ? null : userCategory,
         "user_email": userEmail == null ? null : userEmail,
-        "title": title == null ? null : title,
-        "description": description == null ? null : description,
-        "user_contact": userContact == null ? null : userContact,
-        "created_date": createdDate == null ? null : createdDate.toIso8601String(),
-        "target_donation": targetDonation == null ? null : targetDonation,
-        "end_date": endDate == null ? null : endDate.toIso8601String(),
-        "created_by": createdBy == null ? null : createdBy,
-        "@timestamp": timestamp == null ? null : timestamp.toIso8601String(),
-        "@version": version == null ? null : version,
-        "type": type == null ? null : type,
-        "user_id": userId == null ? null : userId,
-        "total_donation": totalDonation == null ? null : totalDonation,
-        "id": id == null ? null : id,
         "user_street_address": userStreetAddress == null ? null : userStreetAddress,
+        "user_id": userId == null ? null : userId,
+        "@timestamp": timestamp == null ? null : timestamp.toIso8601String(),
+        "images": images == null ? null : List<dynamic>.from(images.map((x) => x.toJson())),
+        "id": id == null ? null : id,
+        "user_contact": userContact == null ? null : userContact,
+        "description": description == null ? null : description,
+        "type": type == null ? null : type,
+        "total_donation": totalDonation == null ? null : totalDonation,
+        "created_date": createdDate == null ? null : createdDate.toIso8601String(),
+        "end_date": endDate == null ? null : endDate.toIso8601String(),
+        "@version": version == null ? null : version,
+        "title": title == null ? null : title,
+        "target_donation": targetDonation == null ? null : targetDonation,
         "user_name": userName == null ? null : userName,
+        "user_category": userCategory == null ? null : userCategory,
+        "created_by": createdBy == null ? null : createdBy,
         "category": category == null ? null : category,
         "elastic_index": elasticIndex == null ? null : elasticIndex,
+    };
+}
+
+class Image {
+    String fileThumbnailUrl;
+    String fileResourceType;
+    String fileId;
+    String fileFormat;
+    String fileCreatedBy;
+    String fileUrlType;
+    String fileUrl;
+    DateTime fileCreatedDate;
+
+    Image({
+        this.fileThumbnailUrl,
+        this.fileResourceType,
+        this.fileId,
+        this.fileFormat,
+        this.fileCreatedBy,
+        this.fileUrlType,
+        this.fileUrl,
+        this.fileCreatedDate,
+    });
+
+    factory Image.fromJson(Map<String, dynamic> json) => Image(
+        fileThumbnailUrl: json["file_thumbnail_url"] == null ? null : json["file_thumbnail_url"],
+        fileResourceType: json["file_resource_type"] == null ? null : json["file_resource_type"],
+        fileId: json["file_id"] == null ? null : json["file_id"],
+        fileFormat: json["file_format"] == null ? null : json["file_format"],
+        fileCreatedBy: json["file_created_by"] == null ? null : json["file_created_by"],
+        fileUrlType: json["file_url_type"] == null ? null : json["file_url_type"],
+        fileUrl: json["file_url"] == null ? null : json["file_url"],
+        fileCreatedDate: json["file_created_date"] == null ? null : DateTime.parse(json["file_created_date"]),
+    );
+
+    Map<String, dynamic> toJson() => {
+        "file_thumbnail_url": fileThumbnailUrl == null ? null : fileThumbnailUrl,
+        "file_resource_type": fileResourceType == null ? null : fileResourceType,
+        "file_id": fileId == null ? null : fileId,
+        "file_format": fileFormat == null ? null : fileFormat,
+        "file_created_by": fileCreatedBy == null ? null : fileCreatedBy,
+        "file_url_type": fileUrlType == null ? null : fileUrlType,
+        "file_url": fileUrl == null ? null : fileUrl,
+        "file_created_date": fileCreatedDate == null ? null : fileCreatedDate.toIso8601String(),
     };
 }
 
