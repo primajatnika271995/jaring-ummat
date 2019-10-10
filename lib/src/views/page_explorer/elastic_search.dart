@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_jaring_ummat/src/config/hexColor.dart';
-import 'package:flutter_jaring_ummat/src/models/elasticSearchAutocompleteModel.dart';
 import 'package:flutter_jaring_ummat/src/models/elasticSearchModel.dart';
 import 'package:flutter_jaring_ummat/src/services/elasticSearchApi.dart';
 import 'package:flutter_jaring_ummat/src/utils/screenSize.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/all_in_one_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/bloc/elasticSearchBloc.dart';
-import 'package:flutter_jaring_ummat/src/views/page_explorer/fake_data.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 
 class ElasticSearch extends StatefulWidget {
