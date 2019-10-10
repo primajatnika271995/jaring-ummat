@@ -97,7 +97,7 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                     },
                     child: Icon(
                       AppBarIcon.location_inactive,
-                      size: 20,
+                      size: 25,
                       color: blackColor,
                     ),
                   ),
@@ -114,7 +114,7 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                     },
                     child: Icon(
                       NewIcon.nav_inbox_3x,
-                      size: 20,
+                      size: 25,
                       color: blackColor,
                     ),
                   ),
@@ -133,7 +133,7 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                                   .pushNamed('/list/account/chats');
                             },
                             child: Icon(NewIcon.chat_3x,
-                                size: 20, color: blackColor)),
+                                size: 25, color: blackColor)),
                       ),
                     ),
                     Positioned(
@@ -679,6 +679,13 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
 
   void lokasiAmal() async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
+    String kotaLahir = _pref.getString(KOTA_LAHIR);
+    String provinsiLahir = _pref.getString(PROVINSI_LAHIR);
+    String kotaTinggal = _pref.getString(KOTA_TINGGAL);
+    String provinsiTinggal = _pref.getString(PROVINSI_TINGGAL);
+    print('Lokasi Kota / Provinsi : ');
+    print('Kota Lahir: $kotaLahir, Provinsi Lahir: $provinsiLahir');
+    print('Kota Tinggal: $kotaTinggal, Provinsi Tinggal: $provinsiTinggal');
     setState(() {
       _locationSelected = _pref.getString(LOKASI_AMAL);
     });

@@ -111,7 +111,7 @@ class PopularAccountState extends State<PopularAccountView>
         backgroundColor: whiteColor,
         // leading: new Icon(NewIcon.back_big_3x, color: greenColor),
         title: const Text(
-          'Amil Jejaring',
+          'Mitra Jejaring',
           style: TextStyle(color: Colors.black, fontSize: SizeUtils.titleSize),
         ),
         actions: <Widget>[
@@ -119,7 +119,7 @@ class PopularAccountState extends State<PopularAccountView>
             padding: EdgeInsets.only(left: 30.0),
             icon: Icon(NewIcon.search_big_3x),
             color: blackColor,
-            iconSize: 20.0,
+            iconSize: 25.0,
             onPressed: () {
               print('_search_');
             },
@@ -128,7 +128,7 @@ class PopularAccountState extends State<PopularAccountView>
             padding: EdgeInsets.only(right: 10.0),
             icon: Icon(NewIcon.account_following_3x),
             color: blackColor,
-            iconSize: 20.0,
+            iconSize: 25.0,
             onPressed: () {},
           ),
         ],
@@ -234,8 +234,8 @@ class PopularAccountState extends State<PopularAccountView>
           isFollowed = snapshot.data[index].followThisAccount;
           return ListTile(
             leading: Container(
-              width: 35.0,
-              height: 35.0,
+              width: 55.0,
+              height: 55.0,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(30.0),
                 image: DecorationImage(

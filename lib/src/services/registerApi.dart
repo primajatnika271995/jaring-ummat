@@ -48,7 +48,7 @@ class RegisterApiProvider {
       "email": value.email,
       "fullname": value.fullname,
       "kotaLahir": value.kotaLahir,
-      "kotaTinggal": "Jakarta",
+      "kotaTinggal": value.kotaTinggal,
       "latitudeLahir": null,
       "latitudeTinggal": value.latitudeTinggal,
       "lokasiAmal": null,

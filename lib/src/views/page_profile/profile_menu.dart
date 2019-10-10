@@ -157,7 +157,7 @@ class _ProfileMenuState extends State<ProfileMenu> {
               },
               child: Icon(
                 AllInOneIcon.faq_3x,
-                size: 20,
+                size: 25,
                 color: blackColor,
               ),
             ),
@@ -169,7 +169,7 @@ class _ProfileMenuState extends State<ProfileMenu> {
                   Navigator.of(context).pushNamed('/term-and-condition'),
               child: Icon(
                 AllInOneIcon.t_c_3x,
-                size: 20,
+                size: 25,
                 color: blackColor,
               ),
             ),
@@ -180,7 +180,7 @@ class _ProfileMenuState extends State<ProfileMenu> {
               onTap: _onlogout,
               child: Icon(
                 AppBarIcon.logout,
-                size: 20,
+                size: 25,
                 color: blackColor,
               ),
             ),

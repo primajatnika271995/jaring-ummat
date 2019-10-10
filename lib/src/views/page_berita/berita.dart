@@ -69,7 +69,7 @@ class _BeritaPageState extends State<BeritaPage> {
                   onPressed: () {},
                   padding: EdgeInsets.only(right: 10.0),
                   icon: Icon(NewIcon.search_big_3x),
-                  iconSize: 20.0,
+                  iconSize: 25.0,
                   color: blackColor,
                 ),
               ],

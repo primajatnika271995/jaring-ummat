@@ -47,12 +47,32 @@ class ProgramAmalApiProvider {
     var token = _pref.getString(ACCESS_TOKEN_KEY);
     var filter = _pref.getString(FILTER_PROGRAM_AMAL);
     var lokasiAmal = _pref.getString(LOKASI_AMAL);
-    var kotaSekarang = _pref.getString(CURRENT_LOCATION_CITY);
-    var provinsiSekarang = _pref.getString(CURRENT_LOCATION_PROVINSI);
+
+    var kotaSearch;
+    var provinsiSearch;
+
+    switch (lokasiAmal) {
+      case 'SEKARANG':
+        kotaSearch = _pref.getString(CURRENT_LOCATION_CITY);
+        provinsiSearch = _pref.getString(CURRENT_LOCATION_PROVINSI);
+        break;
+      case 'ASAL':
+        kotaSearch = _pref.getString(KOTA_LAHIR);
+        provinsiSearch = _pref.getString(PROVINSI_LAHIR);
+        break;
+      case 'TINGGAL':
+        kotaSearch = _pref.getString(KOTA_TINGGAL);
+        provinsiSearch = _pref.getString(PROVINSI_TINGGAL);
+        break;
+      default:
+        kotaSearch = null;
+        provinsiSearch = null;
+        break;
+    }
 
     print('ini filter : $filter');
-    print('KOTA SEKARANG : $kotaSekarang');
-    print('PROVINSI SEKARANG : $provinsiSekarang');
+    print('KOTA SEARCH : $kotaSearch');
+    print('PROVINSI SEARCH : $provinsiSearch');
 
     if (token == null) {
       token =
@@ -68,10 +88,8 @@ class ProgramAmalApiProvider {
         "limit": limit,
         "offset": offset,
         "filter": filter == null ? "false" : "true",
-        "kota":
-            filter != null && lokasiAmal == 'SEKARANG' ? kotaSekarang : null,
-        "provinsi":
-            filter != null && lokasiAmal == 'SEKARANG' ? provinsiSekarang : null
+        "kota": filter != null ? kotaSearch : null,
+        "provinsi": filter != null ? provinsiSearch : null
       };
       uri = Uri.parse(PROGRAM_AMAL_LIST_ALL_URL);
     } else {
@@ -82,10 +100,8 @@ class ProgramAmalApiProvider {
         "offset": offset,
         "category": category,
         "filter": filter == null ? "false" : "true",
-        "kota":
-            filter != null && lokasiAmal == 'SEKARANG' ? kotaSekarang : null,
-        "provinsi":
-            filter != null && lokasiAmal == 'SEKARANG' ? provinsiSekarang : null
+        "kota": filter != null ? kotaSearch : null,
+        "provinsi": filter != null ? provinsiSearch : null
       };
       uri = Uri.parse(PROGRAM_AMAL_LIST_BY_CATEGORY_URL);
     }
