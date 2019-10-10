@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:flutter_jaring_ummat/src/config/key.dart';
 import 'package:flutter_jaring_ummat/src/models/DTO/ReturnData.dart';
 import 'package:flutter_jaring_ummat/src/models/muzakkiUserDetails.dart';
 import 'package:flutter_jaring_ummat/src/views/page_profile/place_details.dart';
@@ -806,7 +807,8 @@ class _KelengkapanAkunPageState extends State<KelengkapanAkunPage> {
         mode: PlaceAutocompleteMode.MODE_OVERLAY,
         typeFilter: TypeFilter.REGIONS);
     final coordinate = new Coordinates(place.latitude, place.longitude);
-    var data = await Geocoder.local.findAddressesFromCoordinates(coordinate);
+    var data = await Geocoder.google(GOOGLE_MAPS_KEY, language: "id").findAddressesFromCoordinates(coordinate);
+//    var data = await Geocoder.local.findAddressesFromCoordinates(coordinate);
 
     if (!mounted) return;
 
