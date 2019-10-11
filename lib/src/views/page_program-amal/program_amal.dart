@@ -234,7 +234,7 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                       elevation: 0,
                       floating: true,
                       pinned: true,
-                      expandedHeight: 0,
+                      expandedHeight: 10,
                       automaticallyImplyLeading: false,
                       bottom: PreferredSize(
                         preferredSize: Size.fromHeight(90),
@@ -266,7 +266,7 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                                         child: new Icon(
                                           AllInOneIcon.zakat_3x,
                                           color: Colors.white,
-                                          size: 32.0,
+                                          size: 27.0,
                                         ),
                                       ),
                                     ),
@@ -297,7 +297,7 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                                         child: new Icon(
                                           AllInOneIcon.infaq_3x,
                                           color: Colors.white,
-                                          size: 32.0,
+                                          size: 27.0,
                                         ),
                                       ),
                                     ),
@@ -328,7 +328,7 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                                         child: new Icon(
                                           AllInOneIcon.sodaqoh_3x,
                                           color: Colors.white,
-                                          size: 32.0,
+                                          size: 27.0,
                                         ),
                                       ),
                                     ),
@@ -359,7 +359,7 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                                         child: new Icon(
                                           AllInOneIcon.wakaf_3x,
                                           color: Colors.white,
-                                          size: 32.0,
+                                          size: 27.0,
                                         ),
                                       ),
                                     ),
@@ -390,7 +390,7 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                                         child: new Icon(
                                           AllInOneIcon.donation_3x,
                                           color: Colors.white,
-                                          size: 32.0,
+                                          size: 27.0,
                                         ),
                                       ),
                                     ),
@@ -417,7 +417,7 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                         backgroundColor: Colors.white,
                         body: Padding(
                           padding: EdgeInsets.only(
-                              left: 13.0, right: 13.0, top: 20.0),
+                              left: 13.0, right: 13.0),
                           child: Column(
                             children: <Widget>[
                               Row(
