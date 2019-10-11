@@ -256,16 +256,16 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                                       },
                                       child: new Container(
                                         decoration: new BoxDecoration(
-                                            color: Colors.white,
+                                            color: Colors.yellow[600],
                                             border: Border.all(
-                                                color: Colors.grey[400],
-                                                width: 2.0),
+                                                color: softGreyColor,
+                                                width: 3.0),
                                             borderRadius: new BorderRadius.all(
                                                 new Radius.circular(20.0))),
                                         padding: EdgeInsets.all(12.0),
                                         child: new Icon(
                                           AllInOneIcon.zakat_3x,
-                                          color: Colors.yellow,
+                                          color: Colors.white,
                                           size: 32.0,
                                         ),
                                       ),
@@ -287,16 +287,16 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                                       },
                                       child: new Container(
                                         decoration: new BoxDecoration(
-                                            color: Colors.white,
+                                            color: Colors.red,
                                             border: Border.all(
-                                                color: Colors.grey[400],
-                                                width: 2.0),
+                                                color: softGreyColor,
+                                                width: 3.0),
                                             borderRadius: new BorderRadius.all(
                                                 new Radius.circular(20.0))),
                                         padding: EdgeInsets.all(12.0),
                                         child: new Icon(
                                           AllInOneIcon.infaq_3x,
-                                          color: Colors.red,
+                                          color: Colors.white,
                                           size: 32.0,
                                         ),
                                       ),
@@ -318,16 +318,16 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                                       },
                                       child: new Container(
                                         decoration: new BoxDecoration(
-                                            color: Colors.white,
+                                            color: Colors.deepPurple,
                                             border: Border.all(
-                                                color: Colors.grey[400],
-                                                width: 2.0),
+                                                color: softGreyColor,
+                                                width: 3.0),
                                             borderRadius: new BorderRadius.all(
                                                 new Radius.circular(20.0))),
                                         padding: EdgeInsets.all(12.0),
                                         child: new Icon(
                                           AllInOneIcon.sodaqoh_3x,
-                                          color: Colors.deepPurple,
+                                          color: Colors.white,
                                           size: 32.0,
                                         ),
                                       ),
@@ -349,16 +349,16 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                                       },
                                       child: new Container(
                                         decoration: new BoxDecoration(
-                                            color: Colors.white,
+                                            color: Colors.green,
                                             border: Border.all(
-                                                color: Colors.grey[400],
-                                                width: 2.0),
+                                                color: softGreyColor,
+                                                width: 3.0),
                                             borderRadius: new BorderRadius.all(
                                                 new Radius.circular(20.0))),
                                         padding: EdgeInsets.all(12.0),
                                         child: new Icon(
                                           AllInOneIcon.wakaf_3x,
-                                          color: Colors.green,
+                                          color: Colors.white,
                                           size: 32.0,
                                         ),
                                       ),
@@ -380,16 +380,16 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                                       },
                                       child: new Container(
                                         decoration: new BoxDecoration(
-                                            color: Colors.white,
+                                            color: Colors.blue,
                                             border: Border.all(
-                                                color: Colors.grey[400],
-                                                width: 2.0),
+                                                color: softGreyColor,
+                                                width: 3.0),
                                             borderRadius: new BorderRadius.all(
                                                 new Radius.circular(20.0))),
                                         padding: EdgeInsets.all(12.0),
                                         child: new Icon(
                                           AllInOneIcon.donation_3x,
-                                          color: Colors.blue,
+                                          color: Colors.white,
                                           size: 32.0,
                                         ),
                                       ),
