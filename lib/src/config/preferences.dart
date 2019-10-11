@@ -29,3 +29,6 @@ const PROVINSI_LAHIR = 'PROVINSILAHIR';
 const linkedInRedirectURI = 'https://api.linkedin.com/v2/';
 const linkedInClientID = '81vfnbt57g6p6q';
 const linkedInClientSecret = 'QOzI7o0ZTBAF8hr7';
+
+// HISTORY
+const HISTORY_ELASTIC_SEARCH = 'HISTORYELASTICSEARCH';

@@ -1,3 +1,4 @@
+import 'package:flutter_jaring_ummat/src/views/page_inbox/inbox.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_jaring_ummat/src/config/hexColor.dart';
@@ -344,17 +345,17 @@ class _InstruksiPembayaranState extends State<InstruksiPembayaran>
             child: Container(
               child: RaisedButton(
                 onPressed: () async {
-                  setState(() {
-                    _loadingVisible = true;
-                  });
-                  bloc.pembayaran(widget.transaksiId, widget.virtualNumber);
-                  await Future.delayed(Duration(seconds: 3));
-                  Navigator.of(context).pushReplacementNamed('/home');
+//                  setState(() {
+//                    _loadingVisible = true;
+//                  });
+//                  bloc.pembayaran(widget.transaksiId, widget.virtualNumber);
+//                  await Future.delayed(Duration(seconds: 3));
+                  Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => Inbox()));
                 },
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(45)),
                 child: Text(
-                  'Update Status Pembayaran',
+                  'Status Pembayaran',
                   style: TextStyle(color: whiteColor),
                 ),
                 color: greenColor,

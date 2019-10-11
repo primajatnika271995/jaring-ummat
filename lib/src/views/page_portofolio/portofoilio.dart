@@ -77,6 +77,7 @@ class _PortofolioState extends State<Portofolio> {
   double valueWakaf = 0;
   double valueDonasi = 0;
   double valueTotal = 0;
+  double valueBackup = 0;
   int valueTotalAktivitas = 0;
 
   /*
@@ -663,7 +664,7 @@ class _PortofolioState extends State<Portofolio> {
           widget: Container(
             child: Text(
               'Rp ${CurrencyFormat().data.format(valueTotal.toDouble())} \n /$valueTotalAktivitas Aktivitas',
-              style: TextStyle(color: Colors.black, fontSize: 14),
+              style: TextStyle(color: Colors.black, fontSize: 16),
               textAlign: TextAlign.center,
             ),
           ),
@@ -675,8 +676,61 @@ class _PortofolioState extends State<Portofolio> {
         Colors.deepOrange,
         Colors.deepPurpleAccent,
         Colors.blue,
+        Colors.grey
       ],
       tooltipBehavior: TooltipBehavior(enable: true),
+      onLegendTapped: (LegendTapArgs value) {
+        print(value.pointIndex);
+        switch (value.pointIndex) {
+          case 5:
+            valueTotal = valueBackup;
+            barColor = Colors.deepPurple;
+            print(valueTotal);
+            bloc.fetchBarChart("", "satu");
+            setState(() {});
+            break;
+        }
+      },
+      onPointTapped: (PointTapArgs value) {
+        print(value.pointIndex);
+        switch (value.pointIndex) {
+          case 0:
+            valueTotal = valueZakat;
+            barColor = Colors.red;
+            print(valueTotal);
+            bloc.fetchBarChart("zakat", "satu");
+            setState(() {});
+            break;
+          case 1:
+            valueTotal = valueInfaq;
+            barColor = Colors.yellow;
+            print(valueTotal);
+            bloc.fetchBarChart("infaq", "satu");
+            setState(() {});
+            break;
+          case 2:
+            valueTotal = valueShodqoh;
+            barColor = Colors.redAccent[200];
+            print(valueTotal);
+            bloc.fetchBarChart("sodaqoh", "satu");
+            setState(() {});
+            break;
+          case 3:
+            valueTotal = valueWakaf;
+            barColor = Colors.deepPurple;
+            print(valueTotal);
+            bloc.fetchBarChart("wakaf", "satu");
+            setState(() {});
+            break;
+          case 4:
+            valueTotal = valueDonasi;
+            barColor = Colors.blue;
+            print(valueTotal);
+            bloc.fetchBarChart("donasi", "satu");
+            setState(() {});
+            break;
+        }
+      },
     );
   }
 
@@ -688,6 +742,7 @@ class _PortofolioState extends State<Portofolio> {
       _DoughnutData('Sodaqoh', shodaqohPercent, '$shodaqohPercent %'),
       _DoughnutData('Wakaf', wakafPercent, '$wakafPercent %'),
       _DoughnutData('Donasi', donasiPercent, '$donasiPercent %'),
+      _DoughnutData('Total', 0, ''),
     ];
     return <DoughnutSeries<_DoughnutData, String>>[
       DoughnutSeries<_DoughnutData, String>(
@@ -710,12 +765,14 @@ class _PortofolioState extends State<Portofolio> {
   }
 
   void getDataPieChart() {
+    PortofolioProvider provider = new PortofolioProvider();
     provider.pieChartApi().then((response) {
       if (response.statusCode == 200) {
         var data =
-            SebaranAktifitasAmalModel.fromJson(json.decode(response.body));
+        SebaranAktifitasAmalModel.fromJson(json.decode(response.body));
 
         valueTotal = data.totalSemua.toDouble();
+        valueBackup = data.totalSemua.toDouble();
         valueDonasi = data.totalDonasi.toDouble();
         valueWakaf = data.totalWakaf.toDouble();
         valueShodqoh = data.totalSodaqoh.toDouble();
@@ -728,61 +785,6 @@ class _PortofolioState extends State<Portofolio> {
         shodaqohPercent = data.totalSodaqohPercent;
         wakafPercent = data.totalWakafPercent;
         donasiPercent = data.totalDonasiPercent;
-
-        final zakatData = PieChartSectionData(
-            color: Colors.orangeAccent,
-            value: data.totalZakatPercent,
-            title: data.totalZakatPercent == 0.0
-                ? null
-                : "${data.totalZakatPercent.toString().substring(0, 2)}%",
-            radius: 26,
-            titleStyle: TextStyle(fontSize: 12, color: whiteColor));
-
-        final infaqData = PieChartSectionData(
-            color: Colors.red,
-            value: data.totalInfaqPercent,
-            title: data.totalInfaqPercent == 0.0
-                ? null
-                : "${data.totalInfaqPercent.toString().substring(0, 2)}%",
-            radius: 26,
-            titleStyle: TextStyle(fontSize: 12, color: whiteColor));
-
-        final sodaqohData = PieChartSectionData(
-            color: Colors.purpleAccent,
-            value: data.totalSodaqohPercent,
-            title: data.totalSodaqohPercent == 0.0
-                ? null
-                : "${data.totalSemuaPercent.toString().substring(0, 2)}%",
-            radius: 26,
-            titleStyle: TextStyle(fontSize: 12, color: whiteColor));
-
-        final wakafData = PieChartSectionData(
-            color: Colors.green,
-            value: data.totalWakafPercent,
-            title: data.totalWakafPercent == 0.0
-                ? null
-                : "${data.totalWakafPercent.toString().substring(0, 2)}%",
-            radius: 26,
-            titleStyle: TextStyle(fontSize: 12, color: whiteColor));
-
-        final donasiData = PieChartSectionData(
-            color: Colors.blue,
-            value: data.totalDonasiPercent,
-            title: data.totalDonasiPercent == 0.0
-                ? null
-                : "${data.totalDonasiPercent.toString().substring(0, 2)}%",
-            radius: 26,
-            titleStyle: TextStyle(fontSize: 12, color: whiteColor));
-
-        final items = [
-          zakatData,
-          infaqData,
-          sodaqohData,
-          wakafData,
-          donasiData
-        ];
-        pieChartRawSections = items;
-        showingSections = pieChartRawSections;
       }
     });
   }
@@ -823,7 +825,7 @@ class _PortofolioState extends State<Portofolio> {
         primaryYAxis: NumericAxis(
           isVisible: false,
           minimum: 0,
-          maximum: valueTotal,
+          maximum: valueBackup,
           axisLine: AxisLine(width: 0),
           majorGridLines: MajorGridLines(width: 0),
           majorTickLines: MajorTickLines(size: 0),
@@ -847,6 +849,7 @@ class _PortofolioState extends State<Portofolio> {
             isTrackVisible: true,
             borderRadius: BorderRadius.circular(5),
             trackColor: Colors.grey[200],
+            color: barColor,
             xValueMapper: (SalesData sales, _) => sales.year,
             yValueMapper: (SalesData sales, _) => sales.sales,
             dataLabelSettings: DataLabelSettings(

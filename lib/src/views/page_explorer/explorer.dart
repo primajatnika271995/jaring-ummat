@@ -56,11 +56,14 @@ class _ExplorerPageState extends State<ExplorerPage> {
               padding: EdgeInsets.symmetric(horizontal: 15),
               child: Column(
                 children: <Widget>[
-                  bantuKamiTitle(),
-                  bantuKamiMain(),
+//                  bantuKamiTitle(),
+//                  bantuKamiMain(),
                   bantuKamiRow(),
-                  kebaikanDisekitarmuTitle(),
-                  kebaikanDisekitarmuMain(),
+                  bantuKamiRow(),
+                  bantuKamiRow(),
+                  bantuKamiRow(),
+//                  kebaikanDisekitarmuTitle(),
+//                  kebaikanDisekitarmuMain(),
                 ],
               ),
             ),
