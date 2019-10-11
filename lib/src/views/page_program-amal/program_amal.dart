@@ -100,7 +100,11 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                         padding: const EdgeInsets.only(right: 7),
                         child: InkWell(
                           onTap: () {
-                            checkLocation();
+                            if (_isFilter) {
+                              hapusFilterLokasi();
+                            } else {
+                              checkLocation();
+                            }
                           },
                           child: Icon(
                             _isFilter
@@ -127,15 +131,15 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                         ),
                         child: _isFilter
                             ? Icon(
-                          Icons.check,
-                          color: whiteColor,
-                          size: 10.0,
-                        )
+                                Icons.check,
+                                color: whiteColor,
+                                size: 10.0,
+                              )
                             : Icon(
-                          Icons.close,
-                          color: whiteColor,
-                          size: 10.0,
-                        ),
+                                Icons.close,
+                                color: whiteColor,
+                                size: 10.0,
+                              ),
                       ),
                     ),
                   ],
@@ -572,7 +576,7 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                   padding:
                       EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 5),
                   child: Container(
-                    height: 550,
+                    height: 510,
                     child: Column(
                       children: <Widget>[
                         Row(
@@ -580,6 +584,7 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                           children: <Widget>[
                             IconButton(
                               onPressed: () {
+                                hapusFilterLokasi();
                                 Navigator.of(context).pop();
                               },
                               iconSize: 20,
@@ -667,7 +672,7 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                                   style: TextStyle(color: Colors.deepPurple)),
                               color: grayColor,
                               borderSide:
-                              BorderSide(width: 2, color: Colors.grey[200]),
+                                  BorderSide(width: 2, color: Colors.grey[200]),
                             )),
                         Container(
                           width: screenWidth(context),
@@ -692,32 +697,7 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                               borderRadius: BorderRadius.circular(20),
                             ),
                           ),
-                        ),
-                        Container(
-                          width: screenWidth(context),
-                          padding: EdgeInsets.symmetric(horizontal: 12.0),
-                          child: RaisedButton(
-                            onPressed: () {
-                              setState(() {
-                                _locationSelected = null;
-                                _isFilter = false;
-                              });
-                              noFilter();
-                              blocRegister.bloc
-                                  .updateLokasiAmal(_locationSelected);
-                              print(_locationSelected);
-                              bloc.fetchAllProgramAmal(selectedCategory);
-                              _pref.setString(LOKASI_AMAL, _locationSelected);
-                              Navigator.of(context).pop();
-                            },
-                            child: const Text('Hapus Filter Lokasi',
-                                style: TextStyle(color: Colors.white)),
-                            color: redColor,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                          ),
-                        ),
+                        )
                       ],
                     ),
                   ),
@@ -729,6 +709,19 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
             },
           );
         });
+  }
+
+  void hapusFilterLokasi() async {
+    SharedPreferences _pref = await SharedPreferences.getInstance();
+    setState(() {
+      _locationSelected = null;
+      _isFilter = false;
+    });
+    noFilter();
+    blocRegister.bloc.updateLokasiAmal(_locationSelected);
+    print(_locationSelected);
+    bloc.fetchAllProgramAmal(selectedCategory);
+    _pref.setString(LOKASI_AMAL, _locationSelected);
   }
 
   void getUser() async {
@@ -755,6 +748,9 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
   void filtered() async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
     _pref.setString(FILTER_PROGRAM_AMAL, "true");
+    setState(() {
+      _isFilter = true;
+    });
   }
 
   void noFilter() async {
