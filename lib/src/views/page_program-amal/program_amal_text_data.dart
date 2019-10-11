@@ -19,4 +19,8 @@ class ProgramAmalTextData {
     'TINGGAL',
     'ASAL',
   ];
+
+  static const List<String> amalIcon = [
+
+  ];
 }

@@ -1,11 +1,15 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_jaring_ummat/src/models/DTO/ReturnData.dart';
 import 'package:flutter_jaring_ummat/src/utils/screenSize.dart';
 import 'package:flutter_jaring_ummat/src/utils/sizeUtils.dart';
+import 'package:flutter_jaring_ummat/src/utils/textUtils.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/all_in_one_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/app_bar_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/new_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/page_inbox/inbox.dart';
+import 'package:flutter_jaring_ummat/src/views/page_info_jaring/info_jaring_views.dart';
 import 'package:flutter_jaring_ummat/src/views/page_payment/payment.dart';
 import 'package:flutter_jaring_ummat/src/views/page_program-amal/program_amal_text_data.dart';
 import 'package:flutter_jaring_ummat/src/bloc/programAmalBloc.dart';
@@ -209,6 +213,22 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
               children: <Widget>[
                 CustomScrollView(
                   slivers: <Widget>[
+                    !hidden
+                        ? new SliverAppBar(
+                            automaticallyImplyLeading: false,
+                            bottom: PreferredSize(
+                              preferredSize: Size.fromHeight(60.0),
+                              child: Text(''),
+                            ),
+                            elevation: 20.0,
+                            flexibleSpace: new Scaffold(
+                              backgroundColor: Colors.white,
+                              body: new UserStoryAppBar(),
+                            ),
+                          )
+                        : SliverList(
+                            delegate: SliverChildListDelegate([]),
+                          ),
                     SliverAppBar(
                       backgroundColor: whiteColor,
                       elevation: 0,
@@ -226,107 +246,207 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                                 SliverGridDelegateWithFixedCrossAxisCount(
                                     crossAxisCount: 5),
                             children: <Widget>[
-                              Column(
-                                children: <Widget>[
-                                  CircleAvatar(
-                                    radius: 27,
-                                    backgroundColor: Colors.yellow,
-                                    child: IconButton(
-                                      icon: Icon(AllInOneIcon.zakat_3x,
-                                          color: whiteColor, size: 25),
-                                      onPressed: () => requestBill("zakat"),
+                              Container(
+                                child: new Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    InkWell(
+                                      onTap: () {
+                                        requestBill("zakat");
+                                      },
+                                      child: new Container(
+                                        decoration: new BoxDecoration(
+                                            color: Colors.white,
+                                            border: Border.all(
+                                                color: Colors.grey[400],
+                                                width: 2.0),
+                                            borderRadius: new BorderRadius.all(
+                                                new Radius.circular(20.0))),
+                                        padding: EdgeInsets.all(12.0),
+                                        child: new Icon(
+                                          AllInOneIcon.zakat_3x,
+                                          color: Colors.yellow,
+                                          size: 32.0,
+                                        ),
+                                      ),
                                     ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 3),
-                                    child: const Text('Zakat'),
-                                  )
-                                ],
+                                    new Padding(
+                                      padding: EdgeInsets.only(top: 1.0),
+                                    ),
+                                    new Text('Zakat')
+                                  ],
+                                ),
                               ),
-                              Column(
-                                children: <Widget>[
-                                  CircleAvatar(
-                                    radius: 27,
-                                    backgroundColor: Colors.red,
-                                    child: IconButton(
-                                        icon: Icon(AllInOneIcon.infaq_3x,
-                                            color: whiteColor, size: 25),
-                                        onPressed: () => requestBill("infaq")),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 3),
-                                    child: const Text('Infaq'),
-                                  )
-                                ],
+                              Container(
+                                child: new Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    InkWell(
+                                      onTap: () {
+                                        requestBill("infaq");
+                                      },
+                                      child: new Container(
+                                        decoration: new BoxDecoration(
+                                            color: Colors.white,
+                                            border: Border.all(
+                                                color: Colors.grey[400],
+                                                width: 2.0),
+                                            borderRadius: new BorderRadius.all(
+                                                new Radius.circular(20.0))),
+                                        padding: EdgeInsets.all(12.0),
+                                        child: new Icon(
+                                          AllInOneIcon.infaq_3x,
+                                          color: Colors.red,
+                                          size: 32.0,
+                                        ),
+                                      ),
+                                    ),
+                                    new Padding(
+                                      padding: EdgeInsets.only(top: 1.0),
+                                    ),
+                                    new Text('Infaq')
+                                  ],
+                                ),
                               ),
-                              Column(
-                                children: <Widget>[
-                                  CircleAvatar(
-                                    radius: 27,
-                                    backgroundColor: Colors.deepPurple,
-                                    child: IconButton(
-                                        icon: Icon(AllInOneIcon.sodaqoh_3x,
-                                            color: whiteColor, size: 25),
-                                        onPressed: () =>
-                                            requestBill("sodaqoh")),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 3),
-                                    child: const Text('Sodaqoh'),
-                                  )
-                                ],
+                              Container(
+                                child: new Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    InkWell(
+                                      onTap: () {
+                                        requestBill("sodaqoh");
+                                      },
+                                      child: new Container(
+                                        decoration: new BoxDecoration(
+                                            color: Colors.white,
+                                            border: Border.all(
+                                                color: Colors.grey[400],
+                                                width: 2.0),
+                                            borderRadius: new BorderRadius.all(
+                                                new Radius.circular(20.0))),
+                                        padding: EdgeInsets.all(12.0),
+                                        child: new Icon(
+                                          AllInOneIcon.sodaqoh_3x,
+                                          color: Colors.deepPurple,
+                                          size: 32.0,
+                                        ),
+                                      ),
+                                    ),
+                                    new Padding(
+                                      padding: EdgeInsets.only(top: 1.0),
+                                    ),
+                                    new Text('Sodaqoh')
+                                  ],
+                                ),
                               ),
-                              Column(
-                                children: <Widget>[
-                                  CircleAvatar(
-                                    radius: 27,
-                                    backgroundColor: Colors.green,
-                                    child: IconButton(
-                                        icon: Icon(AllInOneIcon.wakaf_3x,
-                                            color: whiteColor, size: 25),
-                                        onPressed: () => requestBill("wakaf")),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 3),
-                                    child: const Text('Wakaf'),
-                                  )
-                                ],
+                              Container(
+                                child: new Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    InkWell(
+                                      onTap: () {
+                                        requestBill("wakaf");
+                                      },
+                                      child: new Container(
+                                        decoration: new BoxDecoration(
+                                            color: Colors.white,
+                                            border: Border.all(
+                                                color: Colors.grey[400],
+                                                width: 2.0),
+                                            borderRadius: new BorderRadius.all(
+                                                new Radius.circular(20.0))),
+                                        padding: EdgeInsets.all(12.0),
+                                        child: new Icon(
+                                          AllInOneIcon.wakaf_3x,
+                                          color: Colors.green,
+                                          size: 32.0,
+                                        ),
+                                      ),
+                                    ),
+                                    new Padding(
+                                      padding: EdgeInsets.only(top: 1.0),
+                                    ),
+                                    new Text('Wakaf')
+                                  ],
+                                ),
                               ),
-                              Column(
-                                children: <Widget>[
-                                  CircleAvatar(
-                                    radius: 27,
-                                    backgroundColor: Colors.blue,
-                                    child: Icon(AllInOneIcon.donation_3x,
-                                        color: whiteColor, size: 25),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 3),
-                                    child: const Text('Donasi'),
-                                  )
-                                ],
+                              Container(
+                                child: new Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    InkWell(
+                                      onTap: () {
+                                        print('Donasi');
+                                      },
+                                      child: new Container(
+                                        decoration: new BoxDecoration(
+                                            color: Colors.white,
+                                            border: Border.all(
+                                                color: Colors.grey[400],
+                                                width: 2.0),
+                                            borderRadius: new BorderRadius.all(
+                                                new Radius.circular(20.0))),
+                                        padding: EdgeInsets.all(12.0),
+                                        child: new Icon(
+                                          AllInOneIcon.donation_3x,
+                                          color: Colors.blue,
+                                          size: 32.0,
+                                        ),
+                                      ),
+                                    ),
+                                    new Padding(
+                                      padding: EdgeInsets.only(top: 1.0),
+                                    ),
+                                    new Text('Donasi')
+                                  ],
+                                ),
                               ),
                             ],
                           ),
                         ),
                       ),
                     ),
-                    !hidden
-                        ? new SliverAppBar(
-                            automaticallyImplyLeading: false,
-                            bottom: PreferredSize(
-                              preferredSize: Size.fromHeight(100.0),
-                              child: Text(''),
-                            ),
-                            elevation: 20.0,
-                            flexibleSpace: new Scaffold(
-                              backgroundColor: Colors.white,
-                              body: new UserStoryAppBar(),
-                            ),
-                          )
-                        : SliverList(
-                            delegate: SliverChildListDelegate([]),
+                    SliverAppBar(
+                      automaticallyImplyLeading: false,
+                      bottom: PreferredSize(
+                        preferredSize: Size.fromHeight(190.0),
+                        child: Text(''),
+                      ),
+                      elevation: 20.0,
+                      flexibleSpace: new Scaffold(
+                        backgroundColor: Colors.white,
+                        body: Padding(
+                          padding: EdgeInsets.only(
+                              left: 13.0, right: 13.0, top: 20.0),
+                          child: Column(
+                            children: <Widget>[
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Text('Info Jaring',
+                                      style: TextStyle(
+                                          color: blackColor,
+                                          fontSize: SizeUtils.titleSize)),
+                                  Icon(AllInOneIcon.next_big_3x)
+                                ],
+                              ),
+                              Container(
+                                height: 200,
+                                child: ListView.builder(
+                                    shrinkWrap: true,
+                                    itemCount: listInfoJaring.length,
+                                    physics: ScrollPhysics(),
+                                    scrollDirection: Axis.horizontal,
+                                    itemBuilder: (context, index) {
+                                      return bantuKamiMain(index);
+                                    }),
+                              )
+                            ],
                           ),
+                        ),
+                      ),
+                    ),
                     new SliverAppBar(
                       backgroundColor: whiteColor,
                       elevation: 1.0,
@@ -801,5 +921,44 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
     });
     filtered();
     bloc.fetchAllProgramAmal(selectedCategory);
+  }
+
+  Widget bantuKamiMain(int index) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 10.0),
+      child: InkWell(
+        onTap: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => InfoJaringViews(
+                valIndex: index,
+              ),
+            ),
+          );
+        },
+        child: Container(
+          height: 200,
+          width: 300,
+          decoration: BoxDecoration(
+            color: Colors.green,
+            borderRadius: BorderRadius.circular(10),
+            image: DecorationImage(
+                image: NetworkImage(listInfoJaring[index].imageUrl),
+                fit: BoxFit.cover),
+          ),
+          child: Align(
+            alignment: Alignment.bottomLeft,
+            child: Padding(
+                padding: const EdgeInsets.only(left: 10, bottom: 20),
+                child: Container(
+                  width: 280,
+                  child: Text(listInfoJaring[index].title,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(color: whiteColor)),
+                )),
+          ),
+        ),
+      ),
+    );
   }
 }
