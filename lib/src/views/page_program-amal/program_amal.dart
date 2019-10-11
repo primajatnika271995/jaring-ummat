@@ -234,174 +234,174 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                       elevation: 0,
                       floating: true,
                       pinned: true,
-                      expandedHeight: 10,
+                      expandedHeight: 20,
                       automaticallyImplyLeading: false,
                       bottom: PreferredSize(
                         preferredSize: Size.fromHeight(90),
                         child: Container(
-                          height: 85,
-                          child: GridView(
-                            physics: NeverScrollableScrollPhysics(),
-                            gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 5),
-                            children: <Widget>[
-                              Container(
-                                child: new Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
-                                    InkWell(
-                                      onTap: () {
-                                        requestBill("zakat");
-                                      },
-                                      child: new Container(
-                                        decoration: new BoxDecoration(
-                                            color: Colors.yellow[600],
-                                            border: Border.all(
-                                                color: softGreyColor,
-                                                width: 3.0),
-                                            borderRadius: new BorderRadius.all(
-                                                new Radius.circular(20.0))),
-                                        padding: EdgeInsets.all(12.0),
-                                        child: new Icon(
-                                          AllInOneIcon.zakat_3x,
-                                          color: Colors.white,
-                                          size: 27.0,
+                          height: 90.0,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Container(
+                                  child: new Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
+                                      InkWell(
+                                        onTap: () {
+                                          requestBill("zakat");
+                                        },
+                                        child: new Container(
+                                          decoration: new BoxDecoration(
+                                              color: Colors.yellow[600],
+                                              border: Border.all(
+                                                  color: softGreyColor,
+                                                  width: 3.0),
+                                              borderRadius: new BorderRadius.all(
+                                                  new Radius.circular(20.0))),
+                                          padding: EdgeInsets.all(12.0),
+                                          child: new Icon(
+                                            AllInOneIcon.zakat_3x,
+                                            color: Colors.white,
+                                            size: 27.0,
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                    new Padding(
-                                      padding: EdgeInsets.only(top: 1.0),
-                                    ),
-                                    new Text('Zakat')
-                                  ],
+                                      new Padding(
+                                        padding: EdgeInsets.only(top: 1.0),
+                                      ),
+                                      new Text('Zakat')
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              Container(
-                                child: new Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
-                                    InkWell(
-                                      onTap: () {
-                                        requestBill("infaq");
-                                      },
-                                      child: new Container(
-                                        decoration: new BoxDecoration(
-                                            color: Colors.red,
-                                            border: Border.all(
-                                                color: softGreyColor,
-                                                width: 3.0),
-                                            borderRadius: new BorderRadius.all(
-                                                new Radius.circular(20.0))),
-                                        padding: EdgeInsets.all(12.0),
-                                        child: new Icon(
-                                          AllInOneIcon.infaq_3x,
-                                          color: Colors.white,
-                                          size: 27.0,
+                                Container(
+                                  child: new Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
+                                      InkWell(
+                                        onTap: () {
+                                          requestBill("infaq");
+                                        },
+                                        child: new Container(
+                                          decoration: new BoxDecoration(
+                                              color: Colors.red,
+                                              border: Border.all(
+                                                  color: softGreyColor,
+                                                  width: 3.0),
+                                              borderRadius: new BorderRadius.all(
+                                                  new Radius.circular(20.0))),
+                                          padding: EdgeInsets.all(12.0),
+                                          child: new Icon(
+                                            AllInOneIcon.infaq_3x,
+                                            color: Colors.white,
+                                            size: 27.0,
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                    new Padding(
-                                      padding: EdgeInsets.only(top: 1.0),
-                                    ),
-                                    new Text('Infaq')
-                                  ],
+                                      new Padding(
+                                        padding: EdgeInsets.only(top: 1.0),
+                                      ),
+                                      new Text('Infaq')
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              Container(
-                                child: new Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
-                                    InkWell(
-                                      onTap: () {
-                                        requestBill("sodaqoh");
-                                      },
-                                      child: new Container(
-                                        decoration: new BoxDecoration(
-                                            color: Colors.deepPurple,
-                                            border: Border.all(
-                                                color: softGreyColor,
-                                                width: 3.0),
-                                            borderRadius: new BorderRadius.all(
-                                                new Radius.circular(20.0))),
-                                        padding: EdgeInsets.all(12.0),
-                                        child: new Icon(
-                                          AllInOneIcon.sodaqoh_3x,
-                                          color: Colors.white,
-                                          size: 27.0,
+                                Container(
+                                  child: new Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
+                                      InkWell(
+                                        onTap: () {
+                                          requestBill("sodaqoh");
+                                        },
+                                        child: new Container(
+                                          decoration: new BoxDecoration(
+                                              color: Colors.deepPurple,
+                                              border: Border.all(
+                                                  color: softGreyColor,
+                                                  width: 3.0),
+                                              borderRadius: new BorderRadius.all(
+                                                  new Radius.circular(20.0))),
+                                          padding: EdgeInsets.all(12.0),
+                                          child: new Icon(
+                                            AllInOneIcon.sodaqoh_3x,
+                                            color: Colors.white,
+                                            size: 27.0,
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                    new Padding(
-                                      padding: EdgeInsets.only(top: 1.0),
-                                    ),
-                                    new Text('Sodaqoh')
-                                  ],
+                                      new Padding(
+                                        padding: EdgeInsets.only(top: 1.0),
+                                      ),
+                                      new Text('Sodaqoh')
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              Container(
-                                child: new Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
-                                    InkWell(
-                                      onTap: () {
-                                        requestBill("wakaf");
-                                      },
-                                      child: new Container(
-                                        decoration: new BoxDecoration(
-                                            color: Colors.green,
-                                            border: Border.all(
-                                                color: softGreyColor,
-                                                width: 3.0),
-                                            borderRadius: new BorderRadius.all(
-                                                new Radius.circular(20.0))),
-                                        padding: EdgeInsets.all(12.0),
-                                        child: new Icon(
-                                          AllInOneIcon.wakaf_3x,
-                                          color: Colors.white,
-                                          size: 27.0,
+                                Container(
+                                  child: new Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
+                                      InkWell(
+                                        onTap: () {
+                                          requestBill("wakaf");
+                                        },
+                                        child: new Container(
+                                          decoration: new BoxDecoration(
+                                              color: Colors.green,
+                                              border: Border.all(
+                                                  color: softGreyColor,
+                                                  width: 3.0),
+                                              borderRadius: new BorderRadius.all(
+                                                  new Radius.circular(20.0))),
+                                          padding: EdgeInsets.all(12.0),
+                                          child: new Icon(
+                                            AllInOneIcon.wakaf_3x,
+                                            color: Colors.white,
+                                            size: 27.0,
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                    new Padding(
-                                      padding: EdgeInsets.only(top: 1.0),
-                                    ),
-                                    new Text('Wakaf')
-                                  ],
+                                      new Padding(
+                                        padding: EdgeInsets.only(top: 1.0),
+                                      ),
+                                      new Text('Wakaf')
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              Container(
-                                child: new Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
-                                    InkWell(
-                                      onTap: () {
-                                        print('Donasi');
-                                      },
-                                      child: new Container(
-                                        decoration: new BoxDecoration(
-                                            color: Colors.blue,
-                                            border: Border.all(
-                                                color: softGreyColor,
-                                                width: 3.0),
-                                            borderRadius: new BorderRadius.all(
-                                                new Radius.circular(20.0))),
-                                        padding: EdgeInsets.all(12.0),
-                                        child: new Icon(
-                                          AllInOneIcon.donation_3x,
-                                          color: Colors.white,
-                                          size: 27.0,
+                                Container(
+                                  child: new Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
+                                      InkWell(
+                                        onTap: () {
+                                          print('Donasi');
+                                        },
+                                        child: new Container(
+                                          decoration: new BoxDecoration(
+                                              color: Colors.blue,
+                                              border: Border.all(
+                                                  color: softGreyColor,
+                                                  width: 3.0),
+                                              borderRadius: new BorderRadius.all(
+                                                  new Radius.circular(20.0))),
+                                          padding: EdgeInsets.all(12.0),
+                                          child: new Icon(
+                                            AllInOneIcon.donation_3x,
+                                            color: Colors.white,
+                                            size: 27.0,
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                    new Padding(
-                                      padding: EdgeInsets.only(top: 1.0),
-                                    ),
-                                    new Text('Donasi')
-                                  ],
+                                      new Padding(
+                                        padding: EdgeInsets.only(top: 1.0),
+                                      ),
+                                      new Text('Donasi')
+                                    ],
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                       ),
@@ -417,7 +417,7 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                         backgroundColor: Colors.white,
                         body: Padding(
                           padding: EdgeInsets.only(
-                              left: 13.0, right: 13.0),
+                              left: 13.0, right: 13.0, top: 7.0),
                           child: Column(
                             children: <Widget>[
                               Row(
