@@ -1,3 +1,4 @@
+import 'package:flutter_jaring_ummat/src/views/page_program-amal/share_program_amal_container.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_jaring_ummat/src/config/hexColor.dart';
@@ -150,8 +151,16 @@ class _BeritaContentState extends State<BeritaContent> {
                             Icon(NewIcon.save_3x,
                                 color: blackColor, size: 20.0),
                             SizedBox(width: 10.0),
-                            Icon(NewIcon.share_3x,
-                                color: blackColor, size: 20.0),
+                            InkWell(
+                              onTap: () => showModalBottomSheet(
+                                context: context,
+                                builder: (context) {
+                                  return ShareProgramAmal();
+                                },
+                              ),
+                              child: Icon(NewIcon.share_3x,
+                                  color: blackColor, size: 20.0),
+                            ),
                           ],
                         ),
                       ),

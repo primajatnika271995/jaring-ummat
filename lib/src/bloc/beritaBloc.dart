@@ -13,6 +13,11 @@ class BeritaBloc {
 
   Observable<List<BeritaModel>> get allBerita => beritaFetcher.stream;
 
+  fetchAllBeritaLembagaAmal(String idUser, String category) async {
+    List<BeritaModel> listAllBerita = await repository.fetchAllBerita(idUser, category, "0", "20");
+    beritaFetcher.sink.add(listAllBerita);
+  }
+
   fetchAllBerita(String category) async {
     _preferences = await SharedPreferences.getInstance();
     idUser = _preferences.getString(USER_ID_KEY);
