@@ -101,7 +101,7 @@ class _PortofolioState extends State<Portofolio> {
    * Bar Chart Default Color
    */
 
-  var barColor = Colors.deepPurple;
+  var barColor = Colors.black;
 
   /*
    * Variable No Content Image
@@ -676,7 +676,7 @@ class _PortofolioState extends State<Portofolio> {
         Colors.deepOrange,
         Colors.deepPurpleAccent,
         Colors.blue,
-        Colors.grey
+        Colors.black
       ],
       tooltipBehavior: TooltipBehavior(enable: true),
       onLegendTapped: (LegendTapArgs value) {
@@ -684,7 +684,7 @@ class _PortofolioState extends State<Portofolio> {
         switch (value.pointIndex) {
           case 5:
             valueTotal = valueBackup;
-            barColor = Colors.deepPurple;
+            barColor = Colors.black;
             print(valueTotal);
             bloc.fetchBarChart("", "satu");
             setState(() {});

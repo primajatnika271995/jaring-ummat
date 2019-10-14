@@ -428,7 +428,7 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                                       style: TextStyle(
                                           color: blackColor,
                                           fontSize: SizeUtils.titleSize)),
-                                  Icon(AllInOneIcon.next_big_3x)
+                                  Icon(AllInOneIcon.next_small_2x, size: 20)
                                 ],
                               ),
                               Container(
