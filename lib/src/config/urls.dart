@@ -86,10 +86,16 @@ const FOLLOW_LEMBAGA_AMAL_URL = BASE_API_URL + '/api/account-amil/follow';
 const UNFOLLOW_LEMBAGA_AMAL_URL = BASE_API_URL + '/api/account-amil/unfollow';
 
 // POTOFOLIO
-const PORTOFOLIO_PIE_CHART = BASE_API_URL + '/api/transaksi/zakat-sodaqoh/chart/pie';
+const PORTOFOLIO_PIE_CHART = BASE_API_URL + '/api/transaksi/amil/zakat-sodaqoh/chart/pie';
+const PORTOFOLIO_LINE_CHART = BASE_API_URL + '/api/transaksi/amil/zakat-sodaqoh/detail';
+const PORTOFOLIO_PIE_CHART_AKTIVITAS_AMAL = BASE_API_URL + '/api/transaksi/zakat-sodaqoh/chart/pie';
+const PENERIMA_AMAL_TERBESAR = BASE_API_URL + '/api/transaksi/amil/top';
+const PENERIMA_AMAL_TERBARU = BASE_API_URL + '/api/transaksi/terakhir/amil';
 const AKTIVITAS_TERBESAR_URL = BASE_API_URL + '/api/transaksi/muzakki/top';
 const AKTIVITAS_TERBARU_URL = BASE_API_URL + '/api/transaksi/terakhir/muzakki';
+const BAR_CHART_AMIL = BASE_API_URL + '/api/transaksi/chart/bar/amil';
 const BAR_CHART_MUZAKKI = BASE_API_URL + '/api/transaksi/chart/bar';
+
 
 // HISTORY TRANSACTION
 const HISTORY_TRANSACTION = BASE_API_URL + '/api/transaksi/history/detail';

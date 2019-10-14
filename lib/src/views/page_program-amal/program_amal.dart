@@ -7,7 +7,9 @@ import 'package:flutter_jaring_ummat/src/utils/sizeUtils.dart';
 import 'package:flutter_jaring_ummat/src/utils/textUtils.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/all_in_one_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/app_bar_icon_icons.dart';
+import 'package:flutter_jaring_ummat/src/views/components/icon_text/grid_menu_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/new_icon_icons.dart';
+import 'package:flutter_jaring_ummat/src/views/lembaga_amal/popular_account.dart';
 import 'package:flutter_jaring_ummat/src/views/page_inbox/inbox.dart';
 import 'package:flutter_jaring_ummat/src/views/page_info_jaring/info_jaring_views.dart';
 import 'package:flutter_jaring_ummat/src/views/page_payment/payment.dart';
@@ -241,7 +243,8 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                         child: Container(
                           height: 90.0,
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 10.0),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: <Widget>[
@@ -251,7 +254,12 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                                     children: <Widget>[
                                       InkWell(
                                         onTap: () {
-                                          requestBill("zakat");
+                                          Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  PopularAccountView(),
+                                            ),
+                                          );
                                         },
                                         child: new Container(
                                           decoration: new BoxDecoration(
@@ -259,13 +267,78 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                                               border: Border.all(
                                                   color: softGreyColor,
                                                   width: 3.0),
-                                              borderRadius: new BorderRadius.all(
+                                              borderRadius: new BorderRadius
+                                                      .all(
                                                   new Radius.circular(20.0))),
                                           padding: EdgeInsets.all(12.0),
                                           child: new Icon(
-                                            AllInOneIcon.zakat_3x,
+                                            AllInOneIcon.account_following_3x,
                                             color: Colors.white,
-                                            size: 27.0,
+                                            size: 25,
+                                          ),
+                                        ),
+                                      ),
+                                      new Padding(
+                                        padding: EdgeInsets.only(top: 1.0),
+                                      ),
+                                      new Text('Akun Mitra')
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                  child: new Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
+                                      InkWell(
+                                        onTap: () {
+                                          requestBill("donasi");
+                                        },
+                                        child: new Container(
+                                          decoration: new BoxDecoration(
+                                              color: Colors.blue,
+                                              border: Border.all(
+                                                  color: softGreyColor,
+                                                  width: 3.0),
+                                              borderRadius: new BorderRadius
+                                                      .all(
+                                                  new Radius.circular(20.0))),
+                                          padding: EdgeInsets.all(12.0),
+                                          child: new Icon(
+                                            GridMenuIcon.donation_new,
+                                            color: Colors.white,
+                                            size: 25,
+                                          ),
+                                        ),
+                                      ),
+                                      new Padding(
+                                        padding: EdgeInsets.only(top: 1.0),
+                                      ),
+                                      new Text('Donasi')
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                  child: new Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
+                                      InkWell(
+                                        onTap: () {
+                                          requestBill("Zakat");
+                                        },
+                                        child: new Container(
+                                          decoration: new BoxDecoration(
+                                              color: Colors.red,
+                                              border: Border.all(
+                                                  color: softGreyColor,
+                                                  width: 3.0),
+                                              borderRadius: new BorderRadius
+                                                      .all(
+                                                  new Radius.circular(20.0))),
+                                          padding: EdgeInsets.all(12.0),
+                                          child: new Icon(
+                                            GridMenuIcon.zakat_new,
+                                            color: Colors.white,
+                                            size: 25,
                                           ),
                                         ),
                                       ),
@@ -286,17 +359,18 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                                         },
                                         child: new Container(
                                           decoration: new BoxDecoration(
-                                              color: Colors.red,
+                                              color: Colors.deepPurple,
                                               border: Border.all(
                                                   color: softGreyColor,
                                                   width: 3.0),
-                                              borderRadius: new BorderRadius.all(
+                                              borderRadius: new BorderRadius
+                                                      .all(
                                                   new Radius.circular(20.0))),
                                           padding: EdgeInsets.all(12.0),
                                           child: new Icon(
-                                            AllInOneIcon.infaq_3x,
+                                            GridMenuIcon.infaq_new,
                                             color: Colors.white,
-                                            size: 27.0,
+                                            size: 25,
                                           ),
                                         ),
                                       ),
@@ -317,17 +391,18 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                                         },
                                         child: new Container(
                                           decoration: new BoxDecoration(
-                                              color: Colors.deepPurple,
+                                              color: Colors.green,
                                               border: Border.all(
                                                   color: softGreyColor,
                                                   width: 3.0),
-                                              borderRadius: new BorderRadius.all(
+                                              borderRadius: new BorderRadius
+                                                      .all(
                                                   new Radius.circular(20.0))),
                                           padding: EdgeInsets.all(12.0),
                                           child: new Icon(
-                                            AllInOneIcon.sodaqoh_3x,
+                                            GridMenuIcon.sodaqoh_new,
                                             color: Colors.white,
-                                            size: 27.0,
+                                            size: 25,
                                           ),
                                         ),
                                       ),
@@ -344,21 +419,22 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                                     children: <Widget>[
                                       InkWell(
                                         onTap: () {
-                                          requestBill("wakaf");
+                                          requestBill("Wakaf");
                                         },
                                         child: new Container(
                                           decoration: new BoxDecoration(
-                                              color: Colors.green,
+                                              color: Colors.deepOrangeAccent,
                                               border: Border.all(
                                                   color: softGreyColor,
                                                   width: 3.0),
-                                              borderRadius: new BorderRadius.all(
+                                              borderRadius: new BorderRadius
+                                                      .all(
                                                   new Radius.circular(20.0))),
                                           padding: EdgeInsets.all(12.0),
                                           child: new Icon(
-                                            AllInOneIcon.wakaf_3x,
+                                            GridMenuIcon.wakaf_new,
                                             color: Colors.white,
-                                            size: 27.0,
+                                            size: 25,
                                           ),
                                         ),
                                       ),
@@ -366,37 +442,6 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                                         padding: EdgeInsets.only(top: 1.0),
                                       ),
                                       new Text('Wakaf')
-                                    ],
-                                  ),
-                                ),
-                                Container(
-                                  child: new Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: <Widget>[
-                                      InkWell(
-                                        onTap: () {
-                                          print('Donasi');
-                                        },
-                                        child: new Container(
-                                          decoration: new BoxDecoration(
-                                              color: Colors.blue,
-                                              border: Border.all(
-                                                  color: softGreyColor,
-                                                  width: 3.0),
-                                              borderRadius: new BorderRadius.all(
-                                                  new Radius.circular(20.0))),
-                                          padding: EdgeInsets.all(12.0),
-                                          child: new Icon(
-                                            AllInOneIcon.donation_3x,
-                                            color: Colors.white,
-                                            size: 27.0,
-                                          ),
-                                        ),
-                                      ),
-                                      new Padding(
-                                        padding: EdgeInsets.only(top: 1.0),
-                                      ),
-                                      new Text('Donasi')
                                     ],
                                   ),
                                 ),
@@ -428,7 +473,7 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                                       style: TextStyle(
                                           color: blackColor,
                                           fontSize: SizeUtils.titleSize)),
-                                  Icon(AllInOneIcon.next_big_3x)
+                                  Icon(AllInOneIcon.next_small_2x, size: 20)
                                 ],
                               ),
                               Container(

@@ -4,6 +4,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_jaring_ummat/src/utils/screenSize.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/all_in_one_icon_icons.dart';
+import 'package:flutter_jaring_ummat/src/views/page_program-amal/share_program_amal_container.dart';
 import 'package:flutter_simple_video_player/flutter_simple_video_player.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_jaring_ummat/src/bloc/beritaBloc.dart';
@@ -375,9 +376,17 @@ class _BeritaPageState extends State<BeritaPage> {
                                                           color: blackColor,
                                                           size: 20),
                                                       SizedBox(width: 10.0),
-                                                      Icon(NewIcon.share_3x,
-                                                          color: blackColor,
-                                                          size: 20),
+                                                      InkWell(
+                                                        onTap: () => showModalBottomSheet(
+                                                          context: context,
+                                                          builder: (context) {
+                                                            return ShareProgramAmal();
+                                                          },
+                                                        ),
+                                                        child: Icon(NewIcon.share_3x,
+                                                            color: blackColor,
+                                                            size: 20),
+                                                      ),
                                                     ],
                                                   ),
                                                 ),

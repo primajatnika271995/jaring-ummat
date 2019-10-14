@@ -140,6 +140,10 @@ flutter:
       fonts:
         - asset: assets/fonts/SosialMedia.ttf
 
+    - family:  GridMenuIcon
+      fonts:
+        - asset: assets/fonts/GridMenuIcon.ttf
+
     - family:  AppBarIcon
       fonts:
         - asset: assets/fonts/AppBarIcon.ttf

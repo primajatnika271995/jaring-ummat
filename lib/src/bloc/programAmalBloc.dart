@@ -22,6 +22,21 @@ class ProgramAmalBloc {
   Observable<List<GalangAmalListDonation>> get galangAmalDonationStream =>
       galangAmalDonationFetch.stream;
 
+  fetchAllProgramAmalDetailLembaga(String idUser, String category) async {
+    kotaSekarang = _preferences.getString(CURRENT_LOCATION_CITY);
+    provinsiSekarang = _preferences.getString(CURRENT_LOCATION_PROVINSI);
+
+    print("FILTER SEKARANG BLOC");
+    print('$kotaSekarang - $provinsiSekarang');
+
+    if (idUser == null) {
+      idUser = "4b724e9e-3cdb-4b2f-8c72-070646b45fdf";
+    }
+
+    List<ProgramAmalModel> listAllProgramAmal = await repository.fetchAllProgramAmal(idUser, category, "0", "20");
+    programAmalFetcher.sink.add(listAllProgramAmal);
+  }
+
   fetchAllProgramAmal(String category) async {
     _preferences = await SharedPreferences.getInstance();
     idUser = _preferences.getString(USER_ID_KEY);
