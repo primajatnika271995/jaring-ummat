@@ -27,6 +27,7 @@ class RequestVABloc {
       String customerName,
       String customerPhone,
       String transactionId,
+      String lembaga,
       String transactionType) async {
     RequestVaModel value = await repository.requestVAoauth(
         amount,
@@ -34,6 +35,7 @@ class RequestVABloc {
         customerName,
         customerPhone,
         transactionId,
+        lembaga,
         transactionType);
     requestFetcher.sink.add(value);
 

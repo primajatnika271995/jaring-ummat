@@ -604,6 +604,9 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
   }
 
   Widget buildList(AsyncSnapshot<List<ProgramAmalModel>> snapshot) {
+    print('Program Amal List');
+    print(snapshot.data[0].titleProgram);
+    print(snapshot.data[0].idLembagaAmal);
     return ListView.builder(
       shrinkWrap: true,
       physics: ClampingScrollPhysics(),

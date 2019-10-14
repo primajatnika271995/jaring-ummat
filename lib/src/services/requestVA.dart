@@ -47,6 +47,7 @@ class RequestVAProvider {
       String customerName,
       String customerPhone,
       String transactionId,
+      String lembaga,
       String transactionType) async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
     var token = _pref.getString(ACCESS_TOKEN_KEY);
@@ -69,6 +70,7 @@ class RequestVAProvider {
       "customerName": customerName,
       "customerPhone": customerPhone,
       "transactionId": transactionId,
+      "lembaga": lembaga,
       "transactionType": transactionType
     };
 

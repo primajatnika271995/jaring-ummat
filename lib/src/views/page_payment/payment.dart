@@ -42,11 +42,11 @@ class PaymentPage extends StatefulWidget {
       this.customerName,
       this.customerContact,
       this.customerEmail,
+      this.toLembagaId,
       this.toLembagaName,
       this.toGalangAmalName,
       this.toGalangAmalId,
       this.type,
-      this.toLembagaId,
       this.qrCodeLembaga);
 }
 
@@ -65,11 +65,11 @@ class _PaymentPageState extends State<PaymentPage> {
       this.customerName,
       this.cutomerContact,
       this.customerEmail,
+      this.toLembagaId,
       this.toLembagaName,
       this.toGalangAmalName,
       this.toGalangAmalId,
       this.type,
-      this.toLembagaId,
       this.qrCodeLembaga);
 
   /*
@@ -287,7 +287,7 @@ class _PaymentPageState extends State<PaymentPage> {
                                 ? toGalangAmalId
                                 : _lembagaAmalModel.idLembagaAmal,
                             phone: cutomerContact,
-                            lembagaId: toLembagaId,
+                            lembagaId: toLembagaId != null ? toLembagaId : _lembagaAmalModel.idLembagaAmal,
                             type: type,
                             customerName: customerName,
                           ),

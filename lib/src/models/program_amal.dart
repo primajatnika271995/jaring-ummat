@@ -11,6 +11,7 @@ String programAmalModelToJson(List<ProgramAmalModel> data) => json.encode(List<d
 class ProgramAmalModel {
     User user;
     String username;
+    String idLembagaAmal;
     String idProgram;
     bool userLikeThis;
     bool bookmarkThis;
@@ -29,6 +30,7 @@ class ProgramAmalModel {
 
     ProgramAmalModel({
         this.user,
+        this.idLembagaAmal,
         this.username,
         this.idProgram,
         this.userLikeThis,
@@ -50,6 +52,7 @@ class ProgramAmalModel {
     factory ProgramAmalModel.fromJson(Map<String, dynamic> json) => ProgramAmalModel(
         user: json["user"] == null ? null : User.fromJson(json["user"]),
         username: json["username"] == null ? null : json["username"],
+        idLembagaAmal: json["idLembagaAmal"] == null ? null : json["idLembagaAmal"],
         idProgram: json["idProgram"] == null ? null : json["idProgram"],
         userLikeThis: json["userLikeThis"] == null ? null : json["userLikeThis"],
         bookmarkThis: json["bookmarkThis"] == null ? null : json["bookmarkThis"],
@@ -70,6 +73,7 @@ class ProgramAmalModel {
     Map<String, dynamic> toJson() => {
         "user": user == null ? null : user.toJson(),
         "username": username == null ? null : username,
+        "idLembagaAmal": idLembagaAmal == null ? null : idLembagaAmal,
         "idProgram": idProgram == null ? null : idProgram,
         "userLikeThis": userLikeThis == null ? null : userLikeThis,
         "bookmarkThis": bookmarkThis == null ? null : bookmarkThis,

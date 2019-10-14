@@ -222,6 +222,7 @@ class _MainViewState extends State<MainView> {
               customerName: customerName,
               customerEmail: emailCustomer,
               customerContact: customerPhone,
+              toLembagaId: qrCodeLembaga.idLembagaAmal,
               toGalangAmalName: null,
               qrCodeLembaga: qrCodeLembaga,
             )));

@@ -98,6 +98,9 @@ class _GalangAmalState extends State<GalangAmalView> {
                     ),
                     RaisedButton(
                       onPressed: () {
+                        print("Program Amal");
+                        print(widget.programAmal.titleProgram);
+                        print(widget.programAmal.idLembagaAmal);
                         requestBill("donasi");
                       },
                       textColor: Colors.white,
@@ -140,7 +143,7 @@ class _GalangAmalState extends State<GalangAmalView> {
         toLembagaName: widget.programAmal.createdBy,
         toGalangAmalName: widget.programAmal.titleProgram,
         toGalangAmalId: widget.programAmal.idProgram,
-        toLembagaId: widget.programAmal.user.userId,
+        toLembagaId: widget.programAmal.idLembagaAmal,
         type: 'donasi',
       ),
     ));

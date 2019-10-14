@@ -207,6 +207,7 @@ class _InputBillState extends State<InputBill> {
                   widget.programId != null
                       ? widget.programId
                       : _lembagaAmalModel.idLembagaAmal,
+                  _lembagaAmalModel.idLembagaAmal,
                   widget.type);
             },
             shape:
