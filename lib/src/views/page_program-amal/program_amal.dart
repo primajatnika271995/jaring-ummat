@@ -223,10 +223,10 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                         ? new SliverAppBar(
                             automaticallyImplyLeading: false,
                             bottom: PreferredSize(
-                              preferredSize: Size.fromHeight(60.0),
+                              preferredSize: Size.fromHeight(45),
                               child: Text(''),
                             ),
-                            elevation: 20.0,
+                            elevation: 0,
                             flexibleSpace: new Scaffold(
                               backgroundColor: Colors.white,
                               body: new UserStoryAppBar(),
