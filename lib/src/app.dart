@@ -6,6 +6,7 @@ import 'package:flutter_jaring_ummat/src/views/galang_amal.dart';
 import 'package:flutter_jaring_ummat/src/views/home.dart';
 import 'package:flutter_jaring_ummat/src/views/login/login.dart';
 import 'package:flutter_jaring_ummat/src/views/onboarding.dart';
+import 'package:flutter_jaring_ummat/src/views/page_atur_aplikasi/atur_aplikasimu.dart';
 import 'package:flutter_jaring_ummat/src/views/page_faq/faq.dart';
 import 'package:flutter_jaring_ummat/src/views/page_register/step1.dart';
 import 'package:flutter_jaring_ummat/src/views/page_term_and_condition/termAndCondition.dart';
@@ -28,6 +29,7 @@ void App() {
         '/chats': (context) => ChatScreen(),
         '/faq': (context) => FAQPage(),
         '/term-and-condition': (context) => TermAndConditionPage(),
+        '/settings': (context) => AturAplikasimuView(),
       },
     ),
   );

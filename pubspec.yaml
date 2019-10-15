@@ -157,6 +157,10 @@ flutter:
       fonts:
         - asset: assets/fonts/NewIcon.ttf
 
+    - family:  AturAkunIcon
+      fonts:
+        - asset: assets/fonts/AturAkunIcon.ttf
+
     - family:  AddIconInAmil
       fonts:
         - asset: assets/fonts/AddIconInAmil.ttf

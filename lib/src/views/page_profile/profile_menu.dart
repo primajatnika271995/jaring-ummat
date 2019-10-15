@@ -9,6 +9,7 @@ import 'package:flutter_jaring_ummat/src/views/components/icon_text/all_in_one_i
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/app_bar_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/new_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/sosial_media_icons.dart';
+import 'package:flutter_jaring_ummat/src/views/page_atur_aplikasi/atur_aplikasimu.dart';
 import 'package:flutter_jaring_ummat/src/views/page_kalkulator_zakat/kalkulator_zakat.dart';
 import 'package:flutter_jaring_ummat/src/views/page_profile/kelengkapan_akun.dart';
 import 'package:flutter_jaring_ummat/src/views/page_profile/menu_text_data.dart';
@@ -233,6 +234,11 @@ class _ProfileMenuState extends State<ProfileMenu> {
                       case 1:
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => KalkulatorZakatPage()));
+                        break;
+                      case 2:
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) =>
+                                AturAplikasimuView(isActive: true)));
                         break;
                       default:
                     }
