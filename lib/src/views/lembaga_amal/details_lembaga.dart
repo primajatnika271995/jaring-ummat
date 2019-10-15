@@ -33,6 +33,7 @@ import 'package:flutter_jaring_ummat/src/bloc/portofolioPenerimaanBloc.dart' as 
 import 'package:flutter_jaring_ummat/src/views/page_berita/berita_content.dart';
 import 'package:flutter_jaring_ummat/src/views/page_program-amal/program_amal_content.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:qr_flutter/qr_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:flutter_simple_video_player/flutter_simple_video_player.dart';
@@ -49,7 +50,7 @@ class _DetailsLembagaState extends State<DetailsLembaga> {
   LembagaAmalModel value;
   _DetailsLembagaState({this.value});
 
-  int _tabLength = 4;
+  int _tabLength = 5;
 
   @override
   Widget build(BuildContext context) {
@@ -94,12 +95,13 @@ class _DetailsLembagaState extends State<DetailsLembaga> {
             tabs: [
               Tab(text: 'Data Mitra'),
               Tab(text: 'Galang Amal'),
+              Tab(text: 'Story'),
               Tab(text: 'Berita'),
               Tab(text: 'Portofolio'),
             ],
             labelStyle: TextStyle(fontWeight: FontWeight.bold),
             unselectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
-            isScrollable: false,
+            isScrollable: true,
             unselectedLabelColor: grayColor,
             indicatorColor: greenColor,
             labelColor: blackColor,
@@ -112,6 +114,9 @@ class _DetailsLembagaState extends State<DetailsLembaga> {
           ProgramAmalLembaga(
             idUser: value.idUser,
             category: "programku",
+          ),
+          Center(
+            child: Text('Story'),
           ),
           BeritaLembaga(
             idUser: value.idUser,
@@ -146,6 +151,8 @@ class _DataMitraState extends State<DataMitra> {
   final _emailCtrl = new TextEditingController();
   final _dateCtrl = new TextEditingController();
   final _addressCtrl = new TextEditingController();
+
+  GlobalKey globalKey = new GlobalKey();
 
   @override
   Widget build(BuildContext context) {
@@ -185,6 +192,7 @@ class _DataMitraState extends State<DataMitra> {
                 phoneField(),
                 dateField(),
                 addressField(),
+                qrCode(),
                 btnInfo(),
                 shareSocial(),
               ],
@@ -203,6 +211,72 @@ class _DataMitraState extends State<DataMitra> {
     setState(() {});
     super.initState();
   }
+
+  Widget qrCode() {
+    return InkWell(
+      onTap: _barCodePopUp,
+      child: (value.lembagaAmalEmail == null)
+          ? CircularProgressIndicator()
+          : Container(
+        child: Padding(
+          padding: const EdgeInsets.only(top: 5),
+          child: QrImage(
+            data: value.lembagaAmalEmail,
+            version: QrVersions.auto,
+            size: 320,
+            gapless: false,
+            errorStateBuilder: (cxt, err) {
+              return Container(
+                child: Center(
+                  child: Text(
+                    "Loading QR Code...",
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+        width: 120.0,
+        height: 120.0,
+      ),
+    );
+  }
+
+  Future _barCodePopUp() {
+    return showDialog(
+      context: (context),
+      builder: (_) => Dialog(
+        child: Container(
+          height: 300,
+          width: 300,
+          child: Center(
+            child: RepaintBoundary(
+              key: globalKey,
+              child: QrImage(
+                data: value.lembagaAmalEmail,
+                version: QrVersions.auto,
+                size: 170,
+                gapless: false,
+                errorStateBuilder: (cxt, err) {
+                  return Container(
+                    child: Center(
+                      child: Text(
+                        "Loading QR Code...",
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ),
+        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      ),
+    );
+  }
+
 
   Widget followedBtn() {
     return OutlineButton(
@@ -501,7 +575,7 @@ class _DataMitraState extends State<DataMitra> {
 
   Widget btnInfo() {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 35, vertical: 20),
+      padding: EdgeInsets.symmetric(horizontal: 35, vertical: 10),
       child: Text(
         'Ikuti akun ${value.lembagaAmalName} di beberapa social media dibawah ini agar kamu bisa lebih dekat dengan Kami.',
         style: TextStyle(color: grayColor, fontSize: 12),

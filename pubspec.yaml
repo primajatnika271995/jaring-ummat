@@ -68,6 +68,7 @@ dependencies:
   solid_bottom_sheet: ^0.1.4
   charts_flutter: ^0.8.1
   barcode_scan: ^1.0.0
+  qr_flutter: ^3.0.1
   flutter_typeahead: ^1.6.1
   syncfusion_flutter_charts: ^17.3.14
 

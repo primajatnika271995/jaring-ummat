@@ -37,18 +37,9 @@ class _HistoriTransaksiViewState extends State<HistoriTransaksiView>
         backgroundColor: Colors.white,
         titleSpacing: 0,
         elevation: 0,
-        title: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text('Pembayaran Donasi',
-                style: TextStyle(
-                    color: blackColor, fontSize: SizeUtils.titleSize)),
-            Text('Dalam Proses',
-                style: TextStyle(
-                    color: grayColor, fontSize: SizeUtils.titleSize - 6)),
-          ],
-        ),
+        title: Text('Dalam Proses',
+            style: TextStyle(
+                color: blackColor, fontSize: SizeUtils.titleSize)),
         leading: IconButton(
           onPressed: () {
             Navigator.of(context).pop();
