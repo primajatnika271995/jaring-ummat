@@ -44,14 +44,14 @@ class _ElasticSearchState extends State<ElasticSearch> {
                   _searchCtrl.clear();
                 },
                 child: Icon(AllInOneIcon.clear_search_history_3x,
-                    size: 20, color: blackColor),
+                    size: 25, color: blackColor),
               ),
             ),
             Padding(
               padding: const EdgeInsets.only(right: 7),
               child: InkWell(
                 onTap: () => Navigator.of(context).pop(),
-                child: Icon(AllInOneIcon.close_2x, size: 20, color: blackColor),
+                child: Icon(AllInOneIcon.close_2x, size: 25, color: blackColor),
               ),
             ),
           ],
@@ -199,7 +199,7 @@ class _ElasticSearchState extends State<ElasticSearch> {
                 style: TextStyle(fontSize: 14),
                 autocorrect: false,
                 decoration: InputDecoration(
-                  contentPadding: EdgeInsets.fromLTRB(40, 10, 15, 10),
+                  contentPadding: EdgeInsets.fromLTRB(40, 10, 20, 10),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(32),
                     borderSide: BorderSide(color: greenColor),

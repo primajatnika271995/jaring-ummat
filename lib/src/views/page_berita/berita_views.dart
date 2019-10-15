@@ -226,7 +226,7 @@ class _BeritaViewsState extends State<BeritaViews> {
                       Padding(
                         padding: const EdgeInsets.only(right: 10.0),
                         child: Icon(NewIcon.comment_3x,
-                            color: blackColor, size: 20),
+                            color: blackColor, size: 25),
                       ),
                       Text('${widget.value.totalComment} komentar'),
                     ],
@@ -245,7 +245,7 @@ class _BeritaViewsState extends State<BeritaViews> {
             child: Icon(
               NewIcon.share_3x,
               color: blackColor,
-              size: 20,
+              size: 25,
             ),
           ),
         ],
@@ -285,11 +285,11 @@ class _BeritaViewsState extends State<BeritaViews> {
   }
 
   Widget iconLike() {
-    return Icon(ActiveIcon.love_active_3x, size: 20.0, color: Colors.red);
+    return Icon(ActiveIcon.love_active_3x, size: 25.0, color: Colors.red);
   }
 
   Widget iconUnlike() {
-    return Icon(NewIcon.love_3x, size: 20.0, color: Colors.black);
+    return Icon(NewIcon.love_3x, size: 25.0, color: Colors.black);
   }
 
   void likeProgram() async {

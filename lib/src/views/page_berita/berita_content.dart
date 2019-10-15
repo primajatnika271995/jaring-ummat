@@ -84,8 +84,8 @@ class _BeritaContentState extends State<BeritaContent> {
                   color: widget.berita.likeThis ? redColor : blackColor,
                   size: 20,
                 ),
-                Icon(NewIcon.comment_3x, color: blackColor, size: 20.0),
-                Icon(NewIcon.save_3x, color: blackColor, size: 20.0),
+                Icon(NewIcon.comment_3x, color: blackColor, size: 25.0),
+                Icon(NewIcon.save_3x, color: blackColor, size: 25.0),
               ],
             ),
           ],
@@ -149,7 +149,7 @@ class _BeritaContentState extends State<BeritaContent> {
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: <Widget>[
                             Icon(NewIcon.save_3x,
-                                color: blackColor, size: 20.0),
+                                color: blackColor, size: 25.0),
                             SizedBox(width: 10.0),
                             InkWell(
                               onTap: () => showModalBottomSheet(
@@ -159,7 +159,7 @@ class _BeritaContentState extends State<BeritaContent> {
                                 },
                               ),
                               child: Icon(NewIcon.share_3x,
-                                  color: blackColor, size: 20.0),
+                                  color: blackColor, size: 25.0),
                             ),
                           ],
                         ),

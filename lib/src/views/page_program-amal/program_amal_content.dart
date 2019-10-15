@@ -114,7 +114,7 @@ class _ProgramAmalContentState extends State<ProgramAmalContent> {
     return Stack(
       children: <Widget>[
         CarouselSlider(
-          height: 260.0,
+          height: 300,
           autoPlay: false,
           reverse: false,
           viewportFraction: 1.0,

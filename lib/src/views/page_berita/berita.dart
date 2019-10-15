@@ -374,18 +374,21 @@ class _BeritaPageState extends State<BeritaPage> {
                                                     children: <Widget>[
                                                       Icon(NewIcon.save_3x,
                                                           color: blackColor,
-                                                          size: 20),
+                                                          size: 25),
                                                       SizedBox(width: 10.0),
                                                       InkWell(
-                                                        onTap: () => showModalBottomSheet(
+                                                        onTap: () =>
+                                                            showModalBottomSheet(
                                                           context: context,
                                                           builder: (context) {
                                                             return ShareProgramAmal();
                                                           },
                                                         ),
-                                                        child: Icon(NewIcon.share_3x,
-                                                            color: blackColor,
-                                                            size: 20),
+                                                        child: Icon(
+                                                          NewIcon.share_3x,
+                                                          color: blackColor,
+                                                          size: 25,
+                                                        ),
                                                       ),
                                                     ],
                                                   ),

@@ -3,6 +3,7 @@ import 'package:flutter_jaring_ummat/src/config/hexColor.dart';
 import 'package:flutter_jaring_ummat/src/config/preferences.dart';
 import 'package:flutter_jaring_ummat/src/models/program_amal.dart';
 import 'package:flutter_jaring_ummat/src/services/currency_format_service.dart';
+import 'package:flutter_jaring_ummat/src/utils/sizeUtils.dart';
 import 'package:flutter_jaring_ummat/src/views/components/galang_amal_container.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/new_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/page_payment/payment.dart';
@@ -46,7 +47,7 @@ class _GalangAmalState extends State<GalangAmalView> {
           },
           child: Icon(NewIcon.back_big_3x, color: blackColor, size: 20),
         ),
-        title: new Text('Galang Amal', style: TextStyle(color: blackColor)),
+        title: new Text('Galang Amal', style: TextStyle(color: blackColor, fontSize: SizeUtils.titleSize)),
         centerTitle: false,
         backgroundColor: Colors.white,
       ),

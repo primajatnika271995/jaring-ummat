@@ -14,6 +14,7 @@ import 'package:flutter_jaring_ummat/src/services/portofolioApi.dart';
 import 'package:flutter_jaring_ummat/src/services/time_ago_service.dart';
 import 'package:flutter_jaring_ummat/src/utils/screenSize.dart';
 import 'package:flutter_jaring_ummat/src/utils/sizeUtils.dart';
+import 'package:flutter_jaring_ummat/src/views/components/icon_text/grid_menu_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/new_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/profile_inbox_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/components/indicator_container.dart';
@@ -444,14 +445,16 @@ class _PortofolioState extends State<Portofolio> {
           child: _ic,
           onOpen: () {
             _ic = Icon(Icons.close);
+            setState(() {});
           },
           onClose: () {
             _ic = Icon(Icons.add);
+            setState(() {});
           },
           backgroundColor: greenColor,
           children: [
             SpeedDialChild(
-                child: Icon(ProfileInboxIcon.donation_3x),
+                child: Icon(GridMenuIcon.donation_new),
                 backgroundColor: Colors.blueAccent,
                 label: 'Donasi',
                 labelStyle: TextStyle(color: whiteColor),
@@ -461,7 +464,7 @@ class _PortofolioState extends State<Portofolio> {
                   Navigator.of(context).pushNamed("/home");
                 }),
             SpeedDialChild(
-                child: Icon(ProfileInboxIcon.wakaf_3x),
+                child: Icon(GridMenuIcon.wakaf_new),
                 backgroundColor: Colors.green,
                 label: 'Wakaf',
                 labelStyle: TextStyle(color: whiteColor),
@@ -470,7 +473,7 @@ class _PortofolioState extends State<Portofolio> {
                   requestBill("wakaf");
                 }),
             SpeedDialChild(
-                child: Icon(ProfileInboxIcon.sodaqoh_3x),
+                child: Icon(GridMenuIcon.sodaqoh_new),
                 backgroundColor: Colors.deepPurpleAccent,
                 label: 'Sodaqoh',
                 labelStyle: TextStyle(color: whiteColor),
@@ -479,7 +482,7 @@ class _PortofolioState extends State<Portofolio> {
                   requestBill("sodaqoh");
                 }),
             SpeedDialChild(
-                child: Icon(ProfileInboxIcon.infaq_3x),
+                child: Icon(GridMenuIcon.infaq_new),
                 backgroundColor: Colors.redAccent,
                 label: 'Infaq',
                 labelStyle: TextStyle(color: whiteColor),
@@ -488,8 +491,8 @@ class _PortofolioState extends State<Portofolio> {
                   requestBill("infaq");
                 }),
             SpeedDialChild(
-                child: Icon(ProfileInboxIcon.zakat_3x),
-                backgroundColor: Colors.yellow,
+                child: Icon(GridMenuIcon.zakat_new),
+                backgroundColor: Colors.yellow[600],
                 label: 'Zakat',
                 labelStyle: TextStyle(color: whiteColor),
                 labelBackgroundColor: Colors.black,
@@ -663,7 +666,7 @@ class _PortofolioState extends State<Portofolio> {
         CircularChartAnnotation(
           widget: Container(
             child: Text(
-              'Rp ${CurrencyFormat().data.format(valueTotal.toDouble())} \n /$valueTotalAktivitas Aktivitas',
+              'Rp ${CurrencyFormat().data.format(valueTotal.toDouble())} \n $valueTotalAktivitas Aktivitas',
               style: TextStyle(color: Colors.black, fontSize: 16),
               textAlign: TextAlign.center,
             ),
@@ -678,7 +681,7 @@ class _PortofolioState extends State<Portofolio> {
         Colors.blue,
         Colors.teal
       ],
-      tooltipBehavior: TooltipBehavior(enable: true),
+      tooltipBehavior: TooltipBehavior(enable: false),
       onLegendTapped: (LegendTapArgs value) {
         print(value.pointIndex);
         switch (value.pointIndex) {
@@ -757,7 +760,7 @@ class _PortofolioState extends State<Portofolio> {
         yValueMapper: (_DoughnutData data, _) => data.yData,
         dataLabelMapper: (_DoughnutData data, _) => data.text,
         dataLabelSettings: DataLabelSettings(
-          isVisible: true,
+          isVisible: false,
           textStyle: ChartTextStyle(color: Colors.white),
         ),
       )
@@ -772,7 +775,7 @@ class _PortofolioState extends State<Portofolio> {
         print("ini response pie chart ==>");
         print(response.statusCode);
         var data =
-        SebaranAktifitasAmalModel.fromJson(json.decode(response.body));
+            SebaranAktifitasAmalModel.fromJson(json.decode(response.body));
 
         valueTotal = data.totalSemua.toDouble();
         valueBackup = data.totalSemua.toDouble();

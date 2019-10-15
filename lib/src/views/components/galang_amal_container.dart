@@ -316,7 +316,7 @@ class _GalangAmalContainerState extends State<GalangAmalContainer> {
             children: <Widget>[
               Icon(
                 (isLoved) ? NewIcon.love_3x : NewIcon.love_3x,
-                size: 20.0,
+                size: 25.0,
                 color: (isLoved) ? Colors.red : blackColor,
               ),
               SizedBox(
@@ -341,7 +341,7 @@ class _GalangAmalContainerState extends State<GalangAmalContainer> {
               Icon(
                 NewIcon.comment_3x,
                 color: blackColor,
-                size: 20.0,
+                size: 25.0,
               ),
               SizedBox(
                 width: 5.0,
@@ -369,7 +369,7 @@ class _GalangAmalContainerState extends State<GalangAmalContainer> {
               Icon(
                 NewIcon.save_3x,
                 color: blackColor,
-                size: 20.0,
+                size: 25.0,
               ),
               SizedBox(
                 width: 5.0,
@@ -384,7 +384,7 @@ class _GalangAmalContainerState extends State<GalangAmalContainer> {
               Icon(
                 NewIcon.share_3x,
                 color: blackColor,
-                size: 20.0,
+                size: 25.0,
               ),
               SizedBox(
                 width: 5.0,
