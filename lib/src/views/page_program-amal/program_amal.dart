@@ -223,7 +223,7 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                         ? new SliverAppBar(
                             automaticallyImplyLeading: false,
                             bottom: PreferredSize(
-                              preferredSize: Size.fromHeight(45),
+                              preferredSize: Size.fromHeight(43),
                               child: Text(''),
                             ),
                             elevation: 0,
@@ -249,8 +249,9 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                           child: Padding(
                             padding:
                                 const EdgeInsets.symmetric(horizontal: 10.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            child: ListView(
+                              shrinkWrap: true,
+                              scrollDirection: Axis.horizontal,
                               children: <Widget>[
                                 Container(
                                   width: 60,

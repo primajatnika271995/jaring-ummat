@@ -80,11 +80,11 @@ class _AturAplikasimuViewState extends State<AturAplikasimuView> {
             leading: CircleAvatar(
               backgroundColor: AturAplikasiMu.pengaturanAkunColorList[index],
               child: Icon(AturAplikasiMu.pengaturanAkunIconList[index],
-                  color: whiteColor, size: 25),
+                  color: whiteColor, size: 20),
             ),
-            trailing: this.isActive ? aktiveBtn() : inActiveBtn(),
+            trailing: AturAplikasiMu.pengaturanAkunBool[index] ? aktiveBtn(index) : inActiveBtn(index),
             title: Text(AturAplikasiMu.pengaturanAkunTitle[index],
-                style: TextStyle(fontWeight: FontWeight.bold)),
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
             subtitle: Text(AturAplikasiMu.pengaturanAkunSubtitle[index],
                 style: TextStyle(fontSize: 13)),
           );
@@ -116,11 +116,11 @@ class _AturAplikasimuViewState extends State<AturAplikasimuView> {
               backgroundColor:
                   AturAplikasiMu.pengaturanNotifikasiColorList[index],
               child: Icon(AturAplikasiMu.pengaturanNotifikasiIconList[index],
-                  color: whiteColor, size: 25),
+                  color: whiteColor, size: 20),
             ),
-            trailing: this.isActive ? aktiveBtn() : inActiveBtn(),
+            trailing: AturAplikasiMu.pengaturanNotifikasiBool[index] ? aktiveNotifikasiBtn(index) : inActiveNotifikasiBtn(index),
             title: Text(AturAplikasiMu.pengaturanNotifikasiTitle[index],
-                style: TextStyle(fontWeight: FontWeight.bold)),
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
             subtitle: Text(AturAplikasiMu.pengaturanNotifikasiSubtitle[index],
                 style: TextStyle(fontSize: 13)),
           );
@@ -142,10 +142,10 @@ class _AturAplikasimuViewState extends State<AturAplikasimuView> {
         itemCount: AturAplikasiMu.pengaturanNotifikasiColorList.length);
   }
 
-  Widget aktiveBtn() {
+  Widget aktiveBtn(int index) {
     return OutlineButton(
       onPressed: () {
-        isActive = !isActive;
+        AturAplikasiMu.pengaturanAkunBool[index] = !AturAplikasiMu.pengaturanAkunBool[index];
         setState(() {});
       },
       child: const Text('Aktif',
@@ -159,10 +159,44 @@ class _AturAplikasimuViewState extends State<AturAplikasimuView> {
     );
   }
 
-  Widget inActiveBtn() {
+  Widget aktiveNotifikasiBtn(int index) {
     return OutlineButton(
       onPressed: () {
-        isActive = !isActive;
+        AturAplikasiMu.pengaturanNotifikasiBool[index] = !AturAplikasiMu.pengaturanNotifikasiBool[index];
+        setState(() {});
+      },
+      child: const Text('Aktif',
+          style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      borderSide: BorderSide(
+        color: Colors.green, //Color of the border
+        style: BorderStyle.solid, //Style of the border
+        width: 2.8, //width of the border
+      ),
+    );
+  }
+
+  Widget inActiveBtn(int index) {
+    return OutlineButton(
+      onPressed: () {
+        AturAplikasiMu.pengaturanAkunBool[index] = !AturAplikasiMu.pengaturanAkunBool[index];
+        setState(() {});
+      },
+      child: const Text('Tidak Aktif',
+          style: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      borderSide: BorderSide(
+        color: Colors.grey, //Color of the border
+        style: BorderStyle.solid, //Style of the border
+        width: 2.8, //width of the border
+      ),
+    );
+  }
+
+  Widget inActiveNotifikasiBtn(int index) {
+    return OutlineButton(
+      onPressed: () {
+        AturAplikasiMu.pengaturanNotifikasiBool[index] = !AturAplikasiMu.pengaturanNotifikasiBool[index];
         setState(() {});
       },
       child: const Text('Tidak Aktif',

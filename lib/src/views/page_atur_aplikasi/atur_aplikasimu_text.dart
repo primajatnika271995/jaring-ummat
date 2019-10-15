@@ -27,6 +27,11 @@ class AturAplikasiMu {
     'Sembunyikan identitas saat mengomentari aksi galang amal.',
   ];
 
+  static List<bool> pengaturanAkunBool = [
+    true,
+    false,
+  ];
+
   static const String titlePengaturanNotifikasi = "Pengaturan Notifikasi";
 
   static const List<IconData> pengaturanNotifikasiIconList = [
@@ -67,5 +72,15 @@ class AturAplikasiMu {
     'Notifikasi ketika terdapat akun amil baru yang populer.',
     'Notifikasi ketika amil mengirimkan atau membalas chat.',
     'Notifikasi ketika terdapat portofolio baru pada setiap awal bulan.',
+  ];
+
+  static List<bool> pengaturanNotifikasiBool = [
+    true,
+    false,
+    false,
+    true,
+    true,
+    true,
+    false,
   ];
 }
