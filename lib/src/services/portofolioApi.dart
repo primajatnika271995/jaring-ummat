@@ -16,9 +16,11 @@ class PortofolioProvider {
     SharedPreferences _pref = await SharedPreferences.getInstance();
     var token = _pref.getString(ACCESS_TOKEN_KEY);
 
+    print(token);
+
     Map<String, String> headers = {'Authorization': 'Bearer $token'};
 
-    return client.get(PORTOFOLIO_PIE_CHART, headers: headers);
+    return client.get(PORTOFOLIO_PIE_CHART_AKTIVITAS_AMAL, headers: headers);
   }
 
     Future<List<BarchartModel>> barChartApi(String category, String type) async {
@@ -32,7 +34,10 @@ class PortofolioProvider {
     Map<String, String> headers = {'Authorization': 'Bearer $token'};
     final response = await client.get(uriParams, headers: headers);
 
+    print("Ini status code barChart ==>");
     print(response.statusCode);
+
+    print(response.body);
 
     if (response.statusCode == 200) {
       return compute(barchartModelFromJson, response.body);

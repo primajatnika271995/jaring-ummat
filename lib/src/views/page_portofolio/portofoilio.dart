@@ -631,10 +631,10 @@ class _PortofolioState extends State<Portofolio> {
   @override
   void initState() {
     super.initState();
+    getDataPieChart();
     bloc.fetchAktivitasTerbesar();
     bloc.fetchAktivitasTerbaru();
     bloc.fetchBarChart(null, "satu");
-    getDataPieChart();
     getAktivitasTerbaruCache();
     getUser();
   }
@@ -767,7 +767,10 @@ class _PortofolioState extends State<Portofolio> {
   void getDataPieChart() {
     PortofolioProvider provider = new PortofolioProvider();
     provider.pieChartApi().then((response) {
+      print(response.statusCode);
       if (response.statusCode == 200) {
+        print("ini response pie chart ==>");
+        print(response.statusCode);
         var data =
         SebaranAktifitasAmalModel.fromJson(json.decode(response.body));
 
