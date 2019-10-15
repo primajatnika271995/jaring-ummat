@@ -122,13 +122,24 @@ class _ExplorerPageState extends State<ExplorerPage> {
                     fit: BoxFit.cover,
                   ),
                 ),
-                child: Align(
-                  alignment: Alignment.bottomLeft,
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 10, bottom: 20),
-                    child: Text(ExplorerText.bantuKamiDesc1,
-                        style: TextStyle(color: whiteColor)),
-                  ),
+                child: Column(
+                  children: <Widget>[
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 10, bottom: 55, top: 10),
+                        child: Icon(ExplorerText.jenisKebaikan[0], color: whiteColor, size: 25),
+                      ),
+                    ),
+                    Align(
+                      alignment: Alignment.bottomLeft,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 10, bottom: 20),
+                        child: Text(ExplorerText.bantuKamiDesc1,
+                            style: TextStyle(color: whiteColor)),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -147,13 +158,24 @@ class _ExplorerPageState extends State<ExplorerPage> {
                     fit: BoxFit.cover,
                   ),
                 ),
-                child: Align(
-                  alignment: Alignment.bottomLeft,
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 10, bottom: 20),
-                    child: Text(ExplorerText.bantuKamiDesc2,
-                        style: TextStyle(color: whiteColor)),
-                  ),
+                child: Column(
+                  children: <Widget>[
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 10, bottom: 55, top: 10),
+                        child: Icon(ExplorerText.jenisKebaikan[1], color: whiteColor, size: 25),
+                      ),
+                    ),
+                    Align(
+                      alignment: Alignment.bottomLeft,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 10, bottom: 20),
+                        child: Text(ExplorerText.bantuKamiDesc2,
+                            style: TextStyle(color: whiteColor)),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),

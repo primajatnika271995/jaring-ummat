@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_jaring_ummat/src/models/DTO/ReturnData.dart';
 import 'package:flutter_jaring_ummat/src/utils/screenSize.dart';
@@ -8,6 +9,7 @@ import 'package:flutter_jaring_ummat/src/utils/textUtils.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/all_in_one_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/app_bar_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/grid_menu_icon_icons.dart';
+import 'package:flutter_jaring_ummat/src/views/components/icon_text/grid_menu_tambahan_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/new_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/lembaga_amal/popular_account.dart';
 import 'package:flutter_jaring_ummat/src/views/page_inbox/inbox.dart';
@@ -35,7 +37,9 @@ class ProgramAmalPage extends StatefulWidget {
 }
 
 class _ProgramAmalPageState extends State<ProgramAmalPage> {
-  /// Location Inisialisasi
+  /*
+   * Location Inisialisasi
+   */
   var location = new Location();
 
   /*
@@ -249,6 +253,7 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: <Widget>[
                                 Container(
+                                  width: 60,
                                   child: new Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: <Widget>[
@@ -261,63 +266,85 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                                             ),
                                           );
                                         },
-                                        child: new Container(
-                                          decoration: new BoxDecoration(
-                                              color: Colors.yellow[600],
-                                              border: Border.all(
-                                                  color: softGreyColor,
-                                                  width: 3.0),
-                                              borderRadius: new BorderRadius
-                                                      .all(
-                                                  new Radius.circular(20.0))),
-                                          padding: EdgeInsets.all(12.0),
-                                          child: new Icon(
-                                            AllInOneIcon.account_following_3x,
-                                            color: Colors.white,
-                                            size: 25,
-                                          ),
+                                        child: Icon(
+                                          GridMenuTambahanIcon.mitra_new,
+                                          color: Colors.orangeAccent,
+                                          size: 45,
                                         ),
                                       ),
                                       new Padding(
                                         padding: EdgeInsets.only(top: 1.0),
                                       ),
-                                      new Text('Akun Mitra')
+                                      new Text(
+                                        'Mitra Jaring',
+                                        style: TextStyle(
+                                            color: Colors.grey, fontSize: 13),
+                                        overflow: TextOverflow.ellipsis,
+                                      )
                                     ],
                                   ),
                                 ),
                                 Container(
+                                  width: 60,
                                   child: new Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: <Widget>[
                                       InkWell(
                                         onTap: () {
-                                          requestBill("donasi");
+//                                          Navigator.of(context).push(
+//                                            MaterialPageRoute(
+//                                              builder: (context) =>
+//                                                  PopularAccountView(),
+//                                            ),
+//                                          );
                                         },
-                                        child: new Container(
-                                          decoration: new BoxDecoration(
-                                              color: Colors.blue,
-                                              border: Border.all(
-                                                  color: softGreyColor,
-                                                  width: 3.0),
-                                              borderRadius: new BorderRadius
-                                                      .all(
-                                                  new Radius.circular(20.0))),
-                                          padding: EdgeInsets.all(12.0),
-                                          child: new Icon(
-                                            GridMenuIcon.donation_new,
-                                            color: Colors.white,
-                                            size: 25,
-                                          ),
+                                        child: Icon(
+                                          GridMenuTambahanIcon.news_new,
+                                          color: Colors.deepOrange,
+                                          size: 45,
                                         ),
                                       ),
                                       new Padding(
                                         padding: EdgeInsets.only(top: 1.0),
                                       ),
-                                      new Text('Donasi')
+                                      new Text(
+                                        'Berita',
+                                        style: TextStyle(
+                                            color: Colors.grey, fontSize: 13),
+                                        overflow: TextOverflow.ellipsis,
+                                      )
                                     ],
                                   ),
                                 ),
                                 Container(
+                                  width: 60,
+                                  child: new Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
+                                      InkWell(
+                                        onTap: () {
+//                                          requestBill("donasi");
+                                        },
+                                        child: Icon(
+                                          GridMenuIcon.donation_new,
+                                          color: Colors.blueAccent,
+                                          size: 45,
+                                        ),
+                                      ),
+                                      new Padding(
+                                        padding: EdgeInsets.only(top: 1.0),
+                                      ),
+                                      new Text(
+                                        'Donasi',
+                                        style: TextStyle(
+                                            color: Colors.grey, fontSize: 13),
+                                        overflow: TextOverflow.ellipsis,
+                                      )
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                  width: 60,
                                   child: new Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: <Widget>[
@@ -325,31 +352,26 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                                         onTap: () {
                                           requestBill("Zakat");
                                         },
-                                        child: new Container(
-                                          decoration: new BoxDecoration(
-                                              color: Colors.red,
-                                              border: Border.all(
-                                                  color: softGreyColor,
-                                                  width: 3.0),
-                                              borderRadius: new BorderRadius
-                                                      .all(
-                                                  new Radius.circular(20.0))),
-                                          padding: EdgeInsets.all(12.0),
-                                          child: new Icon(
-                                            GridMenuIcon.zakat_new,
-                                            color: Colors.white,
-                                            size: 25,
-                                          ),
+                                        child: Icon(
+                                          GridMenuIcon.zakat_new,
+                                          color: Colors.red,
+                                          size: 45,
                                         ),
                                       ),
                                       new Padding(
                                         padding: EdgeInsets.only(top: 1.0),
                                       ),
-                                      new Text('Zakat')
+                                      new Text(
+                                        'Zakat',
+                                        style: TextStyle(
+                                            color: Colors.grey, fontSize: 13),
+                                        overflow: TextOverflow.ellipsis,
+                                      )
                                     ],
                                   ),
                                 ),
                                 Container(
+                                  width: 60,
                                   child: new Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: <Widget>[
@@ -357,31 +379,26 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                                         onTap: () {
                                           requestBill("infaq");
                                         },
-                                        child: new Container(
-                                          decoration: new BoxDecoration(
-                                              color: Colors.deepPurple,
-                                              border: Border.all(
-                                                  color: softGreyColor,
-                                                  width: 3.0),
-                                              borderRadius: new BorderRadius
-                                                      .all(
-                                                  new Radius.circular(20.0))),
-                                          padding: EdgeInsets.all(12.0),
-                                          child: new Icon(
-                                            GridMenuIcon.infaq_new,
-                                            color: Colors.white,
-                                            size: 25,
-                                          ),
+                                        child: Icon(
+                                          GridMenuIcon.infaq_new,
+                                          color: Colors.purpleAccent,
+                                          size: 45,
                                         ),
                                       ),
                                       new Padding(
                                         padding: EdgeInsets.only(top: 1.0),
                                       ),
-                                      new Text('Infaq')
+                                      new Text(
+                                        'Infaq',
+                                        style: TextStyle(
+                                            color: Colors.grey, fontSize: 13),
+                                        overflow: TextOverflow.ellipsis,
+                                      )
                                     ],
                                   ),
                                 ),
                                 Container(
+                                  width: 60,
                                   child: new Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: <Widget>[
@@ -389,59 +406,48 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                                         onTap: () {
                                           requestBill("sodaqoh");
                                         },
-                                        child: new Container(
-                                          decoration: new BoxDecoration(
-                                              color: Colors.green,
-                                              border: Border.all(
-                                                  color: softGreyColor,
-                                                  width: 3.0),
-                                              borderRadius: new BorderRadius
-                                                      .all(
-                                                  new Radius.circular(20.0))),
-                                          padding: EdgeInsets.all(12.0),
-                                          child: new Icon(
-                                            GridMenuIcon.sodaqoh_new,
-                                            color: Colors.white,
-                                            size: 25,
-                                          ),
+                                        child: Icon(
+                                          GridMenuIcon.sodaqoh_new,
+                                          color: Colors.green,
+                                          size: 45,
                                         ),
                                       ),
                                       new Padding(
                                         padding: EdgeInsets.only(top: 1.0),
                                       ),
-                                      new Text('Sodaqoh')
+                                      new Text(
+                                        'Sodaqoh',
+                                        style: TextStyle(
+                                            color: Colors.grey, fontSize: 13),
+                                        overflow: TextOverflow.ellipsis,
+                                      )
                                     ],
                                   ),
                                 ),
                                 Container(
+                                  width: 60,
                                   child: new Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: <Widget>[
                                       InkWell(
                                         onTap: () {
-                                          requestBill("Wakaf");
+                                          requestBill("wakaf");
                                         },
-                                        child: new Container(
-                                          decoration: new BoxDecoration(
-                                              color: Colors.deepOrangeAccent,
-                                              border: Border.all(
-                                                  color: softGreyColor,
-                                                  width: 3.0),
-                                              borderRadius: new BorderRadius
-                                                      .all(
-                                                  new Radius.circular(20.0))),
-                                          padding: EdgeInsets.all(12.0),
-                                          child: new Icon(
-                                            GridMenuIcon.wakaf_new,
-                                            color: Colors.white,
-                                            size: 25,
-                                          ),
+                                        child: Icon(
+                                          GridMenuIcon.wakaf_new,
+                                          color: Colors.deepOrange,
+                                          size: 45,
                                         ),
                                       ),
                                       new Padding(
                                         padding: EdgeInsets.only(top: 1.0),
                                       ),
-                                      new Text('Wakaf')
+                                      new Text(
+                                        'Wakaf',
+                                        style: TextStyle(
+                                            color: Colors.grey, fontSize: 13),
+                                        overflow: TextOverflow.ellipsis,
+                                      )
                                     ],
                                   ),
                                 ),
@@ -454,10 +460,10 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                     SliverAppBar(
                       automaticallyImplyLeading: false,
                       bottom: PreferredSize(
-                        preferredSize: Size.fromHeight(190.0),
+                        preferredSize: Size.fromHeight(177.0),
                         child: Text(''),
                       ),
-                      elevation: 20.0,
+                      elevation: 0,
                       flexibleSpace: new Scaffold(
                         backgroundColor: Colors.white,
                         body: Padding(
@@ -509,7 +515,8 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                                 BorderSide(width: 4.0, color: greenColor),
                           ),
                           labelColor: blackColor,
-                          unselectedLabelColor: grayColor,
+                          labelStyle: TextStyle(fontWeight: FontWeight.bold),
+                          unselectedLabelColor: Colors.grey[400],
                           onTap: (int index) {
                             print(index);
                             switch (index) {
@@ -649,11 +656,23 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
   }
 
   Widget buildList(AsyncSnapshot<List<ProgramAmalModel>> snapshot) {
-    print('Program Amal List');
-    print(snapshot.data[0].titleProgram);
-    print(snapshot.data[0].idLembagaAmal);
-    return ListView.builder(
+    return ListView.separated(
       shrinkWrap: true,
+      separatorBuilder: (context, position) {
+        return Padding(
+          padding: EdgeInsets.only(left: 10, right: 10),
+          child: new SizedBox(
+            height: 10.0,
+            child: new Center(
+              child: new Container(
+                  margin:
+                  new EdgeInsetsDirectional.only(start: 1.0, end: 1.0),
+                  height: 5.0,
+                  color: Colors.grey[200]),
+            ),
+          ),
+        );
+      },
       physics: ClampingScrollPhysics(),
       itemCount: snapshot.data.length,
       itemBuilder: (BuildContext context, int index) {

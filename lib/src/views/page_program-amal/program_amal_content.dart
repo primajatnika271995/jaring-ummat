@@ -343,7 +343,7 @@ class _ProgramAmalContentState extends State<ProgramAmalContent> {
                 (widget.programAmal.userLikeThis)
                     ? ActiveIcon.love_active_3x
                     : (isLoved) ? ActiveIcon.love_active_3x : NewIcon.love_3x,
-                size: 20.0,
+                size: 25.0,
                 color: (widget.programAmal.userLikeThis)
                     ? Colors.red
                     : (isLoved) ? Colors.red : blackColor,
@@ -383,7 +383,7 @@ class _ProgramAmalContentState extends State<ProgramAmalContent> {
             children: <Widget>[
               Icon(
                 NewIcon.comment_3x,
-                size: 20.0,
+                size: 25.0,
                 color: blackColor,
               ),
               SizedBox(
@@ -422,7 +422,7 @@ class _ProgramAmalContentState extends State<ProgramAmalContent> {
           ),
           child: Icon(
             NewIcon.share_3x,
-            size: 20,
+            size: 25,
             color: blackColor,
           ),
         ),
@@ -465,11 +465,11 @@ class _ProgramAmalContentState extends State<ProgramAmalContent> {
   }
 
   Widget iconBookmark() {
-    return Icon(ActiveIcon.save_active_3x, size: 20, color: greenColor);
+    return Icon(ActiveIcon.save_active_3x, size: 25, color: greenColor);
   }
 
   Widget iconUnbookmark() {
-    return Icon(NewIcon.save_3x, size: 20, color: blackColor);
+    return Icon(NewIcon.save_3x, size: 25, color: blackColor);
   }
 
   void showMediaPlayer(String url) {

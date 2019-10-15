@@ -144,6 +144,10 @@ flutter:
       fonts:
         - asset: assets/fonts/GridMenuIcon.ttf
 
+    - family: GridMenuTambahanIcon
+      fonts:
+        - asset: assets/fonts/GridMenuTambahanIcon.ttf
+
     - family:  AppBarIcon
       fonts:
         - asset: assets/fonts/AppBarIcon.ttf

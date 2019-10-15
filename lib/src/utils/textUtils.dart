@@ -1,3 +1,6 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_jaring_ummat/src/views/components/icon_text/all_in_one_icon_icons.dart';
+
 class LoginText {
   static const namaAplikasi = "Jejaring";
   static const logoUrl = "assets/icon/logo_muzakki_jejaring.png";
@@ -37,6 +40,11 @@ class ExplorerText {
   static const kebaikanDisekitarmu = "Kebaikan Disekitarmu";
   static const kebaikanDisekitarUrl = "https://cdn.idntimes.com/content-images/community/2019/04/disaster-af188317ff4ce57ac4e9c540d4f6f19d_600x400.jpg";
   static const kebaikanDisekitarDesc = "Dikepung Kabut Asap, ACT Bantu Padamkan Api di Bengkalis";
+
+  static const List<IconData> jenisKebaikan = [
+    AllInOneIcon.donation_3x,
+    AllInOneIcon.zakat_3x,
+  ];
 }
 
 class infoJaring {
