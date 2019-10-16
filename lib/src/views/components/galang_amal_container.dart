@@ -1,4 +1,5 @@
 import 'package:flutter_jaring_ummat/src/models/galangAmalListDonationModel.dart';
+import 'package:flutter_jaring_ummat/src/views/components/icon_text/active_icon_icons.dart';
 import 'package:intl/intl.dart';
 import 'package:circular_profile_avatar/circular_profile_avatar.dart';
 import 'package:flutter/material.dart';
@@ -64,7 +65,7 @@ class _GalangAmalContainerState extends State<GalangAmalContainer> {
               onPressed: () {},
               icon: Icon(NewIcon.next_small_2x),
               color: blackColor,
-              iconSize: 20,
+              iconSize: 25,
             ),
           ),
           StreamBuilder(
@@ -93,9 +94,9 @@ class _GalangAmalContainerState extends State<GalangAmalContainer> {
       backgroundColor: greenColor,
       child: widget.programAmal.user.imageUrl == null
           ? Text(
-              widget.programAmal.createdBy.substring(0, 1),
-              style: TextStyle(color: whiteColor),
-            )
+        widget.programAmal.createdBy.substring(0, 1),
+        style: TextStyle(color: whiteColor),
+      )
           : CircularProfileAvatar(widget.programAmal.user.imageUrl),
     );
   }
@@ -153,30 +154,30 @@ class _GalangAmalContainerState extends State<GalangAmalContainer> {
           aspectRatio: MediaQuery.of(context).size.aspectRatio,
           items: (widget.programAmal.imageContent == null)
               ? imgNoContent.map((url) {
-                  return Container(
-                    child: CachedNetworkImage(
-                      imageUrl: url,
-                      fit: BoxFit.cover,
-                      width: MediaQuery.of(context).size.width,
-                    ),
-                  );
-                }).toList()
+            return Container(
+              child: CachedNetworkImage(
+                imageUrl: url,
+                fit: BoxFit.cover,
+                width: MediaQuery.of(context).size.width,
+              ),
+            );
+          }).toList()
               : widget.programAmal.imageContent.map(
-                  (url) {
-                    return Container(
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.all(Radius.circular(0.0)),
-                        child: CachedNetworkImage(
-                          fit: BoxFit.cover,
-                          imageUrl: url.url,
-                          errorWidget: (content, url, error) =>
-                              new Icon(Icons.error),
-                          width: MediaQuery.of(context).size.width,
-                        ),
-                      ),
-                    );
-                  },
-                ).toList(),
+                (url) {
+              return Container(
+                child: ClipRRect(
+                  borderRadius: BorderRadius.all(Radius.circular(0.0)),
+                  child: CachedNetworkImage(
+                    fit: BoxFit.cover,
+                    imageUrl: url.url,
+                    errorWidget: (content, url, error) =>
+                    new Icon(Icons.error),
+                    width: MediaQuery.of(context).size.width,
+                  ),
+                ),
+              );
+            },
+          ).toList(),
           onPageChanged: (index) {
             setState(() {
               _current = index;
@@ -206,33 +207,33 @@ class _GalangAmalContainerState extends State<GalangAmalContainer> {
       padding: EdgeInsets.symmetric(horizontal: 5.0, vertical: 10.0),
       child: moreDesc.isEmpty
           ? new Text(
-              lessDesc,
-              textAlign: TextAlign.justify,
-            )
+        lessDesc,
+        textAlign: TextAlign.justify,
+      )
           : new Column(
+        children: <Widget>[
+          new Text(
+            flag ? (lessDesc + "...") : (lessDesc + moreDesc),
+            textAlign: TextAlign.justify,
+          ),
+          new InkWell(
+            onTap: () {
+              setState(() {
+                flag = !flag;
+              });
+            },
+            child: new Row(
+              mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
                 new Text(
-                  flag ? (lessDesc + "...") : (lessDesc + moreDesc),
-                  textAlign: TextAlign.justify,
-                ),
-                new InkWell(
-                  onTap: () {
-                    setState(() {
-                      flag = !flag;
-                    });
-                  },
-                  child: new Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: <Widget>[
-                      new Text(
-                        flag ? "show more" : "show less",
-                        style: new TextStyle(color: Colors.blue),
-                      )
-                    ],
-                  ),
+                  flag ? "show more" : "show less",
+                  style: new TextStyle(color: Colors.blue),
                 )
               ],
             ),
+          )
+        ],
+      ),
     );
   }
 
@@ -303,6 +304,14 @@ class _GalangAmalContainerState extends State<GalangAmalContainer> {
     );
   }
 
+  Widget iconLike() {
+    return Icon(ActiveIcon.love_active_3x, size: 25, color: Colors.red);
+  }
+
+  Widget iconUnlike() {
+    return Icon(NewIcon.love_3x, size: 25, color: Colors.black);
+  }
+
   Widget setCommentandLikes() {
     return Row(
       children: <Widget>[
@@ -314,11 +323,7 @@ class _GalangAmalContainerState extends State<GalangAmalContainer> {
           },
           child: Row(
             children: <Widget>[
-              Icon(
-                (isLoved) ? NewIcon.love_3x : NewIcon.love_3x,
-                size: 25.0,
-                color: (isLoved) ? Colors.red : blackColor,
-              ),
+              (isLoved) ? iconLike() : iconUnlike(),
               SizedBox(
                 width: 5.0,
               ),

@@ -12,6 +12,7 @@ import 'package:flutter_jaring_ummat/src/views/components/icon_text/grid_menu_ic
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/grid_menu_tambahan_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/new_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/lembaga_amal/popular_account.dart';
+import 'package:flutter_jaring_ummat/src/views/page_berita/berita.dart';
 import 'package:flutter_jaring_ummat/src/views/page_inbox/inbox.dart';
 import 'package:flutter_jaring_ummat/src/views/page_info_jaring/info_jaring_views.dart';
 import 'package:flutter_jaring_ummat/src/views/page_payment/payment.dart';
@@ -253,203 +254,279 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                               shrinkWrap: true,
                               scrollDirection: Axis.horizontal,
                               children: <Widget>[
-                                Container(
-                                  width: 60,
-                                  child: new Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: <Widget>[
-                                      InkWell(
-                                        onTap: () {
-                                          Navigator.of(context).push(
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  PopularAccountView(),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(horizontal: 5),
+                                  child: Container(
+                                    child: new Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: <Widget>[
+                                        InkWell(
+                                          onTap: () {
+                                            Navigator.of(context).push(
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    PopularAccountView(),
+                                              ),
+                                            );
+                                          },
+                                          borderRadius:
+                                              BorderRadius.circular(20),
+                                          child: new Container(
+                                            decoration: new BoxDecoration(
+                                                border: Border.all(
+                                                    color: softGreyColor,
+                                                    width: 3.0),
+                                                borderRadius: new BorderRadius
+                                                        .all(
+                                                    new Radius.circular(20.0))),
+                                            padding: EdgeInsets.all(12.0),
+                                            child: new Icon(
+                                              AllInOneIcon.account_following_3x,
+                                              color: Colors.yellow[600],
+                                              size: 25,
                                             ),
-                                          );
-                                        },
-                                        child: Icon(
-                                          GridMenuTambahanIcon.mitra_new,
-                                          color: Colors.orangeAccent,
-                                          size: 45,
+                                          ),
                                         ),
-                                      ),
-                                      new Padding(
-                                        padding: EdgeInsets.only(top: 1.0),
-                                      ),
-                                      new Text(
-                                        'Mitra Jaring',
-                                        style: TextStyle(
-                                            color: Colors.grey, fontSize: 13),
-                                        overflow: TextOverflow.ellipsis,
-                                      )
-                                    ],
+                                        new Padding(
+                                          padding: EdgeInsets.only(top: 1.0),
+                                        ),
+                                        Container(
+                                            width: 50,
+                                            child: new Text(
+                                              'Akun Mitra',
+                                              overflow: TextOverflow.ellipsis,
+                                            ))
+                                      ],
+                                    ),
                                   ),
                                 ),
-                                Container(
-                                  width: 60,
-                                  child: new Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: <Widget>[
-                                      InkWell(
-                                        onTap: () {
-//                                          Navigator.of(context).push(
-//                                            MaterialPageRoute(
-//                                              builder: (context) =>
-//                                                  PopularAccountView(),
-//                                            ),
-//                                          );
-                                        },
-                                        child: Icon(
-                                          GridMenuTambahanIcon.news_new,
-                                          color: Colors.deepOrange,
-                                          size: 45,
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(horizontal: 5),
+                                  child: Container(
+                                    child: new Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: <Widget>[
+                                        InkWell(
+                                          onTap: () {
+                                            Navigator.of(context).push(
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    BeritaPage(),
+                                              ),
+                                            );
+                                          },
+                                          borderRadius:
+                                              BorderRadius.circular(20),
+                                          child: new Container(
+                                            decoration: new BoxDecoration(
+                                                border: Border.all(
+                                                    color: softGreyColor,
+                                                    width: 3.0),
+                                                borderRadius: new BorderRadius
+                                                        .all(
+                                                    new Radius.circular(20.0))),
+                                            padding: EdgeInsets.all(12.0),
+                                            child: new Icon(
+                                              AllInOneIcon.news_3x,
+                                              color: Colors.deepOrange,
+                                              size: 25,
+                                            ),
+                                          ),
                                         ),
-                                      ),
-                                      new Padding(
-                                        padding: EdgeInsets.only(top: 1.0),
-                                      ),
-                                      new Text(
-                                        'Berita',
-                                        style: TextStyle(
-                                            color: Colors.grey, fontSize: 13),
-                                        overflow: TextOverflow.ellipsis,
-                                      )
-                                    ],
+                                        new Padding(
+                                          padding: EdgeInsets.only(top: 1.0),
+                                        ),
+                                        new Text('Berita')
+                                      ],
+                                    ),
                                   ),
                                 ),
-                                Container(
-                                  width: 60,
-                                  child: new Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: <Widget>[
-                                      InkWell(
-                                        onTap: () {
-//                                          requestBill("donasi");
-                                        },
-                                        child: Icon(
-                                          GridMenuIcon.donation_new,
-                                          color: Colors.blueAccent,
-                                          size: 45,
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(horizontal: 5),
+                                  child: Container(
+                                    child: new Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: <Widget>[
+                                        InkWell(
+                                          onTap: () {
+//                                          requestBill("zakat");
+                                          },
+                                          borderRadius: BorderRadius.circular(20),
+                                          child: new Container(
+                                            decoration: new BoxDecoration(
+                                                border: Border.all(
+                                                    color: softGreyColor,
+                                                    width: 3.0),
+                                                borderRadius: new BorderRadius
+                                                        .all(
+                                                    new Radius.circular(20.0))),
+                                            padding: EdgeInsets.all(12.0),
+                                            child: new Icon(
+                                              AllInOneIcon.donation_3x,
+                                              color: Colors.deepPurple,
+                                              size: 25,
+                                            ),
+                                          ),
                                         ),
-                                      ),
-                                      new Padding(
-                                        padding: EdgeInsets.only(top: 1.0),
-                                      ),
-                                      new Text(
-                                        'Donasi',
-                                        style: TextStyle(
-                                            color: Colors.grey, fontSize: 13),
-                                        overflow: TextOverflow.ellipsis,
-                                      )
-                                    ],
+                                        new Padding(
+                                          padding: EdgeInsets.only(top: 1.0),
+                                        ),
+                                        new Text('Donasi')
+                                      ],
+                                    ),
                                   ),
                                 ),
-                                Container(
-                                  width: 60,
-                                  child: new Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: <Widget>[
-                                      InkWell(
-                                        onTap: () {
-                                          requestBill("Zakat");
-                                        },
-                                        child: Icon(
-                                          GridMenuIcon.zakat_new,
-                                          color: Colors.red,
-                                          size: 45,
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(horizontal: 5),
+                                  child: Container(
+                                    child: new Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: <Widget>[
+                                        InkWell(
+                                          onTap: () {
+                                            requestBill("zakat");
+                                          },
+                                          borderRadius: BorderRadius.circular(20),
+                                          child: new Container(
+                                            decoration: new BoxDecoration(
+                                                border: Border.all(
+                                                    color: softGreyColor,
+                                                    width: 3.0),
+                                                borderRadius: new BorderRadius
+                                                        .all(
+                                                    new Radius.circular(20.0))),
+                                            padding: EdgeInsets.all(12.0),
+                                            child: new Icon(
+                                              AllInOneIcon.zakat_3x,
+                                              color: Colors.yellow[600],
+                                              size: 25,
+                                            ),
+                                          ),
                                         ),
-                                      ),
-                                      new Padding(
-                                        padding: EdgeInsets.only(top: 1.0),
-                                      ),
-                                      new Text(
-                                        'Zakat',
-                                        style: TextStyle(
-                                            color: Colors.grey, fontSize: 13),
-                                        overflow: TextOverflow.ellipsis,
-                                      )
-                                    ],
+                                        new Padding(
+                                          padding: EdgeInsets.only(top: 1.0),
+                                        ),
+                                        new Text('Zakat')
+                                      ],
+                                    ),
                                   ),
                                 ),
-                                Container(
-                                  width: 60,
-                                  child: new Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: <Widget>[
-                                      InkWell(
-                                        onTap: () {
-                                          requestBill("infaq");
-                                        },
-                                        child: Icon(
-                                          GridMenuIcon.infaq_new,
-                                          color: Colors.purpleAccent,
-                                          size: 45,
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(horizontal: 5),
+                                  child: Container(
+                                    child: new Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: <Widget>[
+                                        InkWell(
+                                          onTap: () {
+                                            requestBill("infaq");
+                                          },
+                                          child: new Container(
+                                            decoration: new BoxDecoration(
+                                                border: Border.all(
+                                                    color: softGreyColor,
+                                                    width: 3.0),
+                                                borderRadius: new BorderRadius
+                                                        .all(
+                                                    new Radius.circular(20.0))),
+                                            padding: EdgeInsets.all(12.0),
+                                            child: new Icon(
+                                              AllInOneIcon.infaq_3x,
+                                              color: Colors.purple,
+                                              size: 25,
+                                            ),
+                                          ),
                                         ),
-                                      ),
-                                      new Padding(
-                                        padding: EdgeInsets.only(top: 1.0),
-                                      ),
-                                      new Text(
-                                        'Infaq',
-                                        style: TextStyle(
-                                            color: Colors.grey, fontSize: 13),
-                                        overflow: TextOverflow.ellipsis,
-                                      )
-                                    ],
+                                        new Padding(
+                                          padding: EdgeInsets.only(top: 1.0),
+                                        ),
+                                        new Text('Infaq')
+                                      ],
+                                    ),
                                   ),
                                 ),
-                                Container(
-                                  width: 60,
-                                  child: new Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: <Widget>[
-                                      InkWell(
-                                        onTap: () {
-                                          requestBill("sodaqoh");
-                                        },
-                                        child: Icon(
-                                          GridMenuIcon.sodaqoh_new,
-                                          color: Colors.green,
-                                          size: 45,
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(horizontal: 5),
+                                  child: Container(
+                                    child: new Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: <Widget>[
+                                        InkWell(
+                                          onTap: () {
+                                            requestBill("sodaqoh");
+                                          },
+                                          borderRadius: BorderRadius.circular(20),
+                                          child: new Container(
+                                            decoration: new BoxDecoration(
+                                                border: Border.all(
+                                                    color: softGreyColor,
+                                                    width: 3.0),
+                                                borderRadius: new BorderRadius
+                                                        .all(
+                                                    new Radius.circular(20.0))),
+                                            padding: EdgeInsets.all(12.0),
+                                            child: new Icon(
+                                              AllInOneIcon.sodaqoh_3x,
+                                              color: Colors.green,
+                                              size: 25,
+                                            ),
+                                          ),
                                         ),
-                                      ),
-                                      new Padding(
-                                        padding: EdgeInsets.only(top: 1.0),
-                                      ),
-                                      new Text(
-                                        'Sodaqoh',
-                                        style: TextStyle(
-                                            color: Colors.grey, fontSize: 13),
-                                        overflow: TextOverflow.ellipsis,
-                                      )
-                                    ],
+                                        new Padding(
+                                          padding: EdgeInsets.only(top: 1.0),
+                                        ),
+                                        new Text('Sodaqoh')
+                                      ],
+                                    ),
                                   ),
                                 ),
-                                Container(
-                                  width: 60,
-                                  child: new Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: <Widget>[
-                                      InkWell(
-                                        onTap: () {
-                                          requestBill("wakaf");
-                                        },
-                                        child: Icon(
-                                          GridMenuIcon.wakaf_new,
-                                          color: Colors.deepOrange,
-                                          size: 45,
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(horizontal: 5),
+                                  child: Container(
+                                    child: new Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: <Widget>[
+                                        InkWell(
+                                          onTap: () {
+                                            requestBill("wakaf");
+                                          },
+                                          borderRadius: BorderRadius.circular(20),
+                                          child: new Container(
+                                            decoration: new BoxDecoration(
+                                                border: Border.all(
+                                                    color: softGreyColor,
+                                                    width: 3.0),
+                                                borderRadius: new BorderRadius
+                                                        .all(
+                                                    new Radius.circular(20.0))),
+                                            padding: EdgeInsets.all(12.0),
+                                            child: new Icon(
+                                              AllInOneIcon.wakaf_3x,
+                                              color: Colors.red,
+                                              size: 25,
+                                            ),
+                                          ),
                                         ),
-                                      ),
-                                      new Padding(
-                                        padding: EdgeInsets.only(top: 1.0),
-                                      ),
-                                      new Text(
-                                        'Wakaf',
-                                        style: TextStyle(
-                                            color: Colors.grey, fontSize: 13),
-                                        overflow: TextOverflow.ellipsis,
-                                      )
-                                    ],
+                                        new Padding(
+                                          padding: EdgeInsets.only(top: 1.0),
+                                        ),
+                                        new Text('Wakaf')
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ],
@@ -501,83 +578,86 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                     ),
                     new SliverAppBar(
                       backgroundColor: whiteColor,
-                      elevation: 1.0,
+                      elevation: 0,
                       automaticallyImplyLeading: false,
                       floating: false,
                       pinned: true,
-                      flexibleSpace: AppBar(
-                        backgroundColor: whiteColor,
-                        elevation: 2.0,
-                        automaticallyImplyLeading: false,
-                        bottom: TabBar(
-                          isScrollable: true,
-                          indicator: UnderlineTabIndicator(
-                            borderSide:
-                                BorderSide(width: 4.0, color: greenColor),
+                      flexibleSpace: SizedBox(
+                        height: 48,
+                        child: AppBar(
+                          backgroundColor: whiteColor,
+                          elevation: 1,
+                          automaticallyImplyLeading: false,
+                          bottom: TabBar(
+                            isScrollable: true,
+                            indicator: UnderlineTabIndicator(
+                              borderSide:
+                              BorderSide(width: 4.0, color: greenColor),
+                            ),
+                            labelColor: blackColor,
+                            labelStyle: TextStyle(fontWeight: FontWeight.bold),
+                            unselectedLabelColor: Colors.grey[400],
+                            onTap: (int index) {
+                              print(index);
+                              switch (index) {
+                                case 0:
+                                  setState(() {
+                                    selectedCategory = "";
+                                  });
+                                  break;
+                                case 1:
+                                  setState(() {
+                                    selectedCategory = "Keagamaan";
+                                  });
+                                  break;
+                                case 2:
+                                  setState(() {
+                                    selectedCategory = "Kemanusiaan";
+                                  });
+                                  break;
+                                case 3:
+                                  setState(() {
+                                    selectedCategory = "Pendidikan";
+                                  });
+                                  break;
+                                case 4:
+                                  setState(() {
+                                    selectedCategory = "Lingkungan";
+                                  });
+                                  break;
+                                case 5:
+                                  setState(() {
+                                    selectedCategory = "Kesehatan";
+                                  });
+                                  break;
+                                default:
+                                  setState(() {
+                                    selectedCategory = "";
+                                  });
+                              }
+                              bloc.fetchAllProgramAmal(selectedCategory);
+                            },
+                            tabs: <Widget>[
+                              new Tab(
+                                text: 'Populer',
+                              ),
+                              new Tab(
+                                text: 'Keagamaan',
+                              ),
+                              new Tab(
+                                text: 'Kemanusiaan',
+                              ),
+                              new Tab(
+                                text: 'Pendidikan',
+                              ),
+                              new Tab(
+                                text: 'Lingkungan',
+                              ),
+                              new Tab(
+                                text: 'Kesehatan',
+                              ),
+                            ],
                           ),
-                          labelColor: blackColor,
-                          labelStyle: TextStyle(fontWeight: FontWeight.bold),
-                          unselectedLabelColor: Colors.grey[400],
-                          onTap: (int index) {
-                            print(index);
-                            switch (index) {
-                              case 0:
-                                setState(() {
-                                  selectedCategory = "";
-                                });
-                                break;
-                              case 1:
-                                setState(() {
-                                  selectedCategory = "Keagamaan";
-                                });
-                                break;
-                              case 2:
-                                setState(() {
-                                  selectedCategory = "Kemanusiaan";
-                                });
-                                break;
-                              case 3:
-                                setState(() {
-                                  selectedCategory = "Pendidikan";
-                                });
-                                break;
-                              case 4:
-                                setState(() {
-                                  selectedCategory = "Lingkungan";
-                                });
-                                break;
-                              case 5:
-                                setState(() {
-                                  selectedCategory = "Kesehatan";
-                                });
-                                break;
-                              default:
-                                setState(() {
-                                  selectedCategory = "";
-                                });
-                            }
-                            bloc.fetchAllProgramAmal(selectedCategory);
-                          },
-                          tabs: <Widget>[
-                            new Tab(
-                              text: 'Populer',
-                            ),
-                            new Tab(
-                              text: 'Keagamaan',
-                            ),
-                            new Tab(
-                              text: 'Kemanusiaan',
-                            ),
-                            new Tab(
-                              text: 'Pendidikan',
-                            ),
-                            new Tab(
-                              text: 'Lingkungan',
-                            ),
-                            new Tab(
-                              text: 'Kesehatan',
-                            ),
-                          ],
                         ),
                       ),
                     ),
@@ -666,8 +746,7 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
             height: 10.0,
             child: new Center(
               child: new Container(
-                  margin:
-                  new EdgeInsetsDirectional.only(start: 1.0, end: 1.0),
+                  margin: new EdgeInsetsDirectional.only(start: 1.0, end: 1.0),
                   height: 5.0,
                   color: Colors.grey[200]),
             ),

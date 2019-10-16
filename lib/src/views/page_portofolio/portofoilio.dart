@@ -90,6 +90,7 @@ class _PortofolioState extends State<Portofolio> {
   double wakafPercent = 0;
   double shodaqohPercent = 0;
   double donasiPercent = 0;
+  double totalPercent = 100;
 
   double fillPercent;
 
@@ -666,7 +667,7 @@ class _PortofolioState extends State<Portofolio> {
         CircularChartAnnotation(
           widget: Container(
             child: Text(
-              'Rp ${CurrencyFormat().data.format(valueTotal.toDouble())} \n $valueTotalAktivitas Aktivitas',
+              'Rp ${CurrencyFormat().data.format(valueTotal.toDouble())} \n $valueTotalAktivitas Aktivitas \n $totalPercent %',
               style: TextStyle(color: Colors.black, fontSize: 16),
               textAlign: TextAlign.center,
             ),
@@ -700,6 +701,7 @@ class _PortofolioState extends State<Portofolio> {
           case 0:
             valueTotal = valueZakat;
             barColor = Colors.red;
+            totalPercent = zakatPercent;
             print(valueTotal);
             bloc.fetchBarChart("zakat", "satu");
             setState(() {});
@@ -707,6 +709,7 @@ class _PortofolioState extends State<Portofolio> {
           case 1:
             valueTotal = valueInfaq;
             barColor = Colors.yellow;
+            totalPercent = infaqPercent;
             print(valueTotal);
             bloc.fetchBarChart("infaq", "satu");
             setState(() {});
@@ -714,6 +717,7 @@ class _PortofolioState extends State<Portofolio> {
           case 2:
             valueTotal = valueShodqoh;
             barColor = Colors.redAccent[200];
+            totalPercent = shodaqohPercent;
             print(valueTotal);
             bloc.fetchBarChart("sodaqoh", "satu");
             setState(() {});
@@ -728,6 +732,7 @@ class _PortofolioState extends State<Portofolio> {
           case 4:
             valueTotal = valueDonasi;
             barColor = Colors.blue;
+            totalPercent = donasiPercent;
             print(valueTotal);
             bloc.fetchBarChart("donasi", "satu");
             setState(() {});

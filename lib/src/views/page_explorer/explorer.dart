@@ -5,6 +5,12 @@ import 'package:flutter_jaring_ummat/src/utils/sizeUtils.dart';
 import 'package:flutter_jaring_ummat/src/utils/textUtils.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/new_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/page_explorer/elastic_search.dart';
+import 'package:flutter_jaring_ummat/src/views/page_explorer/explorer_aktivitas_amal.dart';
+import 'package:flutter_jaring_ummat/src/views/page_explorer/explorer_berita.dart';
+import 'package:flutter_jaring_ummat/src/views/page_explorer/explorer_mitra_jejaring.dart';
+import 'package:flutter_jaring_ummat/src/views/page_explorer/explorer_populer.dart';
+import 'package:flutter_jaring_ummat/src/views/page_explorer/explorer_story_jejaring.dart';
+import 'package:flutter_jaring_ummat/src/views/page_explorer/explorer_tanya_ustadz.dart';
 
 class ExplorerPage extends StatefulWidget {
   @override
@@ -50,54 +56,15 @@ class _ExplorerPageState extends State<ExplorerPage> {
             ],
           ),
         ),
-        body: SingleChildScrollView(
-          child: Container(
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 15),
-              child: Column(
-                children: <Widget>[
-//                  bantuKamiTitle(),
-//                  bantuKamiMain(),
-                  bantuKamiRow(),
-                  bantuKamiRow(),
-                  bantuKamiRow(),
-                  bantuKamiRow(),
-//                  kebaikanDisekitarmuTitle(),
-//                  kebaikanDisekitarmuMain(),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget bantuKamiTitle() {
-    return Container(
-      padding: EdgeInsets.only(top: 20, bottom: 15),
-      width: screenWidth(context),
-      child: Text(ExplorerText.bantuKami,
-          style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold)),
-    );
-  }
-
-  Widget bantuKamiMain() {
-    return Container(
-      height: 200,
-      width: screenWidth(context),
-      decoration: BoxDecoration(
-        color: Colors.pinkAccent,
-        borderRadius: BorderRadius.circular(10),
-        image: DecorationImage(
-            image: NetworkImage(ExplorerText.bantuKamiUrl), fit: BoxFit.cover),
-      ),
-      child: Align(
-        alignment: Alignment.bottomLeft,
-        child: Padding(
-          padding: const EdgeInsets.only(left: 10, bottom: 20),
-          child: Text(ExplorerText.bantuKamiDesc,
-              style: TextStyle(color: whiteColor)),
+        body: TabBarView(
+          children: <Widget>[
+            ExplorerPopulerView(),
+            ExplorerAktivitasAmalView(),
+            ExplorerStoryJejaringView(),
+            ExplorerTanyaUstadzView(),
+            ExplorerMitraJejaringView(),
+            ExplorerBeritaView(),
+          ],
         ),
       ),
     );
@@ -113,7 +80,7 @@ class _ExplorerPageState extends State<ExplorerPage> {
             child: Padding(
               padding: const EdgeInsets.only(right: 5),
               child: Container(
-                height: 170,
+                height: 186,
                 decoration: BoxDecoration(
                   color: Colors.pink,
                   borderRadius: BorderRadius.circular(10),
@@ -149,7 +116,7 @@ class _ExplorerPageState extends State<ExplorerPage> {
             child: Padding(
               padding: const EdgeInsets.only(left: 5),
               child: Container(
-                height: 170,
+                height: 186,
                 decoration: BoxDecoration(
                   color: Colors.blue,
                   borderRadius: BorderRadius.circular(10),
@@ -181,40 +148,6 @@ class _ExplorerPageState extends State<ExplorerPage> {
             ),
           ),
         ],
-      ),
-    );
-  }
-
-  Widget kebaikanDisekitarmuTitle() {
-    return Container(
-      padding: EdgeInsets.only(top: 20, bottom: 15),
-      width: screenWidth(context),
-      child: Text(ExplorerText.kebaikanDisekitarmu,
-          style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold)),
-    );
-  }
-
-  Widget kebaikanDisekitarmuMain() {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 10),
-      child: Container(
-        height: 200,
-        width: screenWidth(context),
-        decoration: BoxDecoration(
-          color: Colors.pinkAccent,
-          borderRadius: BorderRadius.circular(10),
-          image: DecorationImage(
-              image: NetworkImage(ExplorerText.kebaikanDisekitarUrl),
-              fit: BoxFit.cover),
-        ),
-        child: Align(
-          alignment: Alignment.bottomLeft,
-          child: Padding(
-            padding: const EdgeInsets.only(left: 10, bottom: 20),
-            child: Text(ExplorerText.kebaikanDisekitarDesc,
-                style: TextStyle(color: whiteColor)),
-          ),
-        ),
       ),
     );
   }
