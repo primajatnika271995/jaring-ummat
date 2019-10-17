@@ -14,14 +14,18 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class GalangAmalView extends StatefulWidget {
   final ProgramAmalModel programAmal;
-
-  GalangAmalView({Key key, this.programAmal});
+  final bool likes;
+  GalangAmalView({Key key, this.programAmal, this.likes});
 
   @override
-  _GalangAmalState createState() => _GalangAmalState();
+  _GalangAmalState createState() => _GalangAmalState(likes: this.likes);
 }
 
 class _GalangAmalState extends State<GalangAmalView> {
+
+  bool likes;
+  _GalangAmalState({this.likes});
+
   /*
    * Text Field Money Formatter
    */
@@ -33,6 +37,7 @@ class _GalangAmalState extends State<GalangAmalView> {
   String emailCustomer;
   String customerName;
   String customerPhone;
+  String lembagaId;
 
   @override
   Widget build(BuildContext context) {
@@ -45,15 +50,15 @@ class _GalangAmalState extends State<GalangAmalView> {
           onTap: () {
             Navigator.pop(context);
           },
-          child: Icon(NewIcon.back_big_3x, color: blackColor, size: 20),
+          child: Icon(NewIcon.back_big_3x, color: blackColor, size: 25),
         ),
-        title: new Text('Galang Amal', style: TextStyle(color: blackColor, fontSize: SizeUtils.titleSize)),
+        title: new Text('Galang Amal', style: TextStyle(color: blackColor, fontSize: SizeUtils.titleSize,)),
         centerTitle: false,
         backgroundColor: Colors.white,
       ),
       body: ListView(
         children: <Widget>[
-          GalangAmalContainer(programAmal: widget.programAmal)
+          GalangAmalContainer(programAmal: widget.programAmal, likes: likes),
         ],
       ),
       bottomNavigationBar: BottomAppBar(
@@ -99,9 +104,6 @@ class _GalangAmalState extends State<GalangAmalView> {
                     ),
                     RaisedButton(
                       onPressed: () {
-                        print("Program Amal");
-                        print(widget.programAmal.titleProgram);
-                        print(widget.programAmal.idLembagaAmal);
                         requestBill("donasi");
                       },
                       textColor: Colors.white,
@@ -126,16 +128,16 @@ class _GalangAmalState extends State<GalangAmalView> {
   }
 
   void requestBill(String type) {
-//    Navigator.of(context).push(MaterialPageRoute(
-//      builder: (context) => InputBill(
-//        type: type,
-//        customerName: customerName,
-//        customerEmail: emailCustomer,
-//        customerPhone: customerPhone,
-//        programId: widget.programAmal.idProgram,
-//        programName: widget.programAmal.titleProgram,
-//      ),
-//    ));
+    // Navigator.of(context).push(MaterialPageRoute(
+    //   builder: (context) => InputBill(
+    //     type: type,
+    //     customerName: customerName,
+    //     customerEmail: emailCustomer,
+    //     customerPhone: customerPhone,
+    //     programId: widget.programAmal.idProgram,
+    //     programName: widget.programAmal.titleProgram,
+    //   ),
+    // ));
     Navigator.of(context).push(MaterialPageRoute(
       builder: (context) => PaymentPage(
         customerName: customerName,

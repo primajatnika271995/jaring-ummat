@@ -1,16 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_jaring_ummat/src/config/hexColor.dart';
-import 'package:flutter_jaring_ummat/src/config/preferences.dart';
 
 import 'package:flutter_jaring_ummat/src/models/lembagaAmalModel.dart';
 import 'package:flutter_jaring_ummat/src/bloc/lembagaAmalBloc.dart';
 import 'package:flutter_jaring_ummat/src/utils/sizeUtils.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/new_icon_icons.dart';
-import 'package:flutter_jaring_ummat/src/views/page_lembaga_amal/details_lembaga.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
-const double _ITEM_HEIGHT = 70.0;
+import 'package:flutter_jaring_ummat/src/views/page_lembaga_amal/popular_account_container.dart';
 
 class PopularAccountView extends StatefulWidget {
   @override
@@ -21,14 +16,8 @@ class PopularAccountView extends StatefulWidget {
 
 class PopularAccountState extends State<PopularAccountView>
     with TickerProviderStateMixin {
-  final String noImg =
-      "https://kempenfeltplayers.com/wp-content/uploads/2015/07/profile-icon-empty.png";
-
   ScrollController scrollController;
   TabController _tabController;
-
-  SharedPreferences _preferences;
-  String _token;
 
   String selectedCategory = "";
   bool isFollowed = false;
@@ -84,24 +73,12 @@ class PopularAccountState extends State<PopularAccountView>
           bloc.fetchAllLembagaAmal(selectedCategory);
         },
         tabs: <Widget>[
-          new Tab(
-            text: 'Populer',
-          ),
-          new Tab(
-            text: 'Keagamaan',
-          ),
-          new Tab(
-            text: 'Kemanusiaan',
-          ),
-          new Tab(
-            text: 'Pendidikan',
-          ),
-          new Tab(
-            text: 'Lingkungan',
-          ),
-          new Tab(
-            text: 'Kesehatan',
-          ),
+          new Tab(text: 'Populer'),
+          new Tab(text: 'Keagamaan'),
+          new Tab(text: 'Kemanusiaan'),
+          new Tab(text: 'Pendidikan'),
+          new Tab(text: 'Lingkungan'),
+          new Tab(text: 'Kesehatan'),
         ],
         controller: _tabController,
       ),
@@ -175,10 +152,8 @@ class PopularAccountState extends State<PopularAccountView>
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
-                            SvgPicture.asset(
-                              'assets/icon/no-content.svg',
-                              height: 250.0,
-                            ),
+                            Image.asset('assets/backgrounds/no_data_accent.png',
+                                height: 250),
                             Text(
                               'Oops..',
                               style: TextStyle(
@@ -222,7 +197,7 @@ class PopularAccountState extends State<PopularAccountView>
               child: new Center(
                 child: new Container(
                     margin:
-                    new EdgeInsetsDirectional.only(start: 1.0, end: 1.0),
+                        new EdgeInsetsDirectional.only(start: 1.0, end: 1.0),
                     height: 5.0,
                     color: softGreyColor),
               ),
@@ -233,106 +208,11 @@ class PopularAccountState extends State<PopularAccountView>
         itemBuilder: (BuildContext context, int index) {
           var value = snapshot.data[index];
           isFollowed = snapshot.data[index].followThisAccount;
-          return ListTile(
-            onTap: () {
-              print(value.lembagaAmalEmail);
-              print(value.lembagaAmalName);
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => DetailsLembaga(
-                    value: value,
-                  ),
-                ),
-              );
-            },
-            leading: Container(
-              width: 55.0,
-              height: 55.0,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(30.0),
-                image: DecorationImage(
-                  image: (value.imageContent == null)
-                      ? NetworkImage(noImg)
-                      : NetworkImage(value.imageContent),
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-            title: Text(
-              value.lembagaAmalName,
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15.0),
-            ),
-            subtitle: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                Text('${value.totalFollowers} Pengikut'),
-                Text('${value.totalPostProgramAmal} Galang Amal'),
-              ],
-            ),
-            trailing: (isFollowed)
-                ? buttonUnfollow(value.idLembagaAmal)
-                : buttonFollow(value.idLembagaAmal),
+          return PopularAccountContainer(
+            value: value,
+            isFollow: isFollowed,
           );
         },
-      ),
-    );
-  }
-
-  Widget buttonFollow(String idAccount) {
-    return OutlineButton(
-      onPressed: () async {
-        if (_token == null) {
-          Navigator.of(context).pushNamed('/login');
-        } else {
-          bloc.followAccount(idAccount);
-          await Future.delayed(Duration(milliseconds: 1));
-          bloc.fetchAllLembagaAmal(selectedCategory);
-          setState(() {
-            isFollowed = true;
-          });
-        }
-      },
-      color: whiteColor,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20.0),
-      ),
-      child: Container(
-        child: Text(
-          'Follow',
-          style:
-          TextStyle(color: Colors.deepPurple, fontWeight: FontWeight.bold),
-        ),
-      ),
-    );
-  }
-
-  Widget buttonUnfollow(String idAccountAmil) {
-    return OutlineButton(
-      borderSide: BorderSide(color: greenColor),
-      onPressed: () {
-        setState(() async {
-          if (_token == null) {
-            Navigator.of(context).pushNamed('/login');
-          } else {
-            bloc.unfollow(idAccountAmil);
-            await Future.delayed(Duration(milliseconds: 1));
-            bloc.fetchAllLembagaAmal(selectedCategory);
-            setState(() {
-              isFollowed = false;
-            });
-          }
-        });
-      },
-      color: greenColor,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20.0),
-      ),
-      child: Container(
-        child: Text(
-          'Following',
-          style: TextStyle(color: greenColor, fontWeight: FontWeight.bold),
-        ),
       ),
     );
   }
@@ -343,15 +223,7 @@ class PopularAccountState extends State<PopularAccountView>
     scrollController = new ScrollController();
     _tabController = new TabController(vsync: this, length: 6);
 
-    checkToken();
     super.initState();
-  }
-
-  void checkToken() async {
-    _preferences = await SharedPreferences.getInstance();
-    setState(() {
-      _token = _preferences.getString(ACCESS_TOKEN_KEY);
-    });
   }
 
   @override

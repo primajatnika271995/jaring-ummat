@@ -16,20 +16,24 @@ import 'package:flutter_jaring_ummat/src/bloc/programAmalBloc.dart';
 
 class GalangAmalContainer extends StatefulWidget {
   final ProgramAmalModel programAmal;
+  final bool likes;
 
-  GalangAmalContainer({Key key, this.programAmal});
+  GalangAmalContainer({Key key, this.programAmal, this.likes});
 
   @override
-  _GalangAmalContainerState createState() => _GalangAmalContainerState();
+  _GalangAmalContainerState createState() => _GalangAmalContainerState(likes: this.likes);
 }
 
 class _GalangAmalContainerState extends State<GalangAmalContainer> {
+
+  bool likes;
+  _GalangAmalContainerState({this.likes});
+
   final List<String> imgNoContent = [
     "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/No_image_3x4.svg/1280px-No_image_3x4.svg.png"
   ];
 
-  final String noImg =
-      "https://kempenfeltplayers.com/wp-content/uploads/2015/07/profile-icon-empty.png";
+  final String noImg = "https://kempenfeltplayers.com/wp-content/uploads/2015/07/profile-icon-empty.png";
 
   int _current = 0;
 
@@ -323,7 +327,7 @@ class _GalangAmalContainerState extends State<GalangAmalContainer> {
           },
           child: Row(
             children: <Widget>[
-              (isLoved) ? iconLike() : iconUnlike(),
+              likes ? iconLike() : iconUnlike(),
               SizedBox(
                 width: 5.0,
               ),

@@ -758,6 +758,7 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
         return ProgramAmalContent(
           programAmal: value,
           bookmark: value.bookmarkThis,
+          likes: value.userLikeThis,
         );
       },
     );

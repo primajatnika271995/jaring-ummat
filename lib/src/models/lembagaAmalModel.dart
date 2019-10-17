@@ -4,9 +4,9 @@
 
 import 'dart:convert';
 
-List<LembagaAmalModel> lembagaAmalModelFromJson(String str) => new List<LembagaAmalModel>.from(json.decode(str).map((x) => LembagaAmalModel.fromJson(x)));
+List<LembagaAmalModel> lembagaAmalModelFromJson(String str) => List<LembagaAmalModel>.from(json.decode(str).map((x) => LembagaAmalModel.fromJson(x)));
 
-String lembagaAmalModelToJson(List<LembagaAmalModel> data) => json.encode(new List<dynamic>.from(data.map((x) => x.toJson())));
+String lembagaAmalModelToJson(List<LembagaAmalModel> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class LembagaAmalModel {
     String idUser;
@@ -21,6 +21,7 @@ class LembagaAmalModel {
     int totalPostProgramAmal;
     int totalPostBerita;
     bool followThisAccount;
+    String tipeAkun;
 
     LembagaAmalModel({
         this.idUser,
@@ -35,6 +36,7 @@ class LembagaAmalModel {
         this.totalPostProgramAmal,
         this.totalPostBerita,
         this.followThisAccount,
+        this.tipeAkun,
     });
 
     factory LembagaAmalModel.fromJson(Map<String, dynamic> json) => LembagaAmalModel(
@@ -50,6 +52,7 @@ class LembagaAmalModel {
         totalPostProgramAmal: json["totalPostProgramAmal"] == null ? null : json["totalPostProgramAmal"],
         totalPostBerita: json["totalPostBerita"] == null ? null : json["totalPostBerita"],
         followThisAccount: json["followThisAccount"] == null ? null : json["followThisAccount"],
+        tipeAkun: json["tipeAkun"] == null ? null : json["tipeAkun"],
     );
 
     Map<String, dynamic> toJson() => {
@@ -65,6 +68,7 @@ class LembagaAmalModel {
         "totalPostProgramAmal": totalPostProgramAmal == null ? null : totalPostProgramAmal,
         "totalPostBerita": totalPostBerita == null ? null : totalPostBerita,
         "followThisAccount": followThisAccount == null ? null : followThisAccount,
+        "tipeAkun": tipeAkun == null ? null : tipeAkun,
     };
 }
 
@@ -85,7 +89,7 @@ class ImageContent {
         this.createdBy,
     });
 
-    factory ImageContent.fromJson(Map<String, dynamic> json) => new ImageContent(
+    factory ImageContent.fromJson(Map<String, dynamic> json) => ImageContent(
         id: json["id"] == null ? null : json["id"],
         thumbnailUrl: json["thumbnailUrl"],
         videoUrl: json["videoUrl"],
