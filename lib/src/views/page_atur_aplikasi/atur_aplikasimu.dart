@@ -49,7 +49,7 @@ class _AturAplikasimuViewState extends State<AturAplikasimuView> {
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                 child: const Text('Pengaturan Akun',
                     style: TextStyle(
-                        fontSize: SizeUtils.titleSize,
+                        fontSize: SizeUtils.titleSize - 1,
                         color: Colors.black,
                         fontWeight: FontWeight.bold)),
               ),
@@ -59,7 +59,7 @@ class _AturAplikasimuViewState extends State<AturAplikasimuView> {
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                 child: const Text('Pengaturan Notifikasi',
                     style: TextStyle(
-                        fontSize: SizeUtils.titleSize,
+                        fontSize: SizeUtils.titleSize - 1,
                         color: Colors.black,
                         fontWeight: FontWeight.bold)),
               ),

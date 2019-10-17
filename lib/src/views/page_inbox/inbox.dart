@@ -33,13 +33,13 @@ class _InboxState extends State<Inbox> {
               onPressed: () {},
               icon: Icon(NewIcon.delete_3x),
               color: blackColor,
-              iconSize: 20,
+              iconSize: 25,
             ),
             IconButton(
               onPressed: () {},
               icon: Icon(ProfileInboxIcon.mark_as_read_3x),
               color: blackColor,
-              iconSize: 20,
+              iconSize: 25,
             ),
           ],
           bottom: TabBar(
