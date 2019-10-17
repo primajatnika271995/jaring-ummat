@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_jaring_ummat/src/bloc/programAmalBloc.dart';
+import 'package:flutter_jaring_ummat/src/bloc/lembagaAmalBloc.dart';
 import 'package:flutter_jaring_ummat/src/config/hexColor.dart';
-import 'package:flutter_jaring_ummat/src/models/program_amal.dart';
-import 'package:flutter_jaring_ummat/src/utils/textUtils.dart';
+import 'package:flutter_jaring_ummat/src/models/lembagaAmalModel.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/all_in_one_icon_icons.dart';
+import 'package:flutter_jaring_ummat/src/views/page_lembaga_amal/details_lembaga.dart';
 
 class ExplorerMitraJejaringView extends StatefulWidget {
   @override
@@ -14,9 +14,10 @@ class _ExplorerMitraJejaringViewState extends State<ExplorerMitraJejaringView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: whiteColor,
       body: StreamBuilder(
-        stream: bloc.allProgramAmal,
-        builder: (context, AsyncSnapshot<List<ProgramAmalModel>> snapshot) {
+        stream: bloc.allLembagaAmalList,
+        builder: (context, AsyncSnapshot<List<LembagaAmalModel>> snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.waiting:
               return Center(child: Text('Waiting...'));
@@ -25,14 +26,14 @@ class _ExplorerMitraJejaringViewState extends State<ExplorerMitraJejaringView> {
               if (snapshot.hasData) {
                 return listBuilder(snapshot.data);
               }
-              return Center(child: Text('No Data'));
+              return Center(child: streamNoData());
           }
         },
       ),
     );
   }
 
-  Widget listBuilder(List<ProgramAmalModel> snapshot) {
+  Widget listBuilder(List<LembagaAmalModel> snapshot) {
     return GridView.builder(
       gridDelegate:
       SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
@@ -40,41 +41,53 @@ class _ExplorerMitraJejaringViewState extends State<ExplorerMitraJejaringView> {
       itemCount: snapshot.length,
       itemBuilder: (BuildContext context, int index) {
         var value = snapshot[index];
-        return Padding(
-          padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
-          child: Container(
-            decoration: BoxDecoration(
-              color: Colors.pink,
-              borderRadius: BorderRadius.circular(10),
-              image: DecorationImage(
-                image: NetworkImage(value.imageContent[0].url),
-                fit: BoxFit.cover,
-              ),
-            ),
-            child: Column(
-              children: <Widget>[
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: Padding(
-                    padding:
-                    const EdgeInsets.only(left: 10, bottom: 95, top: 10),
-                    child: Icon(AllInOneIcon.donation_3x,
-                        color: whiteColor, size: 35),
-                  ),
+        return InkWell(
+          onTap: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => DetailsLembaga(
+                  value: value,
                 ),
-                Align(
-                  alignment: Alignment.bottomLeft,
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 10, bottom: 20, right: 10),
-                    child: Text(
-                      value.descriptionProgram,
-                      style: TextStyle(color: whiteColor),
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 3,
+              ),
+            );
+          },
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.pink,
+                borderRadius: BorderRadius.circular(10),
+                image: DecorationImage(
+                  image: NetworkImage(value.imageContent),
+                  fit: BoxFit.cover,
+                ),
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Align(
+                    alignment: Alignment.topLeft,
+                    child: Padding(
+                      padding:
+                      const EdgeInsets.only(left: 10, top: 10),
+                      child: Icon(AllInOneIcon.account_following_3x,
+                          color: whiteColor, size: 25),
                     ),
                   ),
-                ),
-              ],
+                  Align(
+                    alignment: Alignment.bottomLeft,
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 10, bottom: 10, right: 10),
+                      child: Text(
+                        value.lembagaAmalEmail,
+                        style: TextStyle(color: whiteColor),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 3,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         );
@@ -82,95 +95,21 @@ class _ExplorerMitraJejaringViewState extends State<ExplorerMitraJejaringView> {
     );
   }
 
-  Widget bantuKamiRow() {
-    return Padding(
-      padding: const EdgeInsets.only(top: 10),
-      child: Row(
-        children: <Widget>[
-          Expanded(
-            flex: 5,
-            child: Padding(
-              padding: const EdgeInsets.only(right: 5),
-              child: Container(
-                height: 186,
-                decoration: BoxDecoration(
-                  color: Colors.pink,
-                  borderRadius: BorderRadius.circular(10),
-                  image: DecorationImage(
-                    image: NetworkImage(ExplorerText.bantuKamiUrl1),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                child: Column(
-                  children: <Widget>[
-                    Align(
-                      alignment: Alignment.topLeft,
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                            left: 10, bottom: 55, top: 10),
-                        child: Icon(ExplorerText.jenisKebaikan[0],
-                            color: whiteColor, size: 25),
-                      ),
-                    ),
-                    Align(
-                      alignment: Alignment.bottomLeft,
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 10, bottom: 20),
-                        child: Text(ExplorerText.bantuKamiDesc1,
-                            style: TextStyle(color: whiteColor)),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-          Expanded(
-            flex: 5,
-            child: Padding(
-              padding: const EdgeInsets.only(left: 5),
-              child: Container(
-                height: 186,
-                decoration: BoxDecoration(
-                  color: Colors.blue,
-                  borderRadius: BorderRadius.circular(10),
-                  image: DecorationImage(
-                    image: NetworkImage(ExplorerText.bantuKamiUrl2),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                child: Column(
-                  children: <Widget>[
-                    Align(
-                      alignment: Alignment.topLeft,
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                            left: 10, bottom: 55, top: 10),
-                        child: Icon(ExplorerText.jenisKebaikan[1],
-                            color: whiteColor, size: 25),
-                      ),
-                    ),
-                    Align(
-                      alignment: Alignment.bottomLeft,
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 10, bottom: 20),
-                        child: Text(ExplorerText.bantuKamiDesc2,
-                            style: TextStyle(color: whiteColor)),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ],
+  Widget streamNoData() {
+    return Container(
+      height: 300,
+      width: 300,
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage('assets/backgrounds/no_data_accent.png'),
+        ),
       ),
     );
   }
 
   @override
   void initState() {
-    bloc.fetchAllProgramAmal('mitra');
+    bloc.fetchAllLembagaAmal('');
     super.initState();
   }
 }

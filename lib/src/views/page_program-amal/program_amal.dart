@@ -8,13 +8,11 @@ import 'package:flutter_jaring_ummat/src/utils/sizeUtils.dart';
 import 'package:flutter_jaring_ummat/src/utils/textUtils.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/all_in_one_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/app_bar_icon_icons.dart';
-import 'package:flutter_jaring_ummat/src/views/components/icon_text/grid_menu_icon_icons.dart';
-import 'package:flutter_jaring_ummat/src/views/components/icon_text/grid_menu_tambahan_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/new_icon_icons.dart';
-import 'package:flutter_jaring_ummat/src/views/lembaga_amal/popular_account.dart';
 import 'package:flutter_jaring_ummat/src/views/page_berita/berita.dart';
 import 'package:flutter_jaring_ummat/src/views/page_inbox/inbox.dart';
 import 'package:flutter_jaring_ummat/src/views/page_info_jaring/info_jaring_views.dart';
+import 'package:flutter_jaring_ummat/src/views/page_lembaga_amal/popular_account.dart';
 import 'package:flutter_jaring_ummat/src/views/page_payment/payment.dart';
 import 'package:flutter_jaring_ummat/src/views/page_program-amal/program_amal_text_data.dart';
 import 'package:flutter_jaring_ummat/src/bloc/programAmalBloc.dart';
@@ -369,7 +367,7 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                                             padding: EdgeInsets.all(12.0),
                                             child: new Icon(
                                               AllInOneIcon.donation_3x,
-                                              color: Colors.deepPurple,
+                                              color: Colors.blue,
                                               size: 25,
                                             ),
                                           ),
@@ -406,7 +404,7 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                                             padding: EdgeInsets.all(12.0),
                                             child: new Icon(
                                               AllInOneIcon.zakat_3x,
-                                              color: Colors.yellow[600],
+                                              color: Colors.red,
                                               size: 25,
                                             ),
                                           ),
@@ -442,7 +440,7 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                                             padding: EdgeInsets.all(12.0),
                                             child: new Icon(
                                               AllInOneIcon.infaq_3x,
-                                              color: Colors.purple,
+                                              color: Colors.yellow[600],
                                               size: 25,
                                             ),
                                           ),
@@ -479,7 +477,7 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                                             padding: EdgeInsets.all(12.0),
                                             child: new Icon(
                                               AllInOneIcon.sodaqoh_3x,
-                                              color: Colors.green,
+                                              color: Colors.deepOrange,
                                               size: 25,
                                             ),
                                           ),
@@ -516,7 +514,7 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                                             padding: EdgeInsets.all(12.0),
                                             child: new Icon(
                                               AllInOneIcon.wakaf_3x,
-                                              color: Colors.red,
+                                              color: Colors.deepPurple,
                                               size: 25,
                                             ),
                                           ),

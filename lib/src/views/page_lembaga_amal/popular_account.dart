@@ -6,7 +6,7 @@ import 'package:flutter_jaring_ummat/src/models/lembagaAmalModel.dart';
 import 'package:flutter_jaring_ummat/src/bloc/lembagaAmalBloc.dart';
 import 'package:flutter_jaring_ummat/src/utils/sizeUtils.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/new_icon_icons.dart';
-import 'package:flutter_jaring_ummat/src/views/lembaga_amal/details_lembaga.dart';
+import 'package:flutter_jaring_ummat/src/views/page_lembaga_amal/details_lembaga.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

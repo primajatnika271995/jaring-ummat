@@ -56,6 +56,14 @@ class StoriesApiProvider {
     return null;
   }
 
+  Future<List<AllStoryModel>> fetchAllStoryWithoutFillter() async {
+    final response = await http.get(ALL_STORY_NO_FILLTER_URL);
+    if (response.statusCode == 200) {
+      return compute(allStoryModelFromJson, response.body);
+    }
+    return null;
+  }
+
   Future<FilePathResponseModel> saveFilepath(
       BuildContext context, FilePathResponseModel data, String idUser) async {
     Map params = {
@@ -78,6 +86,14 @@ class StoriesApiProvider {
 
   Future<StoryByUserModel> fetchStoryUser(String userId) async {
     final response = await http.get(STORY_BY_ID_URL + userId);
+    if (response.statusCode == 200) {
+      return compute(storyByUserModelFromJson, response.body);
+    }
+    return null;
+  }
+
+  Future<StoryByUserModel> fetchStoryUserWithoutFillter(String userId) async {
+    final response = await http.get(STORY_BY_ID_NO_FILLTER_URL + userId);
     if (response.statusCode == 200) {
       return compute(storyByUserModelFromJson, response.body);
     }

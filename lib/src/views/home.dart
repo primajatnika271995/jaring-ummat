@@ -15,12 +15,12 @@ import 'package:flutter_jaring_ummat/src/views/login/reLogin.dart';
 import 'package:flutter_jaring_ummat/src/bloc/preferencesBloc.dart';
 import 'package:flutter_jaring_ummat/src/views/page_explorer/explorer.dart';
 import 'package:flutter_jaring_ummat/src/views/page_inbox/inbox.dart';
+import 'package:flutter_jaring_ummat/src/views/page_lembaga_amal/popular_account.dart';
 import 'package:flutter_jaring_ummat/src/views/page_payment/payment.dart';
 import 'package:flutter_jaring_ummat/src/views/page_portofolio/portofoilio.dart';
 import 'package:flutter_jaring_ummat/src/views/page_profile/profile_menu.dart';
 
 import 'package:toast/toast.dart';
-import 'package:flutter_jaring_ummat/src/views/lembaga_amal/popular_account.dart';
 import 'package:flutter_jaring_ummat/src/config/preferences.dart';
 import 'package:flutter_jaring_ummat/src/views/page_berita/berita.dart';
 import 'package:flutter_jaring_ummat/src/views/page_program-amal/program_amal.dart';

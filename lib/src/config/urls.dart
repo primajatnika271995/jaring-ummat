@@ -1,8 +1,8 @@
 // const BASE_API_URL = 'http://tabeldata.ip-dynamic.com/jaring-ummat';
 // const BASE_API_UPLOADER_URL = 'http://tabeldata.ip-dynamic.com/jaring-ummat-uploader';
 
-const BASE_API_URL = 'http://139.162.15.91/jaring-ummat';
-//const BASE_API_URL = 'http://192.168.1.249:9091';
+//const BASE_API_URL = 'http://139.162.15.91/jaring-ummat';
+const BASE_API_URL = 'http://192.168.1.29:9091';
 const BASE_API_UPLOADER_URL = 'http://139.162.15.91/uploader';
 const BASE_API_ELASTIC_SEARCH = 'http://139.162.15.91/elasticsearch';
 
@@ -47,6 +47,8 @@ const CHECK_REGISTRATION_EMAIL = BASE_API_URL + '/api/user/checkout';
 // BASE STORY
 const ALL_STORY_URL = BASE_API_URL + '/api/story/list';
 const STORY_BY_ID_URL = BASE_API_URL + '/api/story/list/';
+const ALL_STORY_NO_FILLTER_URL = BASE_API_URL + '/api/story/list/nofillter';
+const STORY_BY_ID_NO_FILLTER_URL = BASE_API_URL + '/api/story/list/nofillter/';
 
 // For Service Program Amal API
 const PROGRAM_AMAL_SAVE_URL = BASE_API_URL + '/api/program-amal/';

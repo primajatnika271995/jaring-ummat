@@ -5,7 +5,7 @@ import '../models/storiesModel.dart';
 import 'package:rxdart/rxdart.dart';
 
 class StoriesBloc {
-   final repository = StoriesRepository();
+  final repository = StoriesRepository();
   final storyFetchAll = PublishSubject<List<AllStoryModel>>();
   final storyFetchByIdUser = PublishSubject<StoryByUserModel>();
 
@@ -17,8 +17,19 @@ class StoriesBloc {
     storyFetchAll.sink.add(story);
   }
 
+  fetchAllStoriesWithoutFillter() async {
+    List<AllStoryModel> story = await repository.fetchAllStoryWithoutFillter();
+    storyFetchAll.sink.add(story);
+  }
+
   fetchAllStoryByIdUser(String userId) async {
     StoryByUserModel story = await repository.fetchStoryByUser(userId);
+    storyFetchByIdUser.sink.add(story);
+  }
+
+  fetchAllStoryByIdUserWithoutFillter(String userId) async {
+    StoryByUserModel story =
+        await repository.fetchStoryByUserWithoutFillter(userId);
     storyFetchByIdUser.sink.add(story);
   }
 

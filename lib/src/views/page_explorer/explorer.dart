@@ -21,7 +21,7 @@ class _ExplorerPageState extends State<ExplorerPage> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 6,
+      length: 5,
       initialIndex: 0,
       child: Scaffold(
         appBar: AppBar(
@@ -50,7 +50,7 @@ class _ExplorerPageState extends State<ExplorerPage> {
               Tab(text: 'Populer'),
               Tab(text: 'Aktivitas Amal'),
               Tab(text: 'Story Jejaring'),
-              Tab(text: 'Tanya Ustadz'),
+//              Tab(text: 'Tanya Ustadz'),
               Tab(text: 'Mitra Jejaring'),
               Tab(text: 'Berita')
             ],
@@ -61,7 +61,7 @@ class _ExplorerPageState extends State<ExplorerPage> {
             ExplorerPopulerView(),
             ExplorerAktivitasAmalView(),
             ExplorerStoryJejaringView(),
-            ExplorerTanyaUstadzView(),
+//            ExplorerTanyaUstadzView(),
             ExplorerMitraJejaringView(),
             ExplorerBeritaView(),
           ],
