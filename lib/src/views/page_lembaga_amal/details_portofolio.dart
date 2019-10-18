@@ -110,21 +110,21 @@ class _PortofolioLembagaAmalState extends State<PortofolioLembagaAmal> {
       children: <Widget>[
         ListTile(
           title: Text(
-            'Sebaran Aktivitas Amal',
+            'Sebaran penerimaan Amal',
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
           subtitle: Text(
-            'Hey $customerName, terimakasih telah berpartisipasi pada beberapa aktivitas amal dan berikut ini sebaran aktivitasmu pada periode berjalan.',
+            'Hey $customerName, terimakasih telah berpartisipasi pada beberapa aktivitas amal dan berikut ini sebaran aktivitas penerimaan amal pada periode berjalan.',
             textAlign: TextAlign.justify,
           ),
-          trailing: IconButton(
-            onPressed: null,
-            icon: Icon(
-              NewIcon.next_small_2x,
-              color: blackColor,
-              size: 20,
-            ),
-          ),
+//          trailing: IconButton(
+//            onPressed: null,
+//            icon: Icon(
+//              NewIcon.next_small_2x,
+//              color: blackColor,
+//              size: 20,
+//            ),
+//          ),
         ),
         Container(
           height: 250,
@@ -139,7 +139,7 @@ class _PortofolioLembagaAmalState extends State<PortofolioLembagaAmal> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         ListTile(
-          title: Text('Tren Aktivitas Amal Harian',
+          title: Text('Tren Penerimaan Amal',
               style: TextStyle(
                 color: blackColor,
                 fontWeight: FontWeight.bold,
@@ -165,12 +165,12 @@ class _PortofolioLembagaAmalState extends State<PortofolioLembagaAmal> {
             '3 aktivitas amal terbesarmu berdasarkan nominal. Yuk perbanyak lagi amalmu dengan menekan tombol "+".',
             textAlign: TextAlign.justify,
           ),
-          trailing: IconButton(
-            onPressed: () {},
-            icon: Icon(NewIcon.next_small_2x),
-            color: blackColor,
-            iconSize: 20,
-          ),
+//          trailing: IconButton(
+//            onPressed: () {},
+//            icon: Icon(NewIcon.next_small_2x),
+//            color: blackColor,
+//            iconSize: 20,
+//          ),
         ),
         Padding(
           padding:
@@ -235,12 +235,12 @@ class _PortofolioLembagaAmalState extends State<PortofolioLembagaAmal> {
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
           subtitle: Text('3 aktivitas amal terbarumu pada semua kategori.'),
-          trailing: IconButton(
-            onPressed: () {},
-            icon: Icon(NewIcon.next_small_2x),
-            color: blackColor,
-            iconSize: 20,
-          ),
+//          trailing: IconButton(
+//            onPressed: () {},
+//            icon: Icon(NewIcon.next_small_2x),
+//            color: blackColor,
+//            iconSize: 20,
+//          ),
         ),
         Padding(
           padding:
@@ -351,7 +351,7 @@ class _PortofolioLembagaAmalState extends State<PortofolioLembagaAmal> {
               title: Text('${value.nama}',
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
               subtitle: Text(
-                  '${TimeAgoService().timeAgoFormatting(value.requestedDate)}',
+                  '${value.category} - ${TimeAgoService().timeAgoFormatting(value.requestedDate)}',
                   style: TextStyle(fontSize: 12)),
               trailing: Text(
                   'Rp ${CurrencyFormat().data.format(value.totalAmal.toDouble())}',
@@ -455,7 +455,7 @@ class _PortofolioLembagaAmalState extends State<PortofolioLembagaAmal> {
         CircularChartAnnotation(
           widget: Container(
             child: Text(
-              'Rp ${CurrencyFormat().data.format(valueTotal.toDouble())} \n /$valueTotalAktivitas Aktivitas',
+              'Rp ${CurrencyFormat().data.format(valueTotal.toDouble())} \n $valueTotalAktivitas Aktivitas',
               style: TextStyle(color: Colors.black, fontSize: 16),
               textAlign: TextAlign.center,
             ),
@@ -470,7 +470,7 @@ class _PortofolioLembagaAmalState extends State<PortofolioLembagaAmal> {
         Colors.blue,
         Colors.teal
       ],
-      tooltipBehavior: TooltipBehavior(enable: true),
+      tooltipBehavior: TooltipBehavior(enable: false),
       onLegendTapped: (LegendTapArgs value) {
         print(value.pointIndex);
         switch (value.pointIndex) {
@@ -549,7 +549,7 @@ class _PortofolioLembagaAmalState extends State<PortofolioLembagaAmal> {
         yValueMapper: (_DoughnutData data, _) => data.yData,
         dataLabelMapper: (_DoughnutData data, _) => data.text,
         dataLabelSettings: DataLabelSettings(
-          isVisible: true,
+          isVisible: false,
           textStyle: ChartTextStyle(color: Colors.white),
         ),
       ),

@@ -10,7 +10,7 @@
     <application
         android:name="io.flutter.app.FlutterApplication"
         android:icon="@mipmap/launcher_icon"
-        android:label="Jejaring"
+        android:label="Jaring"
         android:usesCleartextTraffic="true">
         <activity
             android:name=".MainActivity"

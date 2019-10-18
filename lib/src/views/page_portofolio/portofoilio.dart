@@ -14,6 +14,7 @@ import 'package:flutter_jaring_ummat/src/services/portofolioApi.dart';
 import 'package:flutter_jaring_ummat/src/services/time_ago_service.dart';
 import 'package:flutter_jaring_ummat/src/utils/screenSize.dart';
 import 'package:flutter_jaring_ummat/src/utils/sizeUtils.dart';
+import 'package:flutter_jaring_ummat/src/views/components/icon_text/all_in_one_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/grid_menu_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/new_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/profile_inbox_icon_icons.dart';
@@ -238,14 +239,6 @@ class _PortofolioState extends State<Portofolio> {
             'Hey $customerName, terimakasih telah berpartisipasi pada beberapa aktivitas amal dan berikut ini sebaran aktivitasmu pada periode berjalan.',
             textAlign: TextAlign.justify,
           ),
-          trailing: IconButton(
-            onPressed: null,
-            icon: Icon(
-              NewIcon.next_small_2x,
-              color: blackColor,
-              size: 20,
-            ),
-          ),
         ),
         Container(
           height: 250,
@@ -286,12 +279,12 @@ class _PortofolioState extends State<Portofolio> {
             '3 aktivitas amal terbesarmu berdasarkan nominal. Yuk perbanyak lagi amalmu dengan menekan tombol "+".',
             textAlign: TextAlign.justify,
           ),
-          trailing: IconButton(
-            onPressed: () {},
-            icon: Icon(NewIcon.next_small_2x),
-            color: blackColor,
-            iconSize: 20,
-          ),
+//          trailing: IconButton(
+//            onPressed: () {},
+//            icon: Icon(NewIcon.next_small_2x),
+//            color: blackColor,
+//            iconSize: 20,
+//          ),
         ),
         Padding(
           padding:
@@ -356,12 +349,12 @@ class _PortofolioState extends State<Portofolio> {
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
           subtitle: Text('3 aktivitas amal terbarumu pada semua kategori.'),
-          trailing: IconButton(
-            onPressed: null,
-            icon: Icon(NewIcon.next_small_2x),
-            color: blackColor,
-            iconSize: 20,
-          ),
+//          trailing: IconButton(
+//            onPressed: null,
+//            icon: Icon(NewIcon.next_small_2x),
+//            color: blackColor,
+//            iconSize: 20,
+//          ),
         ),
         Padding(
           padding:
@@ -383,7 +376,13 @@ class _PortofolioState extends State<Portofolio> {
           title: titleBar,
           actions: <Widget>[
             IconButton(
-              onPressed: null,
+              onPressed: () {},
+              icon: Icon(AllInOneIcon.detail_2x),
+              color: blackColor,
+              iconSize: 25,
+            ),
+            IconButton(
+              onPressed: () {},
               icon: Icon(NewIcon.refresh_2x),
               color: blackColor,
               iconSize: 25,
@@ -536,6 +535,9 @@ class _PortofolioState extends State<Portofolio> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
+              SizedBox(
+                height: 5,
+              ),
               CircleAvatar(
                 backgroundColor: greenColor,
                 child: (value.imageContent == null)
@@ -620,7 +622,7 @@ class _PortofolioState extends State<Portofolio> {
               title: Text('${value.lembagaAmalName}',
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
               subtitle: Text(
-                  '${TimeAgoService().timeAgoFormatting(value.requestedDate)}',
+                  '${value.category} - ${TimeAgoService().timeAgoFormatting(value.requestedDate)}',
                   style: TextStyle(fontSize: 12)),
               trailing: Text(
                   'Rp ${CurrencyFormat().data.format(value.totalAmal.toDouble())}',
@@ -667,7 +669,7 @@ class _PortofolioState extends State<Portofolio> {
         CircularChartAnnotation(
           widget: Container(
             child: Text(
-              'Rp ${CurrencyFormat().data.format(valueTotal.toDouble())} \n $valueTotalAktivitas Aktivitas \n $totalPercent %',
+              'Rp ${CurrencyFormat().data.format(valueTotal.toDouble())} \n $valueTotalAktivitas Aktivitas \n ${totalPercent.toInt()} %',
               style: TextStyle(color: Colors.black, fontSize: 16),
               textAlign: TextAlign.center,
             ),
@@ -677,7 +679,7 @@ class _PortofolioState extends State<Portofolio> {
       palette: [
         Colors.red,
         Colors.yellow,
-        Colors.deepOrange,
+        Colors.orange,
         Colors.deepPurpleAccent,
         Colors.blue,
         Colors.teal
@@ -716,7 +718,7 @@ class _PortofolioState extends State<Portofolio> {
             break;
           case 2:
             valueTotal = valueShodqoh;
-            barColor = Colors.redAccent[200];
+            barColor = Colors.orange;
             totalPercent = shodaqohPercent;
             print(valueTotal);
             bloc.fetchBarChart("sodaqoh", "satu");
