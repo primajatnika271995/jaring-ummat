@@ -48,6 +48,7 @@ class _ExplorerAktivitasAmalViewState extends State<ExplorerAktivitasAmalView> {
               MaterialPageRoute(
                 builder: (context) => GalangAmalView(
                   programAmal: value,
+                  likes: value.userLikeThis,
                 ),
               ),
             );

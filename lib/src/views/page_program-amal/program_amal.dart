@@ -80,7 +80,7 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
   @override
   Widget build(BuildContext context) {
     // Title Text
-    final titleText = Text('Jejaring',
+    final titleText = Text('Jaring',
         style: TextStyle(color: blackColor, fontSize: SizeUtils.titleSize));
 
     return LoadingScreen(
@@ -355,7 +355,8 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                                           onTap: () {
 //                                          requestBill("zakat");
                                           },
-                                          borderRadius: BorderRadius.circular(20),
+                                          borderRadius:
+                                              BorderRadius.circular(20),
                                           child: new Container(
                                             decoration: new BoxDecoration(
                                                 border: Border.all(
@@ -392,7 +393,8 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                                           onTap: () {
                                             requestBill("zakat");
                                           },
-                                          borderRadius: BorderRadius.circular(20),
+                                          borderRadius:
+                                              BorderRadius.circular(20),
                                           child: new Container(
                                             decoration: new BoxDecoration(
                                                 border: Border.all(
@@ -465,7 +467,8 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                                           onTap: () {
                                             requestBill("sodaqoh");
                                           },
-                                          borderRadius: BorderRadius.circular(20),
+                                          borderRadius:
+                                              BorderRadius.circular(20),
                                           child: new Container(
                                             decoration: new BoxDecoration(
                                                 border: Border.all(
@@ -477,7 +480,7 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                                             padding: EdgeInsets.all(12.0),
                                             child: new Icon(
                                               AllInOneIcon.sodaqoh_3x,
-                                              color: Colors.deepOrange,
+                                              color: Colors.orange,
                                               size: 25,
                                             ),
                                           ),
@@ -502,7 +505,8 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                                           onTap: () {
                                             requestBill("wakaf");
                                           },
-                                          borderRadius: BorderRadius.circular(20),
+                                          borderRadius:
+                                              BorderRadius.circular(20),
                                           child: new Container(
                                             decoration: new BoxDecoration(
                                                 border: Border.all(
@@ -536,7 +540,7 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                     SliverAppBar(
                       automaticallyImplyLeading: false,
                       bottom: PreferredSize(
-                        preferredSize: Size.fromHeight(177.0),
+                        preferredSize: Size.fromHeight(223.0),
                         child: Text(''),
                       ),
                       elevation: 0,
@@ -551,10 +555,20 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
-                                  Text('Info Jaring',
-                                      style: TextStyle(
-                                          color: blackColor,
-                                          fontSize: SizeUtils.titleSize)),
+                                  RichText(
+                                    text: TextSpan(children: <TextSpan>[
+                                      TextSpan(
+                                          text: 'Info dan Promo Jaring \n',
+                                          style: TextStyle(
+                                              color: blackColor,
+                                              fontSize: SizeUtils.titleSize)),
+                                      TextSpan(
+                                          text: 'Informasi dan Rekomendasi seputar Jaring',
+                                          style: TextStyle(
+                                              color: grayColor,
+                                              fontSize: SizeUtils.titleSize - 6)),
+                                    ]),
+                                  ),
                                   Icon(AllInOneIcon.next_small_2x, size: 20)
                                 ],
                               ),
@@ -568,7 +582,28 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                                     itemBuilder: (context, index) {
                                       return bantuKamiMain(index);
                                     }),
-                              )
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  RichText(
+                                    text: TextSpan(children: <TextSpan>[
+                                      TextSpan(
+                                          text: 'Galang Amal Jaring \n',
+                                          style: TextStyle(
+                                              color: blackColor,
+                                              fontSize: SizeUtils.titleSize)),
+                                      TextSpan(
+                                          text: 'Rekomendasi galang amal seputar komunitas Jaring',
+                                          style: TextStyle(
+                                              color: grayColor,
+                                              fontSize: SizeUtils.titleSize - 6)),
+                                    ]),
+                                  ),
+                                  Icon(AllInOneIcon.next_small_2x, size: 20)
+                                ],
+                              ),
                             ],
                           ),
                         ),
@@ -590,7 +625,7 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                             isScrollable: true,
                             indicator: UnderlineTabIndicator(
                               borderSide:
-                              BorderSide(width: 4.0, color: greenColor),
+                                  BorderSide(width: 4.0, color: greenColor),
                             ),
                             labelColor: blackColor,
                             labelStyle: TextStyle(fontWeight: FontWeight.bold),

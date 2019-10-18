@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/all_in_one_icon_icons.dart';
 
 class LoginText {
-  static const namaAplikasi = "Jejaring";
+  static const namaAplikasi = "Jaring";
   static const logoUrl = "assets/icon/logo_muzakki_jejaring.png";
   static const backgroundUrl = "assets/backgrounds/accent_app_width_full_screen.png";
 
