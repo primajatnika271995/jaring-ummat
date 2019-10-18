@@ -49,7 +49,7 @@ class _ExplorerPageState extends State<ExplorerPage> {
             tabs: <Widget>[
               Tab(text: 'Populer'),
               Tab(text: 'Aktivitas Amal'),
-              Tab(text: 'Story Jejaring'),
+              Tab(text: 'Story Jaring'),
 //              Tab(text: 'Tanya Ustadz'),
               Tab(text: 'Mitra Jejaring'),
               Tab(text: 'Berita')
