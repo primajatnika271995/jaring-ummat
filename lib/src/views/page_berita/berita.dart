@@ -61,7 +61,7 @@ class _BeritaPageState extends State<BeritaPage> {
               backgroundColor: whiteColor,
               elevation: 0.0,
               title: Text(
-                'Berita Jejaring',
+                'Berita Jaring',
                 style:
                     TextStyle(color: blackColor, fontSize: SizeUtils.titleSize),
               ),

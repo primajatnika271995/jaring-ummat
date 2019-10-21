@@ -37,7 +37,9 @@ class Portofolio extends StatefulWidget {
 }
 
 class _PortofolioState extends State<Portofolio> {
-  /// Inisialisasi Protofolio Provider
+  /*
+   * Inisialisasi Protofolio Provider
+   */
   PortofolioProvider provider = new PortofolioProvider();
 
   /*
@@ -378,12 +380,6 @@ class _PortofolioState extends State<Portofolio> {
             IconButton(
               onPressed: () {},
               icon: Icon(AllInOneIcon.detail_2x),
-              color: blackColor,
-              iconSize: 25,
-            ),
-            IconButton(
-              onPressed: () {},
-              icon: Icon(NewIcon.refresh_2x),
               color: blackColor,
               iconSize: 25,
             ),

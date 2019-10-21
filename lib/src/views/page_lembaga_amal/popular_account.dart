@@ -89,7 +89,7 @@ class PopularAccountState extends State<PopularAccountView>
         backgroundColor: whiteColor,
         // leading: new Icon(NewIcon.back_big_3x, color: greenColor),
         title: const Text(
-          'Mitra Jejaring',
+          'Mitra Jaring',
           style: TextStyle(color: Colors.black, fontSize: SizeUtils.titleSize),
         ),
         actions: <Widget>[
