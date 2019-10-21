@@ -28,6 +28,7 @@ class MuzakkiUserDetails {
   String imageUrl;
   String kabupatenLahir;
   String provinsiLahir;
+  int followingCount;
 
   MuzakkiUserDetails({
     this.userId,
@@ -49,6 +50,7 @@ class MuzakkiUserDetails {
     this.imageUrl,
     this.kabupatenLahir,
     this.provinsiLahir,
+    this.followingCount,
   });
 
   factory MuzakkiUserDetails.fromJson(Map<String, dynamic> json) => MuzakkiUserDetails(
@@ -71,6 +73,7 @@ class MuzakkiUserDetails {
     imageUrl: json["imageUrl"] == null ? null : json["imageUrl"],
     kabupatenLahir: json["kabupatenLahir"] == null ? null : json["kabupatenLahir"],
     provinsiLahir: json["provinsiLahir"] == null ? null : json["provinsiLahir"],
+    followingCount: json["followingCount"] == null ? null : json["followingCount"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -93,5 +96,6 @@ class MuzakkiUserDetails {
     "imageUrl": imageUrl == null ? null : imageUrl,
     "kabupatenLahir": kabupatenLahir == null ? null : kabupatenLahir,
     "provinsiLahir": provinsiLahir == null ? null : provinsiLahir,
+    "followingCount": followingCount == null ? null : followingCount,
   };
 }
