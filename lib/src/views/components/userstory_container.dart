@@ -4,6 +4,9 @@ import 'package:flutter_jaring_ummat/src/config/hexColor.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_jaring_ummat/src/models/storiesModel.dart';
+import 'package:flutter_jaring_ummat/src/views/components/icon_text/active_icon_icons.dart';
+import 'package:flutter_jaring_ummat/src/views/components/icon_text/all_in_one_icon_icons.dart';
+import 'package:flutter_jaring_ummat/src/views/components/icon_text/new_icon_icons.dart';
 import 'package:story_view/story_view.dart';
 import 'package:flutter_jaring_ummat/src/services/time_ago_service.dart';
 
@@ -27,6 +30,8 @@ class StoryPlayerViewState extends State<StoryPlayerView> {
   StoryPlayerViewState({this.createdBy, this.createdDate, this.content});
 
   final controller = StoryController();
+
+  bool _isLoved = false;
 
   @override
   Widget build(BuildContext context) {
@@ -61,8 +66,8 @@ class StoryPlayerViewState extends State<StoryPlayerView> {
             ),
           ),
           Positioned(
-            top: 70.0,
-            left: 40.0,
+            top: 70,
+            left: 20,
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
@@ -101,6 +106,10 @@ class StoryPlayerViewState extends State<StoryPlayerView> {
               ],
             ),
           ),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: _komentarField(),
+          ),
         ],
       ),
     );
@@ -119,7 +128,6 @@ class StoryPlayerViewState extends State<StoryPlayerView> {
         widgetList.add(
           StoryItem.pageImage(
             NetworkImage(content[i].url),
-            caption: "Ini Stories konten ${widget.createdBy}",
             imageFit: BoxFit.cover,
           ),
         );
@@ -149,6 +157,89 @@ class StoryPlayerViewState extends State<StoryPlayerView> {
       },
       progressPosition: ProgressPosition.top,
       repeat: false,
+    );
+  }
+
+  Widget _komentarField() {
+    return IconTheme(
+      data: new IconThemeData(color: Colors.blue),
+      child: new Container(
+        margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 11.0),
+        child: new Row(
+          children: <Widget>[
+            CircleAvatar(
+              backgroundColor: Colors.black45,
+              child: _isLoved ? likeBtn() : unlikeBtn(),
+            ),
+            SizedBox(
+              width: 10.0,
+            ),
+            new Flexible(
+              child: new TextField(
+                decoration: new InputDecoration(
+                  fillColor: Colors.black45,
+                  filled: true,
+                  contentPadding: EdgeInsets.symmetric(
+                    vertical: 10.0,
+                    horizontal: 10.0,
+                  ),
+                  border: new OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.black45),
+                    borderRadius: const BorderRadius.all(
+                      const Radius.circular(30.0),
+                    ),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(30.0)),
+                    borderSide: BorderSide(color: Colors.white),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(30.0)),
+                    borderSide: BorderSide(color: Colors.white),
+                  ),
+                  hintText: "Tulis pesan...",
+                  hintStyle: TextStyle(color: Colors.white),
+                ),
+              ),
+            ),
+            new Container(
+              margin: const EdgeInsets.symmetric(horizontal: 4.0),
+              child: CircleAvatar(
+                backgroundColor: greenColor,
+                child: IconButton(
+                  icon: new Icon(NewIcon.send_3x),
+                  color: Colors.white,
+                  iconSize: 20,
+                  onPressed: () {},
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget likeBtn() {
+    return IconButton(
+      icon: Icon(AllInOneIcon.love_3x),
+      onPressed: () {
+        _isLoved = !_isLoved;
+        setState(() {});
+      },
+      iconSize: 20,
+    );
+  }
+
+  Widget unlikeBtn() {
+    return IconButton(
+      icon: Icon(ActiveIcon.love_active_3x),
+      onPressed: () {
+        _isLoved = !_isLoved;
+        setState(() {});
+      },
+      color: Colors.red,
+      iconSize: 20,
     );
   }
 
