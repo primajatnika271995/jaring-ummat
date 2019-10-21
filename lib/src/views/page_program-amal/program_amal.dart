@@ -533,7 +533,7 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                             padding: EdgeInsets.all(12.0),
                             child: new Icon(
                               AllInOneIcon.sodaqoh_3x,
-                              color: Colors.orange,
+                              color: Colors.cyan,
                               size: 25,
                             ),
                           ),

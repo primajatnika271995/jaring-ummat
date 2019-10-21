@@ -451,7 +451,7 @@ class _PortofolioState extends State<Portofolio> {
           children: [
             SpeedDialChild(
                 child: Icon(GridMenuIcon.donation_new),
-                backgroundColor: Colors.blueAccent,
+                backgroundColor: Colors.blue,
                 label: 'Donasi',
                 labelStyle: TextStyle(color: whiteColor),
                 labelBackgroundColor: Colors.black,
@@ -461,7 +461,7 @@ class _PortofolioState extends State<Portofolio> {
                 }),
             SpeedDialChild(
                 child: Icon(GridMenuIcon.wakaf_new),
-                backgroundColor: Colors.green,
+                backgroundColor: Colors.deepPurple,
                 label: 'Wakaf',
                 labelStyle: TextStyle(color: whiteColor),
                 labelBackgroundColor: Colors.black,
@@ -470,7 +470,7 @@ class _PortofolioState extends State<Portofolio> {
                 }),
             SpeedDialChild(
                 child: Icon(GridMenuIcon.sodaqoh_new),
-                backgroundColor: Colors.deepPurpleAccent,
+                backgroundColor: Colors.cyan,
                 label: 'Sodaqoh',
                 labelStyle: TextStyle(color: whiteColor),
                 labelBackgroundColor: Colors.black,
@@ -479,7 +479,7 @@ class _PortofolioState extends State<Portofolio> {
                 }),
             SpeedDialChild(
                 child: Icon(GridMenuIcon.infaq_new),
-                backgroundColor: Colors.redAccent,
+                backgroundColor: Colors.yellow[600],
                 label: 'Infaq',
                 labelStyle: TextStyle(color: whiteColor),
                 labelBackgroundColor: Colors.black,
@@ -488,7 +488,7 @@ class _PortofolioState extends State<Portofolio> {
                 }),
             SpeedDialChild(
                 child: Icon(GridMenuIcon.zakat_new),
-                backgroundColor: Colors.yellow[600],
+                backgroundColor: Colors.red,
                 label: 'Zakat',
                 labelStyle: TextStyle(color: whiteColor),
                 labelBackgroundColor: Colors.black,
@@ -672,7 +672,7 @@ class _PortofolioState extends State<Portofolio> {
       palette: [
         Colors.red,
         Colors.yellow,
-        Colors.orange,
+        Colors.cyan,
         Colors.deepPurpleAccent,
         Colors.blue,
         Colors.teal
@@ -711,7 +711,7 @@ class _PortofolioState extends State<Portofolio> {
             break;
           case 2:
             valueTotal = valueShodqoh;
-            barColor = Colors.orange;
+            barColor = Colors.cyan;
             totalPercent = shodaqohPercent;
             print(valueTotal);
             bloc.fetchBarChart("sodaqoh", "satu");
