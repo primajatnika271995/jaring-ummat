@@ -79,10 +79,6 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
 
   @override
   Widget build(BuildContext context) {
-    // Title Text
-    final titleText = Text('Jaring',
-        style: TextStyle(color: blackColor, fontSize: SizeUtils.titleSize));
-
     return LoadingScreen(
       inAsyncCall: _loadingVisible,
       child: Scaffold(
@@ -90,679 +86,661 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
         body: DefaultTabController(
           length: _tabLength,
           initialIndex: initialTabIndex,
-          child: Scaffold(
-            backgroundColor: whiteColor,
-            appBar: AppBar(
-              titleSpacing: 0,
-              backgroundColor: whiteColor,
-              elevation: 0,
-              leading: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: Image.asset(ProgramAmalTextData.logoApp),
-              ),
-              title: titleText,
-              actions: <Widget>[
-                Stack(
-                  children: <Widget>[
-                    Center(
-                      child: Padding(
-                        padding: const EdgeInsets.only(right: 7),
-                        child: InkWell(
-                          onTap: () {
-                            if (_isFilter) {
-                              hapusFilterLokasi();
-                            } else {
-                              checkLocation();
-                            }
-                          },
-                          child: Icon(
-                            _isFilter
-                                ? AppBarIcon.location_inactive
-                                : AppBarIcon.location_inactive,
-                            size: 25,
-                            color: blackColor,
-                          ),
-                        ),
-                      ),
-                    ),
-                    Positioned(
-                      right: 5,
-                      top: 13,
-                      child: Container(
-                        padding: EdgeInsets.all(1),
-                        decoration: new BoxDecoration(
-                          color: _isFilter ? Colors.green : Colors.grey,
-                          borderRadius: BorderRadius.circular(100),
-                        ),
-                        constraints: BoxConstraints(
-                          minWidth: 12,
-                          minHeight: 12,
-                        ),
-                        child: _isFilter
-                            ? Icon(
-                                Icons.check,
-                                color: whiteColor,
-                                size: 10.0,
-                              )
-                            : Icon(
-                                Icons.close,
-                                color: whiteColor,
-                                size: 10.0,
-                              ),
-                      ),
-                    ),
-                  ],
-                ),
-                Padding(
+          child: appBar(),
+        ),
+      ),
+    );
+  }
+
+  Widget appBar() {
+    return Scaffold(
+      backgroundColor: whiteColor,
+      appBar: AppBar(
+        titleSpacing: 0,
+        backgroundColor: whiteColor,
+        elevation: 0,
+        leading: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          child: Image.asset(ProgramAmalTextData.logoApp),
+        ),
+        title: Text(
+          'Jaring',
+          style: TextStyle(color: blackColor, fontSize: SizeUtils.titleSize),
+        ),
+        actions: <Widget>[
+          Stack(
+            children: <Widget>[
+              Center(
+                child: Padding(
                   padding: const EdgeInsets.only(right: 7),
                   child: InkWell(
                     onTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => Inbox(),
-                        ),
-                      );
+                      if (_isFilter) {
+                        hapusFilterLokasi();
+                      } else {
+                        checkLocation();
+                      }
                     },
                     child: Icon(
-                      NewIcon.nav_inbox_3x,
+                      _isFilter
+                          ? AppBarIcon.location_inactive
+                          : AppBarIcon.location_inactive,
                       size: 25,
                       color: blackColor,
                     ),
                   ),
                 ),
-                Stack(
-                  children: <Widget>[
-                    Center(
-                      child: Padding(
-                        padding: const EdgeInsets.only(right: 10),
-                        child: InkWell(
-                            onTap: () {
-                              if (_token == null) {
-                                Navigator.of(context).pushNamed('/login');
-                              }
-                              Navigator.of(context)
-                                  .pushNamed('/list/account/chats');
-                            },
-                            child: Icon(NewIcon.chat_3x,
-                                size: 25, color: blackColor)),
-                      ),
+              ),
+              Positioned(
+                right: 5,
+                top: 13,
+                child: Container(
+                  padding: EdgeInsets.all(1),
+                  decoration: new BoxDecoration(
+                    color: _isFilter ? Colors.green : Colors.grey,
+                    borderRadius: BorderRadius.circular(100),
+                  ),
+                  constraints: BoxConstraints(
+                    minWidth: 12,
+                    minHeight: 12,
+                  ),
+                  child: _isFilter
+                      ? Icon(
+                          Icons.check,
+                          color: whiteColor,
+                          size: 10.0,
+                        )
+                      : Icon(
+                          Icons.close,
+                          color: whiteColor,
+                          size: 10.0,
+                        ),
+                ),
+              ),
+            ],
+          ),
+          Padding(
+            padding: const EdgeInsets.only(right: 7),
+            child: InkWell(
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => Inbox(),
+                  ),
+                );
+              },
+              child: Icon(
+                NewIcon.nav_inbox_3x,
+                size: 25,
+                color: blackColor,
+              ),
+            ),
+          ),
+          Stack(
+            children: <Widget>[
+              Center(
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 10),
+                  child: InkWell(
+                      onTap: () {
+                        if (_token == null) {
+                          Navigator.of(context).pushNamed('/login');
+                        }
+                        Navigator.of(context).pushNamed('/list/account/chats');
+                      },
+                      child:
+                          Icon(NewIcon.chat_3x, size: 25, color: blackColor)),
+                ),
+              ),
+              Positioned(
+                right: 5,
+                top: 13,
+                child: Container(
+                  padding: EdgeInsets.all(1),
+                  decoration: new BoxDecoration(
+                    color: Colors.red,
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                  constraints: BoxConstraints(
+                    minWidth: 12,
+                    minHeight: 12,
+                  ),
+                  child: const Text(
+                    '3',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 8,
                     ),
-                    Positioned(
-                      right: 5,
-                      top: 13,
-                      child: Container(
-                        padding: EdgeInsets.all(1),
-                        decoration: new BoxDecoration(
-                          color: Colors.red,
-                          borderRadius: BorderRadius.circular(6),
-                        ),
-                        constraints: BoxConstraints(
-                          minWidth: 12,
-                          minHeight: 12,
-                        ),
-                        child: const Text(
-                          '3',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 8,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+      body: Stack(
+        children: <Widget>[
+          CustomScrollView(
+            slivers: <Widget>[
+              storyList(),
+              gridMenu(),
+              infoRekomendasi(),
+              categoryTab(),
+              SliverList(
+                delegate: SliverChildListDelegate(
+                  [
+                    Column(
+                      children: <Widget>[
+                        StreamBuilder(
+                          stream: bloc.allProgramAmal,
+                          builder: (context,
+                              AsyncSnapshot<List<ProgramAmalModel>> snapshot) {
+                            switch (snapshot.connectionState) {
+                              case ConnectionState.waiting:
+                                return Text('');
+                                break;
+                              default:
+                                if (snapshot.hasData) {
+                                  _loadingVisible = false;
+                                  return buildList(snapshot);
+                                } else if (snapshot.hasError) {
+                                  return Text(snapshot.error.toString());
+                                }
+                                _loadingVisible = false;
+                                return Container(
+                                  width: screenWidth(context),
+                                  color: whiteColor,
+                                  margin: EdgeInsets.only(top: 30),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
+                                      Image.asset(
+                                          'assets/backgrounds/no_data_accent.png',
+                                          height: 250),
+                                      Text(
+                                        'Oops..',
+                                        style: TextStyle(
+                                          fontFamily: 'Proxima',
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16.0,
+                                        ),
+                                      ),
+                                      Text(
+                                        'There\'s nothing \'ere, yet.',
+                                        style: TextStyle(
+                                          fontFamily: 'Proxima',
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.grey,
+                                          fontSize: 15.0,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                                break;
+                            }
+                          },
+                        )
+                      ],
                     ),
                   ],
                 ),
-              ],
-            ),
-            body: Stack(
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget storyList() {
+    return !hidden
+        ? new SliverAppBar(
+      automaticallyImplyLeading: false,
+      bottom: PreferredSize(
+        preferredSize: Size.fromHeight(43),
+        child: Text(''),
+      ),
+      elevation: 0,
+      flexibleSpace: new Scaffold(
+        backgroundColor: Colors.white,
+        body: new UserStoryAppBar(),
+      ),
+    )
+        : SliverList(delegate: SliverChildListDelegate([]));
+  }
+
+  Widget gridMenu() {
+    return SliverAppBar(
+      backgroundColor: whiteColor,
+      elevation: 0,
+      floating: true,
+      pinned: true,
+      expandedHeight: 20,
+      automaticallyImplyLeading: false,
+      bottom: PreferredSize(
+        preferredSize: Size.fromHeight(90),
+        child: Container(
+          height: 90.0,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 0.0),
+            child: ListView(
+              shrinkWrap: true,
+              scrollDirection: Axis.horizontal,
               children: <Widget>[
-                CustomScrollView(
-                  slivers: <Widget>[
-                    !hidden
-                        ? new SliverAppBar(
-                            automaticallyImplyLeading: false,
-                            bottom: PreferredSize(
-                              preferredSize: Size.fromHeight(43),
-                              child: Text(''),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 5),
+                  child: Container(
+                    child: new Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        InkWell(
+                          onTap: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    PopularAccountView(),
+                              ),
+                            );
+                          },
+                          borderRadius: BorderRadius.circular(20),
+                          child: new Container(
+                            decoration: new BoxDecoration(
+                                border: Border.all(
+                                    color: softGreyColor, width: 3.0),
+                                borderRadius: new BorderRadius.all(
+                                    new Radius.circular(20.0))),
+                            padding: EdgeInsets.all(12.0),
+                            child: new Icon(
+                              AllInOneIcon.account_following_3x,
+                              color: Colors.yellow[600],
+                              size: 25,
                             ),
-                            elevation: 0,
-                            flexibleSpace: new Scaffold(
-                              backgroundColor: Colors.white,
-                              body: new UserStoryAppBar(),
-                            ),
-                          )
-                        : SliverList(
-                            delegate: SliverChildListDelegate([]),
                           ),
-                    SliverAppBar(
-                      backgroundColor: whiteColor,
-                      elevation: 0,
-                      floating: true,
-                      pinned: true,
-                      expandedHeight: 20,
-                      automaticallyImplyLeading: false,
-                      bottom: PreferredSize(
-                        preferredSize: Size.fromHeight(90),
-                        child: Container(
-                          height: 90.0,
-                          child: Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 10.0),
-                            child: ListView(
-                              shrinkWrap: true,
-                              scrollDirection: Axis.horizontal,
-                              children: <Widget>[
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(horizontal: 5),
-                                  child: Container(
-                                    child: new Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: <Widget>[
-                                        InkWell(
-                                          onTap: () {
-                                            Navigator.of(context).push(
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    PopularAccountView(),
-                                              ),
-                                            );
-                                          },
-                                          borderRadius:
-                                              BorderRadius.circular(20),
-                                          child: new Container(
-                                            decoration: new BoxDecoration(
-                                                border: Border.all(
-                                                    color: softGreyColor,
-                                                    width: 3.0),
-                                                borderRadius: new BorderRadius
-                                                        .all(
-                                                    new Radius.circular(20.0))),
-                                            padding: EdgeInsets.all(12.0),
-                                            child: new Icon(
-                                              AllInOneIcon.account_following_3x,
-                                              color: Colors.yellow[600],
-                                              size: 25,
-                                            ),
-                                          ),
-                                        ),
-                                        new Padding(
-                                          padding: EdgeInsets.only(top: 1.0),
-                                        ),
-                                        Container(
-                                            width: 50,
-                                            child: new Text(
-                                              'Akun Mitra',
-                                              overflow: TextOverflow.ellipsis,
-                                            ))
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(horizontal: 5),
-                                  child: Container(
-                                    child: new Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: <Widget>[
-                                        InkWell(
-                                          onTap: () {
-                                            Navigator.of(context).push(
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    BeritaPage(),
-                                              ),
-                                            );
-                                          },
-                                          borderRadius:
-                                              BorderRadius.circular(20),
-                                          child: new Container(
-                                            decoration: new BoxDecoration(
-                                                border: Border.all(
-                                                    color: softGreyColor,
-                                                    width: 3.0),
-                                                borderRadius: new BorderRadius
-                                                        .all(
-                                                    new Radius.circular(20.0))),
-                                            padding: EdgeInsets.all(12.0),
-                                            child: new Icon(
-                                              AllInOneIcon.news_3x,
-                                              color: Colors.deepOrange,
-                                              size: 25,
-                                            ),
-                                          ),
-                                        ),
-                                        new Padding(
-                                          padding: EdgeInsets.only(top: 1.0),
-                                        ),
-                                        new Text('Berita')
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(horizontal: 5),
-                                  child: Container(
-                                    child: new Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: <Widget>[
-                                        InkWell(
-                                          onTap: () {
+                        ),
+                        new Padding(
+                          padding: EdgeInsets.only(top: 1.0),
+                        ),
+                        Container(
+                            width: 50,
+                            child: new Text(
+                              'Akun Mitra',
+                              overflow: TextOverflow.ellipsis,
+                            ))
+                      ],
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 5),
+                  child: Container(
+                    child: new Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        InkWell(
+                          onTap: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => BeritaPage(),
+                              ),
+                            );
+                          },
+                          borderRadius: BorderRadius.circular(20),
+                          child: new Container(
+                            decoration: new BoxDecoration(
+                                border: Border.all(
+                                    color: softGreyColor, width: 3.0),
+                                borderRadius: new BorderRadius.all(
+                                    new Radius.circular(20.0))),
+                            padding: EdgeInsets.all(12.0),
+                            child: new Icon(
+                              AllInOneIcon.news_3x,
+                              color: Colors.green,
+                              size: 25,
+                            ),
+                          ),
+                        ),
+                        new Padding(
+                          padding: EdgeInsets.only(top: 1.0),
+                        ),
+                        new Text('Berita')
+                      ],
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 5),
+                  child: Container(
+                    child: new Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        InkWell(
+                          onTap: () {
 //                                          requestBill("zakat");
-                                          },
-                                          borderRadius:
-                                              BorderRadius.circular(20),
-                                          child: new Container(
-                                            decoration: new BoxDecoration(
-                                                border: Border.all(
-                                                    color: softGreyColor,
-                                                    width: 3.0),
-                                                borderRadius: new BorderRadius
-                                                        .all(
-                                                    new Radius.circular(20.0))),
-                                            padding: EdgeInsets.all(12.0),
-                                            child: new Icon(
-                                              AllInOneIcon.donation_3x,
-                                              color: Colors.blue,
-                                              size: 25,
-                                            ),
-                                          ),
-                                        ),
-                                        new Padding(
-                                          padding: EdgeInsets.only(top: 1.0),
-                                        ),
-                                        new Text('Donasi')
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(horizontal: 5),
-                                  child: Container(
-                                    child: new Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: <Widget>[
-                                        InkWell(
-                                          onTap: () {
-                                            requestBill("zakat");
-                                          },
-                                          borderRadius:
-                                              BorderRadius.circular(20),
-                                          child: new Container(
-                                            decoration: new BoxDecoration(
-                                                border: Border.all(
-                                                    color: softGreyColor,
-                                                    width: 3.0),
-                                                borderRadius: new BorderRadius
-                                                        .all(
-                                                    new Radius.circular(20.0))),
-                                            padding: EdgeInsets.all(12.0),
-                                            child: new Icon(
-                                              AllInOneIcon.zakat_3x,
-                                              color: Colors.red,
-                                              size: 25,
-                                            ),
-                                          ),
-                                        ),
-                                        new Padding(
-                                          padding: EdgeInsets.only(top: 1.0),
-                                        ),
-                                        new Text('Zakat')
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(horizontal: 5),
-                                  child: Container(
-                                    child: new Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: <Widget>[
-                                        InkWell(
-                                          onTap: () {
-                                            requestBill("infaq");
-                                          },
-                                          child: new Container(
-                                            decoration: new BoxDecoration(
-                                                border: Border.all(
-                                                    color: softGreyColor,
-                                                    width: 3.0),
-                                                borderRadius: new BorderRadius
-                                                        .all(
-                                                    new Radius.circular(20.0))),
-                                            padding: EdgeInsets.all(12.0),
-                                            child: new Icon(
-                                              AllInOneIcon.infaq_3x,
-                                              color: Colors.yellow[600],
-                                              size: 25,
-                                            ),
-                                          ),
-                                        ),
-                                        new Padding(
-                                          padding: EdgeInsets.only(top: 1.0),
-                                        ),
-                                        new Text('Infaq')
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(horizontal: 5),
-                                  child: Container(
-                                    child: new Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: <Widget>[
-                                        InkWell(
-                                          onTap: () {
-                                            requestBill("sodaqoh");
-                                          },
-                                          borderRadius:
-                                              BorderRadius.circular(20),
-                                          child: new Container(
-                                            decoration: new BoxDecoration(
-                                                border: Border.all(
-                                                    color: softGreyColor,
-                                                    width: 3.0),
-                                                borderRadius: new BorderRadius
-                                                        .all(
-                                                    new Radius.circular(20.0))),
-                                            padding: EdgeInsets.all(12.0),
-                                            child: new Icon(
-                                              AllInOneIcon.sodaqoh_3x,
-                                              color: Colors.orange,
-                                              size: 25,
-                                            ),
-                                          ),
-                                        ),
-                                        new Padding(
-                                          padding: EdgeInsets.only(top: 1.0),
-                                        ),
-                                        new Text('Sodaqoh')
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(horizontal: 5),
-                                  child: Container(
-                                    child: new Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: <Widget>[
-                                        InkWell(
-                                          onTap: () {
-                                            requestBill("wakaf");
-                                          },
-                                          borderRadius:
-                                              BorderRadius.circular(20),
-                                          child: new Container(
-                                            decoration: new BoxDecoration(
-                                                border: Border.all(
-                                                    color: softGreyColor,
-                                                    width: 3.0),
-                                                borderRadius: new BorderRadius
-                                                        .all(
-                                                    new Radius.circular(20.0))),
-                                            padding: EdgeInsets.all(12.0),
-                                            child: new Icon(
-                                              AllInOneIcon.wakaf_3x,
-                                              color: Colors.deepPurple,
-                                              size: 25,
-                                            ),
-                                          ),
-                                        ),
-                                        new Padding(
-                                          padding: EdgeInsets.only(top: 1.0),
-                                        ),
-                                        new Text('Wakaf')
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ],
+                          },
+                          borderRadius: BorderRadius.circular(20),
+                          child: new Container(
+                            decoration: new BoxDecoration(
+                                border: Border.all(
+                                    color: softGreyColor, width: 3.0),
+                                borderRadius: new BorderRadius.all(
+                                    new Radius.circular(20.0))),
+                            padding: EdgeInsets.all(12.0),
+                            child: new Icon(
+                              AllInOneIcon.donation_3x,
+                              color: Colors.blue,
+                              size: 25,
                             ),
                           ),
                         ),
-                      ),
-                    ),
-                    SliverAppBar(
-                      automaticallyImplyLeading: false,
-                      bottom: PreferredSize(
-                        preferredSize: Size.fromHeight(223.0),
-                        child: Text(''),
-                      ),
-                      elevation: 0,
-                      flexibleSpace: new Scaffold(
-                        backgroundColor: Colors.white,
-                        body: Padding(
-                          padding: EdgeInsets.only(
-                              left: 13.0, right: 13.0, top: 7.0),
-                          child: Column(
-                            children: <Widget>[
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  RichText(
-                                    text: TextSpan(children: <TextSpan>[
-                                      TextSpan(
-                                          text: 'Info dan Promo Jaring \n',
-                                          style: TextStyle(
-                                              color: blackColor,
-                                              fontSize: SizeUtils.titleSize)),
-                                      TextSpan(
-                                          text: 'Informasi dan Rekomendasi seputar Jaring',
-                                          style: TextStyle(
-                                              color: grayColor,
-                                              fontSize: SizeUtils.titleSize - 6)),
-                                    ]),
-                                  ),
-                                  Icon(AllInOneIcon.next_small_2x, size: 20)
-                                ],
-                              ),
-                              Container(
-                                height: 200,
-                                child: ListView.builder(
-                                    shrinkWrap: true,
-                                    itemCount: listInfoJaring.length,
-                                    physics: ScrollPhysics(),
-                                    scrollDirection: Axis.horizontal,
-                                    itemBuilder: (context, index) {
-                                      return bantuKamiMain(index);
-                                    }),
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  RichText(
-                                    text: TextSpan(children: <TextSpan>[
-                                      TextSpan(
-                                          text: 'Galang Amal Jaring \n',
-                                          style: TextStyle(
-                                              color: blackColor,
-                                              fontSize: SizeUtils.titleSize)),
-                                      TextSpan(
-                                          text: 'Rekomendasi galang amal seputar komunitas Jaring',
-                                          style: TextStyle(
-                                              color: grayColor,
-                                              fontSize: SizeUtils.titleSize - 6)),
-                                    ]),
-                                  ),
-                                  Icon(AllInOneIcon.next_small_2x, size: 20)
-                                ],
-                              ),
-                            ],
-                          ),
+                        new Padding(
+                          padding: EdgeInsets.only(top: 1.0),
                         ),
-                      ),
+                        new Text('Donasi')
+                      ],
                     ),
-                    new SliverAppBar(
-                      backgroundColor: whiteColor,
-                      elevation: 0,
-                      automaticallyImplyLeading: false,
-                      floating: false,
-                      pinned: true,
-                      flexibleSpace: SizedBox(
-                        height: 48,
-                        child: AppBar(
-                          backgroundColor: whiteColor,
-                          elevation: 1,
-                          automaticallyImplyLeading: false,
-                          bottom: TabBar(
-                            isScrollable: true,
-                            indicator: UnderlineTabIndicator(
-                              borderSide:
-                                  BorderSide(width: 4.0, color: greenColor),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 5),
+                  child: Container(
+                    child: new Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        InkWell(
+                          onTap: () {
+                            requestBill("zakat");
+                          },
+                          borderRadius: BorderRadius.circular(20),
+                          child: new Container(
+                            decoration: new BoxDecoration(
+                                border: Border.all(
+                                    color: softGreyColor, width: 3.0),
+                                borderRadius: new BorderRadius.all(
+                                    new Radius.circular(20.0))),
+                            padding: EdgeInsets.all(12.0),
+                            child: new Icon(
+                              AllInOneIcon.zakat_3x,
+                              color: Colors.red,
+                              size: 25,
                             ),
-                            labelColor: blackColor,
-                            labelStyle: TextStyle(fontWeight: FontWeight.bold),
-                            unselectedLabelColor: Colors.grey[400],
-                            onTap: (int index) {
-                              print(index);
-                              switch (index) {
-                                case 0:
-                                  setState(() {
-                                    selectedCategory = "";
-                                  });
-                                  break;
-                                case 1:
-                                  setState(() {
-                                    selectedCategory = "Keagamaan";
-                                  });
-                                  break;
-                                case 2:
-                                  setState(() {
-                                    selectedCategory = "Kemanusiaan";
-                                  });
-                                  break;
-                                case 3:
-                                  setState(() {
-                                    selectedCategory = "Pendidikan";
-                                  });
-                                  break;
-                                case 4:
-                                  setState(() {
-                                    selectedCategory = "Lingkungan";
-                                  });
-                                  break;
-                                case 5:
-                                  setState(() {
-                                    selectedCategory = "Kesehatan";
-                                  });
-                                  break;
-                                default:
-                                  setState(() {
-                                    selectedCategory = "";
-                                  });
-                              }
-                              bloc.fetchAllProgramAmal(selectedCategory);
-                            },
-                            tabs: <Widget>[
-                              new Tab(
-                                text: 'Populer',
-                              ),
-                              new Tab(
-                                text: 'Keagamaan',
-                              ),
-                              new Tab(
-                                text: 'Kemanusiaan',
-                              ),
-                              new Tab(
-                                text: 'Pendidikan',
-                              ),
-                              new Tab(
-                                text: 'Lingkungan',
-                              ),
-                              new Tab(
-                                text: 'Kesehatan',
-                              ),
-                            ],
                           ),
                         ),
-                      ),
+                        new Padding(
+                          padding: EdgeInsets.only(top: 1.0),
+                        ),
+                        new Text('Zakat')
+                      ],
                     ),
-                    SliverList(
-                      delegate: SliverChildListDelegate(
-                        [
-                          Column(
-                            children: <Widget>[
-                              StreamBuilder(
-                                stream: bloc.allProgramAmal,
-                                builder: (context,
-                                    AsyncSnapshot<List<ProgramAmalModel>>
-                                        snapshot) {
-                                  switch (snapshot.connectionState) {
-                                    case ConnectionState.waiting:
-//                                      _loadingVisible = true;
-                                      return Text('');
-                                      break;
-                                    default:
-                                      if (snapshot.hasData) {
-                                        _loadingVisible = false;
-                                        return buildList(snapshot);
-                                      } else if (snapshot.hasError) {
-                                        return Text(snapshot.error.toString());
-                                      }
-                                      _loadingVisible = false;
-                                      return Container(
-                                        width: screenWidth(context),
-                                        color: whiteColor,
-                                        margin: EdgeInsets.only(top: 30),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: <Widget>[
-                                            Image.asset(
-                                                'assets/backgrounds/no_data_accent.png',
-                                                height: 250),
-                                            Text(
-                                              'Oops..',
-                                              style: TextStyle(
-                                                fontFamily: 'Proxima',
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 16.0,
-                                              ),
-                                            ),
-                                            Text(
-                                              'There\'s nothing \'ere, yet.',
-                                              style: TextStyle(
-                                                fontFamily: 'Proxima',
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.grey,
-                                                fontSize: 15.0,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      );
-                                      break;
-                                  }
-                                },
-                              )
-                            ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 5),
+                  child: Container(
+                    child: new Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        InkWell(
+                          onTap: () {
+                            requestBill("infaq");
+                          },
+                          child: new Container(
+                            decoration: new BoxDecoration(
+                                border: Border.all(
+                                    color: softGreyColor, width: 3.0),
+                                borderRadius: new BorderRadius.all(
+                                    new Radius.circular(20.0))),
+                            padding: EdgeInsets.all(12.0),
+                            child: new Icon(
+                              AllInOneIcon.infaq_3x,
+                              color: Colors.yellow[600],
+                              size: 25,
+                            ),
                           ),
-                        ],
-                      ),
+                        ),
+                        new Padding(
+                          padding: EdgeInsets.only(top: 1.0),
+                        ),
+                        new Text('Infaq')
+                      ],
                     ),
-                  ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 5),
+                  child: Container(
+                    child: new Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        InkWell(
+                          onTap: () {
+                            requestBill("sodaqoh");
+                          },
+                          borderRadius: BorderRadius.circular(20),
+                          child: new Container(
+                            decoration: new BoxDecoration(
+                                border: Border.all(
+                                    color: softGreyColor, width: 3.0),
+                                borderRadius: new BorderRadius.all(
+                                    new Radius.circular(20.0))),
+                            padding: EdgeInsets.all(12.0),
+                            child: new Icon(
+                              AllInOneIcon.sodaqoh_3x,
+                              color: Colors.orange,
+                              size: 25,
+                            ),
+                          ),
+                        ),
+                        new Padding(
+                          padding: EdgeInsets.only(top: 1.0),
+                        ),
+                        new Text('Sodaqoh')
+                      ],
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 5),
+                  child: Container(
+                    child: new Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        InkWell(
+                          onTap: () {
+                            requestBill("wakaf");
+                          },
+                          borderRadius: BorderRadius.circular(20),
+                          child: new Container(
+                            decoration: new BoxDecoration(
+                                border: Border.all(
+                                    color: softGreyColor, width: 3.0),
+                                borderRadius: new BorderRadius.all(
+                                    new Radius.circular(20.0))),
+                            padding: EdgeInsets.all(12.0),
+                            child: new Icon(
+                              AllInOneIcon.wakaf_3x,
+                              color: Colors.deepPurple,
+                              size: 25,
+                            ),
+                          ),
+                        ),
+                        new Padding(
+                          padding: EdgeInsets.only(top: 1.0),
+                        ),
+                        new Text('Wakaf')
+                      ],
+                    ),
+                  ),
                 ),
               ],
             ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget infoRekomendasi() {
+    return SliverAppBar(
+      automaticallyImplyLeading: false,
+      bottom: PreferredSize(
+        preferredSize: Size.fromHeight(224.0),
+        child: Text(''),
+      ),
+      elevation: 0,
+      flexibleSpace: new Scaffold(
+        backgroundColor: Colors.white,
+        body: Column(
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 5),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  RichText(
+                    text: TextSpan(children: <TextSpan>[
+                      TextSpan(
+                          text: 'Info dan Rekomendasi Jaring \n',
+                          style: TextStyle(
+                              color: blackColor,
+                              fontSize: SizeUtils.titleSize)),
+                      TextSpan(
+                          text:
+                          'Informasi dan Rekomendasi seputar Jaring',
+                          style: TextStyle(
+                              color: grayColor,
+                              fontSize: SizeUtils.titleSize - 6)),
+                    ]),
+                  ),
+                  Icon(AllInOneIcon.next_small_2x, size: 20)
+                ],
+              ),
+            ),
+            Container(
+              height: 200,
+              child: ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: listInfoJaring.length,
+                  physics: ScrollPhysics(),
+                  scrollDirection: Axis.horizontal,
+                  itemBuilder: (context, index) {
+                    return bantuKamiMain(index);
+                  }),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  RichText(
+                    text: TextSpan(children: <TextSpan>[
+                      TextSpan(
+                          text: 'Galang Amal Jaring \n',
+                          style: TextStyle(
+                              color: blackColor,
+                              fontSize: SizeUtils.titleSize)),
+                      TextSpan(
+                          text:
+                          'Rekomendasi galang amal seputar komunitas Jaring',
+                          style: TextStyle(
+                              color: grayColor,
+                              fontSize: SizeUtils.titleSize - 6)),
+                    ]),
+                  ),
+                  Icon(AllInOneIcon.next_small_2x, size: 20)
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget categoryTab() {
+    return SliverAppBar(
+      backgroundColor: whiteColor,
+      elevation: 0,
+      automaticallyImplyLeading: false,
+      floating: false,
+      pinned: true,
+      flexibleSpace: SizedBox(
+        height: 48,
+        child: AppBar(
+          backgroundColor: whiteColor,
+          elevation: 1,
+          automaticallyImplyLeading: false,
+          bottom: TabBar(
+            isScrollable: true,
+            indicator: UnderlineTabIndicator(
+              borderSide: BorderSide(width: 4.0, color: greenColor),
+            ),
+            labelColor: blackColor,
+            labelStyle: TextStyle(fontWeight: FontWeight.bold),
+            unselectedLabelColor: Colors.grey[400],
+            onTap: (int index) {
+              print(index);
+              switch (index) {
+                case 0:
+                  setState(() {
+                    selectedCategory = "";
+                  });
+                  break;
+                case 1:
+                  setState(() {
+                    selectedCategory = "Keagamaan";
+                  });
+                  break;
+                case 2:
+                  setState(() {
+                    selectedCategory = "Kemanusiaan";
+                  });
+                  break;
+                case 3:
+                  setState(() {
+                    selectedCategory = "Pendidikan";
+                  });
+                  break;
+                case 4:
+                  setState(() {
+                    selectedCategory = "Lingkungan";
+                  });
+                  break;
+                case 5:
+                  setState(() {
+                    selectedCategory = "Kesehatan";
+                  });
+                  break;
+                default:
+                  setState(() {
+                    selectedCategory = "";
+                  });
+              }
+              bloc.fetchAllProgramAmal(selectedCategory);
+            },
+            tabs: <Widget>[
+              new Tab(
+                text: 'Populer',
+              ),
+              new Tab(
+                text: 'Keagamaan',
+              ),
+              new Tab(
+                text: 'Kemanusiaan',
+              ),
+              new Tab(
+                text: 'Pendidikan',
+              ),
+              new Tab(
+                text: 'Lingkungan',
+              ),
+              new Tab(
+                text: 'Kesehatan',
+              ),
+            ],
           ),
         ),
       ),
@@ -796,6 +774,45 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
           likes: value.userLikeThis,
         );
       },
+    );
+  }
+
+  Widget bantuKamiMain(int index) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 10.0),
+      child: InkWell(
+        onTap: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => InfoJaringViews(
+                valIndex: index,
+              ),
+            ),
+          );
+        },
+        child: Container(
+          height: 200,
+          width: 300,
+          decoration: BoxDecoration(
+            color: Colors.green,
+            borderRadius: BorderRadius.circular(10),
+            image: DecorationImage(
+                image: NetworkImage(listInfoJaring[index].imageUrl),
+                fit: BoxFit.cover),
+          ),
+          child: Align(
+            alignment: Alignment.bottomLeft,
+            child: Padding(
+                padding: const EdgeInsets.only(left: 10, bottom: 20),
+                child: Container(
+                  width: 280,
+                  child: Text(listInfoJaring[index].title,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(color: whiteColor)),
+                )),
+          ),
+        ),
+      ),
     );
   }
 
@@ -1102,44 +1119,5 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
     });
     filtered();
     bloc.fetchAllProgramAmal(selectedCategory);
-  }
-
-  Widget bantuKamiMain(int index) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 10.0),
-      child: InkWell(
-        onTap: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) => InfoJaringViews(
-                valIndex: index,
-              ),
-            ),
-          );
-        },
-        child: Container(
-          height: 200,
-          width: 300,
-          decoration: BoxDecoration(
-            color: Colors.green,
-            borderRadius: BorderRadius.circular(10),
-            image: DecorationImage(
-                image: NetworkImage(listInfoJaring[index].imageUrl),
-                fit: BoxFit.cover),
-          ),
-          child: Align(
-            alignment: Alignment.bottomLeft,
-            child: Padding(
-                padding: const EdgeInsets.only(left: 10, bottom: 20),
-                child: Container(
-                  width: 280,
-                  child: Text(listInfoJaring[index].title,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(color: whiteColor)),
-                )),
-          ),
-        ),
-      ),
-    );
   }
 }

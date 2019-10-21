@@ -358,7 +358,7 @@ class _PortofolioState extends State<Portofolio> {
         ),
         Padding(
           padding:
-              const EdgeInsets.only(left: 15, right: 15, top: 10, bottom: 10),
+              const EdgeInsets.only(left: 15, right: 15),
           child: _listAktivitasTerbaruCache == null
               ? Center(
                   child: Text('Load Data'),
@@ -543,9 +543,6 @@ class _PortofolioState extends State<Portofolio> {
                 child: (value.imageContent == null)
                     ? CircularProfileAvatar(noImg)
                     : CircularProfileAvatar(value.imageContent),
-              ),
-              SizedBox(
-                height: 5,
               ),
               Container(
                 width: MediaQuery.of(context).size.width - 150,
