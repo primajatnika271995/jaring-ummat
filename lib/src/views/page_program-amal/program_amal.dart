@@ -14,6 +14,7 @@ import 'package:flutter_jaring_ummat/src/views/page_inbox/inbox.dart';
 import 'package:flutter_jaring_ummat/src/views/page_info_jaring/info_jaring_views.dart';
 import 'package:flutter_jaring_ummat/src/views/page_lembaga_amal/popular_account.dart';
 import 'package:flutter_jaring_ummat/src/views/page_payment/payment.dart';
+import 'package:flutter_jaring_ummat/src/views/page_program-amal/donasi_only.dart';
 import 'package:flutter_jaring_ummat/src/views/page_program-amal/program_amal_text_data.dart';
 import 'package:flutter_jaring_ummat/src/bloc/programAmalBloc.dart';
 import 'package:flutter_jaring_ummat/src/bloc/registerBloc.dart'
@@ -299,17 +300,17 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
   Widget storyList() {
     return !hidden
         ? new SliverAppBar(
-      automaticallyImplyLeading: false,
-      bottom: PreferredSize(
-        preferredSize: Size.fromHeight(43),
-        child: Text(''),
-      ),
-      elevation: 0,
-      flexibleSpace: new Scaffold(
-        backgroundColor: Colors.white,
-        body: new UserStoryAppBar(),
-      ),
-    )
+            automaticallyImplyLeading: false,
+            bottom: PreferredSize(
+              preferredSize: Size.fromHeight(43),
+              child: Text(''),
+            ),
+            elevation: 0,
+            flexibleSpace: new Scaffold(
+              backgroundColor: Colors.white,
+              body: new UserStoryAppBar(),
+            ),
+          )
         : SliverList(delegate: SliverChildListDelegate([]));
   }
 
@@ -341,8 +342,7 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                           onTap: () {
                             Navigator.of(context).push(
                               MaterialPageRoute(
-                                builder: (context) =>
-                                    PopularAccountView(),
+                                builder: (context) => PopularAccountView(),
                               ),
                             );
                           },
@@ -419,7 +419,11 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                       children: <Widget>[
                         InkWell(
                           onTap: () {
-//                                          requestBill("zakat");
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => DonasiOnlyScreen(),
+                              ),
+                            );
                           },
                           borderRadius: BorderRadius.circular(20),
                           child: new Container(
@@ -608,8 +612,7 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                               color: blackColor,
                               fontSize: SizeUtils.titleSize)),
                       TextSpan(
-                          text:
-                          'Informasi dan Rekomendasi seputar Jaring',
+                          text: 'Informasi dan Rekomendasi seputar Jaring',
                           style: TextStyle(
                               color: grayColor,
                               fontSize: SizeUtils.titleSize - 6)),
@@ -644,7 +647,7 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                               fontSize: SizeUtils.titleSize)),
                       TextSpan(
                           text:
-                          'Rekomendasi galang amal seputar komunitas Jaring',
+                              'Rekomendasi galang amal seputar komunitas Jaring',
                           style: TextStyle(
                               color: grayColor,
                               fontSize: SizeUtils.titleSize - 6)),
