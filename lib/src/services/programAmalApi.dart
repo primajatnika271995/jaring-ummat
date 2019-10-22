@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_jaring_ummat/src/config/preferences.dart';
 import 'package:flutter_jaring_ummat/src/models/galangAmalListDonationModel.dart';
 import 'package:http/http.dart' show Client;
+import 'package:http/http.dart' as http;
 import 'package:flutter_jaring_ummat/src/models/program_amal.dart';
 import 'package:flutter_jaring_ummat/src/config/urls.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -118,5 +119,23 @@ class ProgramAmalApiProvider {
       print('Err :${response.statusCode}');
     }
     return null;
+  }
+
+  Future<http.Response> programAmalByID(String idProgram) async {
+    SharedPreferences _pref = await SharedPreferences.getInstance();
+    var idUser = _pref.getString(USER_ID_KEY);
+    var token = _pref.getString(ACCESS_TOKEN_KEY);
+
+    Map<String, String> header = {'Authorization': 'Bearer $token'};
+
+    var params = {
+      "idUser": idUser,
+      "idProgram": idProgram,
+    };
+
+    Uri uri = Uri.parse(PROGRAM_AMAL_FINDBYID_URL);
+    final uriParams = uri.replace(queryParameters: params);
+
+    return await client.get(uriParams, headers: header);
   }
 }

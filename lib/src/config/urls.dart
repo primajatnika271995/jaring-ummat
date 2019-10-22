@@ -59,6 +59,7 @@ const PROGRAM_AMAL_FINDBYID_URL = BASE_API_URL + '/api/program-amal/';
 // For Service Berita API
 const BERITA_LIST_ALL_URL =  BASE_API_URL + '/api/berita/list';
 const BERITA_LIST_ALL_BY_CATEGORY_URL = BASE_API_URL + '/api/berita/list/category';
+const BERITA_FINDBYID_URL = BASE_API_URL + '/api/berita/find-by-id';
 
 // For Service LikeZone API
 const SAVE_LIKE_URL = BASE_API_URL + '/api/like/';
@@ -98,6 +99,10 @@ const AKTIVITAS_TERBARU_URL = BASE_API_URL + '/api/transaksi/terakhir/muzakki';
 const BAR_CHART_AMIL = BASE_API_URL + '/api/transaksi/chart/bar/amil';
 const BAR_CHART_MUZAKKI = BASE_API_URL + '/api/transaksi/chart/bar';
 
+// BOOKMARK
+const BOOKMARK_LIST_URL = BASE_API_URL + '/api/bookmark/list';
+const BOOKMARK_CONTENT = BASE_API_URL + '/api/bookmark/save';
+const UNBOOKMARK_CONTENT = BASE_API_URL + '/api/bookmark/unbook';
 
 // HISTORY TRANSACTION
 const HISTORY_TRANSACTION = BASE_API_URL + '/api/transaksi/history/detail';
@@ -112,3 +117,6 @@ const MASTER_NILAI_ZAKAT_FITRAH = BASE_API_URL + '/api/zakat/nilai-beras';
 // UPDATE
 const UPDATE_LOKASI_AMAL = BASE_API_URL + '/api/user/update/lokasi-amal';
 const UPDATE_USER_DETAILS = BASE_API_URL + '/api/user/update';
+
+// JELAJAH KEBAIKAN
+const JELAJAH_KEBAIKAN_POPULER = BASE_API_URL + '/api/jelajah-kebaikan/list/populer';

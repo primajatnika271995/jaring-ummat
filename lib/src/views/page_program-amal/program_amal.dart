@@ -591,7 +591,7 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
     return SliverAppBar(
       automaticallyImplyLeading: false,
       bottom: PreferredSize(
-        preferredSize: Size.fromHeight(224.0),
+        preferredSize: Size.fromHeight(240.0),
         child: Text(''),
       ),
       elevation: 0,
@@ -600,7 +600,7 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
         body: Column(
           children: <Widget>[
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 5),
+              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
@@ -634,7 +634,7 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                   }),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+              padding: const EdgeInsets.only(left: 15, right: 15, top: 15),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
@@ -653,7 +653,6 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                               fontSize: SizeUtils.titleSize - 6)),
                     ]),
                   ),
-                  Icon(AllInOneIcon.next_small_2x, size: 20)
                 ],
               ),
             ),
@@ -782,7 +781,7 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
 
   Widget bantuKamiMain(int index) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 10.0),
+      padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
       child: InkWell(
         onTap: () {
           Navigator.of(context).push(

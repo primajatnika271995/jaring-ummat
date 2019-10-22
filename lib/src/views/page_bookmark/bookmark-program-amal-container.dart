@@ -1,5 +1,6 @@
 import 'package:circular_profile_avatar/circular_profile_avatar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_jaring_ummat/src/models/bookmarkModel.dart';
 import 'package:flutter_jaring_ummat/src/services/bookmarkApi.dart';
 import 'package:flutter_jaring_ummat/src/utils/screenSize.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/all_in_one_icon_icons.dart';
@@ -22,27 +23,27 @@ import 'package:flutter_jaring_ummat/src/views/galang_amal.dart';
 import 'package:flutter_jaring_ummat/src/views/page_program-amal/share_program_amal_container.dart';
 import 'package:flutter_jaring_ummat/src/views/page_program-amal/komentar_program_amal_container.dart';
 
-class ProgramAmalContent extends StatefulWidget {
-  final ProgramAmalModel programAmal;
+class BookmarkProgramAmalContent extends StatefulWidget {
+  final ListProgram programAmal;
   final bool likes;
   final bool bookmark;
 
-  ProgramAmalContent(
+  BookmarkProgramAmalContent(
       {Key key, @required this.programAmal, this.likes, this.bookmark})
       : super(key: key);
 
   @override
-  _ProgramAmalContentState createState() => _ProgramAmalContentState(
+  _BookmarkProgramAmalContentState createState() => _BookmarkProgramAmalContentState(
       programAmal: this.programAmal,
       likes: this.likes,
       bookmark: this.bookmark);
 }
 
-class _ProgramAmalContentState extends State<ProgramAmalContent> {
-  ProgramAmalModel programAmal;
+class _BookmarkProgramAmalContentState extends State<BookmarkProgramAmalContent> {
+  ListProgram programAmal;
   bool likes;
   bool bookmark;
-  _ProgramAmalContentState({this.programAmal, this.likes, this.bookmark});
+  _BookmarkProgramAmalContentState({this.programAmal, this.likes, this.bookmark});
 
   /*
    * Image No Content Replace with This
@@ -292,17 +293,17 @@ class _ProgramAmalContentState extends State<ProgramAmalContent> {
               ? Container()
               : RaisedButton(
             onPressed: () {
-              (token == null)
-                  ? Navigator.of(context).pushNamed('/login')
-                  : Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => GalangAmalView(
-                    programAmal: programAmal,
-                    likes: likes,
-                  ),
-                ),
-              );
+//              (token == null)
+//                  ? Navigator.of(context).pushNamed('/login')
+//                  : Navigator.push(
+//                context,
+//                MaterialPageRoute(
+//                  builder: (context) => GalangAmalView(
+//                    programAmal: programAmal,
+//                    likes: likes,
+//                  ),
+//                ),
+//              );
             },
             textColor: Colors.white,
             padding: EdgeInsets.all(0.0),
@@ -367,18 +368,18 @@ class _ProgramAmalContentState extends State<ProgramAmalContent> {
         GestureDetector(
           onTap: () {
             print("ID Berita ${programAmal.idProgram}");
-            if (token == null) {
-              Navigator.of(context).pushNamed('/login');
-            } else {
-              showModalBottomSheet(
-                context: context,
-                builder: (context) {
-                  return KomentarContainer(
-                    programAmal: programAmal,
-                  );
-                },
-              );
-            }
+//            if (token == null) {
+//              Navigator.of(context).pushNamed('/login');
+//            } else {
+//              showModalBottomSheet(
+//                context: context,
+//                builder: (context) {
+//                  return KomentarContainer(
+//                    programAmal: programAmal,
+//                  );
+//                },
+//              );
+//            }
           },
           child: Row(
             children: <Widget>[
@@ -426,11 +427,7 @@ class _ProgramAmalContentState extends State<ProgramAmalContent> {
           onTap: () {
             if (bookmark) {
               print('This Program bookmarked');
-              unbookmarkProgram();
-              bookmark = !bookmark;
-              setState(() {});
             } else if (!bookmark) {
-              print('This Program unbookmarked');
               bookmarkProgram();
               bookmark = !bookmark;
               setState(() {});
@@ -554,20 +551,6 @@ class _ProgramAmalContentState extends State<ProgramAmalContent> {
       if (response.statusCode == 201) {
         setState(() {
           bookmark = true;
-        });
-      }
-    });
-  }
-
-  void unbookmarkProgram() async {
-    SharedPreferences _preferences = await SharedPreferences.getInstance();
-    var userId = _preferences.getString(USER_ID_KEY);
-    BookmarkProvider bookmarkProvider = new BookmarkProvider();
-    bookmarkProvider.unbookmarkProgram(userId, widget.programAmal.idProgram).then((response) {
-      print('Response Unbookmark Program : ${response.statusCode}');
-      if (response.statusCode == 200) {
-        setState(() {
-          bookmark = false;
         });
       }
     });

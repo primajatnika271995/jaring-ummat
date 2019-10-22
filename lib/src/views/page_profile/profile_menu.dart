@@ -10,6 +10,7 @@ import 'package:flutter_jaring_ummat/src/views/components/icon_text/app_bar_icon
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/new_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/sosial_media_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/page_atur_aplikasi/atur_aplikasimu.dart';
+import 'package:flutter_jaring_ummat/src/views/page_bookmark/bookmark.dart';
 import 'package:flutter_jaring_ummat/src/views/page_kalkulator_zakat/kalkulator_zakat.dart';
 import 'package:flutter_jaring_ummat/src/views/page_profile/kelengkapan_akun.dart';
 import 'package:flutter_jaring_ummat/src/views/page_profile/menu_text_data.dart';
@@ -231,6 +232,11 @@ class _ProfileMenuState extends State<ProfileMenu> {
                   trailing: Icon(NewIcon.next_small_2x, color: blackColor),
                   onTap: () {
                     switch (index) {
+                      case 0:
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => BookmarkScreen()),
+                        );
+                        break;
                       case 1:
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => KalkulatorZakatPage()));
