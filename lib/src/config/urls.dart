@@ -54,7 +54,7 @@ const STORY_BY_ID_NO_FILLTER_URL = BASE_API_URL + '/api/story/list/nofillter/';
 const PROGRAM_AMAL_SAVE_URL = BASE_API_URL + '/api/program-amal/';
 const PROGRAM_AMAL_LIST_ALL_URL = BASE_API_URL + '/api/program-amal/list/all';
 const PROGRAM_AMAL_LIST_BY_CATEGORY_URL = BASE_API_URL + '/api/program-amal/list/category';
-const PROGRAM_AMAL_FINDBYID_URL = BASE_API_URL + '/api/program-amal/';
+const PROGRAM_AMAL_FINDBYID_URL = BASE_API_URL + '/api/program-amal/find-by-id';
 
 // For Service Berita API
 const BERITA_LIST_ALL_URL =  BASE_API_URL + '/api/berita/list';

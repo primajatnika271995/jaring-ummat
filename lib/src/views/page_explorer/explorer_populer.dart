@@ -129,13 +129,13 @@ class _ExplorerPopulerViewState extends State<ExplorerPopulerView> {
     provider.beritaByID(idBerita).then((response) {
       print(response.statusCode);
       var value = BeritaModel.fromJson(json.decode(response.body));
-//      Navigator.of(context).push(
-//        MaterialPageRoute(
-//          builder: (context) => BeritaViews(
-//            value: value,
-//          ),
-//        ),
-//      );
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => BeritaViews(
+            value: value,
+          ),
+        ),
+      );
     });
   }
 
@@ -144,15 +144,15 @@ class _ExplorerPopulerViewState extends State<ExplorerPopulerView> {
     provider.programAmalByID(idProgram).then((response) {
       print(response.statusCode);
       var value = ProgramAmalModel.fromJson(json.decode(response.body));
-//      Navigator.push(
-//        context,
-//        MaterialPageRoute(
-//          builder: (context) => GalangAmalView(
-//            programAmal: value,
-//            likes: value.userLikeThis,
-//          ),
-//        ),
-//      );
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => GalangAmalView(
+            programAmal: value,
+            likes: value.userLikeThis,
+          ),
+        ),
+      );
     });
   }
 }
