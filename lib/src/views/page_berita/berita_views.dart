@@ -97,47 +97,47 @@ class _BeritaViewsState extends State<BeritaViews> {
             aspectRatio: MediaQuery.of(context).size.aspectRatio,
             items: (widget.value.imageContent == null)
                 ? imgNoContent.map((url) {
-                    return Container(
-                      child: CachedNetworkImage(
-                          imageUrl: url,
-                          fit: BoxFit.cover,
-                          width: MediaQuery.of(context).size.width),
-                    );
-                  }).toList()
+              return Container(
+                child: CachedNetworkImage(
+                    imageUrl: url,
+                    fit: BoxFit.cover,
+                    width: MediaQuery.of(context).size.width),
+              );
+            }).toList()
                 : widget.value.imageContent.map(
-                    (url) {
-                      return Stack(
-                        children: <Widget>[
-                          Container(
-                            child: CachedNetworkImage(
-                              imageUrl: url.resourceType == "video"
-                                  ? url.urlThumbnail
-                                  : url.url,
-                              fit: BoxFit.cover,
-                              width: MediaQuery.of(context).size.width,
-                            ),
+                  (url) {
+                return Stack(
+                  children: <Widget>[
+                    Container(
+                      child: CachedNetworkImage(
+                        imageUrl: url.resourceType == "video"
+                            ? url.urlThumbnail
+                            : url.url,
+                        fit: BoxFit.cover,
+                        width: MediaQuery.of(context).size.width,
+                      ),
+                    ),
+                    url.resourceType == "video"
+                        ? Positioned(
+                      right: screenWidth(context, dividedBy: 2.3),
+                      top: screenHeight(context, dividedBy: 8),
+                      child: InkWell(
+                        onTap: () => showMediaPlayer(url.url),
+                        child: CircleAvatar(
+                          radius: 30,
+                          backgroundColor: greenColor,
+                          child: Icon(
+                            AllInOneIcon.play_4x,
+                            color: whiteColor,
                           ),
-                          url.resourceType == "video"
-                              ? Positioned(
-                                  right: screenWidth(context, dividedBy: 2.3),
-                                  top: screenHeight(context, dividedBy: 8),
-                                  child: InkWell(
-                                    onTap: () => showMediaPlayer(url.url),
-                                    child: CircleAvatar(
-                                      radius: 30,
-                                      backgroundColor: greenColor,
-                                      child: Icon(
-                                        AllInOneIcon.play_4x,
-                                        color: whiteColor,
-                                      ),
-                                    ),
-                                  ),
-                                )
-                              : Container(),
-                        ],
-                      );
-                    },
-                  ).toList(),
+                        ),
+                      ),
+                    )
+                        : Container(),
+                  ],
+                );
+              },
+            ).toList(),
             onPageChanged: (index) {
               current = index;
               currentImage = index + 1;
@@ -155,13 +155,13 @@ class _BeritaViewsState extends State<BeritaViews> {
               toAnimate: false,
               badgeContent: (widget.value.imageContent == null)
                   ? Text(
-                      '$currentImage / ${imgNoContent.length}',
-                      style: TextStyle(color: whiteColor),
-                    )
+                '$currentImage / ${imgNoContent.length}',
+                style: TextStyle(color: whiteColor),
+              )
                   : Text(
-                      '$currentImage / ${widget.value.imageContent.length}',
-                      style: TextStyle(color: whiteColor),
-                    ),
+                '$currentImage / ${widget.value.imageContent.length}',
+                style: TextStyle(color: whiteColor),
+              ),
             ),
           ),
         ],
@@ -178,7 +178,7 @@ class _BeritaViewsState extends State<BeritaViews> {
 
     final likeNComment = Padding(
       padding:
-          EdgeInsets.only(left: 20.0, right: 20.0, top: 20.0, bottom: 10.0),
+      EdgeInsets.only(left: 20.0, right: 20.0, top: 20.0, bottom: 10.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
@@ -236,18 +236,13 @@ class _BeritaViewsState extends State<BeritaViews> {
             ],
           ),
           InkWell(
-            onTap: () => showModalBottomSheet(
-              context: context,
-              builder: (context) {
-                return ShareProgramAmal();
-              },
-            ),
-            child: Icon(
-              NewIcon.share_3x,
-              color: blackColor,
-              size: 25,
-            ),
-          ),
+              onTap: () => showModalBottomSheet(
+                context: context,
+                builder: (context) {
+                  return ShareProgramAmal();
+                },
+              ),
+              child: Icon(NewIcon.share_3x, color: blackColor, size: 25)),
         ],
       ),
     );
@@ -264,7 +259,7 @@ class _BeritaViewsState extends State<BeritaViews> {
           onTap: () {
             Navigator.of(context).pop();
           },
-          child: Icon(NewIcon.back_big_3x, color: blackColor, size: 20),
+          child: Icon(NewIcon.back_big_3x, color: blackColor, size: 25),
         ),
       ),
       body: SingleChildScrollView(

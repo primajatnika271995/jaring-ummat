@@ -13,6 +13,7 @@ class BeritaModel {
     String username;
     String idBerita;
     bool likeThis;
+    bool bookmarkThis;
     String titleBerita;
     String descriptionBerita;
     String categoryBerita;
@@ -35,6 +36,7 @@ class BeritaModel {
         this.createdBy,
         this.totalLikes,
         this.totalComment,
+        this.bookmarkThis,
     });
 
     factory BeritaModel.fromJson(Map<String, dynamic> json) => BeritaModel(
@@ -42,6 +44,7 @@ class BeritaModel {
         username: json["username"] == null ? null : json["username"],
         idBerita: json["idBerita"] == null ? null : json["idBerita"],
         likeThis: json["likeThis"] == null ? null : json["likeThis"],
+        bookmarkThis: json["bookmarkThis"] == null ? null : json["bookmarkThis"],
         titleBerita: json["titleBerita"] == null ? null : json["titleBerita"],
         descriptionBerita: json["descriptionBerita"] == null ? null : json["descriptionBerita"],
         categoryBerita: json["categoryBerita"] == null ? null : json["categoryBerita"],
@@ -57,6 +60,7 @@ class BeritaModel {
         "username": username == null ? null : username,
         "idBerita": idBerita == null ? null : idBerita,
         "likeThis": likeThis == null ? null : likeThis,
+        "bookmarkThis": bookmarkThis == null ? null : bookmarkThis,
         "titleBerita": titleBerita == null ? null : titleBerita,
         "descriptionBerita": descriptionBerita == null ? null : descriptionBerita,
         "categoryBerita": categoryBerita == null ? null : categoryBerita,

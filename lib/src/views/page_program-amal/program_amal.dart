@@ -17,8 +17,7 @@ import 'package:flutter_jaring_ummat/src/views/page_payment/payment.dart';
 import 'package:flutter_jaring_ummat/src/views/page_program-amal/donasi_only.dart';
 import 'package:flutter_jaring_ummat/src/views/page_program-amal/program_amal_text_data.dart';
 import 'package:flutter_jaring_ummat/src/bloc/programAmalBloc.dart';
-import 'package:flutter_jaring_ummat/src/bloc/registerBloc.dart'
-    as blocRegister;
+import 'package:flutter_jaring_ummat/src/bloc/registerBloc.dart' as blocRegister;
 import 'package:flutter_jaring_ummat/src/config/hexColor.dart';
 import 'package:flutter_jaring_ummat/src/config/preferences.dart';
 import 'package:flutter_jaring_ummat/src/views/components/loadingContainer.dart';
@@ -327,7 +326,7 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
         child: Container(
           height: 90.0,
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 0.0),
+            padding: const EdgeInsets.symmetric(horizontal: 15),
             child: ListView(
               shrinkWrap: true,
               scrollDirection: Axis.horizontal,
@@ -681,7 +680,6 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
               borderSide: BorderSide(width: 4.0, color: greenColor),
             ),
             labelColor: blackColor,
-            labelStyle: TextStyle(fontWeight: FontWeight.bold),
             unselectedLabelColor: Colors.grey[400],
             onTap: (int index) {
               print(index);
