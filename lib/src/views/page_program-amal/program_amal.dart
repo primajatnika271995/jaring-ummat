@@ -26,6 +26,7 @@ import 'package:flutter_jaring_ummat/src/services/storiesApi.dart';
 import 'package:flutter_jaring_ummat/src/views/components/userstory_appbar_container.dart';
 import 'package:flutter_jaring_ummat/src/views/page_program-amal/program_amal_content.dart';
 import 'package:flutter_jaring_ummat/src/views/page_program-amal/search_program_amal.dart';
+import 'package:flutter_jaring_ummat/src/views/page_program-amal/search_program_amal_donasi_only.dart';
 import 'package:geocoder/geocoder.dart';
 import 'package:location/location.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -420,7 +421,7 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                           onTap: () {
                             Navigator.of(context).push(
                               MaterialPageRoute(
-                                builder: (context) => SearchProgramAmal(),
+                                builder: (context) => SearchProgramAmalDonasiOnly(),
                               ),
                             );
                           },

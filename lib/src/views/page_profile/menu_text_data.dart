@@ -6,7 +6,7 @@ class MenuTextData {
    * List Data for Title Menu
    */
   static const  List<String> titleMenu = [
-    "Galang Amal Tersimpan",
+    "Konten Jaring Tersimpan",
     "Hitung Kewajiban Zakatmu",
     "Atur Aplikasi dan Akunmu"
   ];
