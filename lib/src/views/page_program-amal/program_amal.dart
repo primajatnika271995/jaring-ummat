@@ -420,7 +420,7 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                           onTap: () {
                             Navigator.of(context).push(
                               MaterialPageRoute(
-                                builder: (context) => DonasiOnlyScreen(),
+                                builder: (context) => SearchProgramAmal(),
                               ),
                             );
                           },
