@@ -359,8 +359,7 @@ class _PortofolioState extends State<Portofolio> {
 //          ),
         ),
         Padding(
-          padding:
-              const EdgeInsets.only(left: 15, right: 15),
+          padding: const EdgeInsets.only(left: 15, right: 15),
           child: _listAktivitasTerbaruCache == null
               ? Center(
                   child: Text('Load Data'),
@@ -614,9 +613,17 @@ class _PortofolioState extends State<Portofolio> {
               ),
               title: Text('${value.lembagaAmalName}',
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
-              subtitle: Text(
-                  '${value.category} - ${TimeAgoService().timeAgoFormatting(value.requestedDate)}',
-                  style: TextStyle(fontSize: 12)),
+              subtitle: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                      '${value.category.toUpperCase()}',
+                      style: TextStyle(fontSize: 12)),
+                  Text(
+                      '${TimeAgoService().timeAgoFormatting(value.requestedDate)}',
+                      style: TextStyle(fontSize: 12)),
+                ],
+              ),
               trailing: Text(
                   'Rp ${CurrencyFormat().data.format(value.totalAmal.toDouble())}',
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
