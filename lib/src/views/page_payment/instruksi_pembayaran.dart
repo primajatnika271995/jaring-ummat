@@ -263,7 +263,7 @@ class _InstruksiPembayaranState extends State<InstruksiPembayaran>
                       text: '$virtualNumber',
                       style: TextStyle(
                           color: Colors.black,
-                          fontSize: 14,
+                          fontSize: 13,
                           fontWeight: FontWeight.bold),
                     ),
                   ]),

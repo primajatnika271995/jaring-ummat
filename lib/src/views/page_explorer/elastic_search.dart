@@ -3,11 +3,18 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_jaring_ummat/src/config/hexColor.dart';
 import 'package:flutter_jaring_ummat/src/config/preferences.dart';
+import 'package:flutter_jaring_ummat/src/models/beritaModel.dart';
 import 'package:flutter_jaring_ummat/src/models/elasticSearchModel.dart';
+import 'package:flutter_jaring_ummat/src/models/program_amal.dart';
+import 'package:flutter_jaring_ummat/src/services/beritaApi.dart';
 import 'package:flutter_jaring_ummat/src/services/elasticSearchApi.dart';
+import 'package:flutter_jaring_ummat/src/services/programAmalApi.dart';
 import 'package:flutter_jaring_ummat/src/utils/screenSize.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/all_in_one_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/bloc/elasticSearchBloc.dart';
+import 'package:flutter_jaring_ummat/src/views/components/loadingContainer.dart';
+import 'package:flutter_jaring_ummat/src/views/galang_amal.dart';
+import 'package:flutter_jaring_ummat/src/views/page_berita/berita_views.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -20,160 +27,169 @@ class _ElasticSearchState extends State<ElasticSearch> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final _searchCtrl = new TextEditingController();
   bool _isSearch = false;
+  bool _isLoading = false;
 
   ElasticSearchProvider _provider = new ElasticSearchProvider();
-
   ElasticSearchModel _elasticSearchModel = new ElasticSearchModel();
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 6,
-      child: Scaffold(
-        backgroundColor: whiteColor,
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
+    return LoadingScreen(
+      inAsyncCall: _isLoading,
+      child: DefaultTabController(
+        length: 6,
+        child: Scaffold(
           backgroundColor: whiteColor,
-          elevation: 1,
-          title: searchAutoCompleteForm(),
-          actions: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(right: 7),
-              child: InkWell(
-                onTap: () {
-                  _searchCtrl.clear();
-                },
-                child: Icon(AllInOneIcon.clear_search_history_3x,
-                    size: 25, color: blackColor),
+          appBar: AppBar(
+            automaticallyImplyLeading: false,
+            backgroundColor: whiteColor,
+            elevation: 1,
+            title: searchAutoCompleteForm(),
+            actions: <Widget>[
+              Padding(
+                padding: const EdgeInsets.only(right: 7),
+                child: InkWell(
+                  onTap: () {
+                    _searchCtrl.clear();
+                  },
+                  child: Icon(AllInOneIcon.clear_search_history_3x,
+                      size: 25, color: blackColor),
+                ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(right: 7),
-              child: InkWell(
-                onTap: () => Navigator.of(context).pop(),
-                child: Icon(AllInOneIcon.close_2x, size: 25, color: blackColor),
+              Padding(
+                padding: const EdgeInsets.only(right: 7),
+                child: InkWell(
+                  onTap: () => Navigator.of(context).pop(),
+                  child:
+                  Icon(AllInOneIcon.close_2x, size: 25, color: blackColor),
+                ),
               ),
-            ),
-          ],
-          bottom: TabBar(
-            isScrollable: true,
-            indicator: UnderlineTabIndicator(
-              borderSide: BorderSide(width: 4, color: greenColor),
-            ),
-            labelColor: blackColor,
-            unselectedLabelColor: grayColor,
-            tabs: <Widget>[
-              Tab(text: 'Semua'),
-              Tab(text: 'Aktivitas Amal'),
-              Tab(text: 'Story Jejaring'),
-              Tab(text: 'Tanya Ustadz'),
-              Tab(text: 'Akun Mitra'),
-              Tab(text: 'Berita')
             ],
-            onTap: (int index) {
-              switch (index) {
-                case 0:
-                  bloc.fetchElasticData('donasi');
-                  _isSearch = true;
-                  setState(() {});
-                  break;
-                case 1:
-                  bloc.fetchElasticData('amal');
-                  _isSearch = true;
-                  setState(() {});
-                  break;
-                case 2:
-                  bloc.fetchElasticData('story');
-                  _isSearch = true;
-                  setState(() {});
-                  break;
-                case 3:
-                  bloc.fetchElasticData('tanya');
-                  _isSearch = true;
-                  setState(() {});
-                  break;
-                case 4:
-                  bloc.fetchElasticData('akun');
-                  _isSearch = true;
-                  setState(() {});
-                  break;
-                case 5:
-                  bloc.fetchElasticData('berita');
-                  _isSearch = true;
-                  setState(() {});
-                  break;
-              }
-            },
+            bottom: TabBar(
+              isScrollable: true,
+              indicator: UnderlineTabIndicator(
+                borderSide: BorderSide(width: 4, color: greenColor),
+              ),
+              labelColor: blackColor,
+              unselectedLabelColor: grayColor,
+              tabs: <Widget>[
+                Tab(text: 'Semua'),
+                Tab(text: 'Aktivitas Amal'),
+                Tab(text: 'Story Jejaring'),
+                Tab(text: 'Tanya Ustadz'),
+                Tab(text: 'Akun Mitra'),
+                Tab(text: 'Berita')
+              ],
+              onTap: (int index) {
+                switch (index) {
+                  case 0:
+                    bloc.fetchElasticData('donasi');
+                    _isSearch = true;
+                    setState(() {});
+                    break;
+                  case 1:
+                    bloc.fetchElasticData('amal');
+                    _isSearch = true;
+                    setState(() {});
+                    break;
+                  case 2:
+                    bloc.fetchElasticData('story');
+                    _isSearch = true;
+                    setState(() {});
+                    break;
+                  case 3:
+                    bloc.fetchElasticData('tanya');
+                    _isSearch = true;
+                    setState(() {});
+                    break;
+                  case 4:
+                    bloc.fetchElasticData('akun');
+                    _isSearch = true;
+                    setState(() {});
+                    break;
+                  case 5:
+                    bloc.fetchElasticData('berita');
+                    _isSearch = true;
+                    setState(() {});
+                    break;
+                }
+              },
+            ),
           ),
-        ),
-        body: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              _isSearch
-                  ? StreamBuilder(
-                      stream: bloc.streamData,
-                      builder: (context,
-                          AsyncSnapshot<ElasticSearchModel> snapshot) {
-                        switch (snapshot.connectionState) {
-                          case ConnectionState.waiting:
-                            return Container(
-                              height: screenHeightExcludingToolbar(context),
-                              child: Center(
-                                child: Text('Waiting..'),
-                              ),
-                            );
-                            break;
-                          default:
-                            if (snapshot.hasData &&
-                                snapshot.data.hits.hits.isNotEmpty) {
-                              return listResult(snapshot.data);
-                            } else if (snapshot.data.hits.hits.isEmpty) {
-                              return Container(
-                                width: screenWidth(context),
-                                height: screenHeightExcludingToolbar(context),
-                                color: whiteColor,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
-                                    Container(
-                                      height: 250,
-                                      decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                          image: AssetImage(
-                                              'assets/backgrounds/no_data_accent.png'),
-                                        ),
-                                      ),
+          body: SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                _isSearch
+                    ? StreamBuilder(
+                  stream: bloc.streamData,
+                  builder: (context,
+                      AsyncSnapshot<ElasticSearchModel> snapshot) {
+                    switch (snapshot.connectionState) {
+                      case ConnectionState.waiting:
+                        return Container(
+                          height: screenHeightExcludingToolbar(context),
+                          child: Center(
+                            child: Text('Waiting..'),
+                          ),
+                        );
+                        break;
+                      default:
+                        if (snapshot.hasData &&
+                            snapshot.data.hits.hits.isNotEmpty) {
+                          return listResult(snapshot.data);
+                        } else if (snapshot.data.hits.hits.isEmpty) {
+                          return Container(
+                            width: screenWidth(context),
+                            height: screenHeightExcludingToolbar(context),
+                            color: whiteColor,
+                            child: Column(
+                              crossAxisAlignment:
+                              CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Container(
+                                  height: 250,
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                      image: AssetImage(
+                                          'assets/backgrounds/no_data_accent.png'),
                                     ),
-                                    Text(
-                                      'Oops, Data Tidak Ditemukan',
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 16,
-                                      ),
-                                    ),
-                                    Text(
-                                      'Tidak ada hasil pencarian berdasarkan \n kata pencarian "${_searchCtrl.text}"',
-                                      style: TextStyle(
-                                        color: Colors.grey,
-                                        fontSize: 14,
-                                      ),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  ],
+                                  ),
                                 ),
-                              );
-                            }
-                            return Center(
-                              child: Text('Error'),
-                            );
+                                Text(
+                                  'Oops, Data Tidak Ditemukan',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                                Text(
+                                  'Tidak ada hasil pencarian berdasarkan \n kata pencarian "${_searchCtrl.text}"',
+                                  style: TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: 14,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ],
+                            ),
+                          );
                         }
-                      },
-                    )
-                  : Container(),
-              recomendation(),
-              _isSearch ? Container() : _elasticSearchModel.hits == null ? Container() : recent(_elasticSearchModel),
-            ],
+                        return Center(
+                          child: Text('Error'),
+                        );
+                    }
+                  },
+                )
+                    : Container(),
+                recomendation(),
+                _isSearch
+                    ? Container()
+                    : _elasticSearchModel.hits == null
+                    ? Container()
+                    : recent(_elasticSearchModel),
+              ],
+            ),
           ),
         ),
       ),
@@ -396,6 +412,16 @@ class _ElasticSearchState extends State<ElasticSearch> {
               return Padding(
                 padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                 child: ListTile(
+                  onTap: () {
+                    print(data.id);
+                    if (data.source.targetDonation == 0.0) {
+                      print('ini kontent berita');
+                      getBeritaByID(data.id);
+                    } else {
+                      print('ini kontent program');
+                      getProgramByID(data.id);
+                    }
+                  },
                   leading: Container(
                     width: 45.0,
                     height: 45.0,
@@ -455,6 +481,16 @@ class _ElasticSearchState extends State<ElasticSearch> {
         return Padding(
           padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
           child: ListTile(
+            onTap: () {
+              print(data.id);
+              if (data.source.targetDonation == 0.0) {
+                print('ini kontent berita');
+                getBeritaByID(data.id);
+              } else {
+                print('ini kontent program');
+                getProgramByID(data.id);
+              }
+            },
             leading: Container(
               width: 45.0,
               height: 45.0,
@@ -500,5 +536,51 @@ class _ElasticSearchState extends State<ElasticSearch> {
         elasticSearchModelFromJson(_pref.getString(HISTORY_ELASTIC_SEARCH));
     print(_elasticSearchModel);
     setState(() {});
+  }
+
+  void getProgramByID(String idContent) {
+    _isLoading = true;
+    setState(() {});
+
+    ProgramAmalApiProvider apiProvider = ProgramAmalApiProvider();
+    apiProvider.programAmalByID(idContent).then((response) {
+      print(response.statusCode);
+      if (response.statusCode == 200) {
+        _isLoading = false;
+        setState(() {});
+        var value = ProgramAmalModel.fromJson(json.decode(response.body));
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => GalangAmalView(
+              programAmal: value,
+              likes: value.userLikeThis,
+            ),
+          ),
+        );
+      }
+    });
+  }
+
+  void getBeritaByID(String idBerita) {
+    _isLoading = true;
+    setState(() {});
+
+    BeritaProvider provider = new BeritaProvider();
+    provider.beritaByID(idBerita).then((response) {
+      print(response.statusCode);
+      if (response.statusCode == 200) {
+        _isLoading = false;
+        setState(() {});
+        var value = BeritaModel.fromJson(json.decode(response.body));
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => BeritaViews(
+              value: value,
+            ),
+          ),
+        );
+      }
+    });
   }
 }
