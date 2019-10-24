@@ -4,6 +4,7 @@ import 'package:flutter_jaring_ummat/src/config/preferences.dart';
 import 'package:flutter_jaring_ummat/src/config/urls.dart';
 import 'package:flutter_jaring_ummat/src/models/pengaturanAplikasiModel.dart';
 import 'package:http/http.dart' show Client;
+import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PengaturanAplikasiProvider {
@@ -19,6 +20,10 @@ class PengaturanAplikasiProvider {
     if (response.statusCode == 200) {
       return compute(pengaturanAplikasiModelFromJson, response.body);
     } return null;
+  }
+
+  Future<http.Response> update(PengaturanAplikasiModel value) async {
+
   }
 
 }

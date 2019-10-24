@@ -125,3 +125,4 @@ const JELAJAH_KEBAIKAN_POPULER = BASE_API_URL + '/api/jelajah-kebaikan/list/popu
 
 // PENGATURAN APLIKASI
 const PENGATURAN_APLIKASI_URL = BASE_API_URL + '/api/user/pengaturan';
+const PENGATURAN_APLIKASI_UPDATE_URL = BASE_API_URL + '/api/user/pengaturan/update';

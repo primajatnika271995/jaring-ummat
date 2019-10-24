@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_jaring_ummat/src/bloc/pengaturanAplikasiBloc.dart';
 import 'package:flutter_jaring_ummat/src/config/hexColor.dart';
+import 'package:flutter_jaring_ummat/src/models/pengaturanAplikasiModel.dart';
 import 'package:flutter_jaring_ummat/src/utils/sizeUtils.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/all_in_one_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/page_atur_aplikasi/atur_aplikasimu_text.dart';
@@ -16,6 +18,9 @@ class AturAplikasimuView extends StatefulWidget {
 class _AturAplikasimuViewState extends State<AturAplikasimuView> {
   bool isActive;
   _AturAplikasimuViewState({this.isActive});
+
+  List<bool> aturTmp = [];
+  List<bool> notifTmp = [];
 
   @override
   Widget build(BuildContext context) {
@@ -38,40 +43,66 @@ class _AturAplikasimuViewState extends State<AturAplikasimuView> {
             color: blackColor,
             iconSize: 20),
       ),
-      body: SingleChildScrollView(
-        child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                child: const Text('Pengaturan Akun',
-                    style: TextStyle(
-                        fontSize: SizeUtils.titleSize - 1,
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold)),
-              ),
-              listPengaturanAkun(),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                child: const Text('Pengaturan Notifikasi',
-                    style: TextStyle(
-                        fontSize: SizeUtils.titleSize - 1,
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold)),
-              ),
-              listPengaturanNotifikasi(),
-            ],
-          ),
+      body: StreamBuilder(
+        stream: pengaturanAplikasiBloc.streamPengaturan,
+        builder: (BuildContext context,
+            AsyncSnapshot<PengaturanAplikasiModel> snapshot) {
+          switch (snapshot.connectionState) {
+            case ConnectionState.waiting:
+              return Center(child: Text('Waiting...'));
+              break;
+            default:
+              if (snapshot.hasData) {
+                return listBuilder(snapshot.data);
+              }
+              return Center(child: Text('No Data'));
+          }
+        },
+      ),
+    );
+  }
+
+  Widget listBuilder(PengaturanAplikasiModel snapshot) {
+    aturTmp.add(snapshot.aktivitasAmal);
+    aturTmp.add(snapshot.komentarGalangAmal);
+    notifTmp.add(snapshot.pengingatSholat);
+    notifTmp.add(snapshot.ayatAlquranHarian);
+    notifTmp.add(snapshot.aksiGalangAmal);
+    notifTmp.add(snapshot.beritaAmil);
+    notifTmp.add(snapshot.akunAmilBaru);
+    notifTmp.add(snapshot.chatDariAmil);
+    notifTmp.add(snapshot.portofolio);
+    return SingleChildScrollView(
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              child: const Text('Pengaturan Akun',
+                  style: TextStyle(
+                      fontSize: SizeUtils.titleSize - 1,
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold)),
+            ),
+            listPengaturanAkun(snapshot),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              child: const Text('Pengaturan Notifikasi',
+                  style: TextStyle(
+                      fontSize: SizeUtils.titleSize - 1,
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold)),
+            ),
+            listPengaturanNotifikasi(snapshot),
+          ],
         ),
       ),
     );
   }
 
-  Widget listPengaturanAkun() {
+  Widget listPengaturanAkun(PengaturanAplikasiModel snapshot) {
     return ListView.separated(
         shrinkWrap: true,
         physics: NeverScrollableScrollPhysics(),
@@ -82,7 +113,7 @@ class _AturAplikasimuViewState extends State<AturAplikasimuView> {
               child: Icon(AturAplikasiMu.pengaturanAkunIconList[index],
                   color: whiteColor, size: 20),
             ),
-            trailing: AturAplikasiMu.pengaturanAkunBool[index] ? aktiveBtn(index) : inActiveBtn(index),
+            trailing: aturTmp[index] ? aktiveBtn(index) : inActiveBtn(index),
             title: Text(AturAplikasiMu.pengaturanAkunTitle[index],
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
             subtitle: Text(AturAplikasiMu.pengaturanAkunSubtitle[index],
@@ -106,7 +137,7 @@ class _AturAplikasimuViewState extends State<AturAplikasimuView> {
         itemCount: AturAplikasiMu.pengaturanAkunColorList.length);
   }
 
-  Widget listPengaturanNotifikasi() {
+  Widget listPengaturanNotifikasi(PengaturanAplikasiModel snapshot) {
     return ListView.separated(
         shrinkWrap: true,
         physics: NeverScrollableScrollPhysics(),
@@ -118,7 +149,9 @@ class _AturAplikasimuViewState extends State<AturAplikasimuView> {
               child: Icon(AturAplikasiMu.pengaturanNotifikasiIconList[index],
                   color: whiteColor, size: 20),
             ),
-            trailing: AturAplikasiMu.pengaturanNotifikasiBool[index] ? aktiveNotifikasiBtn(index) : inActiveNotifikasiBtn(index),
+            trailing: notifTmp[index]
+                ? aktiveNotifikasiBtn(index)
+                : inActiveNotifikasiBtn(index),
             title: Text(AturAplikasiMu.pengaturanNotifikasiTitle[index],
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
             subtitle: Text(AturAplikasiMu.pengaturanNotifikasiSubtitle[index],
@@ -145,7 +178,7 @@ class _AturAplikasimuViewState extends State<AturAplikasimuView> {
   Widget aktiveBtn(int index) {
     return OutlineButton(
       onPressed: () {
-        AturAplikasiMu.pengaturanAkunBool[index] = !AturAplikasiMu.pengaturanAkunBool[index];
+        aturTmp[index] = !aturTmp[index];
         setState(() {});
       },
       child: const Text('Aktif',
@@ -162,7 +195,7 @@ class _AturAplikasimuViewState extends State<AturAplikasimuView> {
   Widget aktiveNotifikasiBtn(int index) {
     return OutlineButton(
       onPressed: () {
-        AturAplikasiMu.pengaturanNotifikasiBool[index] = !AturAplikasiMu.pengaturanNotifikasiBool[index];
+        notifTmp[index] = !notifTmp[index];
         setState(() {});
       },
       child: const Text('Aktif',
@@ -179,7 +212,7 @@ class _AturAplikasimuViewState extends State<AturAplikasimuView> {
   Widget inActiveBtn(int index) {
     return OutlineButton(
       onPressed: () {
-        AturAplikasiMu.pengaturanAkunBool[index] = !AturAplikasiMu.pengaturanAkunBool[index];
+        aturTmp[index] = !aturTmp[index];
         setState(() {});
       },
       child: const Text('Tidak Aktif',
@@ -196,7 +229,7 @@ class _AturAplikasimuViewState extends State<AturAplikasimuView> {
   Widget inActiveNotifikasiBtn(int index) {
     return OutlineButton(
       onPressed: () {
-        AturAplikasiMu.pengaturanNotifikasiBool[index] = !AturAplikasiMu.pengaturanNotifikasiBool[index];
+        notifTmp[index] = !notifTmp[index];
         setState(() {});
       },
       child: const Text('Tidak Aktif',
@@ -208,5 +241,11 @@ class _AturAplikasimuViewState extends State<AturAplikasimuView> {
         width: 2.8, //width of the border
       ),
     );
+  }
+
+  @override
+  void initState() {
+    pengaturanAplikasiBloc.fetchPengaturanAplikasi();
+    super.initState();
   }
 }
