@@ -5,14 +5,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_jaring_ummat/src/config/hexColor.dart';
-import 'package:flutter_jaring_ummat/src/models/DTO/UserDetailPref.dart';
 import 'package:flutter_jaring_ummat/src/models/lembagaAmalModel.dart';
 import 'package:flutter_jaring_ummat/src/services/lembagaAmalApi.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/all_in_one_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/new_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/profile_inbox_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/login/reLogin.dart';
-import 'package:flutter_jaring_ummat/src/bloc/preferencesBloc.dart';
 import 'package:flutter_jaring_ummat/src/views/page_explorer/explorer.dart';
 import 'package:flutter_jaring_ummat/src/views/page_inbox/inbox.dart';
 import 'package:flutter_jaring_ummat/src/views/page_lembaga_amal/popular_account.dart';
@@ -91,7 +89,6 @@ class _MainViewState extends State<MainView> {
   int _currentIndex = 0;
 
   SharedPreferences _preferences;
-
   String _token;
 
   String qrCode;
@@ -184,8 +181,8 @@ class _MainViewState extends State<MainView> {
   }
 
   Future scan() async {
-    print("Scan QR Code");
     try {
+      print('Mencoba Scan !');
       String barcode = await BarcodeScanner.scan();
       setState(() {
         print("Barcode $barcode");
@@ -230,7 +227,7 @@ class _MainViewState extends State<MainView> {
 
   LembagaAmalProvider _lembagaAmalProvider = new LembagaAmalProvider();
 
-  Future getLembagaAmilByEmail(String email) async {
+  void getLembagaAmilByEmail(String email) async {
     print("get lembaga amal by email");
     await _lembagaAmalProvider.getLembagaAmalByEmail(email).then((response) {
       print('Reponse Get Lembaga Amal By Email:');

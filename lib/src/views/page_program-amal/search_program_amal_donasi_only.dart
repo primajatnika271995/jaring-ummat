@@ -12,7 +12,6 @@ class SearchProgramAmalDonasiOnly extends StatefulWidget {
 }
 
 class _SearchProgramAmalDonasiOnlyState extends State<SearchProgramAmalDonasiOnly> {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final _searchCtrl = new TextEditingController();
   bool _isSearch = false;
 
@@ -26,12 +25,9 @@ class _SearchProgramAmalDonasiOnlyState extends State<SearchProgramAmalDonasiOnl
           elevation: 1,
           title: searchForm(),
           actions: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(right: 7),
-              child: InkWell(
-                onTap: () => Navigator.of(context).pop(),
-                child: Icon(AllInOneIcon.close_2x, size: 20, color: blackColor),
-              ),
+            IconButton(
+              icon: Icon(AllInOneIcon.close_2x, size: 25, color: blackColor),
+              onPressed: () => Navigator.of(context).pop(),
             ),
           ]),
       body: SingleChildScrollView(
@@ -59,7 +55,7 @@ class _SearchProgramAmalDonasiOnlyState extends State<SearchProgramAmalDonasiOnl
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
           ),
           Row(
-            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 5.0),
@@ -70,9 +66,8 @@ class _SearchProgramAmalDonasiOnlyState extends State<SearchProgramAmalDonasiOnl
                     ProgramAmalReturn value = ProgramAmalReturn(
                       lokasi: _searchCtrl.text,
                     );
-//                    Navigator.of(context).pop(value);
                     Navigator.of(context).pushReplacement(MaterialPageRoute(
-                      builder: (context) => DonasiOnlyScreen(),
+                      builder: (context) => DonasiOnlyScreen(value: value),
                     ));
                     setState(() {});
                   },
@@ -96,9 +91,8 @@ class _SearchProgramAmalDonasiOnlyState extends State<SearchProgramAmalDonasiOnl
                     ProgramAmalReturn value = ProgramAmalReturn(
                       lokasi: _searchCtrl.text,
                     );
-//                    Navigator.of(context).pop(value);
                     Navigator.of(context).pushReplacement(MaterialPageRoute(
-                      builder: (context) => DonasiOnlyScreen(),
+                      builder: (context) => DonasiOnlyScreen(value: value),
                     ));
                     setState(() {});
                   },
@@ -122,9 +116,8 @@ class _SearchProgramAmalDonasiOnlyState extends State<SearchProgramAmalDonasiOnl
                     ProgramAmalReturn value = ProgramAmalReturn(
                       lokasi: _searchCtrl.text,
                     );
-//                    Navigator.of(context).pop(value);
                     Navigator.of(context).pushReplacement(MaterialPageRoute(
-                      builder: (context) => DonasiOnlyScreen(),
+                      builder: (context) => DonasiOnlyScreen(value: value),
                     ));
                     setState(() {});
                   },
@@ -142,7 +135,7 @@ class _SearchProgramAmalDonasiOnlyState extends State<SearchProgramAmalDonasiOnl
             ],
           ),
           Row(
-            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 5.0),
@@ -153,9 +146,8 @@ class _SearchProgramAmalDonasiOnlyState extends State<SearchProgramAmalDonasiOnl
                     ProgramAmalReturn value = ProgramAmalReturn(
                       lokasi: _searchCtrl.text,
                     );
-//                    Navigator.of(context).pop(value);
                     Navigator.of(context).pushReplacement(MaterialPageRoute(
-                      builder: (context) => DonasiOnlyScreen(),
+                      builder: (context) => DonasiOnlyScreen(value: value),
                     ));
                     setState(() {});
                   },
@@ -179,9 +171,8 @@ class _SearchProgramAmalDonasiOnlyState extends State<SearchProgramAmalDonasiOnl
                     ProgramAmalReturn value = ProgramAmalReturn(
                       lokasi: _searchCtrl.text,
                     );
-//                    Navigator.of(context).pop(value);
                     Navigator.of(context).pushReplacement(MaterialPageRoute(
-                      builder: (context) => DonasiOnlyScreen(),
+                      builder: (context) => DonasiOnlyScreen(value: value),
                     ));
                     setState(() {});
                   },
@@ -235,7 +226,7 @@ class _SearchProgramAmalDonasiOnlyState extends State<SearchProgramAmalDonasiOnl
             },
           ),
           Align(
-            alignment: Alignment(-0.9, -1),
+            alignment: Alignment(-0.95, -1),
             child: Padding(
               padding: const EdgeInsets.only(top: 8),
               child: Icon(

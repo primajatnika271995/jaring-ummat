@@ -634,7 +634,7 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
                   }),
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 15, right: 15, top: 15),
+              padding: const EdgeInsets.only(left: 15, right: 15, top: 10, bottom: 5),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
@@ -1106,8 +1106,7 @@ class _ProgramAmalPageState extends State<ProgramAmalPage> {
     });
   }
 
-  void navigateSearhProgram(
-      BuildContext context, ProgramAmalReturn value) async {
+  void navigateSearhProgram(BuildContext context, ProgramAmalReturn value) async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
     print("Value ${value.lokasi}");
     setState(() {
