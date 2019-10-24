@@ -1,6 +1,8 @@
 // const BASE_API_URL = 'http://tabeldata.ip-dynamic.com/jaring-ummat';
 // const BASE_API_UPLOADER_URL = 'http://tabeldata.ip-dynamic.com/jaring-ummat-uploader';
 
+import 'package:flutter_jaring_ummat/src/models/pengaturanAplikasiModel.dart';
+
 const BASE_API_URL = 'http://139.162.15.91/jaring-ummat';
 //const BASE_API_URL = 'http://192.168.1.29:9091';
 const BASE_API_UPLOADER_URL = 'http://139.162.15.91/uploader';
@@ -120,3 +122,6 @@ const UPDATE_USER_DETAILS = BASE_API_URL + '/api/user/update';
 
 // JELAJAH KEBAIKAN
 const JELAJAH_KEBAIKAN_POPULER = BASE_API_URL + '/api/jelajah-kebaikan/list/populer';
+
+// PENGATURAN APLIKASI
+const PENGATURAN_APLIKASI_URL = BASE_API_URL + '/api/user/pengaturan';
