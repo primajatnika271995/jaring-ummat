@@ -399,7 +399,7 @@ class _PortofolioState extends State<Portofolio> {
                           SizedBox(
                             height: 10,
                           ),
-                          mySaldoGrid,
+//                          mySaldoGrid,
                           sebaranAktifitas,
                         ],
                       ),

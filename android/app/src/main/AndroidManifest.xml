@@ -1,4 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.flutter_jaring_ummat">
 
     <!-- io.flutter.app.FlutterApplication is an android.app.Application that
@@ -8,7 +9,8 @@
          FlutterApplication and put your custom class here. -->
 
     <application
-        android:name="io.flutter.app.FlutterApplication"
+        tools:replace="android:label"
+        android:name=".Application"
         android:icon="@mipmap/launcher_icon"
         android:label="Jaring"
         android:usesCleartextTraffic="true">

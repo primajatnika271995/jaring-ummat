@@ -78,7 +78,7 @@ class _PembayaranDonasiState extends State<PembayaranDonasi> {
    * Virtual Name List
    */
   final List<String> vaName = [
-    'Dompet Jejaring',
+    'BNI VA',
     'BNI Syariah VA Billing',
     'Mandiri Syariah VA Billing',
     'Bank Muamalat VA Billing'
@@ -102,8 +102,8 @@ class _PembayaranDonasiState extends State<PembayaranDonasi> {
   /*
    * Metode Pembayaran Temp
    */
-  String titleMetode = 'Dompet Jejaring';
-  String subtitleMetode = '1.700';
+  String titleMetode = 'BNI Syariah VA Billing';
+  String subtitleMetode ;
   int indexTile = 0;
 
   @override
@@ -257,15 +257,8 @@ class _PembayaranDonasiState extends State<PembayaranDonasi> {
                               leading: CircleAvatar(
                                   backgroundColor: Colors.redAccent,
                                   backgroundImage: indexTile == 0
-                                      ? null
-                                      : NetworkImage(imageVA[indexTile]),
-                                  child: indexTile == 0
-                                      ? Icon(
-                                    ProfileInboxIcon.balance_2x,
-                                    color: whiteColor,
-                                    size: 20,
-                                  )
-                                      : null),
+                                      ? NetworkImage(imageVA[0])
+                                      : NetworkImage(imageVA[indexTile])),
                               trailing: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: <Widget>[
@@ -413,35 +406,10 @@ class _PembayaranDonasiState extends State<PembayaranDonasi> {
                               style: TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 11),
                             ),
-                            subtitle: index == 0
-                                ? RichText(
-                              text: TextSpan(children: <TextSpan>[
-                                TextSpan(
-                                    text: 'Rp ',
-                                    style: TextStyle(
-                                        color: Colors.grey,
-                                        fontSize: 13)),
-                                TextSpan(
-                                  text: '1.700',
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: SizeUtils.titleSize,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ]),
-                            )
-                                : null,
                             leading: CircleAvatar(
                                 backgroundColor: Colors.redAccent,
                                 backgroundImage: index == 0
-                                    ? null : NetworkImage(imageVA[index]),
-                                child: index == 0
-                                    ? Icon(
-                                  ProfileInboxIcon.balance_2x,
-                                  color: whiteColor,
-                                  size: 20,
-                                )
-                                    : null),
+                                    ? NetworkImage(imageVA[0]) : NetworkImage(imageVA[index])),
                             trailing: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: <Widget>[
@@ -453,8 +421,9 @@ class _PembayaranDonasiState extends State<PembayaranDonasi> {
                                     switch (index) {
                                       case 0:
                                         setState(() {
-                                          titleMetode = 'Dompet Jejaring';
-                                          subtitleMetode = '1.700';
+                                          titleMetode =
+                                          'BNI VA';
+                                          subtitleMetode = null;
                                           indexTile = 0;
                                         });
                                         break;
