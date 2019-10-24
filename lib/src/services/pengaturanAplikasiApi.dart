@@ -51,4 +51,22 @@ class PengaturanAplikasiProvider {
     } return null;
   }
 
+  Future<http.Response> pnegingatSholatGetKota(String kota) async {
+    final response = await _client.get(PENGINGAT_SHOLAT_GET_LOKASI + '/$kota');
+
+    print('Response PengingatSholat Get Kota ${response.statusCode}');
+    if (response.statusCode == 200) {
+      return response;
+    } return null;
+  }
+
+  Future<http.Response> jadwalSholat(String idKota, String tanggal) async {
+    final response = await _client.get(JADWAL_SHOLAT_URL + '/$idKota/tanggal/$tanggal');
+
+    print('Response Jadwal Sholat ${response.statusCode}');
+    if (response.statusCode == 200) {
+      return response;
+    } return null;
+  }
+
 }

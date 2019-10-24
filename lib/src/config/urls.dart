@@ -126,3 +126,5 @@ const JELAJAH_KEBAIKAN_POPULER = BASE_API_URL + '/api/jelajah-kebaikan/list/popu
 // PENGATURAN APLIKASI
 const PENGATURAN_APLIKASI_URL = BASE_API_URL + '/api/user/pengaturan';
 const PENGATURAN_APLIKASI_UPDATE_URL = BASE_API_URL + '/api/user/pengaturan/update';
+const PENGINGAT_SHOLAT_GET_LOKASI = 'https://api.banghasan.com/sholat/format/json/kota/nama';
+const JADWAL_SHOLAT_URL = 'https://api.banghasan.com/sholat/format/json/jadwal/kota';

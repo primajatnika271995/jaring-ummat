@@ -1,7 +1,13 @@
+import 'dart:convert';
+import 'package:flutter_jaring_ummat/src/config/preferences.dart';
+import 'package:flutter_jaring_ummat/src/models/FathimahBOTJadwalSholatModel.dart';
+import 'package:intl/intl.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_jaring_ummat/src/bloc/pengaturanAplikasiBloc.dart';
 import 'package:flutter_jaring_ummat/src/config/hexColor.dart';
 import 'package:flutter_jaring_ummat/src/config/key.dart';
+import 'package:flutter_jaring_ummat/src/models/FathimahBOTKotaModel.dart';
 import 'package:flutter_jaring_ummat/src/models/pengaturanAplikasiModel.dart';
 import 'package:flutter_jaring_ummat/src/services/pengaturanAplikasiApi.dart';
 import 'package:flutter_jaring_ummat/src/utils/sizeUtils.dart';
@@ -9,6 +15,7 @@ import 'package:flutter_jaring_ummat/src/views/components/icon_text/all_in_one_i
 import 'package:flutter_jaring_ummat/src/views/page_atur_aplikasi/atur_aplikasimu_text.dart';
 import 'package:geocoder/geocoder.dart';
 import 'package:location/location.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AturAplikasimuView extends StatefulWidget {
   final bool isActive;
@@ -31,6 +38,8 @@ class _AturAplikasimuViewState extends State<AturAplikasimuView> {
   String userId;
   int createdDate;
   int modifyDate;
+
+  String idKota;
 
 
   @override
@@ -296,12 +305,41 @@ class _AturAplikasimuViewState extends State<AturAplikasimuView> {
   }
 
   void pengingatSholat() async {
+    // Ambil Latitude dan Longitude Lokasi Sekarang
     var location = new Location();
     var currentLocation = await location.getLocation();
 
+    // Konversi latitude dan longitude untuk Ambil nama kota
     final coordinate = new Coordinates(currentLocation.latitude, currentLocation.longitude);
     var data = await Geocoder.google(GOOGLE_MAPS_KEY, language: "id").findAddressesFromCoordinates(coordinate);
     print(data.first.subAdminArea);
+
+    // Panggil API Fathimah BOT untuk ambil kode kota dengan parameter ${data.first.subAdminArea}
+    PengaturanAplikasiProvider aplikasiProvider = PengaturanAplikasiProvider();
+    await aplikasiProvider.pnegingatSholatGetKota(data.first.subAdminArea).then((response) {
+      FathimahBotKotaModel value = FathimahBotKotaModel.fromJson(json.decode(response.body));
+      print(value.kota[0].id);
+
+      idKota = value.kota[0].id;
+    });
+
+    // Panggil API Fathimah BOT untuk ambil jam sholat berdasarkan kode wilayah dengan parameter ${value.kota[0].id}
+    var now = new DateTime.now();
+    var formatter = new DateFormat('yyyy-MM-dd');
+    String formattedDate = formatter.format(now);
+    print(formattedDate);
+
+    await aplikasiProvider.jadwalSholat(idKota, formattedDate).then((response) async {
+      print(response.statusCode);
+      FathimahBotJadwalSholatModel value = FathimahBotJadwalSholatModel.fromJson(json.decode(response.body));
+      SharedPreferences _pref = await SharedPreferences.getInstance();
+      _pref.setString(SUBUH, value.jadwal.data.subuh);
+      _pref.setString(DZUHUR, value.jadwal.data.dzuhur);
+      _pref.setString(ASHAR, value.jadwal.data.ashar);
+      _pref.setString(MAGHRIB, value.jadwal.data.maghrib);
+      _pref.setString(ISYA, value.jadwal.data.isya);
+    });
+
   }
 
   void update(List<dynamic> data) {
