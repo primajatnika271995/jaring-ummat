@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_jaring_ummat/src/bloc/pengaturanAplikasiBloc.dart';
 import 'package:flutter_jaring_ummat/src/config/hexColor.dart';
+import 'package:flutter_jaring_ummat/src/config/key.dart';
 import 'package:flutter_jaring_ummat/src/models/pengaturanAplikasiModel.dart';
+import 'package:flutter_jaring_ummat/src/services/pengaturanAplikasiApi.dart';
 import 'package:flutter_jaring_ummat/src/utils/sizeUtils.dart';
 import 'package:flutter_jaring_ummat/src/views/components/icon_text/all_in_one_icon_icons.dart';
 import 'package:flutter_jaring_ummat/src/views/page_atur_aplikasi/atur_aplikasimu_text.dart';
+import 'package:geocoder/geocoder.dart';
+import 'package:location/location.dart';
 
 class AturAplikasimuView extends StatefulWidget {
   final bool isActive;
@@ -21,6 +25,13 @@ class _AturAplikasimuViewState extends State<AturAplikasimuView> {
 
   List<bool> aturTmp = [];
   List<bool> notifTmp = [];
+  List<dynamic> valueTmp = [];
+
+  String id;
+  String userId;
+  int createdDate;
+  int modifyDate;
+
 
   @override
   Widget build(BuildContext context) {
@@ -72,6 +83,11 @@ class _AturAplikasimuViewState extends State<AturAplikasimuView> {
     notifTmp.add(snapshot.akunAmilBaru);
     notifTmp.add(snapshot.chatDariAmil);
     notifTmp.add(snapshot.portofolio);
+
+    id = snapshot.id;
+    userId = snapshot.userId;
+    createdDate = snapshot.createdDate;
+    modifyDate = snapshot.modifyDate;
     return SingleChildScrollView(
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
@@ -179,6 +195,14 @@ class _AturAplikasimuViewState extends State<AturAplikasimuView> {
     return OutlineButton(
       onPressed: () {
         aturTmp[index] = !aturTmp[index];
+        valueTmp.add(id);
+        valueTmp.add(userId);
+        valueTmp.addAll(aturTmp);
+        valueTmp.addAll(notifTmp);
+        valueTmp.add(createdDate);
+        valueTmp.add(modifyDate);
+
+        update(valueTmp);
         setState(() {});
       },
       child: const Text('Aktif',
@@ -196,6 +220,14 @@ class _AturAplikasimuViewState extends State<AturAplikasimuView> {
     return OutlineButton(
       onPressed: () {
         notifTmp[index] = !notifTmp[index];
+        valueTmp.add(id);
+        valueTmp.add(userId);
+        valueTmp.addAll(aturTmp);
+        valueTmp.addAll(notifTmp);
+        valueTmp.add(createdDate);
+        valueTmp.add(modifyDate);
+
+        update(valueTmp);
         setState(() {});
       },
       child: const Text('Aktif',
@@ -213,6 +245,14 @@ class _AturAplikasimuViewState extends State<AturAplikasimuView> {
     return OutlineButton(
       onPressed: () {
         aturTmp[index] = !aturTmp[index];
+        valueTmp.add(id);
+        valueTmp.add(userId);
+        valueTmp.addAll(aturTmp);
+        valueTmp.addAll(notifTmp);
+        valueTmp.add(createdDate);
+        valueTmp.add(modifyDate);
+
+        update(valueTmp);
         setState(() {});
       },
       child: const Text('Tidak Aktif',
@@ -230,6 +270,18 @@ class _AturAplikasimuViewState extends State<AturAplikasimuView> {
     return OutlineButton(
       onPressed: () {
         notifTmp[index] = !notifTmp[index];
+        valueTmp.add(id);
+        valueTmp.add(userId);
+        valueTmp.addAll(aturTmp);
+        valueTmp.addAll(notifTmp);
+        valueTmp.add(createdDate);
+        valueTmp.add(modifyDate);
+
+        if (index == 0) {
+          print('pengingat sholat');
+          pengingatSholat();
+        }
+        update(valueTmp);
         setState(() {});
       },
       child: const Text('Tidak Aktif',
@@ -241,6 +293,38 @@ class _AturAplikasimuViewState extends State<AturAplikasimuView> {
         width: 2.8, //width of the border
       ),
     );
+  }
+
+  void pengingatSholat() async {
+    var location = new Location();
+    var currentLocation = await location.getLocation();
+
+    final coordinate = new Coordinates(currentLocation.latitude, currentLocation.longitude);
+    var data = await Geocoder.google(GOOGLE_MAPS_KEY, language: "id").findAddressesFromCoordinates(coordinate);
+    print(data.first.subAdminArea);
+  }
+
+  void update(List<dynamic> data) {
+    var value = PengaturanAplikasiModel(
+      id: data[0],
+      userId: data[1],
+      aktivitasAmal: data[2],
+      komentarGalangAmal: data[3],
+      pengingatSholat: data[4],
+      ayatAlquranHarian: data[5],
+      aksiGalangAmal: data[6],
+      beritaAmil: data[7],
+      akunAmilBaru: data[8],
+      chatDariAmil: data[9],
+      portofolio: data[10],
+      createdDate: data[11],
+      modifyDate: data[12],
+    );
+    PengaturanAplikasiProvider updatePengaturan = new PengaturanAplikasiProvider();
+    updatePengaturan.update(value).then((response) {
+      print('Response Hasil Update ${response.statusCode}');
+      pengaturanAplikasiBloc.fetchPengaturanAplikasi();
+    });
   }
 
   @override

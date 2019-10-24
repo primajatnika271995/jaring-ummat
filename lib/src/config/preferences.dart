@@ -8,6 +8,7 @@ const CONTACT_KEY = 'CONTACT';
 const PROFILE_PICTURE_KEY = 'PROFILEPICTURE';
 const PROFILE_FACEBOOK_KEY = 'PROFILEFACEBOOK';
 
+const LOKASI_PENGINGAT_SHOLAT = 'LOKASIPENGINGATSHOLAT';
 
 const LEMABAGA_AMAL_ID = 'LEMBAGAAMALID';
 const LOKASI_AMAL = 'LOKASIAMAL';
@@ -25,7 +26,6 @@ const KOTA_LAHIR = 'KOTALAHIR';
 const PROVINSI_LAHIR = 'PROVINSILAHIR';
 
 // LINKEDIN CONFIG
-
 const linkedInRedirectURI = 'https://api.linkedin.com/v2/';
 const linkedInClientID = '81vfnbt57g6p6q';
 const linkedInClientSecret = 'QOzI7o0ZTBAF8hr7';

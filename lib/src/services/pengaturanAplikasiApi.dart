@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_jaring_ummat/src/config/preferences.dart';
@@ -23,7 +25,30 @@ class PengaturanAplikasiProvider {
   }
 
   Future<http.Response> update(PengaturanAplikasiModel value) async {
+    Map<String, String> headers = {'Content-type': 'application/json'};
 
+    Map params = {
+      "id": value.id,
+      "userId": value.userId,
+      "aktivitasAmal": value.aktivitasAmal,
+      "komentarGalangAmal": value.komentarGalangAmal,
+      "pengingatSholat": value.pengingatSholat,
+      "ayatAlquranHarian": value.ayatAlquranHarian,
+      "aksiGalangAmal": value.aksiGalangAmal,
+      "beritaAmil": value.beritaAmil,
+      "akunAmilBaru": value.akunAmilBaru,
+      "chatDariAmil": value.chatDariAmil,
+      "portofolio": value.portofolio,
+      "createdDate": value.createdDate,
+      "modifyDate": value.modifyDate,
+    };
+
+    final response = await _client.post(PENGATURAN_APLIKASI_UPDATE_URL, body: json.encode(params), headers: headers);
+
+    print('Response Update Pengaturan');
+    if (response.statusCode == 201) {
+      return response;
+    } return null;
   }
 
 }
